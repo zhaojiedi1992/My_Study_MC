@@ -1,8 +1,8 @@
+sphinx-comments
 sphinx-tabs
-sphinx
+sphinx>=2
 sphinx-rtd-theme
 sphinx-git
 sphinx-copybutton
 sphinx-sitemap
 rst2pdf
-sphinx-comments
