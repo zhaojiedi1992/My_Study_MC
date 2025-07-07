@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'text/plain'
         ],
         UTTERANCES: {
-            repo: '', // 在 Sphinx 的 conf.py 中设置
+            repo: 'zhaojiedi1992/My_Study_MC', // 在 Sphinx 的 conf.py 中设置
             issueTerm: 'pathname',
             theme: 'github-light'
         },
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fileLabel: '附件上传 (可选，最大5MB):',
             submitBtn: '提交评论',
             fileTypeError: '文件类型不允许。允许的类型: ',
-            fileSizeError: '文件过大 (最大 ',
+            fileSizeError: '文件过大 (最大 5MB)',
             submitSuccess: '评论已准备，请在下方Utterances评论框中提交',
             submitError: '错误: 无法连接到评论系统，请手动复制提交'
         }

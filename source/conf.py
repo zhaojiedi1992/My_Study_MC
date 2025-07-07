@@ -29,15 +29,17 @@ html_static_path = ['_static']
 
 
 
-def setup(app):
-    app.add_js_file('comments.js')
+# def setup(app):
+#     app.add_js_file('comments.js')
 
-html_sidebars = {
-    '**': [
-        'sidebarcomments.html',  # 你的自定义模板
-        'localtoc.html',
-        'relations.html',
-        'sourcelink.html',
-        'searchbox.html'
-    ]
-}
+# html_sidebars = {
+#     '**': [
+#         'sidebarcomments.html',  # 你的自定义模板
+#         'localtoc.html',
+#         'relations.html',
+#         'sourcelink.html',
+#         'searchbox.html'
+#     ]
+# }
+
+html_js_files = ['comments.js']
