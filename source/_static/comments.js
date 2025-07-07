@@ -1,19 +1,19 @@
 /**
- * comment.js - Enhanced comment system for Sphinx + ReadTheDocs with Utterances
- * Features: 
- * - File upload support
- * - File size validation
- * - File type validation
- * - Cross-browser compatibility
- * - Responsive design
- * - Progress indicators
+ * comment.js - 增强型评论系统 (Sphinx + ReadTheDocs + Utterances)
+ * 功能特性:
+ * - 支持文件上传
+ * - 文件大小验证
+ * - 文件类型验证
+ * - 良好的浏览器兼容性
+ * - 响应式设计
+ * - 上传进度显示
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Configuration
-    const config = {
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        allowedTypes: [
+    // 配置项
+    const CONFIG = {
+        MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+        ALLOWED_FILE_TYPES: [
             'image/jpeg', 
             'image/png', 
             'image/gif',
@@ -22,218 +22,291 @@ document.addEventListener('DOMContentLoaded', function() {
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'text/plain'
         ],
-        utterances: {
-            repo: '', // Set this in your Sphinx conf.py
+        UTTERANCES: {
+            repo: '', // 在 Sphinx 的 conf.py 中设置
             issueTerm: 'pathname',
             theme: 'github-light'
+        },
+        TEXT: {
+            title: '发表评论',
+            placeholder: '请输入您的评论内容...',
+            fileLabel: '附件上传 (可选，最大5MB):',
+            submitBtn: '提交评论',
+            fileTypeError: '文件类型不允许。允许的类型: ',
+            fileSizeError: '文件过大 (最大 ',
+            submitSuccess: '评论已准备，请在下方Utterances评论框中提交',
+            submitError: '错误: 无法连接到评论系统，请手动复制提交'
         }
     };
 
-    // Check if utterances is already loaded
-    if (typeof utterances !== 'undefined') {
-        initEnhancedComments();
-    } else {
-        // Wait for utterances to load
-        const observer = new MutationObserver(function(mutations, me) {
-            if (typeof utterances !== 'undefined') {
-                initEnhancedComments();
-                me.disconnect(); // stop observing
+    // 主初始化函数
+    function initEnhancedCommentSystem() {
+        if (isUtterancesLoaded()) {
+            setupCommentUI();
+        } else {
+            waitForUtterances(setupCommentUI);
+        }
+    }
+
+    // 检查Utterances是否已加载
+    function isUtterancesLoaded() {
+        return typeof utterances !== 'undefined';
+    }
+
+    // 等待Utterances加载
+    function waitForUtterances(callback) {
+        const observer = new MutationObserver(function(mutations, observerInstance) {
+            if (isUtterancesLoaded()) {
+                callback();
+                observerInstance.disconnect();
             }
         });
 
-        // Start observing the document body for changes
         observer.observe(document.body, {
             childList: true,
             subtree: true
         });
     }
 
-    function initEnhancedComments() {
-        // Find the utterances container
+    // 设置评论界面
+    function setupCommentUI() {
         const utterancesContainer = document.querySelector('.utterances');
         if (!utterancesContainer) return;
 
-        // Create our enhanced comment container
-        const commentContainer = document.createElement('div');
-        commentContainer.className = 'enhanced-comments-container';
-        commentContainer.style.margin = '20px 0';
-        commentContainer.style.padding = '15px';
-        commentContainer.style.borderRadius = '4px';
-        commentContainer.style.backgroundColor = '#f8f9fa';
-        commentContainer.style.border = '1px solid #e1e4e8';
+        const commentContainer = createCommentContainer();
+        const commentForm = createCommentForm();
 
-        // Add title
+        // 插入到页面中
+        utterancesContainer.parentNode.insertBefore(commentContainer, utterancesContainer);
+        commentContainer.appendChild(commentForm);
+
+        // 添加事件监听
+        setupEventListeners(commentForm);
+    }
+
+    // 创建评论容器
+    function createCommentContainer() {
+        const container = document.createElement('div');
+        container.className = 'enhanced-comments-container';
+        Object.assign(container.style, {
+            margin: '20px 0',
+            padding: '15px',
+            borderRadius: '4px',
+            backgroundColor: '#f8f9fa',
+            border: '1px solid #e1e4e8'
+        });
+
         const title = document.createElement('h3');
-        title.textContent = 'Leave a Comment';
+        title.textContent = CONFIG.TEXT.title;
         title.style.marginTop = '0';
-        commentContainer.appendChild(title);
+        container.appendChild(title);
 
-        // Create form
+        return container;
+    }
+
+    // 创建评论表单
+    function createCommentForm() {
         const form = document.createElement('form');
         form.id = 'enhanced-comment-form';
 
-        // Textarea for comment
+        // 评论文本框
+        form.appendChild(createTextarea());
+        
+        // 文件上传区域
+        form.appendChild(createFileUploadSection());
+        
+        // 提交按钮
+        form.appendChild(createSubmitButton());
+        
+        // 进度条
+        form.appendChild(createProgressBar());
+
+        return form;
+    }
+
+    // 创建文本输入框
+    function createTextarea() {
         const textarea = document.createElement('textarea');
         textarea.id = 'comment-text';
-        textarea.placeholder = 'Write your comment here...';
+        textarea.placeholder = CONFIG.TEXT.placeholder;
         textarea.required = true;
-        textarea.style.width = '100%';
-        textarea.style.minHeight = '100px';
-        textarea.style.marginBottom = '10px';
-        textarea.style.padding = '8px';
-        textarea.style.border = '1px solid #d1d5da';
-        textarea.style.borderRadius = '3px';
-        form.appendChild(textarea);
+        Object.assign(textarea.style, {
+            width: '100%',
+            minHeight: '100px',
+            marginBottom: '10px',
+            padding: '8px',
+            border: '1px solid #d1d5da',
+            borderRadius: '3px'
+        });
+        return textarea;
+    }
 
-        // File upload section
-        const fileSection = document.createElement('div');
-        fileSection.style.margin = '10px 0';
+    // 创建文件上传区域
+    function createFileUploadSection() {
+        const section = document.createElement('div');
+        section.style.margin = '10px 0';
 
-        const fileLabel = document.createElement('label');
-        fileLabel.textContent = 'Attach File (optional, max 5MB):';
-        fileLabel.style.display = 'block';
-        fileLabel.style.marginBottom = '5px';
-        fileLabel.style.fontWeight = 'bold';
-        fileSection.appendChild(fileLabel);
+        // 文件标签
+        const label = document.createElement('label');
+        label.textContent = CONFIG.TEXT.fileLabel;
+        Object.assign(label.style, {
+            display: 'block',
+            marginBottom: '5px',
+            fontWeight: 'bold'
+        });
+        section.appendChild(label);
 
+        // 文件输入
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.id = 'comment-file';
         fileInput.name = 'comment-file';
-        fileInput.style.display = 'block';
-        fileInput.style.marginBottom = '5px';
-        fileSection.appendChild(fileInput);
+        Object.assign(fileInput.style, {
+            display: 'block',
+            marginBottom: '5px'
+        });
+        section.appendChild(fileInput);
 
-        // File type info
+        // 文件信息显示
         const fileInfo = document.createElement('div');
         fileInfo.id = 'file-info';
-        fileInfo.style.fontSize = '0.8em';
-        fileInfo.style.color = '#586069';
-        fileInfo.style.marginBottom = '5px';
-        fileSection.appendChild(fileInfo);
+        Object.assign(fileInfo.style, {
+            fontSize: '0.8em',
+            color: '#586069',
+            marginBottom: '5px'
+        });
+        section.appendChild(fileInfo);
 
-        // Error display
+        // 错误信息显示
         const errorDisplay = document.createElement('div');
         errorDisplay.id = 'file-error';
-        errorDisplay.style.color = '#cb2431';
-        errorDisplay.style.fontSize = '0.8em';
-        errorDisplay.style.marginBottom = '10px';
-        errorDisplay.style.display = 'none';
-        fileSection.appendChild(errorDisplay);
-
-        form.appendChild(fileSection);
-
-        // Submit button
-        const submitBtn = document.createElement('button');
-        submitBtn.type = 'submit';
-        submitBtn.textContent = 'Post Comment';
-        submitBtn.style.backgroundColor = '#2ea44f';
-        submitBtn.style.color = 'white';
-        submitBtn.style.border = 'none';
-        submitBtn.style.padding = '8px 16px';
-        submitBtn.style.borderRadius = '3px';
-        submitBtn.style.cursor = 'pointer';
-        submitBtn.style.fontWeight = 'bold';
-        form.appendChild(submitBtn);
-
-        // Progress indicator
-        const progress = document.createElement('div');
-        progress.id = 'upload-progress';
-        progress.style.display = 'none';
-        progress.style.marginTop = '10px';
-        progress.style.height = '5px';
-        progress.style.backgroundColor = '#e1e4e8';
-        progress.style.borderRadius = '3px';
-        
-        const progressBar = document.createElement('div');
-        progressBar.id = 'progress-bar';
-        progressBar.style.height = '100%';
-        progressBar.style.width = '0%';
-        progressBar.style.backgroundColor = '#2ea44f';
-        progressBar.style.borderRadius = '3px';
-        progressBar.style.transition = 'width 0.3s ease';
-        progress.appendChild(progressBar);
-        
-        form.appendChild(progress);
-
-        // Insert our form before utterances
-        utterancesContainer.parentNode.insertBefore(commentContainer, utterancesContainer);
-        commentContainer.appendChild(form);
-
-        // File input change handler
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const errorElement = document.getElementById('file-error');
-            errorElement.style.display = 'none';
-            errorElement.textContent = '';
-            
-            if (!file) {
-                document.getElementById('file-info').textContent = '';
-                return;
-            }
-
-            // Validate file size
-            if (file.size > config.maxFileSize) {
-                errorElement.textContent = `File is too large (max ${formatFileSize(config.maxFileSize)})`;
-                errorElement.style.display = 'block';
-                e.target.value = '';
-                document.getElementById('file-info').textContent = '';
-                return;
-            }
-
-            // Validate file type
-            if (config.allowedTypes.indexOf(file.type) === -1) {
-                const allowedTypes = config.allowedTypes.join(', ');
-                errorElement.textContent = `File type not allowed. Allowed types: ${allowedTypes}`;
-                errorElement.style.display = 'block';
-                e.target.value = '';
-                document.getElementById('file-info').textContent = '';
-                return;
-            }
-
-            // Display file info
-            document.getElementById('file-info').textContent = 
-                `Selected: ${file.name} (${formatFileSize(file.size)})`;
+        Object.assign(errorDisplay.style, {
+            color: '#cb2431',
+            fontSize: '0.8em',
+            marginBottom: '10px',
+            display: 'none'
         });
+        section.appendChild(errorDisplay);
 
-        // Form submission handler
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const commentText = textarea.value.trim();
-            if (!commentText) {
-                alert('Please enter a comment');
-                return;
-            }
-
-            const fileInput = document.getElementById('comment-file');
-            const file = fileInput.files[0];
-            
-            // Show progress
-            document.getElementById('upload-progress').style.display = 'block';
-            document.getElementById('progress-bar').style.width = '0%';
-            
-            if (file) {
-                // Simulate file upload (in a real implementation, you'd upload to a server)
-                simulateUpload(file, function(uploadedFileUrl) {
-                    // Include the file URL in the comment
-                    const fullComment = `${commentText}\n\n[Attached: ${file.name}](${uploadedFileUrl})`;
-                    postToUtterances(fullComment);
-                });
-            } else {
-                // No file, just post the comment
-                postToUtterances(commentText);
-            }
-        });
+        return section;
     }
 
-    function simulateUpload(file, callback) {
-        // In a real implementation, you would:
-        // 1. Upload the file to your server
-        // 2. Get back a URL to the uploaded file
-        // 3. Call the callback with that URL
+    // 创建提交按钮
+    function createSubmitButton() {
+        const button = document.createElement('button');
+        button.type = 'submit';
+        button.textContent = CONFIG.TEXT.submitBtn;
+        Object.assign(button.style, {
+            backgroundColor: '#2ea44f',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '3px',
+            cursor: 'pointer',
+            fontWeight: 'bold'
+        });
+        return button;
+    }
+
+    // 创建进度条
+    function createProgressBar() {
+        const container = document.createElement('div');
+        container.id = 'upload-progress';
+        container.style.display = 'none';
+        container.style.marginTop = '10px';
+        container.style.height = '5px';
+        container.style.backgroundColor = '#e1e4e8';
+        container.style.borderRadius = '3px';
         
-        // This is a simulation that just returns a fake URL after a delay
+        const bar = document.createElement('div');
+        bar.id = 'progress-bar';
+        bar.style.height = '100%';
+        bar.style.width = '0%';
+        bar.style.backgroundColor = '#2ea44f';
+        bar.style.borderRadius = '3px';
+        bar.style.transition = 'width 0.3s ease';
+        
+        container.appendChild(bar);
+        return container;
+    }
+
+    // 设置事件监听
+    function setupEventListeners(form) {
+        const fileInput = form.querySelector('#comment-file');
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        form.addEventListener('submit', handleFormSubmit);
+    }
+
+    // 处理文件选择
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        const errorElement = document.getElementById('file-error');
+        errorElement.style.display = 'none';
+        errorElement.textContent = '';
+        
+        if (!file) {
+            document.getElementById('file-info').textContent = '';
+            return;
+        }
+
+        // 验证文件大小
+        if (file.size > CONFIG.MAX_FILE_SIZE) {
+            errorElement.textContent = CONFIG.TEXT.fileSizeError + 
+                formatFileSize(CONFIG.MAX_FILE_SIZE) + ')';
+            errorElement.style.display = 'block';
+            event.target.value = '';
+            document.getElementById('file-info').textContent = '';
+            return;
+        }
+
+        // 验证文件类型
+        if (CONFIG.ALLOWED_FILE_TYPES.indexOf(file.type) === -1) {
+            errorElement.textContent = CONFIG.TEXT.fileTypeError + 
+                CONFIG.ALLOWED_FILE_TYPES.join(', ');
+            errorElement.style.display = 'block';
+            event.target.value = '';
+            document.getElementById('file-info').textContent = '';
+            return;
+        }
+
+        // 显示文件信息
+        document.getElementById('file-info').textContent = 
+            `已选择: ${file.name} (${formatFileSize(file.size)})`;
+    }
+
+    // 处理表单提交
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        const commentText = document.getElementById('comment-text').value.trim();
+        if (!commentText) {
+            alert('请输入评论内容');
+            return;
+        }
+
+        const fileInput = document.getElementById('comment-file');
+        const file = fileInput.files[0];
+        
+        // 显示进度条
+        document.getElementById('upload-progress').style.display = 'block';
+        document.getElementById('progress-bar').style.width = '0%';
+        
+        if (file) {
+            // 模拟文件上传 (实际使用时替换为真实上传逻辑)
+            simulateFileUpload(file, function(uploadedFileUrl) {
+                // 在评论中包含文件信息
+                const fullComment = `${commentText}\n\n[附件: ${file.name}](${uploadedFileUrl})`;
+                postCommentToUtterances(fullComment);
+            });
+        } else {
+            // 没有附件，直接提交评论
+            postCommentToUtterances(commentText);
+        }
+    }
+
+    // 模拟文件上传
+    function simulateFileUpload(file, callback) {
         let progress = 0;
         const progressInterval = setInterval(function() {
             progress += Math.random() * 10;
@@ -243,11 +316,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (progress === 100) {
                 clearInterval(progressInterval);
                 setTimeout(function() {
-                    // For demo purposes, we're just creating a data URL
+                    // 实际应用中替换为真实的上传逻辑
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const fakeUrl = e.target.result; // data URL
-                        callback(fakeUrl);
+                        callback(e.target.result); // 返回数据URL
                     };
                     reader.readAsDataURL(file);
                 }, 500);
@@ -255,38 +327,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200);
     }
 
-    function postToUtterances(commentText) {
-        // This function would need to integrate with Utterances' API
-        // Currently Utterances doesn't have a direct API for posting comments
-        // So we'll simulate by focusing the comment box and inserting text
-        
-        // Find the utterances comment box
+    // 提交评论到Utterances
+    function postCommentToUtterances(commentText) {
         const utterancesFrame = document.querySelector('.utterances-frame');
+        
         if (utterancesFrame && utterancesFrame.contentWindow) {
+            // 尝试预填充评论框
             utterancesFrame.contentWindow.postMessage({
                 type: 'set-comment',
                 value: commentText
             }, 'https://utteranc.es');
             
-            // Focus the comment box
+            // 聚焦评论框
             utterancesFrame.contentWindow.postMessage({
                 type: 'focus-comment'
             }, 'https://utteranc.es');
             
-            // For now, we'll just alert the user to submit manually
-            alert('Please submit your comment in the Utterances comment box below. Your text and file info have been pre-filled.');
+            // 提示用户手动提交
+            alert(CONFIG.TEXT.submitSuccess);
         } else {
-            alert('Error: Could not connect to comments system. Please copy your comment and post it manually.');
-            console.log('Comment text:', commentText);
+            // 出错处理
+            alert(CONFIG.TEXT.submitError);
+            console.log('评论内容:', commentText);
         }
         
-        // Reset form
+        // 重置表单
+        resetCommentForm();
+    }
+
+    // 重置评论表单
+    function resetCommentForm() {
         document.getElementById('comment-text').value = '';
         document.getElementById('comment-file').value = '';
         document.getElementById('file-info').textContent = '';
         document.getElementById('upload-progress').style.display = 'none';
     }
 
+    // 格式化文件大小
     function formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -294,4 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
+
+    // 启动评论系统
+    initEnhancedCommentSystem();
 });
