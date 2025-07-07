@@ -37,12 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 4. 监听Utterances加载完成事件（关键修复！）
     script.onload = function() {
-        // 等待Utterances完全初始化
+        console.log('Utterances脚本已加载');
         const checkInterval = setInterval(() => {
-            if (window.utterances?.issueNumber) {
-                clearInterval(checkInterval);
-                initUploadButton(); // 安全初始化按钮
-            }
+            console.log('当前issueNumber:', window.utterances?.issueNumber);
+            // ...原有逻辑...
         }, 500);
     };
     container.appendChild(script);
