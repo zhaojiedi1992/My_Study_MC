@@ -42,4 +42,11 @@ html_static_path = ['_static']
 #     ]
 # }
 
-html_js_files = ['comments.js']
+# html_js_files = ['comments.js']
+
+comments_config = {
+   "utterances": {
+      "repo": "zhaojiedi1992/My_Study_MC",
+      "optional": "config",
+   }
+}
