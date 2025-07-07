@@ -15,7 +15,7 @@ release = 'v1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx-comments',  # 需要先安装 pip install sphinx-comments
+    'sphinx_comments', 
     # ... 其他扩展
 ]
 
