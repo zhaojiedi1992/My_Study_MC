@@ -15,11 +15,10 @@ release = 'v1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx_comments',  # 需要先安装 pip install sphinx-comments
+    'sphinx-comments',  # 需要先安装 pip install sphinx-comments
     # ... 其他扩展
 ]
 
-templates_path = ['_templates']
 exclude_patterns = []
 
 
@@ -28,35 +27,15 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
-
-
-# def setup(app):
-#     app.add_js_file('comments.js')
-
-# html_sidebars = {
-#     '**': [
-#         'sidebarcomments.html',  # 你的自定义模板
-#         'localtoc.html',
-#         'relations.html',
-#         'sourcelink.html',
-#         'searchbox.html'
-#     ]
-# }
-
-# html_js_files = ['comments.js']
 
 comments_config = {
    "utterances": {
       "repo": "zhaojiedi1992/My_Study_MC",
-      "issue-term": "pathname",          # 评论关联方式（推荐）
-        "theme": "github-light",           # 主题风格
-        "label": "comments",               # 自定义标签（可选）
-        "crossorigin": "anonymous"         # 安全设置
+      "issue-term": "pathname",         
+        "theme": "github-light",         
+        "label": "comments",              
+        "crossorigin": "anonymous"        
    }
 }
-
-def setup(app):
-    app.add_config_value('comments_config', {}, 'html')
-    app.add_js_file(None, body='<div id="utterances-container"></div>')
