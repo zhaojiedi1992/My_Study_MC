@@ -33,9 +33,8 @@ html_theme = 'sphinx_rtd_theme'
 comments_config = {
    "utterances": {
       "repo": "zhaojiedi1992/My_Study_MC",
-      "issue-term": "pathname",         
-        "theme": "github-light",         
-        "label": "comments",              
-        "crossorigin": "anonymous"        
+        "issue-term": "pathname",
+        "theme": "github-light",
+        "crossorigin": "anonymous" ,
    }
 }
