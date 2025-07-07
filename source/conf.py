@@ -14,7 +14,10 @@ release = 'v1.0.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx_comments',  # 需要先安装 pip install sphinx-comments
+    # ... 其他扩展
+]
 
 templates_path = ['_templates']
 exclude_patterns = []
