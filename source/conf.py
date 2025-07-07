@@ -47,6 +47,9 @@ html_static_path = ['_static']
 comments_config = {
    "utterances": {
       "repo": "zhaojiedi1992/My_Study_MC",
-    #   "optional": "config",
+      "issue-term": "pathname",          # 评论关联方式（推荐）
+        "theme": "github-light",           # 主题风格
+        "label": "comments",               # 自定义标签（可选）
+        "crossorigin": "anonymous"         # 安全设置
    }
 }
