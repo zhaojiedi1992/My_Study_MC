@@ -56,3 +56,7 @@ comments_config = {
         "crossorigin": "anonymous"         # 安全设置
    }
 }
+
+def setup(app):
+    app.add_config_value('comments_config', {}, 'html')
+    app.add_js_file(None, body='<div id="utterances-container"></div>')
