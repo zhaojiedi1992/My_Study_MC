@@ -1,27 +1,15 @@
-// _static/comments.js - 增强版（支持图片上传）
 document.addEventListener('DOMContentLoaded', function() {
-    // ================= 基础配置 =================
-    const REPO = 'zhaojiedi1992/MY_STUDY_MC'; // 替换为你的仓库
+    const REPO = 'zhaojiedi1992/MY_STUDY_MC';
     const THEME = 'github-light';
     
-    // ================= 1. 初始化Utterances =================
-    const script = document.createElement('script');
-    script.src = 'https://utteranc.es/client.js';
-    script.setAttribute('repo', REPO);
-    script.setAttribute('issue-term', 'pathname');
-    script.setAttribute('theme', THEME);
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
-
-    // ================= 2. 创建评论容器 =================
+    // 1. 创建容器和上传按钮
     const container = document.createElement('div');
     container.id = 'utterances-comments';
-    container.style.position = 'relative'; // 为上传按钮定位
-
-    // ================= 3. 图片上传功能 =================
+    container.style.position = 'relative';
+    
     const uploadBtn = document.createElement('button');
     uploadBtn.textContent = '🖼️ 上传图片';
-    uploadBtn.style = `
+    uploadBtn.style.cssText = `
         position: absolute;
         top: -40px;
         right: 0;
@@ -32,66 +20,69 @@ document.addEventListener('DOMContentLoaded', function() {
         cursor: pointer;
         font-size: 14px;
     `;
-    uploadBtn.onclick = handleImageUpload;
+    container.appendChild(uploadBtn);
 
-    // ================= 4. 插入DOM元素 =================
+    // 2. 插入容器到页面
     const content = document.querySelector('.document') || document.querySelector('.body');
-    if (content) {
-        container.appendChild(uploadBtn);
-        content.appendChild(container);
-        container.appendChild(script);
-    }
+    if (content) content.appendChild(container);
 
-    // ================= 5. 图片上传处理函数 =================
-    async function handleImageUpload() {
-        // 5.1 创建文件选择器
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.style.display = 'none';
-        
-        input.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // 5.2 验证文件大小
-            if (file.size > 10 * 1024 * 1024) {
-                alert('图片大小不能超过10MB');
-                return;
+    // 3. 初始化Utterances（新增回调函数）
+    const script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.setAttribute('repo', REPO);
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', THEME);
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    
+    // 4. 监听Utterances加载完成事件（关键修复！）
+    script.onload = function() {
+        // 等待Utterances完全初始化
+        const checkInterval = setInterval(() => {
+            if (window.utterances?.issueNumber) {
+                clearInterval(checkInterval);
+                initUploadButton(); // 安全初始化按钮
             }
+        }, 500);
+    };
+    container.appendChild(script);
 
-            // 5.3 显示上传状态
-            uploadBtn.textContent = '⏳ 上传中...';
-            uploadBtn.disabled = true;
+    // 5. 安全的按钮初始化（仅在Utterances就绪后调用）
+    function initUploadButton() {
+        uploadBtn.onclick = async function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('图片大小不能超过10MB');
+                    return;
+                }
 
-            try {
-                // 5.4 获取当前Issue编号（通过Utterances全局变量）
-                const issueNumber = window.utterances?.issueNumber;
-                if (!issueNumber) throw new Error('未找到评论区');
+                uploadBtn.textContent = '⏳ 上传中...';
+                uploadBtn.disabled = true;
 
-                // 5.5 读取文件为Base64
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    const base64Data = e.target.result.split(',')[1];
-                    const markdownImg = `![图片](${e.target.result})`;
-
-                    // 5.6 复制到剪贴板（让用户手动粘贴）
-                    await navigator.clipboard.writeText(markdownImg);
-                    alert('✅ 图片链接已复制到剪贴板\n请直接粘贴到评论框中');
-                };
-                reader.readAsDataURL(file);
-
-            } catch (error) {
-                console.error('上传失败:', error);
-                alert('⚠️ 上传失败: ' + error.message);
-            } finally {
-                uploadBtn.textContent = '🖼️ 上传图片';
-                uploadBtn.disabled = false;
-            }
+                try {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const markdownImg = `![图片](${e.target.result})`;
+                        navigator.clipboard.writeText(markdownImg).then(() => {
+                            alert('✅ 图片链接已复制到剪贴板\n请粘贴到评论框中');
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                } catch (error) {
+                    alert('⚠️ 上传失败: ' + error.message);
+                } finally {
+                    uploadBtn.textContent = '🖼️ 上传图片';
+                    uploadBtn.disabled = false;
+                }
+            };
+            input.click();
         };
-
-        document.body.appendChild(input);
-        input.click();
-        input.remove();
     }
 });
