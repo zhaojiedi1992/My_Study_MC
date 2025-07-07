@@ -3,11 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-欢迎来到熊猫乐园
+熊猫乐园
 =======================================
 
 .. toctree::
-    :caption: 基础语法
+    :caption: 熊猫乐园
     :numbered:
     开服教程/index
     游玩教程/index
