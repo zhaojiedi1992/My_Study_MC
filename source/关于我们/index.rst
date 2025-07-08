@@ -12,7 +12,7 @@
          <p>支付宝捐赠 | 扫码支持</p>
       </div>
       <div style="flex: 1; text-align: center;">
-         <img src="_static/weixin.png" style="max-width: 100%;">
+         <img src="../_static/weixin.png" style="max-width: 100%;">
          <p>微信捐赠 | 扫码支持</p>
       </div>
    </div>
