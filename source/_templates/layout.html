@@ -1,0 +1,13 @@
+{% extends "!layout.html" %}
+{% block header %}
+    <div class="header">
+        <a href="{{ pathto(master_doc) }}">
+            <img src="{{ pathto('_static/logo.png', 1) }}" alt="Logo" class="logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="/page1">Page 1</a></li>
+            <li><a href="/page2">Page 2</a></li>
+        </ul>
+    </div>
+    {{ super() }}
+{% endblock %}

@@ -30,6 +30,7 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+templates_path = ['_templates']
 
 comments_config = {
    "utterances": {
@@ -38,4 +39,14 @@ comments_config = {
         "theme": "github-light",
         "crossorigin": "anonymous" ,
    }
+}
+
+
+html_theme_options = {
+    'navigation_depth': 4,         # 控制导航层级
+    'includehidden': True,         # 显示隐藏页面
+    'titles_only': False,          # 是否仅显示标题
+    'collapse_navigation': False,  # 禁止自动折叠导航
+    'sticky_navigation': True,     # 固定导航栏
+    # 'display_version': True,       # 显示版本号（如果项目有版本）
 }
