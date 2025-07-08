@@ -1,4 +1,4 @@
-sphinx-comments-zhaojiedi==0.0.10
+sphinx-comments-zhaojiedi
 sphinx>=2
 sphinx-rtd-theme
 sphinx-copybutton
