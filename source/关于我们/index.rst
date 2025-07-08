@@ -8,7 +8,7 @@
 
    <div style="display: flex; gap: 20px; margin: 20px 0;">
       <div style="flex: 1; text-align: center;">
-         <img src="_static/zhifubao.png" style="max-width: 100%;">
+         <img src="../_static/zhifubao.png" style="max-width: 100%;">
          <p>支付宝捐赠 | 扫码支持</p>
       </div>
       <div style="flex: 1; text-align: center;">
