@@ -16,6 +16,7 @@ release = 'v1.0.0'
 
 extensions = [
     'sphinx_comments_zhaojiedi', 
+   #   'sphinx_tabs.tabs',  # 替代 sphinx-panels 的卡片布局
     # ... 其他扩展
 ]
 
@@ -28,8 +29,7 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-# html_static_path = ['_static']
-
+html_static_path = ['_static']
 
 comments_config = {
    "utterances": {
