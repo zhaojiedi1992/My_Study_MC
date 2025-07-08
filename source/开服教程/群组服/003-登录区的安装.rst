@@ -9,7 +9,58 @@
 截止我写这篇文章的时候，paper的最新版本是1.21.7的版本， 我们就使用这个版本来进行安装。 你可以在官网上下载最新的版本。
 下载地址：`paper <https://papermc.io/downloads>`_
 
-在安装前需要你参考 ref:`选择安装java` 来安装好java环境，版本选择21的版本。
+在安装前需要你参考 ref:`选择安装java` 来安装好java环境，我们版本选择21的版本。
+
+安装步骤
+==================================================
+
+从这个页面  `paper download <https://papermc.io/downloads/paper >`_  选择对应的版本下载，我们选择1.21.7版本。
+
+.. code-block:: bash
+
+    # 创建一个主城（login)文件夹
+    mkdir login
+    # 进入目录
+    cd login/
+    # 将下载好的paper核心移动到这个目录
+    cp ~/paper-1.21.7.jar  .
+    # 或者自己服务器上面下载,链接从paper官网上面获取
+    # wget https://fill-data.papermc.io/v1/objects/9adbd99ce7b42c9f0cb205686d83f0208a93fa6d215bb28196e12d0aaf49c2d8/paper-1.21.7-17.jar
+    # 确认文件移动过来了
+    ls -l
+    # 第一次尝试启动下
+    java -jar paper-1.21.7.jar
+    # 修改eula文件，遵守协议
+    sed -i  's@eula=false@eula=true@g' eula.txt
+    # 确认文件修改完毕
+    cat eula.txt
+    # 在此尝试启动下
+    java -jar paper-1.21.7.jar
+    # 看下默认的配置主配置文件
+    cat server.properties
+    # 这里按照我们规划的端口，进行修改端口
+    # 这里按照我们
+    sed -i 's@server-port=25565@server-port=10000@g' server.properties
+    # 修改服务器为离线服务器，你要开正版的话，就不需要改这个了。
+    sed -i 's@online-mode=true@online-mode=false@g' server.properties
+    # 尝试再次启动
+    java -jar paper-1.21.7.jar
+
+
+联机测试下
+==================================================
+这个我们需要打开一个启动期，然后版本选择1.21.7的版本，然后链接到具体的ip:10000端口上来， 看看是否可以正常链接。
+如果可以正常链接，进入世界，那么就说明我们的登录区安装成功了。
+
+.. warning:: 这里我们登录区，暂时还没有配置任何登录相关的插件，后续会完善，不在这个文档里面继续说明。
+
+    
+
+
+
+
+
+
 
 
 
