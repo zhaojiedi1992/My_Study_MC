@@ -1,0 +1,64 @@
+.. _核心端选择:
+
+==================================================
+核心端的选择
+==================================================
+
+.. note::  这里介绍的都是服务端的，非客户端，如果你不是腐竹，请不要看这里。
+
+市面上的核心端还是比较多的。这里简单列举几个比较知名的。
+
+官方核心
+==================================================
+Minecraft Server 是 Mojang 官方制作的原版服务端，更新非常快，基本上和 Minecraft 客户端版本同时发布，不能安装任何 Mod 和插件，只能够使用原版的命令和物品，适合基友服联机使用。
+
+下载地址： https://www.minecraft.net/en-us/download/server
+
+Paper核心
+==================================================
+Spigot 的进一步优化版本，在相关算法方面，较 Spigot 有所提高，优化 TPS 等，支持 CraftBukkit 和 Spigot 插件，API 没有太大修改。
+
+核心下载地址：`paper <https://papermc.io/downloads>`_ 
+
+插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+
+CatServer
+==================================================
+CatServer是1.12.2的Forge+Bukkit+Spigot服务端核心,国内最早开发的高版本核心, 支持大部分MOD和插件同时稳定运行。
+核心下载地址： `catserver <https://catmc.org/>`_
+
+插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+
+mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
+
+Bedrock Server
+==================================================
+Bedrock 是 Minecraft PE 基岩版，也叫携带版或手机版，Bedrock Server 是 Mojang 官方提供的服务端。
+
+Bedrock Server 不能安装插件，只能用于纯净游戏联机使用。支持多平台联机。
+
+核心下载地址：`bedrock <https://www.minecraft.net/en-us/download/server/bedrock>`_
+
+Sponge Forge
+==================================================
+Sponge 是一个全新的服务端，支持 Sponge 的专用插件，可装 Mod，兼容性比 Cauldron 相比提高了不少，适合开 MOD 服，支持的版本非常高，是目前支持 MOD 的服务端里兼容版本最高的服务端。
+但是 Sponge 本身不支持 Bukkit 插件（即使有兼容层，效果也不是很好，只能支持一般的插件），需要服务器的配置比较高，启动速度不佳。
+
+核心下载地址： `sponge <https://spongepowered.org/downloads/spongeforge>`_
+
+mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
+
+核心对比
+==================================================
+MC常见核心端对比
+================    
+
+.. csv-table::
+   :header: "核心名字", "适合场景"
+   :widths: 20, 40
+
+   "官方核心", "10人以下联机；不需要插件，mod的"
+   "Paper", "百人或者几十人场景联机；追求性能，比较推荐"
+   "CatServer", "同时使用mod和插件的"
+   "Bedrock Server", "官方基岩，不需要插件，mod的"
+   "Sponge Forge", "mod服重度推荐"

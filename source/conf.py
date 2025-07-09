@@ -6,10 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'My_Study_MC'
+project = '熊猫乐园'
 copyright = '2025, zhaojiedi1992@outlook.com'
 author = 'zhaojiedi1992@outlook.com'
 release = 'v1.0.0'
+language = 'zh_CN'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -31,6 +32,7 @@ exclude_patterns = []
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 templates_path = ['_templates']
+html_css_files = ['custom.css']
 
 comments_config = {
    "utterances": {
@@ -42,13 +44,5 @@ comments_config = {
 }
 
 
-html_theme_options = {
-    'navigation_depth': 2,         # 控制导航层级
-    'includehidden': True,         # 显示隐藏页面
-    'titles_only': False,          # 是否仅显示标题
-    'collapse_navigation': False,  # 禁止自动折叠导航
-    'sticky_navigation': True,     # 固定导航栏
-    # 'display_version': True,       # 显示版本号（如果项目有版本）
-}
 
-html_css_files = ['custom.css']
+

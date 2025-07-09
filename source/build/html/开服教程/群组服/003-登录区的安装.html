@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.2.4. 登录区的安装 &mdash; My_Study_MC v1.0.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=152235b0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=12f31cd9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "zhaojiedi1992/My_Study_MC");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section,section");
+    if (sections !== null && sections.length > 0) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2. 游玩教程" href="../../%E6%B8%B8%E7%8E%A9%E6%95%99%E7%A8%8B/index.html" />
+    <link rel="prev" title="1.2.3. 核心端的选择" href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            My_Study_MC
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">熊猫乐园</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. 开服教程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../%E5%8D%95%E6%9C%BA%E6%9C%8D/index.html">1.1. 单机服</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.2. 群组服</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="000-%E5%BC%80%E6%9C%8D%E7%AE%80%E4%BB%8B.html">1.2.1. 写在前面的话</a></li>
+<li class="toctree-l3"><a class="reference internal" href="001-%E4%BB%A3%E7%90%86%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html">1.2.2. 核心代理端的选择</a></li>
+<li class="toctree-l3"><a class="reference internal" href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html">1.2.3. 核心端的选择</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.2.4. 登录区的安装</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">1.2.4.1. 前置工作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">1.2.4.2. 安装步骤</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">1.2.4.3. 联机测试下</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%B8%B8%E7%8E%A9%E6%95%99%E7%A8%8B/index.html">2. 游玩教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%85%B3%E4%BA%8E%E6%88%91%E4%BB%AC/index.html">3. 捐赠支持</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">My_Study_MC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">1. </span>开服教程</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">1.2. </span>群组服</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1.2.4. </span>登录区的安装</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/开服教程/群组服/003-登录区的安装.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">1.2.4. </span>登录区的安装<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>这个部分主要说明下如何通过paper的安装包来安装好登录分区。</p>
+<section id="id2">
+<h2><span class="section-number">1.2.4.1. </span>前置工作<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>截止我写这篇文章的时候，paper的最新版本是1.21.7的版本， 我们就使用这个版本来进行安装。 你可以在官网上下载最新的版本。
+下载地址：<a class="reference external" href="https://papermc.io/downloads">paper</a></p>
+<p>在安装前需要你参考 <a class="reference internal" href="../../%E5%85%AC%E5%85%B1%E9%83%A8%E5%88%86/%E9%80%89%E6%8B%A9%E5%AE%89%E8%A3%85java.html#java"><span class="std std-ref">选择安装JAVA</span></a> 来安装好java环境，我们版本选择21的版本。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">1.2.4.2. </span>安装步骤<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>从这个页面  <a class="reference external" href="https://papermc.io/downloads/paper">paper download</a>  选择对应的版本下载，我们选择1.21.7版本。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建一个主城（login)文件夹</span>
+mkdir<span class="w"> </span>login
+<span class="c1"># 进入目录</span>
+<span class="nb">cd</span><span class="w"> </span>login/
+<span class="c1"># 将下载好的paper核心移动到这个目录</span>
+cp<span class="w"> </span>~/paper-1.21.7.jar<span class="w">  </span>.
+<span class="c1"># 或者自己服务器上面下载,链接从paper官网上面获取</span>
+<span class="c1"># wget https://fill-data.papermc.io/v1/objects/9adbd99ce7b42c9f0cb205686d83f0208a93fa6d215bb28196e12d0aaf49c2d8/paper-1.21.7-17.jar</span>
+<span class="c1"># 确认文件移动过来了</span>
+ls<span class="w"> </span>-l
+<span class="c1"># 第一次尝试启动下</span>
+java<span class="w"> </span>-jar<span class="w"> </span>paper-1.21.7.jar
+<span class="c1"># 修改eula文件，遵守协议</span>
+sed<span class="w"> </span>-i<span class="w">  </span><span class="s1">&#39;s@eula=false@eula=true@g&#39;</span><span class="w"> </span>eula.txt
+<span class="c1"># 确认文件修改完毕</span>
+cat<span class="w"> </span>eula.txt
+<span class="c1"># 在此尝试启动下</span>
+java<span class="w"> </span>-jar<span class="w"> </span>paper-1.21.7.jar
+<span class="c1"># 看下默认的配置主配置文件</span>
+cat<span class="w"> </span>server.properties
+<span class="c1"># 这里按照我们规划的端口，进行修改端口</span>
+<span class="c1"># 这里按照我们</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s@server-port=25565@server-port=10000@g&#39;</span><span class="w"> </span>server.properties
+<span class="c1"># 修改服务器为离线服务器，你要开正版的话，就不需要改这个了。</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s@online-mode=true@online-mode=false@g&#39;</span><span class="w"> </span>server.properties
+<span class="c1"># 尝试再次启动</span>
+java<span class="w"> </span>-jar<span class="w"> </span>paper-1.21.7.jar
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">1.2.4.3. </span>联机测试下<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>这个我们需要打开一个启动器，然后版本选择1.21.7的版本，然后链接到具体的ip:10000端口上来， 看看是否可以正常链接。
+如果可以正常链接，进入世界，那么就说明我们的登录区安装成功了。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>这里我们登录区，暂时还没有配置任何登录相关的插件，后续会完善，不在这个文档里面继续说明。</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html" class="btn btn-neutral float-left" title="1.2.3. 核心端的选择" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../%E6%B8%B8%E7%8E%A9%E6%95%99%E7%A8%8B/index.html" class="btn btn-neutral float-right" title="2. 游玩教程" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, zhaojiedi1992@outlook.com。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

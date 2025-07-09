@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.2.2. 核心代理端的选择 &mdash; My_Study_MC v1.0.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=152235b0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=12f31cd9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "zhaojiedi1992/My_Study_MC");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section,section");
+    if (sections !== null && sections.length > 0) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="1.2.3. 核心端的选择" href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html" />
+    <link rel="prev" title="1.2.1. 写在前面的话" href="000-%E5%BC%80%E6%9C%8D%E7%AE%80%E4%BB%8B.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            My_Study_MC
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">熊猫乐园</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. 开服教程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../%E5%8D%95%E6%9C%BA%E6%9C%8D/index.html">1.1. 单机服</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.2. 群组服</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="000-%E5%BC%80%E6%9C%8D%E7%AE%80%E4%BB%8B.html">1.2.1. 写在前面的话</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.2.2. 核心代理端的选择</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bungeecord">1.2.2.1. BungeeCord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#velocity">1.2.2.2. Velocity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#waterfall">1.2.2.3. Waterfall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minecraft-gateway">1.2.2.4. Minecraft Gateway</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">1.2.2.5. 代理端对比</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html">1.2.3. 核心端的选择</a></li>
+<li class="toctree-l3"><a class="reference internal" href="003-%E7%99%BB%E5%BD%95%E5%8C%BA%E7%9A%84%E5%AE%89%E8%A3%85.html">1.2.4. 登录区的安装</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%B8%B8%E7%8E%A9%E6%95%99%E7%A8%8B/index.html">2. 游玩教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%85%B3%E4%BA%8E%E6%88%91%E4%BB%AC/index.html">3. 捐赠支持</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">My_Study_MC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">1. </span>开服教程</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">1.2. </span>群组服</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1.2.2. </span>核心代理端的选择</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/开服教程/群组服/001-代理端的选择.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<span id="id2"></span><h1><span class="section-number">1.2.2. </span>核心代理端的选择<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>代理端用于分流玩家连接、跨服传送或实现BungeeCord网络，如果你是小型单服可跳过本节。</p>
+</div>
+<section id="bungeecord">
+<h2><span class="section-number">1.2.2.1. </span>BungeeCord<a class="headerlink" href="#bungeecord" title="Link to this heading"></a></h2>
+<p>官方开发的轻量级代理核心，基础功能完善但性能有限。适合小型跨服网络。</p>
+<p>特点:</p>
+<ul class="simple">
+<li><p>支持服务器分组和自动平衡</p></li>
+<li><p>基础IP封禁和权限管理</p></li>
+<li><p>需要通过插件实现高级功能</p></li>
+</ul>
+<p>下载地址：<a class="reference external" href="https://ci.md-5.net/job/BungeeCord/">BungeeCord</a></p>
+</section>
+<section id="velocity">
+<h2><span class="section-number">1.2.2.2. </span>Velocity<a class="headerlink" href="#velocity" title="Link to this heading"></a></h2>
+<p>Paper团队开发的现代代理端，性能比BungeeCord提升300%，推荐新服使用。</p>
+<p>优势:</p>
+<ul class="simple">
+<li><p>原生支持Paper/Bukkit消息通道</p></li>
+<li><p>内置更安全的IP转发机制</p></li>
+</ul>
+<p>下载地址：<a class="reference external" href="https://papermc.io/downloads#Velocity">Velocity</a></p>
+</section>
+<section id="waterfall">
+<h2><span class="section-number">1.2.2.3. </span>Waterfall<a class="headerlink" href="#waterfall" title="Link to this heading"></a></h2>
+<p>BungeeCord的优化分支，修复了原版的性能问题和内存泄漏。</p>
+<p>适用场景：</p>
+<ul class="simple">
+<li><p>需要运行BungeeCord插件</p></li>
+<li><p>中等规模玩家网络(200-500人)</p></li>
+<li><p>无法升级到Velocity的旧环境</p></li>
+</ul>
+<p>下载地址：<a class="reference external" href="https://papermc.io/downloads#Waterfall">Waterfall</a></p>
+</section>
+<section id="minecraft-gateway">
+<h2><span class="section-number">1.2.2.4. </span>Minecraft Gateway<a class="headerlink" href="#minecraft-gateway" title="Link to this heading"></a></h2>
+<p>微软官方提供的Bedrock版代理方案，用于连接不同平台的基岩版服务器。</p>
+<p>功能限制：
+- 仅支持基岩版客户端
+- 需要配合Azure网络服务使用
+- 不支持插件扩展</p>
+<p>参考文档：<a class="reference external" href="https://learn.microsoft.com/en-us/minecraft/creator/documents/gameadapter">官方网关</a></p>
+</section>
+<section id="id7">
+<h2><span class="section-number">1.2.2.5. </span>代理端对比<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">代理端核心对比</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 23.1%" />
+<col style="width: 30.8%" />
+<col style="width: 46.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>代理端</p></th>
+<th class="head"><p>推荐规模</p></th>
+<th class="head"><p>关键特性</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BungeeCord</p></td>
+<td><p>50人以下</p></td>
+<td><p>基础功能/兼容旧插件</p></td>
+</tr>
+<tr class="row-odd"><td><p>Velocity</p></td>
+<td><p>无上限</p></td>
+<td><p>最高性能/现代架构</p></td>
+</tr>
+<tr class="row-even"><td><p>Waterfall</p></td>
+<td><p>50-500人</p></td>
+<td><p>平衡升级/修复内存泄漏</p></td>
+</tr>
+<tr class="row-odd"><td><p>Minecraft Gateway</p></td>
+<td><p>基岩版专用</p></td>
+<td><p>官方解决方案</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="000-%E5%BC%80%E6%9C%8D%E7%AE%80%E4%BB%8B.html" class="btn btn-neutral float-left" title="1.2.1. 写在前面的话" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="002-%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E9%80%89%E6%8B%A9.html" class="btn btn-neutral float-right" title="1.2.3. 核心端的选择" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, zhaojiedi1992@outlook.com。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

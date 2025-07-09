@@ -1,0 +1,76 @@
+.. _数据库的安装:
+
+==================================================
+数据库的安装
+==================================================
+我们的MC开服，是需要存储一些数据的， 比如玩家背包数据， 玩家在线数据， 玩家世界数据等。 这些数据都是需要存储在数据库中的。这里我们选择主流的mysql来进行部署。
+
+版本选择
+==================================================
+我们建议的版本是 MariaDB 10.11.x（长期支持版）版本的， 可以从下面的官方链接获取对应的包。  不要下载太新的版本，后面的插件可能会不兼容。
+
+`mariadb download <https://mariadb.org/download/>`_
+
+centos上安装 mariadb server 
+==================================================
+
+.. code-block:: bash 
+
+    # 安装数据库软件
+    yum search mariadb-server 
+    yum install mariadb-server mariadb 
+    # 创建基本目录和授权
+    # mkdir /home/mc/mysql/
+    # chown mysql:mysql -R /home/mc/mysql
+    # 这里有需要的话，可以修改下配置文件，修改下数据库数据文件存放目录和最大连接数。 
+
+    cat /etc/my.cnf.d/mariadb-server.cnf 
+    [mysqld] 
+    datadir=/home/mc/mysql/data 
+    socket=/home/mc/mysql/mysql.sock 
+    log-error=/home/mc/mysql/mariadb.log 
+    pid-file=/home/mc/mysql/mariadb.pid 
+    max_connections=10000 
+    # 设置数据库开机启动 
+    systemctl enable mariadb 
+    # 启动数据库 
+    systemctl start mariadb 
+    # 查看启动状态 
+    systemctl status mariadb
+
+
+windows上安装 mariadb server 
+==================================================
+从这个地方下载安装即可。
+
+`mariadb download <https://mariadb.org/download/>`_
+
+账户配置
+==================================================
+
+.. code-block:: sql 
+
+    -- 需要你在服务器的终端来执行的，输入mysql进入mysql的终端，然后执行如下sql语句
+
+    CREATE USER 'mc'@'127.0.0.1' IDENTIFIED BY 'mc_tech_by_panda';
+    GRANT ALL ON *.* TO 'mc'@'127.0.0.1';
+
+工具测试链接
+==================================================
+
+--------------------------------------------------
+工具下载
+--------------------------------------------------
+
+工具一般是下载我们本地电脑上面的， 使用这个工具来管理我们远端的数据库的。
+
+`datagrip下载 <https://www.jetbrains.com.cn/datagrip>`_ 
+
+--------------------------------------------------
+链接到DB测试
+--------------------------------------------------
+
+
+
+
+
