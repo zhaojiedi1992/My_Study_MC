@@ -72,5 +72,18 @@ windows上安装 mariadb server
 
 
 
+附录
+==================================================
 
+.. csv-table:: MariaDB 与 MySQL 核心特性对比
+   :header: "特性", "MySQL", "MariaDB"
+   :widths: 20, 40, 40
+   :align: left
 
+   "开源模式", "Oracle 主导，部分闭源组件", "完全开源（GPL/LGPL）"
+   "存储引擎", "InnoDB（默认）、MyISAM 等", "InnoDB、Aria（MariaDB 自研）"
+   "默认字符集", "5.7 及以前为 latin1，8.0 起为 utf8mb4", "始终默认 utf8mb4"
+   "备份工具", "mysqldump、mysqlpump", "mysqldump、mariabackup（更高效）"
+   "性能监控", "基础工具", "更丰富的监控插件（如 Query Profiler）"
+   "集群方案", "MySQL Cluster、InnoDB Cluster", "Galera Cluster（原生多主复制）"
+   "长期支持", "Oracle 官方支持至 2028（MySQL 8.0）", "社区支持至 2031（MariaDB 10.11）"
