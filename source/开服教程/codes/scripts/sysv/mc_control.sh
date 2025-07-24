@@ -13,7 +13,7 @@ log_file=$mc_instance_dir/$name/nohup.log
 
 jar_name=" $name.jar"
 
-# 这里配置要根据你的规划端口来， 
+# 这里配置要根据你的规划端口来对齐。
 #    "代理端口", "proxy", "25565", "无"
 #    "主城区/登录区", "login", "10000", "11000"
 #    "地皮1区", "dp1", "20001", "21001"
@@ -60,9 +60,9 @@ status(){
 start() {
 	cd $base_dir
 	echo "$base_dir"
-	if [ "X$name" == "Xs5" ] ; then
-		cd server
-	fi
+	# if [ "X$name" == "Xs5" ] ; then
+	# 	cd server
+	# fi
 	nohup ${java_cmd} $(get_jvm $name) -jar $name.jar --nogui >>${log_file} 2>>${log_file} &
 }
 
@@ -74,6 +74,10 @@ stop() {
 		return
 	fi
 	if [ X$name == X"bc" ] ; then 
+		stop_kill
+		return 
+	fi
+    if [ X$name == X"proxy" ] ; then 
 		stop_kill
 		return 
 	fi

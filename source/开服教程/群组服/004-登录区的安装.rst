@@ -32,27 +32,29 @@
     # wget https://fill-data.papermc.io/v1/objects/9adbd99ce7b42c9f0cb205686d83f0208a93fa6d215bb28196e12d0aaf49c2d8/paper-1.21.7-17.jar
     # 确认文件移动过来了
     ls -l
-    mv paper-1.21.6-48.jar  paper-login.jar
+    # 修改名字为你的分区名字，登录分区为login， 生存一区为sc1, 生存2区位sc2, 地皮一区为dp1 ，详细的请参考文章前面的规划端口名称部分。
+    mv paper-1.21.6-48.jar  login.jar
     # 第一次尝试启动下
-    java -jar paper-login.jar
+    java -jar login.jar
     # 修改eula文件，遵守协议
     sed -i  's@eula=false@eula=true@g' eula.txt
     # 确认文件修改完毕
     cat eula.txt
     # 在此尝试启动下
-    java -jar paper-login.jar
+    java -jar login.jar
 
     # 启动后， 会有一个闪动，等待你的输入，我们这里不做输入， 直接ctrl +C 关闭。 
 
     # 看下默认的配置主配置文件
     cat server.properties
     # 这里按照我们规划的端口，进行修改端口
-    # 这里按照我们
     sed -i 's@server-port=25565@server-port=10000@g' server.properties
+    sed -i 's@query.port=25565@query.port=10000@g' server.properties
+    sed -i 's@rcon.port=25575@rcon.port=11000@g' server.properties
     # 修改服务器为离线服务器，你要开正版的话，就不需要改这个了。
     sed -i 's@online-mode=true@online-mode=false@g' server.properties
     # 尝试再次启动
-    java -jar paper-login.jar
+    java -jar login.jar
 
 
 联机测试下
