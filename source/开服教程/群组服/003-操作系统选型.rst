@@ -1,0 +1,110 @@
+.. _操作系统的选型和安装:
+
+==================================================
+操作系统的选型和安装
+==================================================
+操作系统一般服务器环境都是linux的， 比如centos、debian 等。 不过centos已经停止维护，建议使用其他发行版，我这里是选择的debian环境。
+
+操作系统安装
+==================================================
+这个debian系统安装，建议最小化安装， 只安装ssh服务先，其他的先不用安装。 这样可以减少系统的负担， 也可以减少安全隐患。
+
+.. code-block:: bash 
+
+    # 这里需要终端来操作的， 这里还没有ssh服务，没法远程的。 
+    # 这里是安装ssh服务
+    apt install openssh-server -y
+    # 启动ssh服务
+    systemctl start ssh
+    # 设置开机自启
+    systemctl enable ssh
+
+
+.. code-block:: bash 
+
+    vim /etc/sudoers 
+    # 在文件的最后添加一行, 含义是zhaojiedi执行sudo的时候无需密码可以执行任何命令。 
+    zhaojiedi ALL=(ALL) NOPASSWD: ALL
+
+
+.. warning::  这里建议将用户将一个普通用户添加到sudo里面，不建议root直接远程操作，降低安全风险。
+
+
+
+
+
+
+
+关闭selinux
+==================================================
+注意，debian系统是默认没有安装selinux的，也就不涉及关闭selinux的事情。 
+如果你是其他的系统，可能需要关闭下， 关闭步骤如下。 
+
+
+.. code-block:: bash
+
+    zhaojiedi@mc:~$ sestatus
+    -bash: sestatus: 未找到命令
+
+    # 关闭selinux 
+    setenforce 0
+    # 永久关闭selinux
+    sed -i 's@^SELINUX=enforcing@SELINUX=disabled@g'
+    # 重启服务器
+    reboot
+
+远程链接配置
+==================================================
+远程链接工具比较多，xshell、putty 等等， 这里我使用的是mac机器的item2， 远程链接基本都是一样的， 只需要输入服务器的ip地址和端口号就可以了。
+
+
+
+准备单独存储盘
+==================================================
+
+.. code-block:: bash 
+
+    # 详细操作参考 https://www.cnblogs.com/zhaojiedi1992/p/zhaojiedi_linux_042_lvm.html
+    
+    # 底层的盘，创建pv 
+    pvcreate /dev/nvme0n2
+    # 创建vg 
+    vgcreate mcdata /dev/nvme0n2
+    # 创建LV
+    lvcreate -L 59G -n lv_mcdata mcdata
+    # 创建存储目录
+    mkdir /home/mc
+
+    # 挂载存储目录
+    mount /dev/mcdata/lv_mcdata /home/mc
+    mkfs.ext4 /dev/mcdata/lv_mcdata
+    mount /dev/mcdata/lv_mcdata /home/mc
+
+    # 永久挂载
+    echo "/dev/mcdata/lv_mcdata /home/mc ext4 defaults 0 0" >> /etc/fstab
+    # 查看挂载情况
+    reboot 
+    df -h 
+
+
+软件仓库使用清华源
+==================================================
+
+.. code-block:: bash 
+
+    cat > /etc/apt/sources.list << EOF
+    deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
+    deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
+
+    deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
+    deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
+
+    deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
+    deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
+
+    deb https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware
+    deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware
+    EOF
+
+    # 更新软件源
+    apt update -y

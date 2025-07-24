@@ -87,6 +87,29 @@ Windows安装Java
 
 
 --------------------------------------------------
+debian安装Java
+--------------------------------------------------
+refer : https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html
+
+.. code-block:: bash 
+
+      cd /home/mc/softs/
+      # 这个地方找https://github.com/corretto/corretto-21/releases , 选择deb结尾的就是debian的， 如果是amd64是intel的， 如果是arm64是arm的。
+      wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
+      echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
+      # 验证安装
+      java -version
+      # 如果版本不对，请检查是否安装了多个Java版本
+      # 列出所有Java版本
+      update-alternatives --config java
+      # 选择Java 21作为默认版本
+      update-alternatives --set java /usr/lib/jvm/java-21-amazon-corretto/bin/java
+
+
+
+
+
+--------------------------------------------------
 其他环境安装Java
 --------------------------------------------------
 请参考 `java install  <https://docs.papermc.io/misc/java-install/>`_ 
