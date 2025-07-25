@@ -1,11 +1,11 @@
 #!/bin/bash
 # chkconfig: 2345 20 80
-. /etc/init.d/functions
+#. /etc/init.d/functions
 name=$(echo "$(basename $0)" |sed 's@mc_@@g')
 echo "mc=$name"
 
 host=127.0.0.1
-rcon_code=panda142857
+rcon_code=mc_panda_142857
 mcrcon_cmd="/home/mc/mcrcon/mcrcon"
 java_cmd="/usr/bin/java"
 mc_instance_dir="/home/mc/instances"
@@ -60,10 +60,11 @@ status(){
 start() {
 	cd $base_dir
 	echo "$base_dir"
-	# if [ "X$name" == "Xs5" ] ; then
-	# 	cd server
-	# fi
-	nohup ${java_cmd} $(get_jvm $name) -jar $name.jar --nogui >>${log_file} 2>>${log_file} &
+	if [ "X$name" == "Xs5" ] ; then
+	    nohup ${java_cmd} $(get_jvm $name) -jar $name.jar --nogui >>${log_file} 2>>${log_file} &
+	else
+	    nohup ${java_cmd} $(get_jvm $name) -jar $name.jar  >>${log_file} 2>>${log_file} &
+	fi
 }
 
 stop() {
