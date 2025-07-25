@@ -36,8 +36,8 @@ get_jvm(){
 		bc)  echo " -Xms1G -Xmx1G ";;
 		login)  echo " -Xms1G -Xmx1G ";;
 		dp1)  echo " -Xms1G -Xmx1G ";;
-		sc1)  echo " -Xms2G -Xmx2G ";;
-		sc2)  echo " -Xms2G -Xmx2G ";;
+		sc1)  echo " -Xms1G -Xmx1G ";;
+		sc2)  echo " -Xms1G -Xmx1G ";;
 		*)  echo " -Xms1G -Xmx1G ";;
 	esac
 }
