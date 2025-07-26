@@ -17,26 +17,47 @@ centos上安装 mariadb server
 .. code-block:: bash 
 
     # 安装数据库软件
-    yum search mariadb-server 
-    yum install mariadb-server mariadb 
+    apt search mariadb-server 
+    # 我是debian的，获取到的是mariadb-server/stable 1:10.11版本，这个就可以的
+    apt install mariadb-server  
+
+    systemctl stop mariadb-server 
     # 创建基本目录和授权
-    # mkdir /home/mc/mysql/
-    # chown mysql:mysql -R /home/mc/mysql
+    mkdir /home/mc/mysql/data -pv 
+    mkdir /home/mc/mysql/tmp -pv 
+    chown mysql:mysql -R /home/mc/mysql
     # 这里有需要的话，可以修改下配置文件，修改下数据库数据文件存放目录和最大连接数。 
 
-    cat /etc/my.cnf.d/mariadb-server.cnf 
-    [mysqld] 
-    datadir=/home/mc/mysql/data 
-    socket=/home/mc/mysql/mysql.sock 
-    log-error=/home/mc/mysql/mariadb.log 
-    pid-file=/home/mc/mysql/mariadb.pid 
+    vim mariadb.conf.d/50-server.cnf
+    # 修改如下部分。
+    user                    = mysql
+    pid-file                = /home/mc/msql/mysqld.pid
+    basedir                 = /home/mc/mysql
+    datadir                 = /home/mc/mysql/data
+    tmpdir                  = /home/mc/mysql/tmp                                                                               
+    # 最大链接数
     max_connections=10000 
+
+    # 修改systemd文件
+    vim /etc/systemd/system/multi-user.target.wants/mariadb.service
+    # service补充
+    LimitNOFILE=65535 
+    # 修改
+    ProtectHome=false
+
+
     # 设置数据库开机启动 
     systemctl enable mariadb 
     # 启动数据库 
     systemctl start mariadb 
     # 查看启动状态 
     systemctl status mariadb
+
+    # 查看文件
+    root@mc:/etc/mysql/mariadb.conf.d# ls /home/mc/mysql/data/
+    aria_log.00000001  ddl_recovery.log   ib_buffer_pool  ibdata1  multi-master.info  mysql_upgrade_info  sys
+    aria_log_control   debian-10.11.flag  ib_logfile0     ibtmp1   mysql		  performance_schema
+
 
 
 windows上安装 mariadb server 
@@ -47,13 +68,19 @@ windows上安装 mariadb server
 
 账户配置
 ==================================================
+这里创建的账户是mc用户名的， 密码设置一个， 设置的host只能本机登录，  我们后面的远程方案是通过db工具，优先ssh到服务器，然后通过服务器本机连接到db。
+降低将db的3306端口暴露给公网的危险性。 
 
 .. code-block:: sql 
 
     -- 需要你在服务器的终端来执行的，输入mysql进入mysql的终端，然后执行如下sql语句
 
-    CREATE USER 'mc'@'127.0.0.1' IDENTIFIED BY 'mc_tech_by_panda';
+    -- 创建一个用户
+    CREATE USER 'mc'@'127.0.0.1' IDENTIFIED BY 'mc_panda_142857';
+    -- 授权下
     GRANT ALL ON *.* TO 'mc'@'127.0.0.1';
+    -- 刷新权限
+    flush privileges;
 
 工具测试链接
 ==================================================
@@ -64,12 +91,28 @@ windows上安装 mariadb server
 
 工具一般是下载我们本地电脑上面的， 使用这个工具来管理我们远端的数据库的。
 
-`datagrip下载 <https://www.jetbrains.com.cn/datagrip>`_ 
+- `dbeaver下载 [免费开源的，推荐的] <https://dbeaver.io/download/>`_ 
+- `datagrip下载 [收费的] <https://www.jetbrains.com.cn/datagrip>`_ 
 
 --------------------------------------------------
 链接到DB测试
 --------------------------------------------------
+.. image:: ./imgs/db01.jpg 
 
+.. image:: ./imgs/db02.jpg 
+
+.. image:: ./imgs/db03.jpg 
+
+.. image:: ./imgs/db04.jpg 
+
+.. image:: ./imgs/db05.jpg 
+
+.. image:: ./imgs/db06.jpg 
+    
+.. code-block:: sql 
+
+    --  创建一个db, 方便luckperm权限插件使用的。 
+    CREATE DATABASE d_luckperms CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 附录
