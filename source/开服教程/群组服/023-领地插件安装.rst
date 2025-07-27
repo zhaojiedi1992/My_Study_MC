@@ -12,6 +12,9 @@
 下载 `dominion download <https://hangar.papermc.io/zhangyuheng/Dominion>`_ ，然后放到dl1 dp1 dp2 的plugin目录即可。
 
 
+.. note::  注意这个领地插件，不需要再地皮区域部署的。
+
+
 创建db
 ==================================================
 .. code-block:: bash 
@@ -24,6 +27,7 @@
 
 .. code-block:: bash 
 
+    # refre : https://dominion.lunadeer.cn/notes/doc/owner/other/multi-server/ 其中server_id 我们设置为分区对应的端口号，避免冲突。
     root@mc:/home/mc/instances/dl1/plugins/Dominion# diff config.yml config.yml.default
     12c12
     <   type: mysql
@@ -45,6 +49,18 @@
     <   password: mc_panda_142857
     ---
     >   password: dominion
+    31c31
+    <   enable: true
+    ---
+    >   enable: false
+    34c34
+    <   server-name: dl1
+    ---
+    >   server-name: server
+    38c38
+    <   server-id: 10001
+    ---
+    >   server-id: 1
     40c40
     < language: zh_cn
     ---

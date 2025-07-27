@@ -1,24 +1,59 @@
+
 open_command: cmd
-
-size: 9
-
-menu_title: '熊猫乐园主菜单'
+size: 54
+menu_title: '主菜单'
+register_command: true
 sweet: true
-
+open_with_shortcut: "SHIFT+h"  # 关键！设置全局快捷键
 items:
   'server_dl1':
-    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyNzIzYWEwNjM3ZWE1MjA0NDQ3YmU1MzYxNTFmNTI5ZmU0OTA2ODI2ZDhjMDY2YzRkY2M1MDA3OWE2NDQ2NSJ9fX0='
-    data: 1
-    slot: 0
-    display_name: "dl1"
-    # This is the lore setting. Reference of this same with display_name.
-    # You can create multiple lines of lore like this
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyNzIzYWEwNjM3ZWE1MjA0NDQ3YmU1MzYxNTFmNTI5ZmU0OTA2ODI2ZDhjMDY2YzRkY2M1MDA3OWE2NDQ2NSJ9fX0='
     lore: 
-    - '小名: 登录分区1'
+    - '小名: 登录1区'
     - '大名: dl1'
     - '说明: 我来腐竹家看看'
     - '指令: /server dl1'
-    click_commands:
-    - '[player] server dl1'
-    
+    data: 1
+    slot: 4
+    display_name: "dl1"
+    click_commands: 
+    - '[connect] dl1'
+  'server_dp1':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzc1YzUxN2IwMDgxOTFmMjc0NmJjZDQ4NzZhODlkMjJmNWZjYmZlNDQzMDFhNDk2YTM0MGVmOGQ0ZjIyNzRlYyJ9fX0='
+    lore: 
+    - '小名: 地皮1区'
+    - '大名: dp1'
+    - '说明: 嘿嘿嘿,我白嫖'
+    - '指令: /server dp1'
+    data: 1
+    slot: 5
+    display_name: "dp1"
+    click_commands: 
+    - '[connect] dp1'
+  'server_sc1':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWZlMjRjNmY1MmRkYzA4MzU5Zjc5MjMwMWVjYTk2YWVjZjY2OTc5ZGM4OTljNDMyNDJkMjU4N2ViY2I3MGU2In19fQ=='
+    lore: 
+    - '小名: 生存一区'
+    - '大名: sc1'
+    - '说明: 圈地圈地'
+    - '指令: /server sc1'
+    data: 1
+    slot: 6
+    display_name: "sc1"
+    click_commands: 
+    - '[connect] sc1'
+  'server_sc2':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RhZWEzZTEzYTUxM2RhMTA1MWVhNTlkMTdlZGZiMDNlOGQ4Mzg4ZWRlODg4ODg0NzZkZmI2OTNmMmM4Mzk4In19fQ=='
+    name: 'sc2'
+    lore: 
+    - '小名: 生存2区'
+    - '大名: sc2'
+    - '说明: 圈地圈地'
+    - '指令: /server sc2'
+    data: 1
+    slot: 7
+    display_name: "sc2"
+    click_commands: 
+    - '[connect] sc2'
+
 

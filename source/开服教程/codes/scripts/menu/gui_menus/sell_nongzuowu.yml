@@ -1,0 +1,46 @@
+menu_title: '&6&l系统商店 &8> &a收购 &8> &e农作物'
+size: 9
+open_command: 'sell_nongzuowu'
+register_command: true
+items:
+  sell_item:
+    material: 'DIAMOND'
+    slot: 4
+    display_name: '&b&l钻石收购'
+    lore:
+    - '&7▏ &f单个价格: &e10元'
+    - '&7▏ &f一组价格: &e640元'
+    - ''
+    - '&a&l▎ 点击出售方式 ▎'
+    - '&8▪ &7左键 &8| &a出售1个'
+    - '&8▪ &7右键 &8| &a出售64个'
+    - '&8▪ &7Shift+左键 &8| &a出售全部'
+    left_click_commands:
+    - '[console] eco give %player_name% 10'
+    - '[console] clear %player_name% DIAMOND 1'
+    - '[message] &8[&6系统商店&8] &a成功出售 &f1个钻石 &a获得 &e10&a元'
+    - '[close]' 
+    right_click_commands:
+    - '[console] eco give %player_name% 640'
+    - '[console] clear %player_name% DIAMOND 64'
+    - '[message] &8[&6系统商店&8] &a成功出售 &f64个钻石 &a获得 &e640&a元'
+    - '[close]' 
+    shift_left_click_commands:
+    - '[meta] set cnt DOUBLE %checkitem_amount_mat:DIAMOND%'
+    - '[console] eco give %player_name% %math_10 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+    - '[console] clear %player_name% DIAMOND %deluxemenus_meta_cnt_DOUBLE_64%'
+    - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个钻石 &a获得 &e%math_10 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+    - '[close]' 
+    shift_right_click_commands:
+    - '[meta] set cnt DOUBLE %checkitem_amount_mat:DIAMOND%'
+    - '[console] eco give %player_name% %math_10 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+    - '[console] clear %player_name% DIAMOND %deluxemenus_meta_cnt_DOUBLE_64%'
+    - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个钻石 &a获得 &e%math_10 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+    - '[close]' 
+  cancel_item:
+    material: 'RED_STAINED_GLASS_PANE'
+    display_name: '&c&l取消出售'
+    lore:
+    - '&7▏ &f点击关闭菜单'
+    left_click_commands:
+    - '[close]'

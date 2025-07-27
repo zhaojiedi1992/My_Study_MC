@@ -33,11 +33,11 @@ get_rcon_port(){
 get_jvm(){
 	local area=$1
 	case $area in 
-		bc)  echo " -Xms1G -Xmx1G ";;
-		login)  echo " -Xms1G -Xmx1G ";;
-		dp1)  echo " -Xms1G -Xmx1G ";;
-		sc1)  echo " -Xms1G -Xmx1G ";;
-		sc2)  echo " -Xms1G -Xmx1G ";;
+		proxy)  echo " -Xms1G -Xmx1G ";;
+		login)  echo " -Xms1G -Xmx3G ";;
+		dp1)  echo " -Xms1G -Xmx3G ";;
+		sc1)  echo " -Xms1G -Xmx3G ";;
+		sc2)  echo " -Xms1G -Xmx3G ";;
 		*)  echo " -Xms1G -Xmx1G ";;
 	esac
 }
