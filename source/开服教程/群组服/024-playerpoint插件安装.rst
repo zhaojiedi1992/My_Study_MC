@@ -8,3 +8,13 @@ playerpoint插件安装
 从上面ci的链接获取最新的开发版本即可,需要Citizens2 + Denizen
 放到plugins目录，然后重启下。 
 
+
+创建数据库
+==================================================
+.. code-block:: sql 
+
+    CREATE DATABASE d_playerpoint CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+配置修改
+==================================================
+基本就是需要修改下数据库部分，其他的改动比较少。
