@@ -1,0 +1,59 @@
+==================================================
+领地插件安装
+==================================================
+领地插件是为了让用户可以圈地，保护自己的物品和区域的。 Residence是比较经典的， 历史包袱也比较多，这次我们使用的是Dominion
+
+
+- `dominion github  <https://github.com/LunaDeerMC/Dominion>`_ 
+- `dominion dock <https://dominion.lunadeer.cn/>`_ 
+
+安装
+==================================================
+下载 `dominion download <https://hangar.papermc.io/zhangyuheng/Dominion>`_ ，然后放到dl1 dp1 dp2 的plugin目录即可。
+
+
+创建db
+==================================================
+.. code-block:: bash 
+
+    CREATE DATABASE d_dominion CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+修改配置文件
+==================================================
+
+.. code-block:: bash 
+
+    root@mc:/home/mc/instances/dl1/plugins/Dominion# diff config.yml config.yml.default
+    12c12
+    <   type: mysql
+    ---
+    >   type: sqlite
+    14c14
+    <   host: 127.0.0.1
+    ---
+    >   host: localhost
+    18c18
+    <   database: d_dominion
+    ---
+    >   database: dominion
+    20c20
+    <   username: mc
+    ---
+    >   username: dominion
+    22c22
+    <   password: mc_panda_142857
+    ---
+    >   password: dominion
+    40c40
+    < language: zh_cn
+    ---
+    > language: en_us
+
+
+给登录区设置一个领地
+==================================================
+给登录区设置一个领地 直接进入游戏。 通过/dom create 就可以创建一个领地了，名字可以设置为分区的名字，比如dl1 就设置dl1就好。 
+
+
+

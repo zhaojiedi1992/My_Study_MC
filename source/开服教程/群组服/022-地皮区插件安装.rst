@@ -11,15 +11,19 @@
 
 这个插件是依赖worldedit 或者fast sync worldedit 的，建议你安装fast sync world edit 就好。
 
+.. note:: 注意了，这个是主需要在地皮区安装的，其他的去不用安装的。
+
+
 创建db
 ==================================================
 .. code-block:: bash 
 
-CREATE DATABASE d_plot_db CHARACTER SET utf8 COLLATE utf8_general_ci;
+    CREATE DATABASE d_plot_db CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 修改配置文件
 ==================================================
+
 
 .. code-block:: bash 
 
