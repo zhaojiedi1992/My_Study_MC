@@ -1,0 +1,99 @@
+==================================================
+登录基础插件的安装
+==================================================
+
+.. csv-table:: Minecraft认证插件对比
+   :header: "插件名称", "经典程度", "免费", "GUI界面", "配置灵活性", "代理支持", "多平台兼容", "备注"
+   :widths: 15, 10, 8, 10, 12, 12, 12, 21
+
+   "AuthMe Reloaded (5.X)", "高", "是", "否", "高", "否", "是", "老牌经典，功能全面，社区支持完善"
+   "xAuth", "中", "是", "否", "中", "否", "是", "轻量级，适合小型服务器"
+   "CrazyLogin", "中", "是", "否", "中", "否", "是", "支持IP登录记忆，降低重复登录"
+   "LoginSecurity", "中", "是", "否", "中", "否", "是", "侧重安全功能，如2FA、IP绑定"
+   "AdvancedLogin (Paid)", "中", "否", "是", "高", "否", "是", "商业插件，功能丰富，GUI界面友好"
+   "UltraAuth", "中", "是", "否", "中", "否", "是", "支持多种认证方式，配置较简单"
+   "BungeeAuth", "低", "是", "否", "中", "是", "否", "专为BungeeCord/Waterfall设计的代理端插件"
+   "AuthMeVelocity", "低", "是", "否", "中", "是", "否", "Velocity代理服务器的AuthMe分支"
+   "PremiumAuth", "中", "是", "否", "低", "否", "是", "针对正版用户的轻量级认证"
+   "SecureLogin", "低", "是", "否", "中", "否", "是", "支持会话记忆和多因素认证"
+   "LoginX", "低", "是", "否", "中", "否", "是", "功能全面，配置简单"
+
+我们选择authmereload方案。 
+
+创建数据库
+
+.. code-block:: sql 
+
+    create database  d_authme CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+安装
+==================================================
+
+`authmereload 下载 <https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0/AuthMe-5.6.0.jar>`_ 
+
+
+.. code-block:: bash 
+
+    # 下载
+    wget https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0/AuthMe-5.6.0.jar
+    # 放到login分区的plugins目录，然后重启， 修改配置文件如下。 
+    root@mc:/home/mc/instances/login/plugins/AuthMe# diff config.yml config.yml.default
+    4c4
+    <     backend: MARIADB
+    ---
+    >     backend: SQLITE
+    13c13
+    <     mySQLUseSSL: false
+    ---
+    >     mySQLUseSSL: true
+    22c22
+    <     mySQLUsername: mc
+    ---
+    >     mySQLUsername: authme
+    24c24
+    <     mySQLPassword: 'mc_panda_142857'
+    ---
+    >     mySQLPassword: '12345'
+    26c26
+    <     mySQLDatabase: d_authme
+    ---
+    >     mySQLDatabase: authme
+    70c70
+    <     poolSize: 100
+    ---
+    >     poolSize: 10
+    107c107
+    <         enabled: true
+    ---
+    >         enabled: false
+    110c110
+    <         timeout: 1800
+    ---
+    >         timeout: 10
+    113c113
+    <     messagesLanguage: zhcn
+    ---
+    >     messagesLanguage: en
+    124c124
+    <     serverName: Your Minecraft Server
+    ---
+    >     serverName: Your Minecraft Server
+    304c304
+    <     useWelcomeMessage: false
+    ---
+    >     useWelcomeMessage: true
+
+
+
+    # 复制到其他的分区
+    cp -r AuthMe* /home/mc/instances/dp1/plugins/
+    cp -r AuthMe* /home/mc/instances/sc1/plugins/
+    cp -r AuthMe* /home/mc/instances/sc2/plugins/
+
+    # 重启几个分区
+    systemctl restart mc_dp1 mc_sc1 mc_sc2 
+
+
+
+    

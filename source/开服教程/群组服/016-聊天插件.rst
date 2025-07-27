@@ -1,0 +1,97 @@
+==================================================
+聊天插件安装
+==================================================
+
+简介
+==================================================
+
+我们在服务器的每个分区都是独立的进程，通过proxy进行代理，那我在一个主城说话，生存区域的同学是看不到的，我们需要一款插件来支持群组服级别的聊天插件。
+
+聊天的插件比较多，我们这里推荐下venturechat。常用的聊天插件如下。
+
+.. csv-table:: Minecraft聊天插件对比
+   :header: "插件名称", "是否免费", "核心功能", "格式美化", "权限控制", "多频道支持", "兼容性", "备注"
+   :widths: 15, 10, 20, 12, 12, 12, 15, 14
+
+   "VentureChat", "是", "多频道管理、跨服聊天", "高", "细粒度", "是", "Spigot/Paper/BungeeCord", "功能全面，支持自定义过滤器"
+   "TrChat", "是", "聊天格式化、防刷屏", "中", "基础", "是", "Spigot/Paper", "轻量型，配置简单"
+   "DeluxeChat", "否（付费）", "高级格式化、气泡聊天", "极高", "细粒度", "是", "Spigot/Paper", "付费插件，支持GUI配置和动画效果"
+   "VaultChatFormatter", "是", "基础聊天格式化", "中", "基础", "否", "依赖Vault", "仅专注格式美化，需配合其他插件使用"
+   "EssentialsX Chat", "是", "基础聊天管理、前缀后缀", "低", "基础", "是", "EssentialsX生态", "适合简单需求，依赖EssentialsX核心"
+   "ChatEx", "是", "扩展格式化、聊天日志", "中", "中等", "是", "Spigot/Paper", "支持JSON格式消息，适合技术型配置"
+   "Stylizer", "是", "文本样式美化、符号替换", "高", "低", "否", "Spigot/Paper", "专注文本样式，支持Unicode字符美化"
+   "DisplayFormatter", "是", "玩家名/聊天格式统一管理", "中", "基础", "否", "Spigot/Paper", "轻量，适合统一显示风格"
+   "CarbonChat (beta)", "是（测试版）", "现代聊天系统、跨平台支持", "高", "细粒度", "是", "Spigot/Paper/Velocity", "beta版，支持1.19+新特性"
+   "ChatControl", "否（付费）", "反垃圾信息、聊天监控", "中", "高", "是", "Spigot/Paper/BungeeCord", "付费插件，侧重聊天安全和过滤"
+   "CMI", "否（付费）", "全能型插件含聊天模块", "高", "极高", "是", "Spigot/Paper", "付费全能插件，聊天功能只是其中一部分"
+
+我们选择的是Carbon这个聊天组件。
+
+
+Carbon的简介
+==================================================
+
+`文档介绍 <https://github.com/Hexaoxide/Carbon/wiki>`_ 
+`下载地址 <https://modrinth.com/plugin/carbon>`_ 
+
+
+.. code-block:: bash 
+
+    # 下载插件
+    wget https://cdn.modrinth.com/data/QzooIsZI/versions/2ptKcv94/carbonchat-paper-3.0.0-beta.32.jar
+    # 改名放到plugin目录里面来。 
+    # 重启
+    systemctl restart mc_login 
+
+
+
+权限设置
+==================================================
+
+.. code-block:: bash 
+
+    # 创建一个普通的carbot权限组。
+    /lp creategroup g-carbot 0  g-carbot
+    # 让默认组继承carbot组
+    /lp group default parent add g-carbot
+
+    # 给carbot普通组安排权限
+    # 基础聊天权限
+    /lp group g-carbot permission set  carbon.channel.global.* true 
+    /lp group g-carbot permission set  carbon.whisper.* true  
+    /lp group g-carbot permission set  carbon.nickname.* true 
+    /lp group g-carbot permission set   carbon.messagetags true 
+    /lp group g-carbot permission set   carbon.ignore true 
+    /lp group g-carbot permission set   carbon.join true 
+    /lp group g-carbot permission set   carbon.help true 
+    /lp group g-carbot permission set   carbon.leave true 
+    /lp group g-carbot permission set   carbon.crossserver true 
+    /lp group g-carbot permission set   carbon.nickname.self true  
+    /lp group g-carbot permission set   carbon.nickname true 
+    /lp group g-carbot permission set   carbon.whisper true  
+    /lp group g-carbot permission set   carbon.whisper.* true 
+    /lp group g-carbot permission set   carbon.chatlinks true  
+    /lp group g-carbot permission set   carbon.itemlink true 
+
+    
+
+解决命令冲突问题
+==================================================
+默认的tell msg r 这些都是使用的EssentialsX的，需要修改一下，让他不用，使用我们的这个提供的。 具体操作步骤如下。 
+
+
+.. code-block:: bash 
+
+    # EssentialsX config.yml file 找个disabled-commands 位置，设置如下内容。 
+    disabled-commands:
+    - tell
+    - msg
+    - r
+    - reply
+    - message
+    - whisper
+    - pm
+
+
+
+

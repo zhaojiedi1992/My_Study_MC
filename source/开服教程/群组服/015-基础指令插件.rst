@@ -1,0 +1,79 @@
+==================================================
+基础指令插件安装
+==================================================
+
+简介
+==================================================
+
+EssentialsX 是 Spigot 服务器的必备插件，为任何大小和规模的服务器提供核心功能。 这些功能包括：
+
+- 玩家设置家传送加
+- 服务器路径点和新手工具包
+- 玩家之间的可以发私聊消息
+- 传送和被传送请求
+- 各种审核工具，包括踢出、临时禁止、禁言和监禁
+- 内置经济功能包括标志商店、命令成本和完整的 Vault 支持
+
+下载
+==================================================
+essentials的官方地址为： https://essentialsx.net/wiki/Home.html我们这里安装2个，EssentialsXCore的和EssentialsX Spawn这2个。 
+其他的后可以可以根据自己需要选择。具体操作如下。
+
+
+.. code-block:: bash 
+
+    # 下载2个java, 放到plugin 目录即可。 基本不用啥配置的。 
+
+权限设置
+==================================================
+essential 提供了非常多的基础能力，我们需要给普通用于授予一下。 
+
+.. code-block:: bash 
+
+    # 创建一个普通的ess权限组。
+    /lp creategroup g-essentials 0  g-essentials
+    # 让默认组继承ess组
+    /lp group default parent add g-essentials
+
+    # 给ess普通组安排权限
+    /lp group g-essentials permission set  essentials.afk true
+    /lp group g-essentials permission set  essentials.back true
+    /lp group g-essentials permission set  essentials.back.ondeath true
+    /lp group g-essentials permission set  essentials.back.onteleport true
+    /lp group g-essentials permission set  essentials.delhome true
+    /lp group g-essentials permission set  essentials.disposal true
+    /lp group g-essentials permission set  essentials.help true
+    /lp group g-essentials permission set  essentials.home true
+    /lp group g-essentials permission set  essentials.home.compass true
+    /lp group g-essentials permission set  essentials.info true
+    /lp group g-essentials permission set  essentials.mail true
+    /lp group g-essentials permission set  essentials.mail.send true
+    /lp group g-essentials permission set  essentials.motd true
+    /lp group g-essentials permission set  essentials.msg true
+    /lp group g-essentials permission set  essentials.msg.color true
+    /lp group g-essentials permission set  essentials.msg.format true
+    /lp group g-essentials permission set  essentials.msg.url true
+    /lp group g-essentials permission set  essentials.pay true
+    /lp group g-essentials permission set  essentials.pay.offline true
+    /lp group g-essentials permission set  essentials.paytoggle true
+    /lp group g-essentials permission set  essentials.sethome true
+    /lp group g-essentials permission set  essentials.sethome.multiple true
+    /lp group g-essentials permission set  essentials.sethome.multiple.vip true
+    /lp group g-essentials permission set  essentials.suicide true
+    /lp group g-essentials permission set  essentials.tpa true
+    /lp group g-essentials permission set  essentials.tpacancel true
+    /lp group g-essentials permission set  essentials.tpaccept true
+    /lp group g-essentials permission set  essentials.tpahere true
+    /lp group g-essentials permission set  essentials.tpdeny true
+
+
+    # 创建一个普通的ess权限组。
+    #/lp creategroup ga-essentials 0  ga-essentials
+    # 让默认组继承ess组
+    # /lp group vip parent add ga-essentials
+
+    # 给essvip组安排权限
+    # /lp group ga-essentials permission set  essentials.fly true
+    # /lp group ga-essentials permission set  essentials.speed true
+
+

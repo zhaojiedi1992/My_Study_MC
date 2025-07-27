@@ -1,0 +1,62 @@
+==================================================
+版本兼容插件
+==================================================
+
+我们的服务器运行一个版本， 但是用户的版本可能比较多，比较咋，我们希望都能接纳。 
+
+.. image:: https://proxy.spigotmc.org/4d591f2da290cc9ab7621d006cb1dd7cd7754dca/68747470733a2f2f692e696d6775722e636f6d2f7a7251546366302e706e67
+
+从这个图可以看到我们使用的1.21.x 的server端， 这里主要兼容到1.18以上的版本，太低的版本就不做兼容了。 
+需要的软件就是vibackwards + viaversion 组合使用。 
+
+如果需要向下兼容更多版本，可以按需部署viarewind的。 这里我就不安装这个了。
+
+安装
+==================================================
+
+.. code-block:: bash 
+
+    wget https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
+    wget https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.4.2/PAPER/ViaBackwards-5.4.2.jar
+
+    # 下载后， 主要只要安装到paper里面，proxy不用部署。
+
+注意了，这3个插件， 有几种安装方式。
+
+- 仅仅paper 所有端安装3个插件。（非常推荐）
+- 仅仅代理端安装3个插件。（不推荐，后面使用有坑）
+- 代理端+paper都安装3个插件（强烈不推荐）
+
+
+配置文件说明
+==================================================
+
+- max-pps 最大发包速率
+- send-supported-versions: 在发ping包的时候是否发送服务器支持的版本信息。
+- block-versions： 阻止的版本，可以制定多个， ["<1.16", "1.16.4"] 比如这个配置是小于1.16版本是不允许的，1.16.4版本也是不允许的。
+
+.. code-block:: bash 
+
+    root@mc:/home/mc/instances/dl1/plugins/ViaVersion# diff config.yml config.yml.default
+    18c18
+    < block-versions: ["<1.18.0"]
+    ---
+    > block-versions: []
+    23c23
+    < block-disconnect-msg: 你使用了不支持的版本，请使用1.18+版本，建议使用1.21.6版本。
+    ---
+    > block-disconnect-msg: You are using an unsupported Minecraft version!
+    43,44c43,44
+    < max-pps: 2000
+    < max-pps-kick-msg: 你发送了太多的包，请控制，避免对服务造成压力，或者联系管理员。
+    ---
+    > max-pps: 800
+    > max-pps-kick-msg: You are sending too many packets!
+
+
+常见问题
+==================================================
+
+
+-Q1: You are sending too many packets
+-A1： 一般是ViaVersion的配置文件中max-pps设置过小，具体设置的数值，你需要根据实际情况进行调整。

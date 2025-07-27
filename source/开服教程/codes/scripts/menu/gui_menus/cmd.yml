@@ -1,0 +1,24 @@
+open_command: cmd
+
+size: 9
+
+menu_title: '熊猫乐园主菜单'
+sweet: true
+
+items:
+  'server_dl1':
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyNzIzYWEwNjM3ZWE1MjA0NDQ3YmU1MzYxNTFmNTI5ZmU0OTA2ODI2ZDhjMDY2YzRkY2M1MDA3OWE2NDQ2NSJ9fX0='
+    data: 1
+    slot: 0
+    display_name: "dl1"
+    # This is the lore setting. Reference of this same with display_name.
+    # You can create multiple lines of lore like this
+    lore: 
+    - '小名: 登录分区1'
+    - '大名: dl1'
+    - '说明: 我来腐竹家看看'
+    - '指令: /server dl1'
+    click_commands:
+    - '[player] server dl1'
+    
+
