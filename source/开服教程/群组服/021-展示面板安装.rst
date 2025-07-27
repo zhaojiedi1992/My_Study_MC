@@ -336,3 +336,12 @@ proxy侧的安装
     # If you experience tablist formatting not working, toggle this option (set it to opposite value)
     # Only affects proxies with online mode enabled
     use-online-uuid-in-tablist: true
+
+
+效果图
+==================================================
+
+.. image:: ./imgs/计分板效果图.jpg 
+
+.. image:: ./imgs/tab效果图.jpg
+

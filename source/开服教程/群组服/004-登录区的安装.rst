@@ -56,6 +56,8 @@
     sed -i 's@enforce-secure-profile=true@enforce-secure-profile=false@g' server.properties
     # 修改服务器为离线服务器， 这里不管你使用正版还是离线，都要设置为离线的， 开正版可以去入口的proxy去开。
     sed -i 's@online-mode=true@online-mode=false@g' server.properties
+    sed -i 's@spawn-protection=16@spawn-protection=0@g' server.properties
+    spawn-protection=0
     # 尝试再次启动
     java -jar dl1.jar
 
