@@ -1,0 +1,58 @@
+==================================================
+TAB插件安装
+==================================================
+这里主要是tab可以展示服务器的玩家信息 + 计分板可以展示右侧的公告信息。
+
+
+简介
+==================================================
+
+- `帮助文档 <https://github.com/NEZNAMY/TAB/wiki/Installation>`_ 
+
+`bridge  <https://github.com/NEZNAMY/TAB-Bridge/releases>`_ 
+`tab <https://github.com/NEZNAMY/TAB/releases>`_ 
+
+根据帮助文档里面介绍，我们群组服，需要再proxy安装tab, 然后后端的分区安装TAB-Bridge 就可以了。 
+
+
+创建数据库
+==================================================
+.. code-block:: sql 
+
+    --  创建一个db, 方便luckperm权限插件使用的。 
+    CREATE DATABASE d_tab CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+proxy侧的安装
+==================================================
+.. code-block:: bash 
+
+    # 将tab.jar 放到proxy的plugin目录， 
+    root@mc:/home/mc/instances/proxy/plugins/tab# diff config.yml ../tab.default/config.yml
+    89c89
+    <   enabled: true
+    ---
+    >   enabled: false
+    224c224
+    <   enabled: true
+    ---
+    >   enabled: false
+    227,230c227,230
+    <   database: d_tab
+    <   username: mc
+    <   password: mc_panda_142857
+    <   useSSL: false
+    ---
+    >   database: tab
+    >   username: user
+    >   password: password
+    >   useSSL: true
+    275c275
+    <   enabled: true
+    ---
+    >   enabled: false
+    297c297
+    < use-online-uuid-in-tablist: true
+    ---
+    > use-online-uuid-in-tablist: true
+    \ No newline at end of file

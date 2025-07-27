@@ -1,0 +1,87 @@
+==================================================
+跨服插件
+==================================================
+我们是群组服的， 一个proxy+多个分区的，玩家的背包，末影箱这些期望用户在从生存区转到登录区，是可以同步的。 
+login分区，大家根据情况决定是否要同步。
+
+
+
+husksync
+==================================================
+这个是开源的， 不过jar包是收费的， 我们可以自己编译的。 
+
+构建husksync.jar包
+==================================================
+
+.. code-block:: bash 
+
+    # 下载下来他的源码
+    git clone git@github.com:WiIIiam278/HuskSync.git
+
+    # 切换分支， 这个按需了， 要看版本那个支持了。 
+    git checkout 3.8.5 
+    # 构建
+    ./gradlew clean build
+
+    # 如果提示错误， snapshot的，可以在这个页面搜索，https://mvnrepository.com/artifact/net.kyori/adventure-platform-fabric/6.5.1  搜索一下版本，看看更新一下配置文件让他获取正确的版本。 
+    # build.gradle 的仓库可以新增一些。 
+    # maven { url 'https://maven.fabricmc.net/' }
+    # maven { url 'https://api.modrinth.com/maven' }
+
+    # 构建完毕后， target目录就有构建结果了。 
+
+
+创建数据库
+==================================================
+.. code-block:: sql 
+
+    CREATE DATABASE d_HuskSync CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+
+安装
+==================================================
+直接将jar包放到plugins目录里面。所有的分区都要放， proxy不用的。
+
+.. code-block:: bash 
+
+    root@mc:/home/mc/instances/dl1/plugins/HuskSync# diff config.yml config.yml.default
+    11c11
+    < language: zh-cn
+    ---
+    > language: en-gb
+    31c31
+    <     host: 127.0.0.1
+    ---
+    >     host: localhost
+    33,35c33,35
+    <     database: d_HuskSync
+    <     username: mc
+    <     password: mc_panda_142857
+    ---
+    >     database: HuskSync
+    >     username: root
+    >     password: pa55w0rd
+    40,41c40,41
+    <     maximum_pool_size: 1000
+    <     minimum_idle: 100
+    ---
+    >     maximum_pool_size: 10
+    >     minimum_idle: 10
+    63c63
+    <     host: 127.0.0.1
+    ---
+    >     host: localhost
+    68c68
+    <     password: mc_panda_142857
+    ---
+    >     password: ''
+
+    # 其他的分区， 需要修改下server.yml 文件。
+    # 生存一区就是sc1 ， 
+    # dp1 对应地皮一区。
+
+
+测试
+==================================================
+在dl1 进行物质改变，然后通过/server dp1 切换到地皮一区，看看背包是否正常，来验证这个插件是否工作正常。 

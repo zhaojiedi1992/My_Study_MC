@@ -1,0 +1,107 @@
+==================================================
+跨服tp
+==================================================
+我们群组服， 用户A在分区1，用户B在分区2， 需要直接tp过去， 需要插件支持，不然只能分区内的才能传输， 另外home也是同理的。 
+
+
+
+`huskhomes <https://william278.net/docs/huskhomes/setup>`_ 
+
+创建数据库
+==================================================
+.. code-block:: sql 
+
+    --  创建一个db, 方便luckperm权限插件使用的。 
+    CREATE DATABASE d_huskhomes CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+安装
+==================================================
+现在好jar包，放到paper的plugins目录即可。 
+
+.. code-block:: bash 
+
+    # 修改配置文件
+    root@mc:/home/mc/instances/dl1/plugins/HuskHomes# diff config.yml config.yml.default
+    10c10
+    < language: zh-cn
+    ---
+    > language: en-gb
+    16c16
+    <   type: MARIADB
+    ---
+    >   type: SQLITE
+    19c19
+    <     host: 127.0.0.1
+    ---
+    >     host: localhost
+    21,23c21,23
+    <     database: d_huskhomes
+    <     username: mc
+    <     password: mc_panda_142857
+    ---
+    >     database: huskhomes
+    >     username: root
+    >     password: pa55w0rd
+    28,29c28,29
+    <     size: 120
+    <     idle: 120
+    ---
+    >     size: 12
+    >     idle: 12
+    114c114
+    <   enabled: true
+    ---
+    >   enabled: false
+    122c122
+    <     host: 127.0.0.1
+    ---
+    >     host: localhost
+    125c125
+    <     password: mc_panda_142857
+    ---
+    >     password: ''
+
+    # 直接复制jar + 文件夹到其他的分区， 然后修改server.yml 文件。    
+    # 其他的分区， 需要修改下server.yml 文件。
+    # 生存一区就是sc1 ， 
+    # dp1 对应地皮一区。参考
+
+    # 重启所有分区。
+
+解决命令冲突问题
+==================================================
+home命令，tp命令，其实在 EssentialsX都有的， 不过这个是仅仅分区内使用的， 我们这个huskhome是可以跨分区的。 如果不做配置还是使用的老的命令，导致不符合预期。
+
+.. code-block:: bash 
+
+    # EssentialsX config.yml file 找个disabled-commands 位置，设置如下内容。 
+    disabled-commands:
+    - home
+    - homes
+    - sethome
+    - homelist
+    - delhome
+    - warp
+    - setwarp
+    - createwarp 
+    - warplist
+    - delwarp
+    - tp
+    - tphere
+    - tpa
+    - tpahere
+    - tpaccept
+    - tpdeny
+    - tpno
+    - rtp
+    - tpignore
+    - tpoffline
+    - tpall
+    - tpaall
+    - spawn
+    - setspawn
+    - back
+
+如果还有其他的问题，可以参考 `冲突问题 <https://william278.net/docs/huskhomes/command-conflicts>`_ 
+

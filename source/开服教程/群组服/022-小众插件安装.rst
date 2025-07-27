@@ -1,0 +1,61 @@
+==================================================
+小众插件安装
+==================================================
+这里主要介绍一些小众插件， 可以按需安装。 
+
+ChestSort
+==================================================
+
+
+`箱子排序 <https://github.com/mfnalex/ChestSort>`_ 
+
+安装没啥问题， 直接放到plugin目录即可，重启就好了， 没啥配置要修改的。 
+
+.. csv-table:: 热键使用说明
+   :header-rows: 1
+   :widths: 25, 50, 25
+   :align: left
+
+   热键,如何使用,注意事项
+   "中键单击（鼠标滚轮）","在任何库存槽位上使用此按钮。","1.18 及以上版本可能会出现问题"
+   "Shift + 鼠标左键单击","将鼠标悬停在空的库存/容器槽上并使用它。","-"
+   "双击","将鼠标悬停在空的库存/容器槽上并执行此操作。","-"
+   "Shift + 右键单击","将鼠标悬停在空的库存/容器槽上并使用它。","-"
+
+
+
+SkinsRestorer
+==================================================
+可以让盗版用户设置皮肤， 比如用户A看到一个正版用户的皮肤比较好看，可以通过命令直接让自己在游戏内的皮肤修改下。
+
+.. code-block:: sql 
+
+    --  创建一个db, 方便luckperm权限插件使用的。 
+    CREATE DATABASE d_skinsrestorer CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+`skinrestorer官方地址 <https://skinsrestorer.net/>`_ 
+安装没啥问题， 直接放到plugin目录即可，修改项目比较少， 参考下面的即可。
+
+
+
+.. code-block:: bash 
+
+    root@mc:/home/mc/instances/login/plugins/SkinsRestorer# diff config.yml config.yml.default
+    59,60c59,60
+    <     enabled: true
+    <     host: 127.0.0.1
+    ---
+    >     enabled: false
+    >     host: localhost
+    62,65c62,65
+    <     database: d_skinsrestorer
+    <     username: mc
+    <     password: mc_panda_142857
+    <     maxPoolSize: 100
+    ---
+    >     database: db
+    >     username: root
+    >     password: pass
+    >     maxPoolSize: 10
+

@@ -23,9 +23,9 @@
 
     # 创建一个主城（login)文件夹, 没有父目录请自行创建好。 
     cd /home/mc/instances/
-    mkdir login
+    mkdir dl1
     # 进入目录
-    cd login/
+    cd dl1/
     # 将下载好的paper核心移动到这个目录
     cp ~/paper-1.21.6.jar  .
     # 或者自己服务器上面下载,链接从paper官网上面获取
@@ -33,15 +33,15 @@
     # 确认文件移动过来了
     ls -l
     # 修改名字为你的分区名字，登录分区为login， 生存一区为sc1, 生存2区位sc2, 地皮一区为dp1 ，详细的请参考文章前面的规划端口名称部分。
-    mv paper-1.21.6-48.jar  login.jar
+    mv paper-1.21.6-48.jar  dl1.jar
     # 第一次尝试启动下
-    java -jar login.jar
+    java -jar dl1.jar
     # 修改eula文件，遵守协议
     sed -i  's@eula=false@eula=true@g' eula.txt
     # 确认文件修改完毕
     cat eula.txt
     # 在此尝试启动下
-    java -jar login.jar
+    java -jar dl1.jar
 
     # 启动后， 会有一个闪动，等待你的输入，我们这里不做输入， 直接ctrl +C 关闭。 
 
@@ -57,7 +57,7 @@
     # 修改服务器为离线服务器， 这里不管你使用正版还是离线，都要设置为离线的， 开正版可以去入口的proxy去开。
     sed -i 's@online-mode=true@online-mode=false@g' server.properties
     # 尝试再次启动
-    java -jar login.jar
+    java -jar dl1.jar
 
 
 联机测试下

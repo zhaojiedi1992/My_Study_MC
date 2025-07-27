@@ -75,7 +75,7 @@ luckperm的下载地址 `luckperm 下载地址 <https://luckperms.net/download>`
 
     root@mc:/home/mc/instances/login/plugins/LuckPerms# diff config.yml config.yml.default
     34c34
-    < server: login
+    < server: dl1
     ---
     > server: global
     86c86
@@ -106,19 +106,19 @@ luckperm的下载地址 `luckperm 下载地址 <https://luckperms.net/download>`
     >     minimum-idle: 10
 
     # 重启
-    systemctl restart mc_login 
+    systemctl restart mc_dl1
     # 查看日志
     tail -f logs/latest.log
     # 确认luckperm启动没有问题. 
 
     # 其他的分区安装
-    cp -r  /home/mc/instances/login/plugins/LuckPerms* /home/mc/instances/dp1/plugins/
-    cp -r  /home/mc/instances/login/plugins/LuckPerms* /home/mc/instances/sc1/plugins/
-    cp -r  /home/mc/instances/login/plugins/LuckPerms* /home/mc/instances/sc2/plugins/
-    sed -i 's@server: login@server: dp1@g'  /home/mc/instances/dp1/plugins/LuckPerms/config.yml
-    sed -i 's@server: login@server: sc1@g'  /home/mc/instances/sc1/plugins/LuckPerms/config.yml
-    sed -i 's@server: login@server: sc2@g'  /home/mc/instances/sc2/plugins/LuckPerms/config.yml
-    systemctl restart mc_login mc_dp1 mc_sc1 mc_sc2
+    cp -r  /home/mc/instances/dl1/plugins/LuckPerms* /home/mc/instances/dp1/plugins/
+    cp -r  /home/mc/instances/dl1/plugins/LuckPerms* /home/mc/instances/sc1/plugins/
+    cp -r  /home/mc/instances/dl1/plugins/LuckPerms* /home/mc/instances/sc2/plugins/
+    sed -i 's@server: dl1@server: dp1@g'  /home/mc/instances/dp1/plugins/LuckPerms/config.yml
+    sed -i 's@server: dl1@server: sc1@g'  /home/mc/instances/sc1/plugins/LuckPerms/config.yml
+    sed -i 's@server: dl1@server: sc2@g'  /home/mc/instances/sc2/plugins/LuckPerms/config.yml
+    systemctl restart mc_dl1 mc_dp1 mc_sc1 mc_sc2
 
     # 查看各个server的日志情况，确保无错误。
 
