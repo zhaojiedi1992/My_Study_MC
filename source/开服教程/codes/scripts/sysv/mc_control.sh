@@ -15,7 +15,7 @@ jar_name=" $name.jar"
 
 # 这里配置要根据你的规划端口来对齐。
 #    "代理端口", "proxy", "25565", "无"
-#    "主城区/登录区", "login", "10000", "11000"
+#    "登录1区", "dl1", "10001", "11001"
 #    "地皮1区", "dp1", "20001", "21001"
 #    "生存1区", "sc1", "30001", "31001"
 #    "生存2区", "sc2", "30002", "31002"
@@ -23,7 +23,7 @@ get_rcon_port(){
 	local area=$1
 	case $area in 
 		proxy)  echo 0;;
-		login) echo 11000;;
+		dl1) echo 11001;;
 		dp1)  echo 21001;;
 		sc1)  echo 31001;;
 		sc2)  echo 31002;;
@@ -34,7 +34,7 @@ get_jvm(){
 	local area=$1
 	case $area in 
 		proxy)  echo " -Xms1G -Xmx1G ";;
-		login)  echo " -Xms1G -Xmx3G ";;
+		dl1)  echo " -Xms1G -Xmx3G ";;
 		dp1)  echo " -Xms1G -Xmx3G ";;
 		sc1)  echo " -Xms1G -Xmx3G ";;
 		sc2)  echo " -Xms1G -Xmx3G ";;
