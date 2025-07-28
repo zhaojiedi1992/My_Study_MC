@@ -1,0 +1,142 @@
+# 文件名: plot_help.yml
+
+menu_title: "&6地皮指令帮助"
+open_command: mhelp_plot
+size: 54  # 6行菜单
+items:
+  # ========== 地皮进入指令 ==========
+  enter_header:
+    slot: 10
+    material: OAK_SIGN
+    name: "&e---------------地皮进入指令---------------"
+    lore:
+    - "&7点击对应指令快速执行"
+  
+  d1:
+    slot: 19
+    material: GRASS_BLOCK
+    name: "&6进入地皮1区"
+    lore:
+    - "&7/server d1"
+    left_click_commands:
+    - "[console] server d1 %player%"
+    - "[close]"
+  
+  d2:
+    slot: 20
+    material: MYCELIUM
+    name: "&6进入地皮2区"
+    lore:
+    - "&7/server d2"
+    left_click_commands:
+    - "[console] server d2 %player%"
+    - "[close]"
+
+  # ========== 地皮领取指令 ==========
+  claim_header:
+    slot: 12
+    material: OAK_SIGN
+    name: "&e---------------地皮领取指令---------------"
+  
+  auto_claim:
+    slot: 21
+    material: GOLDEN_SHOVEL
+    name: "&6自动领取地皮"
+    lore:
+    - "&7/plot auto"
+    left_click_commands:
+    - "[player] plot auto"
+    - "[close]"
+  
+  claim:
+    slot: 22
+    material: IRON_SHOVEL
+    name: "&6领取脚下地皮"
+    lore:
+    - "&7/plot claim"
+    left_click_commands:
+    - "[player] plot claim"
+    - "[close]"
+
+  # ========== 地皮权限指令 ==========
+  perm_header:
+    slot: 14
+    material: OAK_SIGN
+    name: "&e---------------地皮权限指令---------------"
+  
+  add_player:
+    slot: 23
+    material: PLAYER_HEAD
+    name: "&6添加玩家权限"
+    lore:
+    - "&7/plot add <玩家>"
+    - "&e点击输入玩家名"
+    left_click_commands:
+    - "[close]"
+    - "[chat] /plot add "
+  
+  trust_player:
+    slot: 24
+    material: EMERALD
+    name: "&6信任玩家(推荐)"
+    lore:
+    - "&7/plot trust <玩家>"
+    - "&e点击输入玩家名"
+    left_click_commands:
+    - "[close]"
+    - "[chat] /plot trust "
+
+  # ========== 地皮传送指令 ==========
+  tp_header:
+    slot: 16
+    material: OAK_SIGN
+    name: "&e---------------地皮传送指令---------------"
+  
+  home:
+    slot: 25
+    material: RED_BED
+    name: "&6传送回家"
+    lore:
+    - "&7/plot home"
+    left_click_commands:
+    - "[player] plot home"
+    - "[close]"
+  
+  visit:
+    slot: 26
+    material: ENDER_PEARL
+    name: "&6访问好友地皮"
+    lore:
+    - "&7/plot visit <玩家>"
+    - "&e点击输入玩家名"
+    left_click_commands:
+    - "[close]"
+    - "[chat] /plot visit "
+
+  # ========== 高危指令 ==========
+  danger_header:
+    slot: 34
+    material: REDSTONE_TORCH
+    name: "&c---------------高危指令(谨慎使用)---------------"
+  
+  delete:
+    slot: 43
+    material: TNT
+    name: "&4删除地皮"
+    lore:
+    - "&c/plot delete"
+    - "&4⚠ 不可逆操作！"
+    left_click_commands:
+    - "[confirm: &c确认删除地皮?] plot delete"
+    - "[close]"
+  
+  clear:
+    slot: 44
+    material: LAVA_BUCKET
+    name: "&4清空地皮"
+    lore:
+    - "&c/plot clear"
+    - "&4⚠ 移除所有方块！"
+    left_click_commands:
+    - "[confirm: &c确认清空地皮?] plot clear"
+    - "[close]"

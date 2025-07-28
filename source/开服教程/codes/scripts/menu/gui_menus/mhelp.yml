@@ -1,0 +1,114 @@
+menu_title: '帮助菜单'
+size: 54
+register_command: true
+arguments_support_placeholders: true
+sweet: true
+update_interval: 1
+open_command:
+- mhelp 
+- MHELP 
+
+items:
+  'stop':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNiYTAyNGMwNzRiNWQ5YWRmNTJlY2VjZGVkNmI0YTlkMTRmMWEyZjQxMzg2MzVkYjc5YTk1NmZiYWIxNDM1MCJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c关闭菜单'
+    data: 1
+    slot: 8
+    display_name: "&b&l关闭菜单"
+    click_commands: 
+    - '[close]'
+  'cmd':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c主菜单'
+    data: 1
+    slot: 0
+    display_name: ""
+    click_commands: 
+    - '[openguimenu] cmd'
+
+  'prev':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0='
+    lore: 
+    - '上一页'
+    data: 1
+    slot: 46
+    display_name: "<<<"
+    click_commands: 
+    - '[openguimenu] cmd'
+
+  'next':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0='
+    lore: 
+    - '下一页'
+    data: 1
+    slot: 53
+    display_name: ">>>"
+    click_commands: 
+    - '[openguimenu] cmd'
+
+  'plot':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZjN2RkYzYyNzJhZTQ5YTRjZTI3NzVhNjgyM2NmNWJjZmFkYzFlZjQ3NDIwMDA3MzFkNDBkZTRiMjZmNmEzYyJ9fX0='
+    lore: 
+      - '&7每个玩家都可以免费获得&b10x10&7地皮范围'
+      - '&7你如果还没有地皮可以通过主菜单点领取'
+      - '&b左键 &a➥ &c查看地皮指令'
+    data: 1
+    slot: 1
+    display_name: "地皮帮助"
+    click_commands: 
+    - 'close'
+    - '[message] &6地皮指令帮助:'
+    - '[message] ----------------地皮进入指令-----------------------'
+    - '[message] &6进入地皮1区:                           /server d1'
+    - '[message] &6进入地皮2区:                           /server d2'
+    - '[message] -----------------地皮领取指令----------------------'
+    - '[message] &6自动领取地皮:&r                         /plot auto &e'
+    - '[message] &6领取脚下地皮:&r                         /plot claim &e'
+    - '[message] -----------------地皮权限指令----------------------'
+    - '[message] &6给予主人在线地皮权限:                    /plot add &f<玩家>'
+    - '[message] &6移除玩家权限或者拉黑:                    /plot remove &f<玩家>&e'
+    - '[message] &6给予地皮权限(推荐):                     /plot trust &f<玩家>&e'
+    - '[message] -----------------地皮传送指令----------------------'
+    - '[message] &6传送回家:                              /plot home '
+    - '[message] &6去朋友家                               /plot visit &f<玩家> &e'
+    - '[message] &6给予地皮权限(推荐):                     /plot trust &f<玩家> &e'
+    - '[message] &6给予地皮改名字(推荐):                   /plot rename '
+    - '[message] -----------------地皮高危指令----------------------'
+    - '[message] &6删除地皮:                              /plot delete'
+    - '[message] &6把地皮恢复出厂设置:                     /plot clear'
+
+
+  'dominion':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTFmMTEyZjU3YjExMjY1ZjA2NmUxYjQ3MWQ3NzIxOGRlNzJjMWMzNTUwNTBjYmFmMDRiY2NkYzRlODM0MzUwZSJ9fX0='
+    lore:
+      - '&c注意:领地只可在生存区使用'
+      - '&b左键 &a➥ &c查看地皮指令'
+    data: 1
+    slot: 2
+    display_name: "领地帮助"
+    click_commands: 
+    - 'close'
+    - '[player] dominion'
+
+  'base':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzYxYmFmOGZiOTY3ZDAzZmY5ZjY5ZDZiMjBjMDAzYTMwYWY5NTY5ZWIwZmUyZTYwMjNmNmY0MzYxOGM1MDJhYyJ9fX0='
+    lore:
+      - '&b左键 &a➥ &c查看基础指令'
+    data: 1
+    slot: 3
+    display_name: "基础帮助"
+    click_commands: 
+        - '[close]'
+        - '[message] &6基础指令帮助:'
+        - '[message] &6tp到别人那里去:                                /tpa &f<玩家>&e'
+        - '[message] &6tp别人到我这里来:                              /tpahere &f<玩家>&e'
+        - '[message] &6公屏发消息:                                   按下t 直接输入文字 然后回车'
+        - '[message] &6私聊发消息:                                  /msg &f<玩家>&e &f<消息内容>&e'
+        - '[message] &6打开服务器菜单:                               /cmd'
+        - '[message] &6回默认家:                                    /home '
+        - '[message] &6回特定家:                                    /home &f<家名字>&e '
+        - '[message] &6设置家:                                     /sethome &f<家名字>&e '
+        - '[message] &6删除家:                                    /delhome &f<家名字>&e '
+        - '[message] &6转账:                                      /pay &f[玩家名] [金额] &e'

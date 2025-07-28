@@ -22,5 +22,9 @@ gui_menus:
     file: sell_nongzuowu.yml
   sell_jinshu_menu:
     file: sell_nongzuowu.yml
-  cmd_menu:
+  cmd:
     file: cmd.yml
+  mhelp:
+    file: mhelp.yml
+  mhelp_plot:
+    file: mhelp_plot.yml
