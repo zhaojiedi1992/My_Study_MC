@@ -2,6 +2,7 @@
 聊天插件安装
 ==================================================
 
+
 简介
 ==================================================
 
@@ -41,7 +42,7 @@ Carbon的简介
     wget https://cdn.modrinth.com/data/QzooIsZI/versions/2ptKcv94/carbonchat-paper-3.0.0-beta.32.jar
     # 改名放到plugin目录里面来。 
     # 重启
-    systemctl restart mc_login 
+    systemctl restart mc_dl1 
 
 
 
@@ -56,10 +57,12 @@ Carbon的简介
     /lp group default parent add g-carbot
 
     # 给carbot普通组安排权限
+
     # 基础聊天权限
-    /lp group g-carbot permission set  carbon.channel.global.* true 
-    /lp group g-carbot permission set  carbon.whisper.* true  
-    /lp group g-carbot permission set  carbon.nickname.* true 
+    # https://github.com/Hexaoxide/Carbon/wiki/Permissions
+    /lp group g-carbot permission set   carbon.channel.global.* true 
+    /lp group g-carbot permission set   carbon.whisper.* true  
+    /lp group g-carbot permission set   carbon.nickname.* true 
     /lp group g-carbot permission set   carbon.messagetags true 
     /lp group g-carbot permission set   carbon.ignore true 
     /lp group g-carbot permission set   carbon.join true 

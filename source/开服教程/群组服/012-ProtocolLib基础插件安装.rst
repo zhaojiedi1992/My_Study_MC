@@ -1,17 +1,19 @@
 ==================================================
 ProtocolLib基础插件安装
 ==================================================
-ProtocolLib是基础插件， 会被大量的插件使用，需要进行前置安装。
 
-`官方地址 <https://www.spigotmc.org/resources/vault.34315/>`_ 
+简介
+==================================================
 
-如果官方没有，可以从这个ci地址获取最新的`dev 版本的 <https://ci.dmulloy2.net/job/ProtocolLib/>`_ 的。 
+ProtocolLib 是一个专为 Minecraft 服务器开发的核心插件，主要用于拦截、修改和发送游戏网络数据包（Protocol）。
+它为开发者提供了底层网络协议的访问能力，允许创建高度自定义的服务器功能，是许多高级插件（如物品展示、自定义实体、数据包级别的反作弊系统）的基础依赖。
+
+- spigotmc: https://www.spigotmc.org/resources/protocollib.1997/
+- github: https://github.com/dmulloy2/ProtocolLib
+- ci download： https://ci.dmulloy2.net/job/ProtocolLib
+
 
 安装
-
-.. code-block:: bash 
-
-    wget https://www.spigotmc.org/resources/vault.34315/download?version=344916  -O Vault.jar
-
-    # 放置 到plugin目录，然后重启即可。 文件没啥要修改的。 
+==================================================
+# 放置 到plugin目录，然后重启即可。 文件没啥要修改的。 
     

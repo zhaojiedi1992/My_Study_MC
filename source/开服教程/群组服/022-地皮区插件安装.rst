@@ -24,7 +24,6 @@
 修改配置文件
 ==================================================
 
-
 .. code-block:: bash 
 
     # 先修改db的
@@ -125,14 +124,27 @@
         mob_spawner_spawning: false
         flags: {}
 
+重新覆盖world
+==================================================
+我们通过上面的指令会生成一个world.yml文件， 在启动的时候会生成一个world的， 不过我们现在world世界已经存在了， 需要删除掉，让他检测和生成。 
+
+.. code-block:: bash 
 
     systemctl stop mc_dp1 
     mv /home/mc/instances/dp1/world /home/mc/instances/dp1/world.bak
     systemctl start mc_dp1 
 
+地皮中心区域的规划
+==================================================
+地皮的中心方格，不建议给普通用户使用，我们这里占用中间的4个格子，方便后期给中心区域做一些建筑。 
 
+.. code-block:: bash 
+    
+    # 进入地皮中心区域， 设置一个区域吧。 
+    plot setowner 
+    # 连续给中心的4个都设置下owenr
+    ...
+    # 合并4个为1个。
+    plot merge 
 
-    # 设置一个区域吧。
-    plot setowner 设置连续的4个区域。 
-    然后plot merge 合并这4个，让这4个区域空出来，后面安排一些建筑或者其他的东西。 
 

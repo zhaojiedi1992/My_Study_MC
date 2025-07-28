@@ -1,59 +1,118 @@
 
-open_command: cmd
-size: 54
 menu_title: '主菜单'
+size: 54
 register_command: true
+arguments_support_placeholders: true
 sweet: true
-open_with_shortcut: "SHIFT+h"  # 关键！设置全局快捷键
+update_interval: 1
+open_command:
+- cmd 
+- CMD 
+- menu 
+- MENU 
+
+# head refer : 
 items:
+# server 区域
+  'stop':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNiYTAyNGMwNzRiNWQ5YWRmNTJlY2VjZGVkNmI0YTlkMTRmMWEyZjQxMzg2MzVkYjc5YTk1NmZiYWIxNDM1MCJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c关闭菜单'
+    - '&bESC键盘 &a➥ &c关闭菜单'
+    data: 1
+    slot: 10
+    display_name: "&b&l关闭菜单"
+    click_commands: 
+    - '[close]'
+
+
   'server_dl1':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyNzIzYWEwNjM3ZWE1MjA0NDQ3YmU1MzYxNTFmNTI5ZmU0OTA2ODI2ZDhjMDY2YzRkY2M1MDA3OWE2NDQ2NSJ9fX0='
     lore: 
-    - '小名: 登录1区'
-    - '大名: dl1'
-    - '说明: 我来腐竹家看看'
-    - '指令: /server dl1'
+    - '&b名称 &a➥ &c登录1区'
+    - '&b说明 &a➥ &c登录'
+    - '&b指令 &a➥ &c/server sc2'
     data: 1
-    slot: 4
+    slot: 0
     display_name: "dl1"
     click_commands: 
     - '[connect] dl1'
+    - 'minimessage <click:run_command:/server dl1>可以直接输入/server dl1</click>'
   'server_dp1':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzc1YzUxN2IwMDgxOTFmMjc0NmJjZDQ4NzZhODlkMjJmNWZjYmZlNDQzMDFhNDk2YTM0MGVmOGQ0ZjIyNzRlYyJ9fX0='
     lore: 
-    - '小名: 地皮1区'
-    - '大名: dp1'
-    - '说明: 嘿嘿嘿,我白嫖'
-    - '指令: /server dp1'
+    - '&b名称 &a➥ &c地皮1区'
+    - '&b说明 &a➥ &c白嫖白嫖'
+    - '&b指令 &a➥ &c/server dp1'
     data: 1
-    slot: 5
+    slot: 1
     display_name: "dp1"
     click_commands: 
     - '[connect] dp1'
+    - 'minimessage <click:run_command:/server dp1>可以直接输入/server dp1</click>'
   'server_sc1':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWZlMjRjNmY1MmRkYzA4MzU5Zjc5MjMwMWVjYTk2YWVjZjY2OTc5ZGM4OTljNDMyNDJkMjU4N2ViY2I3MGU2In19fQ=='
     lore: 
-    - '小名: 生存一区'
-    - '大名: sc1'
-    - '说明: 圈地圈地'
-    - '指令: /server sc1'
+    - '&b名称 &a➥ &c生存1区'
+    - '&b说明 &a➥ &c圈地圈地'
+    - '&b指令 &a➥ &c/server sc1'
     data: 1
-    slot: 6
+    slot: 2
     display_name: "sc1"
     click_commands: 
     - '[connect] sc1'
+    - 'minimessage <click:run_command:/server sc1>可以直接输入/server sc1</click>'
   'server_sc2':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RhZWEzZTEzYTUxM2RhMTA1MWVhNTlkMTdlZGZiMDNlOGQ4Mzg4ZWRlODg4ODg0NzZkZmI2OTNmMmM4Mzk4In19fQ=='
     name: 'sc2'
     lore: 
-    - '小名: 生存2区'
-    - '大名: sc2'
-    - '说明: 圈地圈地'
-    - '指令: /server sc2'
+    - '&b名称 &a➥ &c生存2区'
+    - '&b说明 &a➥ &c圈地圈地'
+    - '&b指令 &a➥ &c/server sc2'
     data: 1
-    slot: 7
+    slot: 3
     display_name: "sc2"
     click_commands: 
     - '[connect] sc2'
 
+  'help':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzMxNmE4Yjk2Y2I5YWVlYTUxNDBkZDkzNmM2ZWJiOTY0ZWZjYmZkNzFhZTIxN2Q5ZjcwODg4ZWZiMTRlN2MwIn19fQ=='
+    lore: 
+    - '&b左键 &a➥ &c查看帮助指令'
+    - '&b指令 &a➥ &c/server sc2'
+    data: 1
+    slot: 4
+    display_name: "&b&l查看帮助"
+    click_commands: 
+    - '[openguimenu] mhelp'
+  'tools':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjFhY2RmZGI2MjVkZWE4YTA0NGVmMDU0MjEwNjFjZDZkZGQ5ODY1ZTdjNjY1MTQ4OWFhZTU5ZDJiYzU2ZjAwOSJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c进入工具包'
+    data: 1
+    slot: 4
+    display_name: "&b&l进入工具包"
+    click_commands: 
+    - '[openguimenu] mtools'
 
+  'shop_shougou':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ1NzNkNjU0NmJhNzFlZmYzYjY3ZTUxMTZiMGQ3NWUyOWFkZjY3MTM1ZTk1MzM4ZGNhODNlZWMyODhmMjcifX19'
+    name: '&b&l系统收购商店'
+    lore: 
+    - '&b左键 &a➥ &c进入系统收购商店'
+    data: 1
+    slot: 4
+    display_name: "&b&l系统收购商店"
+    click_commands: 
+    - '[openguimenu] shop_shougou'
+
+  'shop_chushou':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ1NzNkNjU0NmJhNzFlZmYzYjY3ZTUxMTZiMGQ3NWUyOWFkZjY3MTM1ZTk1MzM4ZGNhODNlZWMyODhmMjcifX19'
+    name: '&b&l系统出售商店'
+    lore: 
+    - '&b左键 &a➥ &c进入系统出售商店'
+    data: 1
+    slot: 4
+    display_name: "&b&l系统出售商店"
+    click_commands: 
+    - '[openguimenu] shop_chushou'

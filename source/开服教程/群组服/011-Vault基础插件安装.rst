@@ -3,14 +3,21 @@ Vault基础插件安装
 ==================================================
 Vault是经济基础插件， 会被大量的插件使用，需要进行前置安装。
 
-`官方地址 <https://www.spigotmc.org/resources/vault.34315/>`_ 
 
+简介
+==================================================
+Vault 是一个权限、聊天和经济 API，旨在让插件轻松连接到这些系统，而无需单独挂接或依赖每个插件。
+它的诞生源于人们对注册和当前权限 API 的运行方式、功能匮乏或实现过于复杂的不满。Vault 试图通过直观易用的方式解决这些问题，并为插件提供对其可能使用的任何系统的支持。
+
+- spigotmc https://www.spigotmc.org/resources/vault.34315 
+- github https://github.com/milkbowl/Vault
 
 安装
+==================================================
+从spigotmc下载jar包，放到plugins目录即可。
 
-.. code-block:: bash 
+补充说明
+==================================================
+主要这个插件只是定义了接口，具体的经济实现，还是依赖其他的组件的。 比如xcomony， 我看最新版本essentialsX已经自带xcomony的能力了， 这个xcomony后面就不单独安装了。
 
-    wget https://www.spigotmc.org/resources/vault.34315/download?version=344916  -O Vault.jar
 
-    # 放置 到plugin目录，然后重启即可。 文件没啥要修改的。 
-    

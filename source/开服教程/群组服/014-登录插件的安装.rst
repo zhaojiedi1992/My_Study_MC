@@ -1,6 +1,10 @@
 ==================================================
 登录基础插件的安装
 ==================================================
+登录插件是为了解决用户来你的服务器，认证的问题， 不是每个人都是正版用户，离线的用户也是需要关注的。 
+
+认证插件对比
+==================================================
 
 .. csv-table:: Minecraft认证插件对比
    :header: "插件名称", "经典程度", "免费", "GUI界面", "配置灵活性", "代理支持", "多平台兼容", "备注"
@@ -20,17 +24,43 @@
 
 我们选择authmereload方案。 
 
-创建数据库
+authmereload简介
+==================================================
 
+- 电子邮件恢复系统！
+- 用户名欺骗保护。
+- 国家白名单/黑名单！（国家代码）
+- 内置反机器人系统！
+- ForceLogin 功能：管理员可以通过控制台命令登录所有帐户！
+- 避免出现“从其他位置登录”消息！
+- 双因素（2FA）支持！
+- 会话登录！
+- MySQL 和 SQLite 后端支持！
+- 与 Citizens2、CombatTag、CombatTagPlus 和 ChestShop 完全兼容！
+- 与BuildCraft 或 RedstoneCraft等 Minecraft 模组兼容
+- 受限用户（将用户名与 IP 关联）
+- 保护玩家的库存，直到正确的身份验证
+- 保存玩家退出的位置
+- 自动数据库备份
+- 多种语言支持。
+- 从其他插件（如 Rakamak、xAuth、CrazyLogin、RoyalAuth 和 vAuth）导入旧数据库
+
+- spigotmc: https://www.spigotmc.org/resources/authmereloaded.6269/
+- github: https://github.com/AuthMe/AuthMeReloaded
+- docs: 
+
+创建数据库
+==================================================
 .. code-block:: sql 
 
     create database  d_authme CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-安装
+下载安装
 ==================================================
+从spigotmc就可以下载的， 下载好jar包直接放入到plugin目录， 原则上面只需要放到dl1分区的，但是为了安全考虑，还是需要给后端的所有的分区都放置。
 
-`authmereload 下载 <https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0/AuthMe-5.6.0.jar>`_ 
+配置
+==================================================
 
 
 .. code-block:: bash 
@@ -93,6 +123,19 @@
 
     # 重启几个分区
     systemctl restart mc_dp1 mc_sc1 mc_sc2 
+
+权限配置
+==================================================
+
+.. code-block:: bash 
+
+    # 创建一个g_authme的权限组
+    /lp creategroup g_authme 0 g_authme
+    # 添加权限
+    /lp group g_authme permission set authme.player.* true 
+    # 让default用户组继承这个用户组的权限
+    /lp group default parent add g_authme
+
 
 
 
