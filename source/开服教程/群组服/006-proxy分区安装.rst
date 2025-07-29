@@ -67,6 +67,7 @@ proxy安装
     ---
     > tcp-fast-open = false
 
+.. note:: 其中fast-open这个参数， linux开，window不开。
 
 
 配置联动

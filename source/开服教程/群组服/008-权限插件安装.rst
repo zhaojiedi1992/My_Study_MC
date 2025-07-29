@@ -272,7 +272,8 @@ luckperm的下载地址 `luckperm 下载地址 <https://luckperms.net/download>`
 .. code-block:: bash 
 
     # 读取command文件， 然后去login分区，添加下权限， 因为权限是存在mysql的， 任何分区执行一次就行的。 
-    cat command.list.txt |while read file; do bash exec_one_cmd.sh  "$file" ; done
+    # sleep 1 是为了等待，避免权限插入失败。
+    cat command.list.txt |while read file; do bash exec_one_cmd.sh  "$file" ; sleep 1 ; done
 
 
 
@@ -297,7 +298,14 @@ luckperm的下载地址 `luckperm 下载地址 <https://luckperms.net/download>`
 
 .. code-block:: bash 
 
+    # 方式1
     /lp verbose record [筛选条件]
     执行一系列需要权限的操作
     /lp verbose paste
     打开生成的 URL
+
+    # 方式2 
+    /lp verbose on
+    执行一系列需要权限的操作
+    /lp verbose off
+    # 终端内看看检查了哪些权限。 

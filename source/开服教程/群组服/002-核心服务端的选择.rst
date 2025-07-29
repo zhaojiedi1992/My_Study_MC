@@ -50,8 +50,6 @@ mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
 
 核心对比
 ==================================================
-MC常见核心端对比
-================    
 
 .. csv-table::
    :header: "核心名字", "适合场景"

@@ -48,9 +48,9 @@
     # 看下默认的配置主配置文件
     cat server.properties
     # 这里按照我们规划的端口，进行修改端口
-    sed -i 's@server-port=25565@server-port=10000@g' server.properties
-    sed -i 's@query.port=25565@query.port=10000@g' server.properties
-    sed -i 's@rcon.port=25575@rcon.port=11000@g' server.properties
+    sed -i 's@server-port=25565@server-port=10001@g' server.properties
+    sed -i 's@query.port=25565@query.port=10001@g' server.properties
+    sed -i 's@rcon.port=25575@rcon.port=11001@g' server.properties
     sed -i 's@enable-rcon=false@enable-rcon=true@g' server.properties
     sed -i 's@^rcon\.password=$@rcon.password=mc_panda_142857@g' server.properties
     sed -i 's@enforce-secure-profile=true@enforce-secure-profile=false@g' server.properties
@@ -64,7 +64,7 @@
 
 联机测试下
 ==================================================
-这个我们需要打开一个启动器，然后版本选择1.21.6的版本，然后链接到具体的ip:10000端口上来， 看看是否可以正常链接。
+这个我们需要打开一个启动器，然后版本选择1.21.6的版本，然后链接到具体的ip:10001端口上来， 看看是否可以正常链接。
 如果可以正常链接，进入世界，那么就说明我们的登录区安装成功了。
 
 

@@ -53,6 +53,14 @@
     # 重启服务器
     reboot
 
+.. code-block:: bash 
+
+    # 关闭 apparmor  debian系统才需要的。 可以按需，非强制。
+    sudo systemctl stop apparmor
+    sudo systemctl disable apparmor
+    sudo apt remove --assume-yes --purge apparmor
+
+
 远程链接配置
 ==================================================
 远程链接工具比较多，xshell、putty 等等， 这里我使用的是mac机器的item2， 远程链接基本都是一样的， 只需要输入服务器的ip地址和端口号就可以了。
@@ -61,6 +69,8 @@
 
 准备单独存储盘
 ==================================================
+
+创建lvm的目的是为了避免后面存储吃紧后可以优雅扩容， 另外通过快照功能进行备份也是极速的。 如果你一次性购买的硬盘是足够的，可以不使用lvm。
 
 .. code-block:: bash 
 
@@ -80,7 +90,7 @@
     mkfs.ext4 /dev/mcdata/lv_mcdata
     mount /dev/mcdata/lv_mcdata /home/mc
 
-    # 永久挂载
+    # 永久挂载， 非常关键， 避免开机挂载丢失。
     echo "/dev/mcdata/lv_mcdata /home/mc ext4 defaults 0 0" >> /etc/fstab
     # 查看挂载情况
     reboot 
@@ -89,6 +99,7 @@
 
 软件仓库使用清华源
 ==================================================
+让仓库使用国内的源，是为了下载更快一些。
 
 .. code-block:: bash 
 
