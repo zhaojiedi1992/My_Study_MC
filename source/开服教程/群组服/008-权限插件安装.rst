@@ -309,3 +309,6 @@ luckperm的下载地址 `luckperm 下载地址 <https://luckperms.net/download>`
     执行一系列需要权限的操作
     /lp verbose off
     # 终端内看看检查了哪些权限。 
+
+    # 方式3 ，查看以特定player执行一个命令，需要的权限信息，非常推荐的。
+    /lp verbose command <me|player> <command>

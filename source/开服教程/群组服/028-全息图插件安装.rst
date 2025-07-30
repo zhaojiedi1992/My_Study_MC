@@ -1,0 +1,81 @@
+==================================================
+全息图插件安装
+==================================================
+
+简介
+==================================================
+
+- 使用自定义功能，如损坏和治疗显示。
+- 线条类型- 使用多种不同的线条类型（如实体和项目）创建全息图。
+- 行高- 为各个行配置不同的高度。
+- 线路偏移- 为各个线路配置不同的偏移。
+- 页面- 全息图支持多页，允许您在一个地方显示更多信息。
+- 权限- 设置查看全息图或单独线条的权限。
+- 显示范围- 配置玩家可以远离全息图的最大距离以查看它。
+- 兼容性——插件完全支持所有 PlaceholderAPI 占位符。
+- ΑΡΙ - 作为开发人员，您可以使用可完全隐藏到插件中的大型 API。
+- 性能- 一切都是基于假数据包的，因此世界上没有任何实体，也不会对服务器的性能产生任何影响。
+
+关键链接
+==================================================
+- wiki: https://wiki.decentholograms.eu/
+- github: https://github.com/DecentSoftware-eu/DecentHolograms
+- modrinth: https://modrinth.com/plugin/decentholograms
+  
+
+安装
+==================================================
+从modrinth下载对应的版本即可， 放到plugins目录即可。
+
+
+配置调整
+==================================================
+
+.. code-block:: bash 
+
+    # 运行动画里面使用变量， 如果不使用的话，可以关闭。
+    allow-placeholders-inside-animations 设置为false.
+    damage-display enable 一下。
+    healing-display enable一下。
+
+
+游戏内配置
+==================================================
+
+完整的指令请参考： https://wiki.decentholograms.eu/general/commands/
+
+**地皮1区的**
+
+.. code-block:: bash 
+
+    # 通过客户端进入游戏，切换到地皮一区，找到一个位置， 然后执行如下指令。
+    /dh hologram create dp_help
+    /dh l add dp_help 1 <#FFFFAA>买任意的地皮  :</#00FF00> <#00FF00>/plot auto</#00FF00>
+    /dh l add dp_help 1 <#FFFFAA>回自己的领地  :</#00FF00> <#00FF00>/plot home</#00FF00>
+    /dh l add dp_help 1 <#FFFFAA>买脚下的地皮  :</#00FF00> <#00FF00>/plot claim</#00FF00>
+    /dh l add dp_help 1 <#FFFFAA>查看他人领地  :</#00FF00> <#00FF00>/plot list <name></#00FF00>
+    /dh l add dp_help 1 <#FFFFAA>给朋友加权限  :</#00FF00> <#00FF00>/plot trust <name></#00FF00>
+    /dh l add dp_help 1 <#FFFFAA>去别人的领地  :</#00FF00> <#00FF00>/plot visit <name></#00FF00>
+    /dh l set dp_help 1   <#FFFFAA>给领地设别名  :</#00FF00> <#00FF00>/plot alias set <name></#00FF00>
+    # 站在需要的位置，放三格子物品，然后站上去输入下面内容
+    /dh movehere dp_help
+
+
+**登录区的设置**
+
+.. code-block:: bash 
+
+
+**生存1区的设置**
+
+.. code-block:: bash 
+
+
+**生存2区的设置**
+
+.. code-block:: bash 
+
+
+权限设置
+==================================================
+

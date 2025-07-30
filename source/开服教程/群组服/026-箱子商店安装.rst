@@ -88,6 +88,17 @@
     ---
     >   password: passwd
 
+权限配置
+==================================================
+
+.. code-block:: bash 
+
+  # refer : https://github.com/QuickShop-Community/QuickShop-Hikari/blob/hikari/quickshop-bukkit/src/main/resources/plugin.yml
+  /lp group default permission set quickshop.player true 
+  /lp group owner permission set quickshop.playyer true 
+  /lp group owner permission set quickshop.moderator true 
+
+
 
 测试
 ==================================================
@@ -95,4 +106,9 @@
 
 
 
+视频使用教程
+==================================================
 
+.. raw:: html
+
+  <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=433226339&bvid=BV1LG411u7BE&cid=908146945&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>

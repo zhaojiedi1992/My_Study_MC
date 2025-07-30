@@ -23,3 +23,43 @@
 配置修改
 ==================================================
 基本就是需要修改下数据库部分，其他的改动比较少。
+
+.. code-block:: bash 
+
+    # 主要是修改下语言， bungee的这个可以改，可以不该。
+    root@mc:/home/mc/instances/dl1/plugins/XConomy# diff config.yml config.yml.default
+    19c19
+    <   language: Chinese
+    ---
+    >   language: English
+    102c102
+    <   enable: true
+    ---
+    >   enable: false
+
+    # database文件，需要修改为数据的， 其他的redis ,h2这些都不要动就行。
+
+
+
+
+
+测试
+==================================================
+测试方法， 首先在dl1分区，进行/money 指令执行，获取金币，通过/eco give mc__panda 100后，余额变成100了，然后/server sc1 切换到sc1分区查看余额是否全局唯一。
+
+.. image:: ./imgs/测试金币.jpg
+
+.. image:: ./imgs/切换分区测试.jpg
+
+
+QA环节
+==================================================
+
+:Q1: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "connection" is null
+:A1: dtabase.yml的 usepool: true 请设置好， 然后重启就好了。 
+
+:Q2: 怎么核对我的/money命令是使用的essentinal的还是XConomy的？
+:A2: 这个问题，可以从几个方面看。
+    1. 看服务器日志， 有类似这样的消息。[Essentials] Rcon issued server command: /bc 分区dp1准备重启5s...
+    2. 通过luckperm的debug能力,比如。 /lp verbose command <me|player> <command>
+    3. 其他的插件来支持命令来自的path

@@ -2,8 +2,10 @@
 BlueMap地图插件安装
 ==================================================
 
-`bluemap下载地址 <https://github.com/BlueMap-Minecraft/BlueMap/releases>`_ 
+.. note:: 这个非必须的， 可以先不做安装。
 
+
+`bluemap下载地址 <https://github.com/BlueMap-Minecraft/BlueMap/releases>`_ 
 
 创建数据库
 ==================================================
