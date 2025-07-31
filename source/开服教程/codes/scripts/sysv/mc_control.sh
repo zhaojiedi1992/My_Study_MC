@@ -44,9 +44,11 @@ get_jvm(){
 
 
 base_dir=${mc_instance_dir}/$name
+# -p 是密码参数，-P 是端口，顺序没错，但 ${rcon_code} 变量名和 mcrcon 的参数名容易混淆
 mcrcon_pre="${mcrcon_cmd} -H $host -p ${rcon_code} -P $(get_rcon_port $name)  "
+
 mc_exist(){
-	ps aux |grep "${jar_name}" |grep -v grep | >/dev/null
+	ps aux |grep "${jar_name}" |grep -v grep  > /dev/null 2>&1
 }
 
 status(){

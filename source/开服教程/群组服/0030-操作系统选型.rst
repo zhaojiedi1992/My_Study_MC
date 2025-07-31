@@ -3,103 +3,88 @@
 ==================================================
 操作系统的选型和安装
 ==================================================
-操作系统一般服务器环境都是linux的， 比如centos、debian 等。 不过centos已经停止维护，建议使用其他发行版，我这里是选择的debian环境。
+服务器环境推荐使用 Linux，主流发行版有 Debian、Ubuntu、CentOS 等。  
+CentOS 已停止维护，建议选择 Debian 或 Ubuntu，社区活跃、文档丰富、兼容性好。  
+本教程以 Debian 为例，其他发行版操作类似。
+
+操作系统选型建议
+==================================================
+- **Debian**：稳定、轻量、社区活跃，适合长期运行的生产环境。
+- **Ubuntu Server**：基于 Debian，驱动和新特性支持更好，适合新手和云服务器。
+- **AlmaLinux/Rocky Linux**：CentOS 替代品，适合有 RHEL 生态需求的用户。
+- **不推荐 Windows Server**：性能、兼容性和安全性不如 Linux，除非有特殊需求。
 
 操作系统安装
 ==================================================
-这个debian系统安装，建议最小化安装， 只安装ssh服务先，其他的先不用安装。 这样可以减少系统的负担， 也可以减少安全隐患。
+建议最小化安装，仅安装 SSH 服务，其他软件按需后续安装，减少系统负担和安全隐患。
 
 .. code-block:: bash 
 
-    # 这里需要终端来操作的， 这里还没有ssh服务，没法远程的。 
-    # 这里是安装ssh服务
+    # 安装 SSH 服务
     apt install openssh-server -y
-    # 启动ssh服务
+    # 启动 SSH 服务
     systemctl start ssh
     # 设置开机自启
     systemctl enable ssh
 
-
 .. code-block:: bash 
 
+    # 配置 sudo 免密（可选）
     vim /etc/sudoers 
-    # 在文件的最后添加一行, 含义是zhaojiedi执行sudo的时候无需密码可以执行任何命令。 
+    # 在文件最后添加一行，允许 zhaojiedi 用户免密执行 sudo
     zhaojiedi ALL=(ALL) NOPASSWD: ALL
 
+.. warning::  
+   建议创建普通用户并加入 sudo，不要用 root 直接远程登录，降低安全风险。
 
-.. warning::  这里建议将用户将一个普通用户添加到sudo里面，不建议root直接远程操作，降低安全风险。
-
-
-
-
-
-
-
-关闭selinux
+关闭 SELinux / AppArmor
 ==================================================
-注意，debian系统是默认没有安装selinux的，也就不涉及关闭selinux的事情。 
-如果你是其他的系统，可能需要关闭下， 关闭步骤如下。 
-
+- Debian 默认无 SELinux，无需处理。
+- 部分发行版（如 CentOS）需关闭 SELinux，否则部分服务端和脚本可能异常。
 
 .. code-block:: bash
 
-    zhaojiedi@mc:~$ sestatus
-    -bash: sestatus: 未找到命令
-
-    # 关闭selinux 
+    # 检查 SELinux 状态
+    sestatus
+    # 临时关闭
     setenforce 0
-    # 永久关闭selinux
-    sed -i 's@^SELINUX=enforcing@SELINUX=disabled@g'
-    # 重启服务器
+    # 永久关闭
+    sed -i 's@^SELINUX=enforcing@SELINUX=disabled@g' /etc/selinux/config
     reboot
+
+- Debian/Ubuntu 可按需关闭 AppArmor（非强制）
 
 .. code-block:: bash 
 
-    # 关闭 apparmor  debian系统才需要的。 可以按需，非强制。
     sudo systemctl stop apparmor
     sudo systemctl disable apparmor
     sudo apt remove --assume-yes --purge apparmor
 
-
-远程链接配置
+远程连接配置
 ==================================================
-远程链接工具比较多，xshell、putty 等等， 这里我使用的是mac机器的item2， 远程链接基本都是一样的， 只需要输入服务器的ip地址和端口号就可以了。
+- 推荐使用 SSH 工具（如 Xshell、Putty、iTerm2、MobaXterm 等）远程管理服务器。
+- 连接时输入服务器 IP 和端口即可，建议更改默认 22 端口提升安全性。
 
-
-
-准备单独存储盘
+准备单独存储盘（推荐 LVM）
 ==================================================
-
-创建lvm的目的是为了避免后面存储吃紧后可以优雅扩容， 另外通过快照功能进行备份也是极速的。 如果你一次性购买的硬盘是足够的，可以不使用lvm。
+- 使用 LVM 可灵活扩容和快照备份，适合后期数据增长和迁移。
+- 若硬盘空间充足，也可直接分区挂载。
 
 .. code-block:: bash 
 
     # 详细操作参考 https://www.cnblogs.com/zhaojiedi1992/p/zhaojiedi_linux_042_lvm.html
-    
-    # 底层的盘，创建pv 
     pvcreate /dev/nvme0n2
-    # 创建vg 
     vgcreate mcdata /dev/nvme0n2
-    # 创建LV
     lvcreate -L 59G -n lv_mcdata mcdata
-    # 创建存储目录
-    mkdir /home/mc
-
-    # 挂载存储目录
-    mount /dev/mcdata/lv_mcdata /home/mc
     mkfs.ext4 /dev/mcdata/lv_mcdata
+    mkdir /home/mc
     mount /dev/mcdata/lv_mcdata /home/mc
-
-    # 永久挂载， 非常关键， 避免开机挂载丢失。
     echo "/dev/mcdata/lv_mcdata /home/mc ext4 defaults 0 0" >> /etc/fstab
-    # 查看挂载情况
-    reboot 
-    df -h 
-
+    df -h
 
 软件仓库使用清华源
 ==================================================
-让仓库使用国内的源，是为了下载更快一些。
+- 使用国内镜像源可大幅提升软件包下载速度。
 
 .. code-block:: bash 
 
@@ -117,5 +102,38 @@
     deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security/ bookworm-security main contrib non-free non-free-firmware
     EOF
 
-    # 更新软件源
     apt update -y
+
+系统安全与优化建议
+==================================================
+- 定期更新系统和安全补丁：`apt update && apt upgrade -y`
+- 禁用 root 远程登录，使用密钥认证替代密码
+- 配置防火墙（如 ufw、firewalld），只开放必要端口（如 22、25565 等）
+- 安装 fail2ban 防止暴力破解
+- 关闭不必要的服务和端口，减少攻击面
+
+常见问题 QA
+==================================================
+:Q1:  为什么不用 Windows？  
+:A1:  Linux 性能更优、资源占用低、社区支持好，且大部分服务端和脚本对 Linux 兼容性更好。
+
+:Q2:  Debian/Ubuntu/CentOS 有什么区别？  
+:A2:  Debian 稳定、轻量，Ubuntu 驱动新特性好，CentOS 已停止维护，推荐 Debian 或 Ubuntu。
+
+:Q3:  SSH 连接不上怎么办？  
+:A3:  检查防火墙、端口、用户权限，确保 openssh-server 已安装并启动。
+
+:Q4:  如何扩容数据盘？  
+:A4:  使用 LVM 可在线扩容，具体操作见 LVM 相关文档。
+
+:Q5:  服务器安全如何保障？  
+:A5:  禁用 root 远程、使用密钥、定期更新、配置防火墙、安装 fail2ban。
+
+:Q6:  服务器重启后挂载丢失？  
+:A6:  检查 /etc/fstab 配置，确保自动挂载设置正确。
+
+:Q7:  如何选择云服务器配置？  
+:A7:  推荐 2C4G 起步，存储建议 SSD，带宽 10Mbps 以上，视玩家规模和 Mod/插件数量调整。
+
+.. note::
+   操作系统和环境配置是服务器稳定运行的基础，务必重视安全和规范操作。
