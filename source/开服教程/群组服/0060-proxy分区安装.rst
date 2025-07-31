@@ -1,131 +1,163 @@
+.. _Proxy安装:
 ==================================================
-proxy分区安装.rst
-==================================================
-
-
-proxy安装
+Proxy 安装
 ==================================================
 
+本节介绍如何在群组服环境下安装和配置Velocity 为例），实现多个分区（生存1区，生存2区、地皮1区）互通，提升服务器可扩展性和玩家体验。
 
-.. code-block:: bash 
-
-    # 从paper官方地址进行下载，复制下最新的url即可。 https://papermc.io/downloads/velocity
-    wget https://fill-data.papermc.io/v1/objects/f82780ce33035ebe3d6ea7981f0e6e8a3e41a64f2080ef5c0f1266fada03cbee/velocity-3.4.0-SNAPSHOT-522.jar
-    # 创建proxy目录
-    mkdir /home/mc/instances/proxy
-    # 复制jar
-    cp velocity-3.4.0-SNAPSHOT-522.jar /home/mc/instances/proxy/proxy.jar
-    # 进入目录，启动，获取默认配置
-    cd /home/mc/instances/proxy/
-    ls
-    # 启动一次
-    java -jar proxy.jar
-
-
-修改配置文件
+简介
 ==================================================
+Proxy（代理端）是实现 Minecraft 群组服（多分区/多世界）架构的核心组件。常见的 Proxy 有 Velocity、BungeeCord、Waterfall 等。  
+本教程以 Velocity 为例，演示如何搭建 Proxy 端、配置分区转发、实现玩家无缝切换分区。
 
-.. code-block:: bash 
-
-    # 备份默认的文件。 养成好习惯， 后面的备份要带日期格式化。
-    cp velocity.toml velocity.toml.default
-    
-    root@mc:/home/mc/instances/proxy# diff velocity.toml velocity.toml.default
-    16c16
-    < online-mode = false
-    ---
-    > online-mode = true
-    37c37
-    < player-info-forwarding-mode = "modern"
-    ---
-    > player-info-forwarding-mode = "NONE"
-    80,83c80,82
-    < dl1 = "127.0.0.1:10001"
-    < dp1 = "127.0.0.1:20001"
-    < sc1 = "127.0.0.1:30001"
-    < sc2 = "127.0.0.1:30002"
-    ---
-    > lobby = "127.0.0.1:30066"
-    > factions = "127.0.0.1:30067"
-    > minigames = "127.0.0.1:30068"
-    87c86
-    <     "login"
-    ---
-    >     "lobby"
-    91a91,99
-    > "lobby.example.com" = [
-    >     "lobby"
-    > ]
-    > "factions.example.com" = [
-    >     "factions"
-    > ]
-    > "minigames.example.com" = [
-    >     "minigames"
-    > ]
-    117c125
-    < tcp-fast-open = true
-    ---
-    > tcp-fast-open = false
-
-.. note:: 其中fast-open这个参数， linux开，window不开。
-
-
-配置联动
+参考资料
 ==================================================
+- Velocity 官方文档：https://docs.papermc.io/velocity/
+- Player Information Forwarding：https://docs.papermc.io/velocity/player-information-forwarding/
+- PaperMC 官方文档：https://docs.papermc.io/paper/
 
-`refer <https://docs.papermc.io/velocity/player-information-forwarding/>`_ 
+
+Proxy 安装
+==================================================
+1. 下载 Velocity 最新版本  
+   可在 [velocity官方页面](https://papermc.io/downloads/velocity) 获取下载链接。
+
+   .. code-block:: bash
+
+      wget https://fill-data.papermc.io/v1/objects/f82780ce33035ebe3d6ea7981f0e6e8a3e41a64f2080ef5c0f1266fada03cbee/velocity-3.4.0-SNAPSHOT-522.jar
+
+2. 创建 proxy 目录并放置 jar 包
+
+   .. code-block:: bash
+
+      mkdir /home/mc/instances/proxy
+      cp velocity-3.4.0-SNAPSHOT-522.jar /home/mc/instances/proxy/proxy.jar
+      cd /home/mc/instances/proxy/
+
+3. 首次启动，生成默认配置
+
+   .. code-block:: bash
+
+      java -jar proxy.jar
+
+4. 查看生成的配置文件（如 velocity.toml）
+
+配置文件修改
+==================================================
+1. 备份默认配置，便于回滚
+
+   .. code-block:: bash
+
+      cp velocity.toml velocity.toml.default
+
+2. 主要配置项说明（以 diff 形式展示常用修改项）
+
+   .. code-block:: diff
+
+      16c16
+      < online-mode = false
+      ---
+      > online-mode = true
+      37c37
+      < player-info-forwarding-mode = "modern"
+      ---
+      > player-info-forwarding-mode = "NONE"
+      80,83c80,82
+      < dl1 = "127.0.0.1:10001"
+      < dp1 = "127.0.0.1:20001"
+      < sc1 = "127.0.0.1:30001"
+      < sc2 = "127.0.0.1:30002"
+      ---
+      > lobby = "127.0.0.1:30066"
+      > factions = "127.0.0.1:30067"
+      > minigames = "127.0.0.1:30068"
+      87c86
+      <     "login"
+      ---
+      >     "lobby"
+      91a91,99
+      > "lobby.example.com" = [
+      >     "lobby"
+      > ]
+      > "factions.example.com" = [
+      >     "factions"
+      > ]
+      > "minigames.example.com" = [
+      >     "minigames"
+      > ]
+      117c125
+      < tcp-fast-open = true
+      ---
+      > tcp-fast-open = false
+
+关键配置说明：
+
+- online-mode = false：Proxy 端统一验证，后端分区需关闭正版验证  
+- player-info-forwarding-mode = "modern"：推荐使用 modern，保证皮肤/正版信息转发  
+- tcp-fast-open：Linux 可开启，Windows 建议关闭
 
 
-.. code-block:: bash 
+配置联动（Proxy 与分区服务端）
+==================================================
+1. 生成并设置 forwarding.secret
 
-    # 设置proxy->子服务器的认证信息
-    echo "panda_mc_142857" >forwarding.secret
+   .. code-block:: bash
 
-    cd /home/mc/instances/login 
-    cp config/paper-global.yml config/paper-global.yml.default
+      echo "panda_mc_142857" >forwarding.secret
 
-    # root@mc:/home/mc/instances/login# diff config/paper-global.yml config/paper-global.yml.default
-    113c113
-    <     online-mode: false
-    ---
-    >     online-mode: true
-    116,118c116,118
-    <     enabled: true
-    <     online-mode: false
-    <     secret: panda_mc_142857
-    ---
-    >     enabled: false
-    >     online-mode: true
-    >     secret: ''
+2. 修改各分区（如 login、sc1、sc2、dp1 等）的 Paper 配置
 
-    # 同样要修改下对应的sc1, sc2 ,dp1 的， 
+   .. code-block:: diff
 
-    # 重启所有的服务器
-    systemctl restart mc_proxy mc_dp1 mc_login mc_sc1 mc_sc2 
-    # 这里定义一个别名到/etc/profile文件中， 后面重启所有服务，方便一些。
-    # 需要将下面alias的文件行补充到/etc/profile文件中。 
-    root@mc:/home/mc/instances/dp1# tail -n 2 /etc/profile
-    alias mc_restart="systemctl restart mc_proxy mc_dp1 mc_login mc_sc1 mc_sc2"
-    # 让文件生效
-    source /etc/profile 
+      # config/paper-global.yml
+      113c113
+      <     online-mode: false
+      ---
+      >     online-mode: true
+      116,118c116,118
+      <     enabled: true
+      <     online-mode: false
+      <     secret: panda_mc_142857
+      ---
+      >     enabled: false
+      >     online-mode: true
+      >     secret: ''
 
+.. note:: 各分区的 `online-mode` 必须为 false, 而且`secret` 填写与 forwarding.secret 一致， 避免proxy和分区不通。
+
+
+1. 重启所有服务端
+
+   .. code-block:: bash
+
+      systemctl restart mc_proxy mc_dp1 mc_login mc_sc1 mc_sc2
+
+2. 推荐设置快捷命令到 /etc/profile
+
+   .. code-block:: bash
+
+      echo 'alias mc_restart="systemctl restart mc_proxy mc_dp1 mc_login mc_sc1 mc_sc2"' >> /etc/profile
+      source /etc/profile
 
 验证效果
 ==================================================
+- 启动所有分区和 proxy 后，玩家可通过 `/server sc2` 等命令在 dl1(登录1区) 与 sc2（生存2区）间切换。
 
-通过执行/server sc2 就可以从login分区切换到sc2(生存2区了)
 
 .. image:: ./imgs/切换分区.jpg
 
-
-    
-常见问题QA
+常见问题 QA
 ==================================================
+:Q1:  java.lang.IllegalStateException: Backend server is online-mode!  
+:A1:  后端分区的 server.properties 里的 online-mode 必须为 false
 
-- Q1：  java.lang.IllegalStateException: Backend server is online-mode!
-- A1:  你的后端配置online-mode是true的，需要修改server.properties里面的online-mode为false 
+:Q2:  lost connection: Unable to verify player details  
+:A2:  proxy 和分区的 secret 不一致，核对 velocity 的 forwarding.secret 和各分区 paper-global.yml 的 secret
+
+:Q3:  玩家皮肤/正版信息丢失  
+:A3:  player-info-forwarding-mode 建议设为 modern，且 proxy 与后端配置一致
+
+:Q4:  端口冲突或无法连接  
+:A4:  检查各分区端口是否唯一，防火墙是否放行。
 
 
-- Q2: lost connection: Unable to verify player details
-- A2: proxy 和分区的secret不正确，核对vel的forwarding.secret 文件和，paper的config/paper-global文件的key是否一致。
-  

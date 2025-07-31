@@ -4,38 +4,54 @@
 核心端的选择
 ==================================================
 
-.. note::  这里介绍的都是服务端的，非客户端，如果你不是腐竹，请不要看这里。
+这里介绍的都是服务端的，非客户端，如果你不是腐竹，请不要看这里。
 
-市面上的核心端还是比较多的。这里简单列举几个比较知名的。
+市面上的核心端还是比较多的。这里简单列举几个比较知名的，并针对不同玩法场景给出推荐。
 
 官方核心
 ==================================================
 Minecraft Server 是 Mojang 官方制作的原版服务端，更新非常快，基本上和 Minecraft 客户端版本同时发布，不能安装任何 Mod 和插件，只能够使用原版的命令和物品，适合基友服联机使用。
 
-下载地址： https://www.minecraft.net/en-us/download/server
+**适用场景：**  
+- 纯净生存服  
+- 10人以下小型联机  
+- 不需要插件和 Mod 的环境
+
+官方核心下载地址： `官方核心 <https://www.minecraft.net/en-us/download/server>`_
 
 Paper核心
 ==================================================
 Spigot 的进一步优化版本，在相关算法方面，较 Spigot 有所提高，优化 TPS 等，支持 CraftBukkit 和 Spigot 插件，API 没有太大修改。
 
-核心下载地址：`paper <https://papermc.io/downloads>`_ 
+**适用场景：**  
+- 普通生存服（推荐）  
+- 红石服、生电服（对红石优化较好，性能强）  
+- 追求高性能、插件丰富的中大型服务器
 
-插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+- 核心下载地址：`paper <https://papermc.io/downloads>`_ 
+- 插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+
+.. note:: 这里paper可以使用bukkit的插件，也可以使用spigotmc的插件。
 
 CatServer
 ==================================================
-CatServer是1.12.2的Forge+Bukkit+Spigot服务端核心,国内最早开发的高版本核心, 支持大部分MOD和插件同时稳定运行。
-核心下载地址： `catserver <https://catmc.org/>`_
+CatServer 是 1.12.2 的 Forge+Bukkit+Spigot 服务端核心，国内最早开发的高版本核心，支持大部分 MOD 和插件同时稳定运行。
 
-插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+**适用场景：**  
+- 需要同时使用 Mod 和插件的服  
+- 1.12.2 版本下的多玩法混合服
 
-mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
+- 核心下载地址： `catserver <https://catmc.org/>`_
+- 插件下载地址：`paper plugins <https://www.spigotmc.org/>`_  `bukkit plugins <https://www.spigotmc.org/>`_
+- mod下载地址： `forge mods <https://www.curseforge.com/minecraft/mc-mods>`_
 
 Bedrock Server
 ==================================================
 Bedrock 是 Minecraft PE 基岩版，也叫携带版或手机版，Bedrock Server 是 Mojang 官方提供的服务端。
 
-Bedrock Server 不能安装插件，只能用于纯净游戏联机使用。支持多平台联机。
+**适用场景：**  
+- 基岩版玩家联机  
+- 纯净生存/小游戏等，不支持插件和 Mod
 
 核心下载地址：`bedrock <https://www.minecraft.net/en-us/download/server/bedrock>`_
 
@@ -44,9 +60,21 @@ Sponge Forge
 Sponge 是一个全新的服务端，支持 Sponge 的专用插件，可装 Mod，兼容性比 Cauldron 相比提高了不少，适合开 MOD 服，支持的版本非常高，是目前支持 MOD 的服务端里兼容版本最高的服务端。
 但是 Sponge 本身不支持 Bukkit 插件（即使有兼容层，效果也不是很好，只能支持一般的插件），需要服务器的配置比较高，启动速度不佳。
 
-核心下载地址： `sponge <https://spongepowered.org/downloads/spongeforge>`_
+**适用场景：**  
+- 重度 MOD 服（如科技、魔法等大型 Mod 包）  
+- 需要高版本 Mod 支持的服务器
 
-mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
+- 核心下载地址： `sponge <https://spongepowered.org/downloads/spongeforge>`_
+- mod下载地址： `forge mods <https://www.curseforge.com/minecraft/mc-mods>`_
+
+典型玩法场景推荐
+==================================================
+
+- **普通生存服**：推荐 Paper，兼容性好、性能强、插件丰富。
+- **红石服/生电服**：强烈推荐 Paper，红石优化好，支持高负载红石机器和生电工程。
+- **MOD服**：推荐 Sponge Forge（高版本）、CatServer（1.12.2），可根据所需 Mod 选择。
+- **混合服（插件+Mod）**：推荐 CatServer（仅限 1.12.2）。
+- **基岩版服**：仅能选择 Bedrock Server。
 
 核心对比
 ==================================================
@@ -55,8 +83,45 @@ mod下载地址： `forege mods <https://www.curseforge.com/minecraft/mc-mods>`_
    :header: "核心名字", "适合场景"
    :widths: 20, 40
 
-   "官方核心", "10人以下联机；不需要插件，mod的"
-   "Paper", "百人或者几十人场景联机；追求性能，比较推荐"
-   "CatServer", "同时使用mod和插件的"
-   "Bedrock Server", "官方基岩，不需要插件，mod的"
-   "Sponge Forge", "mod服重度推荐"
+   "官方核心", "10人以下纯净生存服，不需要插件和 Mod"
+   "Paper", "普通生存服、红石服、生电服、百人规模、追求性能和插件生态"
+   "CatServer", "1.12.2下需要同时用 Mod 和插件的混合服"
+   "Bedrock Server", "基岩版纯净服，不支持插件和 Mod"
+   "Sponge Forge", "高版本重度 Mod 服，支持大型 Mod 包"
+
+.. note::
+   红石服/生电服：指以红石机器、自动化、刷怪塔等为主的高负载玩法服务器，对性能和红石兼容性要求极高，Paper 是目前公认的最佳
+
+
+常见问题 QA
+==================================================
+
+:Q1: Paper 和 Spigot、Bukkit 有什么区别？  
+:A1: Paper 是 Spigot 的进一步优化版本，兼容 Bukkit 和 Spigot 插件，性能更好，支持更多高级功能。推荐优先选择 Paper。
+
+:Q2: 红石服/生电服为什么推荐 Paper？  
+:A2: Paper 对红石电路和高频生电机器有专门优化，能显著提升服务器 TPS，减少卡顿，是红石/生电玩家的首选。
+
+:Q3: 想要同时用 Mod 和插件，选哪个核心？  
+:A3: 仅 1.12.2 版本可选 CatServer，或高版本用 Sponge Forge（但插件兼容性有限）。
+
+:Q4: Bedrock Server 能装插件或 Mod 吗？  
+:A4: 官方 Bedrock Server 不支持插件和 Mod，只适合纯净基岩版联机。
+
+:Q5: 服务器核心能随时更换吗？  
+:A5: 不同核心的数据格式和兼容性不同，跨核心更换需备份存档并测试兼容性，建议开服前选定核心。
+
+:Q6: MOD服推荐用哪个核心？  
+:A6: 高版本推荐 Sponge Forge，1.12.2 推荐 CatServer。需根据所用 Mod 版本选择 Forge/Sponge 版本。
+
+:Q7: Paper 支持多少玩家？  
+:A7: 取决于服务器硬件和优化，百人规模无压力。红石服/生电服建议硬件配置更高。
+
+:Q8: CatServer/Sponge Forge 支持正版验证吗？  
+:A8: 支持，可在 server.properties 配置 online-mode=true 开启正版验证。
+
+:Q9: 服务器核心如何获取和更新？  
+:A9: 请认准官方渠道下载，定期关注新版本发布，升级前务必备份数据。
+
+:Q10: 选择核心时还有哪些注意事项？  
+:A10: 需考虑插件/Mod 兼容性、社区活跃度、性能优化、后续维护
