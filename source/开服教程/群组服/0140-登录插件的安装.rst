@@ -1,11 +1,10 @@
 ==================================================
 登录基础插件的安装
 ==================================================
-登录插件是为了解决用户来你的服务器，认证的问题， 不是每个人都是正版用户，离线的用户也是需要关注的。 
+登录插件用于解决玩家身份认证问题，支持正版与离线用户共存，是群组服安全的第一道防线。
 
-认证插件对比
+插件对比
 ==================================================
-
 .. csv-table:: Minecraft认证插件对比
    :header: "插件名称", "经典程度", "免费", "GUI界面", "配置灵活性", "代理支持", "多平台兼容", "备注"
    :widths: 15, 10, 8, 10, 12, 12, 12, 21
@@ -22,53 +21,43 @@
    "SecureLogin", "低", "是", "否", "中", "否", "是", "支持会话记忆和多因素认证"
    "LoginX", "低", "是", "否", "中", "否", "是", "功能全面，配置简单"
 
-我们选择authmereload方案。 
-
-authmereload简介
+推荐选择项
 ==================================================
+- **AuthMe Reloaded**：功能最全，社区活跃，兼容性好，适合绝大多数生存/群组服。
+- 其他插件可根据特殊需求选用，如 BungeeAuth（代理端专用）、AdvancedLogin（需GUI/付费）。
 
-- 电子邮件恢复系统！
-- 用户名欺骗保护。
-- 国家白名单/黑名单！（国家代码）
-- 内置反机器人系统！
-- ForceLogin 功能：管理员可以通过控制台命令登录所有帐户！
-- 避免出现“从其他位置登录”消息！
-- 双因素（2FA）支持！
-- 会话登录！
-- MySQL 和 SQLite 后端支持！
-- 与 Citizens2、CombatTag、CombatTagPlus 和 ChestShop 完全兼容！
-- 与BuildCraft 或 RedstoneCraft等 Minecraft 模组兼容
-- 受限用户（将用户名与 IP 关联）
-- 保护玩家的库存，直到正确的身份验证
-- 保存玩家退出的位置
-- 自动数据库备份
-- 多种语言支持。
-- 从其他插件（如 Rakamak、xAuth、CrazyLogin、RoyalAuth 和 vAuth）导入旧数据库
+AuthMe Reloaded 简介
+==================================================
+AuthMe Reloaded 是 Minecraft 最主流的离线/混合认证插件，支持多种数据库、二次验证、反机器人、IP绑定、邮件找回等功能，兼容绝大多数服务端和插件。
 
 - spigotmc: https://www.spigotmc.org/resources/authmereloaded.6269/
 - github: https://github.com/AuthMe/AuthMeReloaded
-- docs: 
+- 官方文档: https://github.com/AuthMe/AuthMeReloaded/wiki
 
-创建数据库
+安装步骤
 ==================================================
-.. code-block:: sql 
+1. 创建数据库（推荐 MariaDB/MySQL）  
+   .. code-block:: sql
+      create database d_authme CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-    create database  d_authme CHARACTER SET utf8 COLLATE utf8_general_ci;
+2. 下载 AuthMe Reloaded jar 包，放到所有分区 plugins 目录  
+   .. code-block:: bash
+      wget https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0/AuthMe-5.6.0.jar
+      cp AuthMe-5.6.0.jar /home/mc/instances/dl1/plugins/
+      cp AuthMe-5.6.0.jar /home/mc/instances/dp1/plugins/
+      cp AuthMe-5.6.0.jar /home/mc/instances/sc1/plugins/
+      cp AuthMe-5.6.0.jar /home/mc/instances/sc2/plugins/
 
-下载安装
+3. 重启所有分区服务端  
+   .. code-block:: bash
+      systemctl restart mc_dl1 mc_dp1 mc_sc1 mc_sc2
+
+配置说明
 ==================================================
-从spigotmc就可以下载的， 下载好jar包直接放入到plugin目录， 原则上面只需要放到dl1分区的，但是为了安全考虑，还是需要给后端的所有的分区都放置。
+- 修改 `/home/mc/instances/login/plugins/AuthMe/config.yml`，推荐使用 MariaDB 后端，设置数据库连接信息、语言、欢迎消息等。
+- 关键配置项 diff 示例（仅展示部分）：
 
-配置
-==================================================
-
-
-.. code-block:: bash 
-
-    # 下载
-    wget https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0/AuthMe-5.6.0.jar
-    # 放到login分区的plugins目录，然后重启， 修改配置文件如下。 
-    root@mc:/home/mc/instances/login/plugins/AuthMe# diff config.yml config.yml.default
+.. code-block:: diff
     4c4
     <     backend: MARIADB
     ---
@@ -105,30 +94,16 @@ authmereload简介
     <     messagesLanguage: zhcn
     ---
     >     messagesLanguage: en
-    124c124
-    <     serverName: Your Minecraft Server
-    ---
-    >     serverName: Your Minecraft Server
     304c304
     <     useWelcomeMessage: false
     ---
     >     useWelcomeMessage: true
 
-
-
-    # 复制到其他的分区
-    cp -r AuthMe* /home/mc/instances/dp1/plugins/
-    cp -r AuthMe* /home/mc/instances/sc1/plugins/
-    cp -r AuthMe* /home/mc/instances/sc2/plugins/
-
-    # 重启几个分区
-    systemctl restart mc_dp1 mc_sc1 mc_sc2 
+- 配置完成后，复制到其他分区并重启服务端。
 
 权限配置
 ==================================================
-
-.. code-block:: bash 
-
+.. code-block:: bash
     # 创建一个g_authme的权限组
     /lp creategroup g_authme 0 g_authme
     # 添加权限
@@ -136,7 +111,17 @@ authmereload简介
     # 让default用户组继承这个用户组的权限
     /lp group default parent add g_authme
 
+常见问题 QA
+==================================================
+:Q1: 登录插件安装后无法注册/登录？  
+:A1: 检查数据库连接、配置文件、服务端日志，确认 AuthMe 已正常加载。
 
+:Q2: 注册/登录提示无权限？  
+:A2: 检查 LuckPerms 权限配置，确保 default 组已继承 g_authme 权限组。
 
+:Q3: 多分区需要都安装吗？  
+:A3: 推荐所有分区都安装 AuthMe，保证认证一致性和安全性。
 
-    
+:Q4: 如何启用二次验证/邮件找回？  
+:A4: 参考官方文档，配置相关功能项并测试。
+

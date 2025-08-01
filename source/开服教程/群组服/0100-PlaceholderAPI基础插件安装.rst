@@ -2,81 +2,113 @@
 PlaceholderAPI基础插件安装
 ==================================================
 
-服务端需要很多插件的， 插件和插件是有依赖关系，PlaceholderAPI是一个支持变量的插件， 非常重要，我们需要前置安装一下。
+PlaceholderAPI 是 Minecraft 服务器最常用的变量支持插件，允许其他插件通过统一格式显示各种信息（如玩家、服务器、经济、权限等），是菜单、聊天、公告等功能的基础依赖。
 
-- `placeholderapi <https://www.spigotmc.org/resources/placeholderapi.6245/>`_ 
-- `帮助文档 <https://wiki.placeholderapi.com/users/commands/>`_ 
-
-介绍
+插件简介
 ==================================================
-PlaceholderAPI 是 Spigot 服务器的插件，它允许服务器所有者以统一的格式显示来自各种插件的信息。 对特定插件的支持由插件本身或通过扩展提供。 
-扩展可以通过 PAPI 扩展云在ecloud下载。 目前有超过 230 多个扩展支持各种插件，例如 Essentials、Factions、LuckPerms 和 Vault。
-安装到paper端，我们先安装到主城区域。安装比较简单，直接将jar包放到plugins重启服务器即可。
+- 支持 230+ 扩展，覆盖主流插件
+- 统一变量格式，便于跨插件调用
+- 支持 Proxy 和所有分区
+- 免费开源，长期维护
 
+.. image:: https://wiki.placeholderapi.com/assets/images/papi-banner.png
+   :width: 600px
+   :align: center
 
+关键链接
+==================================================
+- SpigotMC: https://www.spigotmc.org/resources/placeholderapi.6245/
+- 官方文档: https://wiki.placeholderapi.com/users/commands/
+- 扩展列表: https://api.extendedclip.com/all/
+- 变量列表: https://wiki.placeholderapi.com/users/placeholder-list/#standalone
 
-安装插件
-================================================== 
-proxy + 分区都要安装， 放置到plugin目录即可， 然后重启。 
-Placeholder本身的config.yml文件没有啥可以修改的。 这个插件提供变量能力支持，具体的变量需要其他的下载。我们通过ecloud进行下载。
+安装步骤
+==================================================
+1. 下载 PlaceholderAPI jar 包，放到所有分区和 Proxy 的 plugins 目录
+2. 重启所有服务端，确认插件正常加载
+3. 无需复杂配置，config.yml 默认即可
+
+.. code-block:: bash
+
+    # 下载并安装
+    wget https://cdn.spigotmc.org/PlaceholderAPI.jar
+    cp PlaceholderAPI.jar /home/mc/instances/dl1/plugins/
+    cp PlaceholderAPI.jar /home/mc/instances/dp1/plugins/
+    cp PlaceholderAPI.jar /home/mc/instances/sc1/plugins/
+    cp PlaceholderAPI.jar /home/mc/instances/sc2/plugins/
+    cp PlaceholderAPI.jar /home/mc/instances/proxy/plugins/
+    # 重启所有服务端
 
 配置修改
-================================================== 
-
-.. code-block:: bash 
-
-    # 修改下server_name 字段， 后面获取一些场景要使用这个placehold
-    # 生存一区为sc1 
-    # 生产2区位sc2
-    # 登录1区位dl1
-    # proxy 为proxy 
-    # 地皮一区为dp1
+==================================================
+- 一般无需修改 config.yml
+- 可根据分区设置 server_name 字段，便于变量区分
+- 推荐所有分区都安装，保证变量同步
 
 常见扩展
 ==================================================
-
 .. csv-table:: PlaceholderAPI扩展列表
    :header: "扩展名称", "功能描述"
    :widths: 25, 75
    :delim: ,
 
-   "`Player <https://api.extendedclip.com/expansions/player/>`_", "提供玩家相关的占位符，如名称、UUID、在线时间、游戏模式等"
-   "`Server <https://api.extendedclip.com/expansions/server/>`_", "提供服务器相关的占位符，如在线玩家数、TPS、服务器名称、MOTD等"
-   "`LuckPerms <https://api.extendedclip.com/expansions/luckperms/>`_", "提供基于LuckPerms权限插件的占位符，如玩家组、权限节点、前缀后缀等"
-   "`Vault <https://api.extendedclip.com/expansions/vault/>`_", "提供基于Vault经济/权限/物品插件的占位符，如玩家余额、权限组等"
-   "`PlayerPoints <https://api.extendedclip.com/expansions/playerpoints/>`_", "提供PlayerPoints插件的占位符，显示玩家点数和排名等"
-   "`CheckItem <https://api.extendedclip.com/expansions/checkitem/>`_", "提供物品检查相关的占位符，如玩家手持物品、背包物品数量等"
-   "`Essentials <https://api.extendedclip.com/expansions/essentials/>`_", "提供Essentials插件的占位符，如玩家家的位置、飞行状态、AFK状态等"
+   "`Player <https://api.extendedclip.com/expansions/player/>`_", "玩家相关变量，如名称、UUID、在线时间、游戏模式等"
+   "`Server <https://api.extendedclip.com/expansions/server/>`_", "服务器相关变量，如在线人数、TPS、MOTD等"
+   "`LuckPerms <https://api.extendedclip.com/expansions/luckperms/>`_", "权限插件变量，如玩家组、前缀、后缀等"
+   "`Vault <https://api.extendedclip.com/expansions/vault/>`_", "经济/权限/物品变量，如余额、权限组等"
+   "`PlayerPoints <https://api.extendedclip.com/expansions/playerpoints/>`_", "点数插件变量，显示玩家点数和排名"
+   "`CheckItem <https://api.extendedclip.com/expansions/checkitem/>`_", "物品检查相关变量，如手持物品、背包物品数量"
+   "`Essentials <https://api.extendedclip.com/expansions/essentials/>`_", "Essentials插件变量，如家、飞行状态、AFK等"
 
-安装扩展
-================================================== 
+扩展安装与管理
+==================================================
+.. code-block:: bash
 
-.. code-block:: bash 
-
-    # 方式1: 终端里面的安装方式，如果直接下载放到extension 那也是一样的。 
+    # 方式1：游戏内命令安装扩展
     /papi ecloud download Player
+    /papi ecloud download LuckPerms
+    /papi ecloud download Vault
+    /papi ecloud download Essentials
 
-    # 方式2： 通过ecloud https://api.extendedclip.com/all/ 搜索，然后进行下载，放到/plugins/PlaceholderAPI/expansions/下
+    # 方式2：手动下载扩展，放到 /plugins/PlaceholderAPI/expansions/ 目录
 
-    # 重载变量,上面的2个方式都是仅仅下载，生效不生效还是需要执行reload命令的。
-    /papi reload 
+    # 安装后需重载变量
+    /papi reload
 
+变量解析与调试
+==================================================
+.. code-block:: bash
 
-解析变量
-==================================================  
-安装好了之后，可以在游戏内通过
-
-.. code-block:: bash 
-
+    # 解析变量，调试输出
     /papi parse mc__panda %player_name%
-    # 会输出mc__panda 
+    # 输出：mc__panda
 
-.. note:: 这是一个非常好的一个debug的工具。
+.. note:: 这是一个非常实用的 debug 工具，推荐用于变量测试。
 
+变量搜索与文档
+==================================================
+- 官方变量列表：https://wiki.placeholderapi.com/users/placeholder-list/#standalone
+- 各插件官方文档通常也有详细变量说明
 
-搜索变量
-==================================================  
-这个地方是placeholder 和其他的插件注册的变量， 可以参考一下， 插件维度，一般在插件的具体官方文档里面也有placeholder api的详细介绍。 
-`placeholder api list <https://wiki.placeholderapi.com/users/placeholder-list/#standalone>`_ 
+常见问题 QA
+==================================================
+:Q1:  安装后变量无效？  
+:A1:  检查扩展是否已安装，执行 `/papi reload`，确认插件已加载。
 
+:Q2:  某些变量解析为空？  
+:A2:  对应插件未安装或未启用扩展，需补充相关插件和扩展。
 
+:Q3:  Proxy 端需要安装吗？  
+:A3:  推荐所有分区和 Proxy 都安装，保证变量同步。
+
+:Q4:  如何批量安装扩展？  
+:A4:  可用脚本或游戏内命令批量下载所有常用扩展。
+
+优化建议
+==================================================
+- 所有分区统一安装 PlaceholderAPI，避免变量失效
+- 定期更新扩展，保证兼容性
+- 结合 LuckPerms、Vault、Essentials 等插件，发挥最大变量能力
+
+.. note::
+   PlaceholderAPI 是菜单、聊天、公告等功能的基础依赖，建议优先安装

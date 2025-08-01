@@ -2,43 +2,65 @@
 基础指令插件安装
 ==================================================
 
+EssentialsX 是 Spigot 服务器的必备插件，为任何大小和规模的服务器提供核心功能。  
+本节介绍 EssentialsX 的安装、权限配置、常见问题和优化建议，适用于所有分区。
 
-
-
-EssentialsX简介
+插件简介
 ==================================================
-EssentialsX 是 Spigot 服务器的必备插件，为任何大小和规模的服务器提供核心功能。 这些功能包括：
+EssentialsX 提供了如下核心功能：
 
-- 玩家设置家传送加
+- 玩家设置家与传送
 - 服务器路径点和新手工具包
-- 玩家之间的可以发私聊消息
-- 传送和被传送请求
-- 各种审核工具，包括踢出、临时禁止、禁言和监禁
-- 内置经济功能包括标志商店、命令成本和完整的 Vault 支持
+- 玩家私聊、邮件、经济系统
+- 传送请求与接受
+- 审核工具：踢出、禁言、监禁、临时禁止
+- 内置经济功能，支持 Vault
+- 服务器公告、MOTD、规则等
 
-下载
+.. image:: https://essentialsx.net/assets/images/logo.png
+   :width: 300px
+   :align: center
+
+关键链接
 ==================================================
-essentials的官方地址为： https://essentialsx.net/wiki/Home.html我们这里安装2个，EssentialsXCore的和EssentialsX Spawn这2个。 
-其他的后可以可以根据自己需要选择。具体操作如下。
+- 官网与文档：https://essentialsx.net/wiki/Home.html
+- 权限参考：https://essinfo.xeya.me/permissions.html
+- 下载页面：https://essentialsx.net/downloads.html
 
+安装步骤
+==================================================
+1. 下载 EssentialsXCore 和 EssentialsXSpawn 两个 jar 包
+2. 放到所有分区的 plugins 目录
+3. 重启所有服务端，确认插件正常加载
 
-.. code-block:: bash 
+.. code-block:: bash
 
-    # 下载2个java, 放到plugin 目录即可。 基本不用啥配置的。 
+    wget https://github.com/EssentialsX/Essentials/releases/latest/download/EssentialsX.jar
+    wget https://github.com/EssentialsX/Essentials/releases/latest/download/EssentialsXSpawn.jar
+    cp EssentialsX*.jar /home/mc/instances/dl1/plugins/
+    cp EssentialsX*.jar /home/mc/instances/dp1/plugins/
+    cp EssentialsX*.jar /home/mc/instances/sc1/plugins/
+    cp EssentialsX*.jar /home/mc/instances/sc2/plugins/
+    # 重启所有服务端
+
+配置说明
+==================================================
+- EssentialsX 默认配置即可满足大多数需求
+- 可根据实际需求修改 config.yml（如家数量、经济单位、欢迎消息等）
+- 推荐所有分区都安装，保证指令一致性
 
 权限设置
 ==================================================
-essential 提供了非常多的基础能力，我们需要给普通用于授予一下。 
+EssentialsX 提供了非常多的基础能力，需要通过 LuckPerms 授权给普通玩家。
 
-.. code-block:: bash 
+.. code-block:: bash
 
-    # 创建一个普通的ess权限组。
-    /lp creategroup g-essentials 0  g-essentials
+    # 创建一个普通的ess权限组
+    /lp creategroup g-essentials 0 g-essentials
     # 让默认组继承ess组
     /lp group default parent add g-essentials
 
-    # refer: https://essinfo.xeya.me/permissions.html
-    # 给ess普通组安排权限， 下面的一些指令，虽然后面我们要使用其他的插件替代， 但是还是要设置为true。 
+    # 给普通组分配常用权限（部分指令后续可用其他插件替代，但建议先全部授权）
     /lp group g-essentials permission set essentials.afk true
     /lp group g-essentials permission set essentials.afk.kickexempt true
     /lp group g-essentials permission set essentials.back true
@@ -76,14 +98,22 @@ essential 提供了非常多的基础能力，我们需要给普通用于授予�
     /lp group g-essentials permission set essentials.tpahere true
     /lp group g-essentials permission set essentials.tpdeny true
 
+    # VIP权限示例
+    #/lp creategroup gv-essentials 0 gv-essentials
+    #/lp group vip parent add gv-essentials
+    #/lp group gv-essentials permission set essentials.fly true
+    #/lp group gv-essentials permission set essentials.speed true
 
-    # 创建一个普通的ess权限组。
-    #/lp creategroup gv-essentials 0  gv-essentials
-    # 让默认组继承ess组
-    # /lp group vip parent add gv-essentials
+常见问题 QA
+==================================================
+:Q1: 安装后部分指令无效？  
+:A1: 检查 LuckPerms 权限配置，确认已授权 essentials.* 相关权限。
 
-    # 给essvip组安排权限
-    # /lp group gv-essentials permission set  essentials.fly true
-    # /lp group gv-essentials permission set  essentials.speed true
+:Q2: 家数量限制不生效？  
+:A2: 修改 EssentialsX config.yml 的 home 数量设置，重载插件。
 
+:Q3: 经济功能无法使用？  
+:A3: 检查 Vault 是否已安装，EssentialsX 经济依赖 Vault。
 
+:Q4: 指令冲突或报错？  
+:A4: 检查是否有其他插件覆盖了 EssentialsX 的指令，建议只保留一个同类插件。
