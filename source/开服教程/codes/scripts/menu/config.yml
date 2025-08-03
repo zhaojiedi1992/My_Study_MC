@@ -18,13 +18,11 @@ gui_menus:
 
     #  sell_common_menu:
   # file: sell_common.yml
-  sell_nongzuowu_menu:
-    file: sell_nongzuowu.yml
-  sell_jinshu_menu:
-    file: sell_nongzuowu.yml
+  sell:
+    file: sell.yml
   cmd:
     file: cmd.yml
   mhelp:
     file: mhelp.yml
-  mhelp_plot:
-    file: mhelp_plot.yml
+  mtools:
+    file: mtools.yml

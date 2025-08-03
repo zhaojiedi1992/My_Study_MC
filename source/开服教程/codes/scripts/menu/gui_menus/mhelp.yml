@@ -18,13 +18,12 @@ items:
     display_name: "&b&l关闭菜单"
     click_commands: 
     - '[close]'
-  'cmd':
+  'main':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
     lore: 
     - '&b左键 &a➥ &c主菜单'
-    data: 1
-    slot: 0
-    display_name: ""
+    slot: 49
+    display_name: "&c回主菜单"
     click_commands: 
     - '[openguimenu] cmd'
 
@@ -32,7 +31,6 @@ items:
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiZWIwZmJjNWU2NjAxZmU1MDQ3MDJjYWZmZGFhYzBlOGVhMTllMTFiY2FkZmJlZTBkMThjODlmNDZiYzFmZCJ9fX0='
     lore: 
     - '上一页'
-    data: 1
     slot: 46
     display_name: "<<<"
     click_commands: 
@@ -42,7 +40,6 @@ items:
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWI5Y2VjYzIxZDY3MGMxZmYyNzc4MTc2MjI1ZTI4NTBlMmVlMmY3Y2Y1NDEzYmIxNTY2N2Q5OGRiYjNjZjhiNSJ9fX0='
     lore: 
     - '下一页'
-    data: 1
     slot: 53
     display_name: ">>>"
     click_commands: 
@@ -54,7 +51,6 @@ items:
       - '&7每个玩家都可以免费获得&b10x10&7地皮范围'
       - '&7你如果还没有地皮可以通过主菜单点领取'
       - '&b左键 &a➥ &c查看地皮指令'
-    data: 1
     slot: 1
     display_name: "地皮帮助"
     click_commands: 
@@ -85,7 +81,6 @@ items:
     lore:
       - '&c注意:领地只可在生存区使用'
       - '&b左键 &a➥ &c查看地皮指令'
-    data: 1
     slot: 2
     display_name: "领地帮助"
     click_commands: 

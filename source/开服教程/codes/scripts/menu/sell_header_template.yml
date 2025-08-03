@@ -1,0 +1,20 @@
+menu_title: '&6&l系统商店 &8> &a收购 '
+size: 54
+open_command: 'sell'
+register_command: true
+items:
+  cancel_item:
+    material: 'RED_STAINED_GLASS_PANE'
+    display_name: '&c&l取消出售'
+    lore:
+    - '&7▏ &f点击关闭菜单'
+    left_click_commands:
+    - '[close]'
+  'main':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c主菜单'
+    slot: 49
+    display_name: "&c回主菜单"
+    click_commands: 
+    - '[openguimenu] cmd'

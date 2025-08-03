@@ -19,12 +19,18 @@ items:
     lore: 
     - '&b左键 &a➥ &c关闭菜单'
     - '&bESC键盘 &a➥ &c关闭菜单'
-    data: 1
-    slot: 10
+    slot: 8
     display_name: "&b&l关闭菜单"
     click_commands: 
     - '[close]'
-
+  'main':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c主菜单'
+    slot: 49
+    display_name: ""
+    click_commands: 
+    - '[openguimenu] cmd'
 
   'server_dl1':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyNzIzYWEwNjM3ZWE1MjA0NDQ3YmU1MzYxNTFmNTI5ZmU0OTA2ODI2ZDhjMDY2YzRkY2M1MDA3OWE2NDQ2NSJ9fX0='
@@ -32,8 +38,7 @@ items:
     - '&b名称 &a➥ &c登录1区'
     - '&b说明 &a➥ &c登录'
     - '&b指令 &a➥ &c/server sc2'
-    data: 1
-    slot: 0
+    slot: 1
     display_name: "dl1"
     click_commands: 
     - '[connect] dl1'
@@ -44,8 +49,7 @@ items:
     - '&b名称 &a➥ &c地皮1区'
     - '&b说明 &a➥ &c白嫖白嫖'
     - '&b指令 &a➥ &c/server dp1'
-    data: 1
-    slot: 1
+    slot: 2
     display_name: "dp1"
     click_commands: 
     - '[connect] dp1'
@@ -56,8 +60,7 @@ items:
     - '&b名称 &a➥ &c生存1区'
     - '&b说明 &a➥ &c圈地圈地'
     - '&b指令 &a➥ &c/server sc1'
-    data: 1
-    slot: 2
+    slot: 3
     display_name: "sc1"
     click_commands: 
     - '[connect] sc1'
@@ -69,8 +72,7 @@ items:
     - '&b名称 &a➥ &c生存2区'
     - '&b说明 &a➥ &c圈地圈地'
     - '&b指令 &a➥ &c/server sc2'
-    data: 1
-    slot: 3
+    slot: 4
     display_name: "sc2"
     click_commands: 
     - '[connect] sc2'
@@ -80,8 +82,7 @@ items:
     lore: 
     - '&b左键 &a➥ &c查看帮助指令'
     - '&b指令 &a➥ &c/server sc2'
-    data: 1
-    slot: 4
+    slot: 9
     display_name: "&b&l查看帮助"
     click_commands: 
     - '[openguimenu] mhelp'
@@ -89,30 +90,27 @@ items:
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjFhY2RmZGI2MjVkZWE4YTA0NGVmMDU0MjEwNjFjZDZkZGQ5ODY1ZTdjNjY1MTQ4OWFhZTU5ZDJiYzU2ZjAwOSJ9fX0='
     lore: 
     - '&b左键 &a➥ &c进入工具包'
-    data: 1
-    slot: 4
+    slot: 10
     display_name: "&b&l进入工具包"
     click_commands: 
     - '[openguimenu] mtools'
 
-  'shop_shougou':
+  'shop_sell':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ1NzNkNjU0NmJhNzFlZmYzYjY3ZTUxMTZiMGQ3NWUyOWFkZjY3MTM1ZTk1MzM4ZGNhODNlZWMyODhmMjcifX19'
     name: '&b&l系统收购商店'
     lore: 
     - '&b左键 &a➥ &c进入系统收购商店'
-    data: 1
-    slot: 4
+    slot: 11
     display_name: "&b&l系统收购商店"
     click_commands: 
-    - '[openguimenu] shop_shougou'
+    - '[openguimenu] sell'
 
-  'shop_chushou':
+  'shop_buy':
     material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ1NzNkNjU0NmJhNzFlZmYzYjY3ZTUxMTZiMGQ3NWUyOWFkZjY3MTM1ZTk1MzM4ZGNhODNlZWMyODhmMjcifX19'
-    name: '&b&l系统出售商店'
+    name: '&b&l系统购买商店'
     lore: 
-    - '&b左键 &a➥ &c进入系统出售商店'
-    data: 1
-    slot: 4
-    display_name: "&b&l系统出售商店"
+    - '&b左键 &a➥ &c进入系统购买商店'
+    slot: 12
+    display_name: "&b&l系统购买商店"
     click_commands: 
-    - '[openguimenu] shop_chushou'
+    - '[openguimenu] buy'

@@ -58,6 +58,14 @@ SkinsRestorer
     >     password: pass
     >     maxPoolSize: 10
 
+.. note:: 注意了， 这个插件是需要proxy + server都要放置的， 仅仅server是不太行的。
+
+给普通用户添加玩家权限
+
+.. code-block:: bash 
+
+    /lp group default permission set skinsrestorer.player true 
+
 
 箱子排序
 ==================================================
