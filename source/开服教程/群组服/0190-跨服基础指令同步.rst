@@ -1,28 +1,41 @@
 ==================================================
 跨服基础指令同步
 ==================================================
-我们群组服， 用户A在分区1，用户B在分区2， 需要直接tp过去， 需要插件支持，不然只能分区内的才能传输， 另外home也是同理的。 
+群组服环境下，玩家在不同分区（如生存区、地皮区等）之间需要实现跨服传送（tp）、家（home）等基础指令同步。默认 EssentialsX 仅支持分区内操作，推荐使用 HuskHomes 插件实现跨服 tp、home、warp 等功能。
 
+插件简介
+==================================================
+- 支持跨分区 tp、home、warp、spawn 等基础指令
+- 支持 MySQL/MariaDB 数据库后端，性能优异
+- 支持 Proxy/多分区环境，自动同步数据
+- 提供命令冲突解决方案，兼容 EssentialsX
+- 开源，文档完善
 
+.. image:: https://william278.net/images/huskhomes-banner.png
+   :width: 600px
+   :align: center
 
-`huskhomes <https://william278.net/docs/huskhomes/setup>`_ 
+关键链接
+==================================================
+- 官方文档: https://william278.net/docs/huskhomes/
+- 安装指南: https://william278.net/docs/huskhomes/setup
+- 命令冲突: https://william278.net/docs/huskhomes/command-conflicts
 
 创建数据库
 ==================================================
 .. code-block:: sql 
 
-    --  创建一个db, 方便luckperm权限插件使用的。 
     CREATE DATABASE d_huskhomes CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-安装
+安装步骤
 ==================================================
-现在好jar包，放到paper的plugins目录即可。 
+1. 下载 HuskHomes.jar，放到所有 Paper 分区的 plugins 目录
+2. 修改 config.yml，推荐使用 MariaDB/MySQL 后端，配置数据库连接信息
+3. 修改 server.yml，确保每个分区 server 名称唯一（如 dl1、sc1、dp1 等）
+4. 重启所有分区服务端
 
-.. code-block:: bash 
+.. code-block:: diff 
 
-    # 修改配置文件
-    root@mc:/home/mc/instances/dl1/plugins/HuskHomes# diff config.yml config.yml.default
     10c10
     < language: zh-cn
     ---
@@ -62,20 +75,17 @@
     ---
     >     password: ''
 
-    # 直接复制jar + 文件夹到其他的分区， 然后修改server.yml 文件。    
-    # 其他的分区， 需要修改下server.yml 文件。
-    # 生存一区就是sc1 ， 
-    # dp1 对应地皮一区。参考
-
-    # 重启所有分区。
+    # 复制 jar 包和配置文件到其他分区，修改 server.yml 文件，确保 server 名称唯一
+    # 生存一区：sc1，地皮一区：dp1，依次类推
+    # 重启所有分区
 
 解决命令冲突问题
 ==================================================
-home命令，tp命令，其实在 EssentialsX都有的， 不过这个是仅仅分区内使用的， 我们这个huskhome是可以跨分区的。 如果不做配置还是使用的老的命令，导致不符合预期。
+EssentialsX 默认的 home、tp 等命令仅支持分区内操作，会与 HuskHomes 冲突。需禁用 EssentialsX 的相关命令，确保 HuskHomes 接管所有跨服基础指令。
 
-.. code-block:: bash 
+.. code-block:: yaml
 
-    # EssentialsX config.yml file 找个disabled-commands 位置，设置如下内容。 
+    # EssentialsX config.yml 找到 disabled-commands，设置如下内容
     disabled-commands:
     - home
     - homes
@@ -103,13 +113,35 @@ home命令，tp命令，其实在 EssentialsX都有的， 不过这个是仅仅�
     - setspawn
     - back
 
-如果还有其他的问题，可以参考 `冲突问题 <https://william278.net/docs/huskhomes/command-conflicts>`_ 
-
+如有其他冲突问题，参考官方文档：  
+`冲突问题 <https://william278.net/docs/huskhomes/command-conflicts>`_
 
 权限配置
 ==================================================
-看了下官方文档， 基本上不用额外配置的， 默认的权限就是合适的。 
+HuskHomes 默认权限已适配大多数场景，无需额外配置。  
+如需自定义权限，可通过 LuckPerms 授权，参考官方命令文档：
 
-.. code-block:: bash 
+.. code-block:: bash
 
     # https://william278.net/docs/huskhomes/commands
+    # 示例：授权玩家使用 tp、home、warp 等命令
+    /lp group default permission set huskhomes.command.home true
+    /lp group default permission set huskhomes.command.sethome true
+    /lp group default permission set huskhomes.command.tp true
+    /lp group default permission set huskhomes.command.warp true
+
+常见问题 QA
+==================================================
+:Q1: 跨服 tp/home 无效？  
+:A1: 检查所有分区是否都安装 HuskHomes，server.yml 名称是否唯一，EssentialsX 是否已禁用相关命令。
+
+:Q2: 命令提示无权限？  
+:A2: 检查 LuckPerms 权限配置，确认已授权 huskhomes.command.* 相关权限。
+
+:Q3: 数据库连接失败？  
+:A3: 检查数据库地址、用户名、密码、端口等配置，查看服务端日志。
+
+:Q4: 玩家家/传送点丢失？  
+:A4: 检查数据库同步状态，定期备份数据库，必要时恢复数据。
+
+

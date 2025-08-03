@@ -2,14 +2,14 @@
 聊天插件安装
 ==================================================
 
+本节介绍群组服环境下的聊天插件选型、安装、权限配置、命令冲突解决与常见问题，适用于所有分区。
 
-简介
+插件简介
 ==================================================
+群组服每个分区都是独立进程，通过 Proxy 代理，默认聊天无法跨区。需要专门的聊天插件实现全服/跨服聊天。
 
-我们在服务器的每个分区都是独立的进程，通过proxy进行代理，那我在一个主城说话，生存区域的同学是看不到的，我们需要一款插件来支持群组服级别的聊天插件。
-
-聊天的插件比较多，我们这里推荐下venturechat。常用的聊天插件如下。
-
+常用聊天插件对比
+==================================================
 .. csv-table:: Minecraft聊天插件对比
    :header: "插件名称", "是否免费", "核心功能", "格式美化", "权限控制", "多频道支持", "兼容性", "备注"
    :widths: 15, 10, 20, 12, 12, 12, 15, 14
@@ -26,40 +26,44 @@
    "ChatControl", "否（付费）", "反垃圾信息、聊天监控", "中", "高", "是", "Spigot/Paper/BungeeCord", "付费插件，侧重聊天安全和过滤"
    "CMI", "否（付费）", "全能型插件含聊天模块", "高", "极高", "是", "Spigot/Paper", "付费全能插件，聊天功能只是其中一部分"
 
-我们选择的是Carbon这个聊天组件。
-
-
-Carbon的简介
+推荐选择项
 ==================================================
+- **CarbonChat**：现代化、跨平台、支持群组服跨服聊天，免费且功能全面。
+- **VentureChat**：多频道、兼容性强，适合需要复杂聊天管理的服务器。
+- 其他插件可根据特殊需求选用。
 
-`文档介绍 <https://github.com/Hexaoxide/Carbon/wiki>`_ 
-`下载地址 <https://modrinth.com/plugin/carbon>`_ 
+CarbonChat简介
+==================================================
+- 文档介绍: https://github.com/Hexaoxide/Carbon/wiki
+- 下载地址: https://modrinth.com/plugin/carbon
 
+安装步骤
+==================================================
+1. 下载 CarbonChat 插件 jar 包
+2. 放到所有分区的 plugins 目录
+3. 重启所有服务端
 
-.. code-block:: bash 
+.. code-block:: bash
 
-    # 下载插件
     wget https://cdn.modrinth.com/data/QzooIsZI/versions/2ptKcv94/carbonchat-paper-3.0.0-beta.32.jar
-    # 改名放到plugin目录里面来。 
-    # 重启
-    systemctl restart mc_dl1 
-
-
+    cp carbonchat-paper-3.0.0-beta.32.jar /home/mc/instances/dl1/plugins/
+    cp carbonchat-paper-3.0.0-beta.32.jar /home/mc/instances/dp1/plugins/
+    cp carbonchat-paper-3.0.0-beta.32.jar /home/mc/instances/sc1/plugins/
+    cp carbonchat-paper-3.0.0-beta.32.jar /home/mc/instances/sc2/plugins/
+    systemctl restart mc_dl1 mc_dp1 mc_sc1 mc_sc2
 
 权限设置
 ==================================================
+通过 LuckPerms 授权 CarbonChat 相关权限。
 
-.. code-block:: bash 
+.. code-block:: bash
 
     # 创建一个普通的carbot权限组。
     /lp creategroup g-carbot 0  g-carbot
     # 让默认组继承carbot组
     /lp group default parent add g-carbot
 
-    # 给carbot普通组安排权限
-
-    # 基础聊天权限
-    # https://github.com/Hexaoxide/Carbon/wiki/Permissions
+    # 给carbot普通组安排权限（参考官方文档）
     /lp group g-carbot permission set   carbon.channel.global.* true 
     /lp group g-carbot permission set   carbon.whisper.* true  
     /lp group g-carbot permission set   carbon.nickname.* true 
@@ -76,16 +80,13 @@ Carbon的简介
     /lp group g-carbot permission set   carbon.chatlinks true  
     /lp group g-carbot permission set   carbon.itemlink true 
 
-    
-
-解决命令冲突问题
+命令冲突解决
 ==================================================
-默认的tell msg r 这些都是使用的EssentialsX的，需要修改一下，让他不用，使用我们的这个提供的。 具体操作步骤如下。 
+EssentialsX 默认的 tell/msg/r/reply 等命令会与 CarbonChat 冲突，需禁用 EssentialsX 的相关命令。
 
+.. code-block:: yaml
 
-.. code-block:: bash 
-
-    # EssentialsX config.yml file 找个disabled-commands 位置，设置如下内容。 
+    # EssentialsX config.yml 找到 disabled-commands，设置如下内容
     disabled-commands:
     - tell
     - msg
@@ -95,6 +96,17 @@ Carbon的简介
     - whisper
     - pm
 
+常见问题 QA
+==================================================
+:Q1: 安装后跨服聊天无效？  
+:A1: 检查所有分区是否都安装 CarbonChat，Proxy 是否支持，权限是否已授权。
 
+:Q2: 部分聊天命令无权限？  
+:A2: 检查 LuckPerms 权限配置，确认已授权 carbon.* 相关权限。
 
+:Q3: 聊天命令冲突？  
+:A3: EssentialsX 的 tell/msg/reply 等需禁用，避免与 CarbonChat 冲突。
+
+:Q4: 聊天格式不美观？  
+:A4: 修改 CarbonChat 配置文件，支持自定义格式和频道设置。
 

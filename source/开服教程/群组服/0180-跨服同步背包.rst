@@ -1,60 +1,53 @@
 ==================================================
-跨服插件
+跨服同步背包插件安装
 ==================================================
-我们是群组服的， 一个proxy+多个分区的，玩家的背包，末影箱这些期望用户在从生存区转到登录区，是可以同步的。 
-dl1分区，大家根据情况决定是否要同步。
+群组服环境下，玩家在不同分区（如生存区、地皮区、主城等）切换时，背包、末影箱等数据默认无法同步。推荐使用 HuskSync 插件实现跨服背包、末影箱等数据的无缝同步。
 
-
-husksync
+插件简介
 ==================================================
-这个是开源的， 不过jar包是收费的， 我们可以自己编译的。 
+- 支持多分区背包、末影箱、状态、进度等数据同步
+- 支持 MySQL 数据库后端，性能优异
+- 支持 Redis 缓存加速
+- 提供数据备份、恢复、轮换等高级功能
+- 开源，jar包需自行编译或付费获取
 
-- 无缝同步： 当玩家更换服务器时，利用优化的 Redis 缓存超快速同步玩家数据，实现无缝体验。
-- 完整的玩家同步： 同步库存、末影箱、健康、饥饿、效果、进步、统计数据、锁定的地图等——不会遗漏任何数据！
-- 备份、恢复和轮换： 出错了？将玩家数据恢复到之前的状态。在游戏中轮换和管理数据快照！
-- 导入现有数据： 导入你的 MySQLPlayerDataBridge 数据，或从你现有的世界数据导入！无需重置服务器！
-- 与 Plan 完美配合： 通过 Plan 网络面板上的 HuskSync 分析与您的社区保持联系。
-- 可扩展 API 且开源： 需要更多？使用开发者 API 扩展插件。或者，通过我们的代码赏金系统提交拉取请求！
+.. image:: https://william278.net/images/husksync-banner.png
+   :width: 600px
+   :align: center
 
-- docs: https://william278.net/docs/husksync/
-- github: https://github.com/WiIIiam278/HuskSync
-
-构建husksync.jar包
+关键链接
 ==================================================
+- 官方文档: https://william278.net/docs/husksync/
+- GitHub: https://github.com/WiIIiam278/HuskSync
 
-.. code-block:: bash 
+构建 HuskSync.jar 包
+==================================================
+.. code-block:: bash
 
-    # 下载下来他的源码
     git clone git@github.com:WiIIiam278/HuskSync.git
-
-    # 切换分支， 这个按需了， 要看版本那个支持了。 
-    git checkout 3.8.5 
-    # 构建
+    git checkout 3.8.5
     ./gradlew clean build
+    # 构建结果在 target 目录
 
-    # 如果提示错误， snapshot的，可以在这个页面搜索，https://mvnrepository.com/artifact/net.kyori/adventure-platform-fabric/6.5.1  搜索一下版本，看看更新一下配置文件让他获取正确的版本。 
-    # build.gradle 的仓库可以新增一些。 
+    # 如遇依赖错误，可在 build.gradle 增加仓库源
     # maven { url 'https://maven.fabricmc.net/' }
     # maven { url 'https://api.modrinth.com/maven' }
 
-    # 构建完毕后， target目录就有构建结果了。 
-
-
 创建数据库
 ==================================================
-.. code-block:: sql 
+.. code-block:: sql
 
     CREATE DATABASE d_HuskSync CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-
-安装
+安装步骤
 ==================================================
-直接将jar包放到plugins目录里面。所有的分区都要放， proxy不用的。
+1. 将 HuskSync.jar 放到所有分区的 plugins 目录（Proxy 不需要）
+2. 修改 config.yml，推荐使用 MySQL 后端，配置数据库连接信息
+3. 修改 server.yml，确保每个分区 server 名称唯一（如 dl1、sc1、dp1 等）
+4. 重启所有分区服务端
 
-.. code-block:: bash 
+.. code-block:: diff
 
-    root@mc:/home/mc/instances/dl1/plugins/HuskSync# diff config.yml config.yml.default
     11c11
     < language: zh-cn
     ---
@@ -86,28 +79,57 @@ husksync
     ---
     >     password: ''
 
-    # 其他的分区， 需要修改下server.yml 文件。
-    # 生存一区就是sc1 ， 
-    # dp1 对应地皮一区。
+    # 其他分区需修改 server.yml 文件，确保 server 名称唯一
+    # 生存一区：sc1，地皮一区：dp1，依次类推 
 
-
-测试
+测试方法
 ==================================================
-在dl1 进行物质改变，然后通过/server dp1 切换到地皮一区，看看背包是否正常，来验证这个插件是否工作正常。 
+在 dl1 分区进行背包物品变更，通过 `/server dp1` 切换到地皮一区，检查背包是否同步，验证插件工作正常。
 
 权限配置
 ==================================================
+通过 LuckPerms 授权 HuskSync 管理命令权限。
 
+.. code-block:: bash
+
+    # 创建一个husk管理权限组
+    /lp creategroup g-husksync 0 g-husksync
+    # 让管理员组继承 husksync 管理权限组
+    /lp group admin parent add g-husksync
+    # 授权查看背包和末影箱权限
+    /lp group g-husksync permission set husksync.command.inventory true
+    /lp group g-husksync permission set husksync.command.enderchest true
 
 查看用户的背包数据
 ==================================================
+HuskSync 提供如下命令（需授权）：
 
-husk提供了命令， `/inventory` 查看背包， `/enderchest` 查看末影箱。 这2个是管理员可用的， 需要通过luckperm授权才可以的。 
-`参考 <https://william278.net/docs/husksync/commands>`_ 
+- `/inventory <玩家>` 查看玩家背包
+- `/enderchest <玩家>` 查看玩家末影箱
 
+详细命令参考官方文档：  
+`https://william278.net/docs/husksync/commands`
 
+常见问题 QA
+==================================================
+:Q1: 背包数据不同步？  
+:A1: 检查所有分区是否都安装 HuskSync，数据库配置是否一致，server.yml 名称是否唯一。
 
+:Q2: 管理员无法查看背包？  
+:A2: 检查 LuckPerms 权限配置，确认已授权 husksync.command.inventory 和 husksync.command.enderchest。
 
+:Q3: 数据库连接失败？  
+:A3: 检查数据库地址、用户名、密码、端口等配置，查看服务端日志。
 
+:Q4: 玩家数据丢失或异常？  
+:A4: 使用 HuskSync 的数据备份与恢复功能，或手动恢复数据库快照。
 
+优化建议
+==================================================
+- 所有分区统一安装 HuskSync，保证数据同步一致性
+- 推荐使用 MySQL 后端，提升性能和数据安全
+- 定期备份 HuskSync 数据库，防止玩家数据丢失
+- 合理分配管理权限，避免普通玩家滥用命令
 
+.. note::
+   HuskSync 是群组服跨服背包同步的核心插件，建议优先安装和维护，定期检查配置和数据

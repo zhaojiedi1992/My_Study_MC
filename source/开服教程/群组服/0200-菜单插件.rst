@@ -1,35 +1,110 @@
 ==================================================
 菜单插件
 ==================================================
-菜单插件提供一个图形界面，可以进行功能展示， 比如让用户进入购物商店， 或者切换分区等功能。 
+菜单插件为服务器提供图形化界面，方便玩家进行功能操作，如进入商店、切换分区、查看帮助、快捷指令等。  
+本节主要介绍 DeluxeMenus 插件的安装、菜单规划、配置方法和优化建议。
 
-菜单插件我之前使用的是trmenu的， 这块看起来不维护了， 我这里主要说明DeluxeMenus这个。 
-
-`DeluxeMenus <https://wiki.helpch.at/helpchat-plugins/deluxemenus>`_ 
-
-效果图
+插件简介
 ==================================================
+- 支持高度自定义的 GUI 菜单
+- 可与 PlaceholderAPI、Vault、LuckPerms 等插件联动
+- 支持点击触发命令、变量显示、权限控制
+- 免费开源，长期维护
 
+.. image:: https://wiki.helpch.at/assets/images/deluxemenus-banner.png
+   :width: 600px
+   :align: center
 
-安装
+关键链接
 ==================================================
-jar包放到plugins目录即可， 具体的菜单配置比较多，下面重点慢慢说。
+- 官方文档: https://wiki.helpch.at/helpchat-plugins/deluxemenus
+- 下载地址: https://www.spigotmc.org/resources/deluxemenus.11734/
+- 菜单示例: https://wiki.helpch.at/helpchat-plugins/deluxemenus/examples
 
-
-规划菜单
+安装步骤
 ==================================================
+1. 下载 DeluxeMenus.jar，放到所有分区的 plugins 目录
+2. 重启服务端，生成默认配置文件
+3. 推荐同时安装 PlaceholderAPI，支持变量显示
 
-主页菜单 可以通过cmd命令或者shift +f 快速打开。 提供各个菜单的入口。 
-1. 切换分区的
-2. 帮助文档。 
-3. 系统商店【收购】，分矿物、农作物的
+.. code-block:: bash
+
+    wget https://github.com/HelpChat/DeluxeMenus/releases/latest/download/DeluxeMenus.jar
+    cp DeluxeMenus.jar /home/mc/instances/dl1/plugins/
+    cp DeluxeMenus.jar /home/mc/instances/dp1/plugins/
+    cp DeluxeMenus.jar /home/mc/instances/sc1/plugins/
+    cp DeluxeMenus.jar /home/mc/instances/sc2/plugins/
+    # 重启所有服务端
+
+菜单规划
+==================================================
+主页菜单可通过命令或快捷键（如 /menu 或 shift+F）打开，作为各类功能入口。建议包含如下板块：
+
+1. 分区切换入口
+2. 帮助文档
+3. 系统商店（收购矿物、农作物等）
 4. 家目录设置
-5. 常用小工具的（rtp , tpa 等） 
-6. 地皮快捷指令。
+5. 常用小工具（如 rtp、tpa、tpahere 等）
+6. 地皮快捷指令
+7. 玩家信息展示（如余额、等级、权限组等）
 
+菜单配置示例
+==================================================
+DeluxeMenus 的菜单配置采用 YAML 格式，支持多层嵌套和变量调用。  
+以下为一个简单的主菜单配置片段：
+
+.. code-block:: yaml
+
+    menus:
+      main_menu:
+        display_name: "&a主菜单"
+        open_command: "menu"
+        items:
+          switch_server:
+            display_name: "&b分区切换"
+            material: ENDER_PEARL
+            slot: 10
+            lore:
+              - "&7点击切换分区"
+            left_click_commands:
+              - "server dp1"
+          shop:
+            display_name: "&e系统商店"
+            material: EMERALD
+            slot: 12
+            lore:
+              - "&7收购矿物、农作物"
+            left_click_commands:
+              - "shop open"
+          help:
+            display_name: "&6帮助文档"
+            material: BOOK
+            slot: 14
+            left_click_commands:
+              - "help"
 
 脚本化生成菜单
 ==================================================
-考虑到后面的矿物，农作物的收购会比较多， 需要整理一个脚本，解决后面的菜单配置重复化问题。 
+如需批量生成矿物、农作物收购菜单，建议用脚本（如 Python/Excel）自动生成 YAML 配置，减少重复劳动。  
+可将物品列表、价格等信息整理为表格，批量输出菜单配置片段。
 
+权限配置
+==================================================
+通过 LuckPerms 授权玩家使用菜单命令：
+
+.. code-block:: bash
+
+    /lp group default permission set deluxemenus.open.main_menu true
+    /lp group default permission set deluxemenus.open.* true
+
+常见问题 QA
+==================================================
+:Q1: 菜单无法打开或报错？  
+:A1: 检查 YAML 格式是否正确，查看服务端日志，确认 PlaceholderAPI 已安装。
+
+:Q2: 菜单变量不显示？  
+:A2: 检查 PlaceholderAPI 是否安装并加载对应扩展，变量格式是否正确。
+
+:Q3: 菜单权限无效？  
+:A3: 检查 LuckPerms 权限配置，确认已授权 deluxemenus.open.* 相关权限。
 

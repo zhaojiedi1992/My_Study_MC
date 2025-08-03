@@ -2,40 +2,55 @@
 版本兼容插件
 ==================================================
 
-我们的服务器运行一个版本， 但是用户的版本可能比较多，比较杂，我们希望都能接纳。 
+我们的服务器运行一个版本，但玩家客户端可能版本各异。为提升兼容性，推荐安装 ViaVersion + ViaBackwards 组合，让 1.18 及以上的玩家都能顺利进入服务器。
+
+插件简介
+==================================================
+- **ViaVersion**：允许高版本客户端进入低版本服务端
+- **ViaBackwards**：允许低版本客户端进入高版本服务端
+- **ViaRewind**：支持更低版本（如1.8-1.12），如有需求可选装
 
 .. image:: https://proxy.spigotmc.org/4d591f2da290cc9ab7621d006cb1dd7cd7754dca/68747470733a2f2f692e696d6775722e636f6d2f7a7251546366302e706e67
+   :width: 600px
+   :align: center
 
-从这个图可以看到我们使用的1.21.x 的server端， 这里主要兼容到1.18以上的版本，太低的版本就不做兼容了。 
-需要的软件就是vibackwards + viaversion 组合使用。 
-
-如果需要向下兼容更多版本，可以按需部署viarewind的。 这里我就不安装这个了。
-
-安装
+关键链接
 ==================================================
+- ViaVersion: https://www.spigotmc.org/resources/viaversion.19254/
+- ViaBackwards: https://www.spigotmc.org/resources/viabackwards.27448/
+- ViaRewind: https://www.spigotmc.org/resources/viarewind.52109/
+- 官方文档: https://docs.viaversion.com/
 
-.. code-block:: bash 
+安装步骤
+==================================================
+1. 下载 ViaVersion 和 ViaBackwards 的 jar 包
+2. 推荐仅安装到所有 Paper 分区的 plugins 目录（代理端不建议安装）
+3. 重启所有服务端
+
+.. code-block:: bash
 
     wget https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.4.2/PAPER/ViaVersion-5.4.2.jar
     wget https://hangarcdn.papermc.io/plugins/ViaVersion/ViaBackwards/versions/5.4.2/PAPER/ViaBackwards-5.4.2.jar
+    cp ViaVersion-5.4.2.jar /home/mc/instances/dl1/plugins/
+    cp ViaBackwards-5.4.2.jar /home/mc/instances/dl1/plugins/
+    # 其他分区同理
 
-    # 下载后， 主要只要安装到paper里面，proxy不用部署。
-
-注意了，这3个插件， 有几种安装方式。
-
-- 仅仅paper 所有端安装3个插件。（非常推荐）
-- 仅仅代理端安装3个插件。（不推荐，后面使用有坑）
-- 代理端+paper都安装3个插件（强烈不推荐）
-
+安装方式建议
+==================================================
+- 仅 Paper 所有分区安装（强烈推荐）
+- 仅代理端安装（不推荐，易出兼容性问题）
+- 代理端+Paper都安装（强烈不推荐）
 
 配置文件说明
 ==================================================
+ViaVersion 配置文件 config.yml 主要参数：
 
-- max-pps 最大发包速率
-- send-supported-versions: 在发ping包的时候是否发送服务器支持的版本信息。
-- block-versions： 阻止的版本，可以制定多个， ["<1.16", "1.16.4"] 比如这个配置是小于1.16版本是不允许的，1.16.4版本也是不允许的。
+- `max-pps`：最大发包速率，防止刷包攻击
+- `send-supported-versions`：是否在 ping 时发送支持的版本信息
+- `block-versions`：阻止的客户端版本，如 ["<1.18.0"] 表示禁止1.18以下版本
+- `block-disconnect-msg`：被阻止时的提示信息
 
-.. code-block:: bash 
+.. code-block:: bash
 
     root@mc:/home/mc/instances/dl1/plugins/ViaVersion# diff config.yml config.yml.default
     18c18
@@ -53,10 +68,23 @@
     > max-pps: 800
     > max-pps-kick-msg: You are sending too many packets!
 
-
-常见问题
+常见问题 QA
 ==================================================
+:Q1: 玩家提示 "You are sending too many packets" 被踢出？  
+:A1: 一般是 ViaVersion 配置文件中 max-pps 设置过小，建议根据实际服务器负载调整数值。
 
+:Q2: 某些版本无法进入服务器？  
+:A2: 检查 block-versions 配置，确认未误禁需要支持的版本，建议motd里面给出支持的版本范围。
 
--Q1: You are sending too many packets
--A1： 一般是ViaVersion的配置文件中max-pps设置过小，具体设置的数值，你需要根据实际情况进行调整。
+:Q3: 代理端安装后出现兼容性问题？  
+:A3: 推荐仅在 Paper 分区安装，代理端不建议部署版本兼容插件。
+
+优化建议
+==================================================
+- 所有分区统一安装 ViaVersion + ViaBackwards，保证兼容性
+- 定期更新插件，支持最新客户端
+- 合理设置 max-pps，防止刷包攻击但不影响正常玩家
+- 如需兼容更低版本，可按需安装 ViaRewind
+
+.. note::
+   版本兼容插件是群组服开放性的基础，建议优先安装和维护，定期检查配置和插件版
