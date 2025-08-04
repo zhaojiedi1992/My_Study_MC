@@ -1,33 +1,37 @@
 ==================================================
 地皮插件安装
 ==================================================
-地皮插件是为了更好服务新手的，可以让新手快速的有一个小地方，进行存放物资使用的。
+地皮插件为新手玩家提供专属小空间，方便存放物资和体验建筑玩法。推荐使用 PlotSquared 插件，支持高度自定义、经济系统、权限控制等功能。
 
-
-安装
+插件简介
 ==================================================
-这个是收费的， 需要下载下来官方的源码，然后执行./gradlew clean build 构建一下，然后包在bukkit/libs目录。 
-复制jar包到dp1分区。 
+- 支持多世界、多风格地皮生成
+- 可自定义地皮大小、道路、地皮合并等
+- 支持经济系统，地皮买卖、合并、出售
+- 与 WorldEdit/FastAsyncWorldEdit 完美兼容
+- 支持 LuckPerms 权限分组
+- 免费开源，部分高级功能需付费
 
-这个插件是依赖worldedit 或者fast sync worldedit 的，建议你安装fast sync world edit 就好。
-
-.. note:: 注意了，这个是主需要在地皮区安装的，其他的去不用安装的。
-
-
-创建db
+安装步骤
 ==================================================
-.. code-block:: bash 
+1. 下载官方源码，执行 `./gradlew clean build` 构建 jar 包（或付费获取成品 jar）
+2. 将 jar 包放入 `/home/mc/instances/dp1/plugins/`
+3. 安装 FastAsyncWorldEdit（推荐），无需单独安装 WorldEdit
+
+.. note::
+   地皮插件仅需在地皮分区（如 dp1）安装，其他分区无需部署。
+
+创建数据库
+==================================================
+.. code-block:: sql
 
     CREATE DATABASE d_plot_db CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-修改配置文件
+配置文件修改
 ==================================================
+.. code-block:: diff
 
-.. code-block:: bash 
-
-    # 先修改db的
-    root@mc:/home/mc/instances/dp1/plugins/PlotSquared/config# diff storage.yml  ../config.default/storage.yml
+    # storage.yml 数据库配置差异
     6c6
     <   use: false
     ---
@@ -47,104 +51,94 @@
     >   password: "password"
     >   database: "plot_db"
 
+地皮世界初始化
+==================================================
+1. 运行以下命令将主世界（world）转换为 PlotSquared 世界：
 
-    运行以下命令将主世界（world）转换为 PlotSquared 世界：
+.. code-block:: bash
+
     /p setup world
+    /plot setup normal
+    /plot setup stone
 
-    # 使用normal 风格进行设置
-    /plot setup normal  
+2. 按照提示填写参数，建议使用默认值或根据实际需求调整
+3. 设置地皮世界名称，如再次执行 `/p setup world` 可覆盖已有设置
 
-    # 剩余就是多项设置， 你通过plot setup 把你要填写的值填写上去就行了， 默认值就好。
-    /plot setup stone 
+地皮世界配置示例
+==================================================
+最终生成的 `worlds.yml` 文件示例（部分参数可根据需求调整）：
 
-    # 下面就是一顿操作， 
+.. code-block:: yaml
 
-    # 最后还要根据提示需要设置下名字， 按照下面这个设置就行了， 会提示已经存在的。 
-    /p setup world
-
-    # 其实最终生成的文件如下，我把石头修改为光滑的石头了。 
-    root@mc:/home/mc/instances/dp1/plugins/PlotSquared# cat config/worlds.yml
     configuration_version: v5
     worlds:
-    world:
+      world:
         plot:
-        height: 62
-        size: 10
-        filling: smooth_stone
-        floor: grass_block
-        bedrock: true
-        biome: minecraft:forest
-        sign_material: OAK_WALL_SIGN
-        auto_merge: false
-        create_signs: true
+          height: 62
+          size: 10
+          filling: smooth_stone
+          floor: grass_block
+          bedrock: true
+          biome: minecraft:forest
+          sign_material: OAK_WALL_SIGN
+          auto_merge: false
+          create_signs: true
         wall:
-        place_top_block: true
-        block: smooth_stone_slab
-        block_claimed: sandstone_slab
-        filling: smooth_stone
-        height: 62
+          place_top_block: true
+          block: smooth_stone_slab
+          block_claimed: sandstone_slab
+          filling: smooth_stone
+          height: 62
         road:
-        width: 7
-        height: 62
-        block: quartz_block
-        flags: {}
-        world:
-        component_below_bedrock: false
-        max_gen_height: 319
-        max_height: 320
+          width: 7
+          height: 62
+          block: quartz_block
         gamemode: creative
-        min_gen_height: -64
-        min_height: -63
         border_size: 1
         border: false
-        misc_spawn_unowned: false
-        home:
-        nonmembers: side
-        default: side
-        schematic:
-        specify_on_claim: false
-        on_claim: false
-        file: 'null'
-        schematics: []
-        chat:
-        forced: false
-        enabled: true
         economy:
-        prices:
+          prices:
             merge: 100
             sell: 100
             claim: 100
-        use: false
-        event:
-        spawn:
-            egg: false
-            breeding: false
-            custom: true
+          use: false
         natural_mob_spawning: false
         mob_spawner_spawning: false
-        flags: {}
 
-重新覆盖world
+重新生成地皮世界
 ==================================================
-我们通过上面的指令会生成一个world.yml文件， 在启动的时候会生成一个world的， 不过我们现在world世界已经存在了， 需要删除掉，让他检测和生成。 
+如需重新生成地皮世界，需先删除原有 world 文件夹：
 
-.. code-block:: bash 
+.. code-block:: bash
 
-    systemctl stop mc_dp1 
+    systemctl stop mc_dp1
     mv /home/mc/instances/dp1/world /home/mc/instances/dp1/world.bak
-    systemctl start mc_dp1 
+    systemctl start mc_dp1
 
-地皮中心区域的规划
+地皮中心区域规划
 ==================================================
-地皮的中心方格，不建议给普通用户使用，我们这里占用中间的4个格子，方便后期给中心区域做一些建筑。 
+建议将地皮中心的4个方格预留为管理区，避免普通玩家占用，方便后期建筑或活动。
 
-.. code-block:: bash 
-    
-    # 进入地皮中心区域， 设置一个区域吧。 
-    plot setowner 
-    # 连续给中心的4个都设置下owenr
+.. code-block:: bash
+
+    # 进入地皮中心区域，设置所有者
+    plot setowner <管理员ID>
+    # 连续设置中心4个地皮所有者
     ...
-    # 合并4个为1个。
-    plot merge 
+    # 合并4个地皮为1个
+    plot merge
 
+常见问题 QA
+==================================================
+:Q1: 地皮无法生成或命令无效？  
+:A1: 检查插件是否安装、数据库配置是否正确，查看服务端日志。
+
+:Q2: 地皮经济功能无法使用？  
+:A2: 检查 economy.use 参数是否开启，确认经济插件（如 Vault）已安装。
+
+:Q3: 玩家无法合并地皮？  
+:A3: 检查 LuckPerms 权限配置，确认已授权 plot.merge 相关权限。
+
+:Q4: 地皮中心被玩家占用？  
+:A4: 建议提前设置中心地皮所有者，并合并为管理区。
 
