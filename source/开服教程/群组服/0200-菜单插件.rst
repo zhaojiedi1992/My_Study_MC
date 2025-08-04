@@ -53,35 +53,13 @@
 DeluxeMenus 的菜单配置采用 YAML 格式，支持多层嵌套和变量调用。  
 以下为一个简单的主菜单配置片段：
 
-.. code-block:: yaml
+.. literalinclude:: ../codes/scripts/menu/gui_menus/cmd.yml
+   :language: yaml
+   :caption: 主菜单
 
-    menus:
-      main_menu:
-        display_name: "&a主菜单"
-        open_command: "menu"
-        items:
-          switch_server:
-            display_name: "&b分区切换"
-            material: ENDER_PEARL
-            slot: 10
-            lore:
-              - "&7点击切换分区"
-            left_click_commands:
-              - "server dp1"
-          shop:
-            display_name: "&e系统商店"
-            material: EMERALD
-            slot: 12
-            lore:
-              - "&7收购矿物、农作物"
-            left_click_commands:
-              - "shop open"
-          help:
-            display_name: "&6帮助文档"
-            material: BOOK
-            slot: 14
-            left_click_commands:
-              - "help"
+.. literalinclude:: ../codes/scripts/menu/gui_menus/sell.yml
+   :language: yaml
+   :caption: 商店菜单
 
 脚本化生成菜单
 ==================================================
