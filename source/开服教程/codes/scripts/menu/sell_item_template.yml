@@ -1,0 +1,34 @@
+  sell_{{item_name_lower}}:
+    material: '{{material}}'
+    slot: {{slot}}
+    display_name: '{{display_name}}'
+    lore:
+    - '&7▏ &f单个价格: &e{{price_per_unit}}元'
+    - '&7▏ &f一组价格: &e{{price_per_stack}}元'
+    - ''
+    - '&a&l▎ 点击出售方式 ▎'
+    - '&8▪ &7左键 &8| &a出售1个'
+    - '&8▪ &7右键 &8| &a出售64个'
+    - '&8▪ &7Shift+左键 &8| &a出售全部'
+    left_click_commands:
+    - '[console] eco give %player_name% {{price_per_unit}}'
+    - '[console] clear %player_name% {{material}} 1'
+    - '[message] &8[&6系统商店&8] &a成功出售 &f1个{{item_name}} &a获得 &e{{price_per_unit}}&a元'
+    - '[close]' 
+    right_click_commands:
+    - '[console] eco give %player_name% {{price_per_stack}}'
+    - '[console] clear %player_name% {{material}} 64'
+    - '[message] &8[&6系统商店&8] &a成功出售 &f64个{{item_name}} &a获得 &e{{price_per_stack}}&a元'
+    - '[close]' 
+    shift_left_click_commands:
+    - '[meta] set cnt DOUBLE %checkitem_amount_mat:{{material}}%'
+    - '[console] eco give %player_name% %math_{{price_per_unit}} * {deluxemenus_meta_cnt_DOUBLE_64}%'
+    - '[console] clear %player_name% {{material}} %deluxemenus_meta_cnt_DOUBLE_64%'
+    - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个{{item_name}} &a获得 &e%math_{{price_per_unit}} * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+    - '[close]' 
+    shift_right_click_commands:
+    - '[meta] set cnt DOUBLE %checkitem_amount_mat:{{material}}%'
+    - '[console] eco give %player_name% %math_{{price_per_unit}} * {deluxemenus_meta_cnt_DOUBLE_64}%'
+    - '[console] clear %player_name% {{material}} %deluxemenus_meta_cnt_DOUBLE_64%'
+    - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个{{item_name}} &a获得 &e%math_{{price_per_unit}} * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+    - '[close]' 

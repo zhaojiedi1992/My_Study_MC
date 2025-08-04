@@ -1,0 +1,62 @@
+menu_title: '工具菜单'
+size: 54
+register_command: true
+arguments_support_placeholders: true
+sweet: true
+update_interval: 1
+open_command:
+- mtools 
+- MTOOLS 
+
+items:
+  'stop':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNiYTAyNGMwNzRiNWQ5YWRmNTJlY2VjZGVkNmI0YTlkMTRmMWEyZjQxMzg2MzVkYjc5YTk1NmZiYWIxNDM1MCJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c关闭菜单'
+    data: 1
+    slot: 8
+    display_name: "&b&l关闭菜单"
+    click_commands: 
+    - '[close]'
+  'main':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
+    lore: 
+    - '&b左键 &a➥ &c主菜单'
+    slot: 49
+    display_name: ""
+    click_commands: 
+    - '[openguimenu] cmd'
+
+
+  'trash':
+    material: 'basehead-94c28ffb9063e63037c7c9c3a99975333254946ddfa0018996151740a5c66842'
+    lore: 
+      - '&b左键 &a➥ &c丢弃垃圾'
+      - '&b注意 &a➥ &c无法追回'
+    slot: 1
+    display_name: "垃圾桶"
+    click_commands: 
+    - '[player] trash'
+
+  'skin':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTcxMzE3NDJiZmQ3YTdmYTIxMmMwNDU5YjEyZWNkNDA1ZTAwMmM3YzkyZWFkYmI5MmFkODM2MGY3MDM0YWZiNyJ9fX0='
+    lore: 
+    - '&a指令&6/skin [皮肤名]'
+    - '&c(皮肤名为国际正版ID)'
+    - '&b左键 &a➥ &c即可查询'
+    slot: 2
+    display_name: "&b&l&更换皮肤"
+    click_commands: 
+    - '[message] 输入/skin <别人的正版或者你的正版id就好>'
+    - '[message] &7&l[&b&l提示&7] &b皮肤名id查询请到 &e&lhttps://zh-cn.namemc.com/' 
+
+  'signin':
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWEwNmMxY2ZiMDliM2ZkMzMzOTFmZTM4ZjliZDU4Yjg4NDQyNjQxZTM0OTIwNzJhMWZmYWExZjliYmY4MmJhNCJ9fX0='
+    lore:
+    - '点我签到'
+    - '指令: /signin gui'
+    slot: 3
+    display_name: "签到"
+    click_commands: 
+    - '[player] signin gui'
+

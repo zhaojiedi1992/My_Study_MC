@@ -57,14 +57,1032 @@ DeluxeMenus 的菜单配置采用 YAML 格式，支持多层嵌套和变量调�
    :language: yaml
    :caption: 主菜单
 
+<<<<<<< HEAD
 .. literalinclude:: ../codes/scripts/menu/gui_menus/sell.yml
    :language: yaml
    :caption: 商店菜单
+=======
+  menu_title: '&6&l系统商店 &8> &a收购 '
+  size: 54
+  open_command: 'sell'
+  register_command: true
+  items:
+    cancel_item:
+      material: 'RED_STAINED_GLASS_PANE'
+      display_name: '&c&l取消出售'
+      lore:
+      - '&7▏ &f点击关闭菜单'
+      left_click_commands:
+      - '[close]'
+    'main':
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU2OGI5NjgxMDhlOTRjZWU0OWEzOTBkMGY4NDQ5YTNiZGMxYjFlNTg1NTVmMDlhZWRhNGNmYjZjYTcxMGMxMSJ9fX0='
+      lore: 
+      - '&b左键 &a➥ &c主菜单'
+      slot: 49
+      display_name: "&c回主菜单"
+      click_commands: 
+      - '[openguimenu] cmd'
+    sell_小麦:
+      material: 'WHEAT'
+      slot: 0
+      display_name: '&e&l小麦收购'
+      lore:
+      - '&7▏ &f单个价格: &e1.5元'
+      - '&7▏ &f一组价格: &e96.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1.5'
+      - '[console] clear %player_name% WHEAT 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个小麦 &a获得 &e1.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 96.0'
+      - '[console] clear %player_name% WHEAT 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个小麦 &a获得 &e96.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:WHEAT%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% WHEAT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个小麦 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:WHEAT%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% WHEAT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个小麦 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_竹子:
+      material: 'BAMBOO'
+      slot: 1
+      display_name: '&a&l竹子收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% BAMBOO 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个竹子 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% BAMBOO 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个竹子 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BAMBOO%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BAMBOO %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个竹子 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BAMBOO%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BAMBOO %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个竹子 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_西瓜:
+      material: 'MELON'
+      slot: 2
+      display_name: '&f&l西瓜收购'
+      lore:
+      - '&7▏ &f单个价格: &e3元'
+      - '&7▏ &f一组价格: &e192元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 3'
+      - '[console] clear %player_name% MELON 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个西瓜 &a获得 &e3&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 192'
+      - '[console] clear %player_name% MELON 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个西瓜 &a获得 &e192&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:MELON%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% MELON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个西瓜 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:MELON%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% MELON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个西瓜 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_南瓜:
+      material: 'PUMPKIN'
+      slot: 3
+      display_name: '&f&l南瓜收购'
+      lore:
+      - '&7▏ &f单个价格: &e3元'
+      - '&7▏ &f一组价格: &e192元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 3'
+      - '[console] clear %player_name% PUMPKIN 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个南瓜 &a获得 &e3&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 192'
+      - '[console] clear %player_name% PUMPKIN 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个南瓜 &a获得 &e192&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:PUMPKIN%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% PUMPKIN %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个南瓜 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:PUMPKIN%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% PUMPKIN %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个南瓜 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_甜浆果:
+      material: 'SWEET_BERRIES'
+      slot: 4
+      display_name: '&d&l甜浆果收购'
+      lore:
+      - '&7▏ &f单个价格: &e1.5元'
+      - '&7▏ &f一组价格: &e96.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1.5'
+      - '[console] clear %player_name% SWEET_BERRIES 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个甜浆果 &a获得 &e1.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 96.0'
+      - '[console] clear %player_name% SWEET_BERRIES 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个甜浆果 &a获得 &e96.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SWEET_BERRIES%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SWEET_BERRIES %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甜浆果 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SWEET_BERRIES%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SWEET_BERRIES %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甜浆果 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_甜菜:
+      material: 'BEETROOT'
+      slot: 5
+      display_name: '&c&l甜菜收购'
+      lore:
+      - '&7▏ &f单个价格: &e1.5元'
+      - '&7▏ &f一组价格: &e96.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1.5'
+      - '[console] clear %player_name% BEETROOT 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个甜菜 &a获得 &e1.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 96.0'
+      - '[console] clear %player_name% BEETROOT 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个甜菜 &a获得 &e96.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BEETROOT%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BEETROOT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甜菜 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BEETROOT%'
+      - '[console] eco give %player_name% %math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BEETROOT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甜菜 &a获得 &e%math_1.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_马铃薯:
+      material: 'POTATO'
+      slot: 6
+      display_name: '&e&l马铃薯收购'
+      lore:
+      - '&7▏ &f单个价格: &e0.5元'
+      - '&7▏ &f一组价格: &e32.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 0.5'
+      - '[console] clear %player_name% POTATO 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个马铃薯 &a获得 &e0.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 32.0'
+      - '[console] clear %player_name% POTATO 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个马铃薯 &a获得 &e32.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:POTATO%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% POTATO %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个马铃薯 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:POTATO%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% POTATO %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个马铃薯 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_胡萝卜:
+      material: 'CARROT'
+      slot: 7
+      display_name: '&6&l胡萝卜收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% CARROT 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个胡萝卜 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% CARROT 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个胡萝卜 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CARROT%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CARROT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个胡萝卜 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CARROT%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CARROT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个胡萝卜 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_仙人掌:
+      material: 'CACTUS'
+      slot: 8
+      display_name: '&a&l仙人掌收购'
+      lore:
+      - '&7▏ &f单个价格: &e0.5元'
+      - '&7▏ &f一组价格: &e32.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 0.5'
+      - '[console] clear %player_name% CACTUS 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个仙人掌 &a获得 &e0.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 32.0'
+      - '[console] clear %player_name% CACTUS 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个仙人掌 &a获得 &e32.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CACTUS%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CACTUS %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个仙人掌 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CACTUS%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CACTUS %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个仙人掌 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_钻石:
+      material: 'DIAMOND'
+      slot: 9
+      display_name: '&b&l钻石收购'
+      lore:
+      - '&7▏ &f单个价格: &e30元'
+      - '&7▏ &f一组价格: &e1920元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 30'
+      - '[console] clear %player_name% DIAMOND 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个钻石 &a获得 &e30&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 1920'
+      - '[console] clear %player_name% DIAMOND 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个钻石 &a获得 &e1920&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:DIAMOND%'
+      - '[console] eco give %player_name% %math_30 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% DIAMOND %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个钻石 &a获得 &e%math_30 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:DIAMOND%'
+      - '[console] eco give %player_name% %math_30 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% DIAMOND %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个钻石 &a获得 &e%math_30 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_粗金:
+      material: 'RAW_GOLD'
+      slot: 10
+      display_name: '&6&l粗金收购'
+      lore:
+      - '&7▏ &f单个价格: &e8元'
+      - '&7▏ &f一组价格: &e512元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 8'
+      - '[console] clear %player_name% RAW_GOLD 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个粗金 &a获得 &e8&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 512'
+      - '[console] clear %player_name% RAW_GOLD 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个粗金 &a获得 &e512&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_GOLD%'
+      - '[console] eco give %player_name% %math_8 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_GOLD %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗金 &a获得 &e%math_8 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_GOLD%'
+      - '[console] eco give %player_name% %math_8 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_GOLD %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗金 &a获得 &e%math_8 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_粗铁:
+      material: 'RAW_IRON'
+      slot: 11
+      display_name: '&f&l粗铁收购'
+      lore:
+      - '&7▏ &f单个价格: &e5元'
+      - '&7▏ &f一组价格: &e320元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 5'
+      - '[console] clear %player_name% RAW_IRON 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个粗铁 &a获得 &e5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 320'
+      - '[console] clear %player_name% RAW_IRON 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个粗铁 &a获得 &e320&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_IRON%'
+      - '[console] eco give %player_name% %math_5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_IRON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗铁 &a获得 &e%math_5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_IRON%'
+      - '[console] eco give %player_name% %math_5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_IRON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗铁 &a获得 &e%math_5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_粗铜:
+      material: 'RAW_COPPER'
+      slot: 12
+      display_name: '&e&l粗铜收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% RAW_COPPER 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个粗铜 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% RAW_COPPER 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个粗铜 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_COPPER%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_COPPER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗铜 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RAW_COPPER%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RAW_COPPER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个粗铜 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_红石:
+      material: 'REDSTONE'
+      slot: 13
+      display_name: '&c&l红石收购'
+      lore:
+      - '&7▏ &f单个价格: &e2元'
+      - '&7▏ &f一组价格: &e128元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 2'
+      - '[console] clear %player_name% REDSTONE 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个红石 &a获得 &e2&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 128'
+      - '[console] clear %player_name% REDSTONE 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个红石 &a获得 &e128&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:REDSTONE%'
+      - '[console] eco give %player_name% %math_2 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% REDSTONE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个红石 &a获得 &e%math_2 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:REDSTONE%'
+      - '[console] eco give %player_name% %math_2 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% REDSTONE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个红石 &a获得 &e%math_2 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_煤炭:
+      material: 'COAL'
+      slot: 14
+      display_name: '&8&l煤炭收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% COAL 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个煤炭 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% COAL 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个煤炭 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:COAL%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% COAL %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个煤炭 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:COAL%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% COAL %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个煤炭 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_青金石:
+      material: 'LAPIS_LAZULI'
+      slot: 15
+      display_name: '&9&l青金石收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% LAPIS_LAZULI 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个青金石 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% LAPIS_LAZULI 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个青金石 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:LAPIS_LAZULI%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% LAPIS_LAZULI %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个青金石 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:LAPIS_LAZULI%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% LAPIS_LAZULI %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个青金石 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_甘蔗:
+      material: 'SUGAR_CANE'
+      slot: 16
+      display_name: '&a&l甘蔗收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% SUGAR_CANE 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个甘蔗 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% SUGAR_CANE 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个甘蔗 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SUGAR_CANE%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SUGAR_CANE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甘蔗 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SUGAR_CANE%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SUGAR_CANE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个甘蔗 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_生鸡肉:
+      material: 'CHICKEN'
+      slot: 18
+      display_name: '&f&l生鸡肉收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% CHICKEN 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个生鸡肉 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% CHICKEN 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个生鸡肉 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CHICKEN%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CHICKEN %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生鸡肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:CHICKEN%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% CHICKEN %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生鸡肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_生兔肉:
+      material: 'RABBIT'
+      slot: 19
+      display_name: '&f&l生兔肉收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% RABBIT 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个生兔肉 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% RABBIT 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个生兔肉 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RABBIT%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RABBIT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生兔肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:RABBIT%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% RABBIT %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生兔肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_生羊肉:
+      material: 'MUTTON'
+      slot: 20
+      display_name: '&f&l生羊肉收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% MUTTON 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个生羊肉 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% MUTTON 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个生羊肉 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:MUTTON%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% MUTTON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生羊肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:MUTTON%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% MUTTON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生羊肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_生牛肉:
+      material: 'BEEF'
+      slot: 21
+      display_name: '&f&l生牛肉收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% BEEF 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个生牛肉 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% BEEF 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个生牛肉 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BEEF%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BEEF %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生牛肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BEEF%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BEEF %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生牛肉 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_热带鱼:
+      material: 'TROPICAL_FISH'
+      slot: 22
+      display_name: '&b&l热带鱼收购'
+      lore:
+      - '&7▏ &f单个价格: &e3元'
+      - '&7▏ &f一组价格: &e192元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 3'
+      - '[console] clear %player_name% TROPICAL_FISH 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个热带鱼 &a获得 &e3&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 192'
+      - '[console] clear %player_name% TROPICAL_FISH 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个热带鱼 &a获得 &e192&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:TROPICAL_FISH%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% TROPICAL_FISH %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个热带鱼 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:TROPICAL_FISH%'
+      - '[console] eco give %player_name% %math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% TROPICAL_FISH %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个热带鱼 &a获得 &e%math_3 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_鳕鱼:
+      material: 'COD'
+      slot: 23
+      display_name: '&9&l鳕鱼收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% COD 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个鳕鱼 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% COD 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个鳕鱼 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:COD%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% COD %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鳕鱼 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:COD%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% COD %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鳕鱼 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_鲑鱼:
+      material: 'SALMON'
+      slot: 24
+      display_name: '&c&l鲑鱼收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% SALMON 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个鲑鱼 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% SALMON 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个鲑鱼 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SALMON%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SALMON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鲑鱼 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:SALMON%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% SALMON %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鲑鱼 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_生猪排:
+      material: 'PORKCHOP'
+      slot: 25
+      display_name: '&f&l生猪排收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% PORKCHOP 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个生猪排 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% PORKCHOP 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个生猪排 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:PORKCHOP%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% PORKCHOP %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生猪排 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:PORKCHOP%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% PORKCHOP %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个生猪排 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_鸡蛋:
+      material: 'EGG'
+      slot: 26
+      display_name: '&f&l鸡蛋收购'
+      lore:
+      - '&7▏ &f单个价格: &e1元'
+      - '&7▏ &f一组价格: &e64元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 1'
+      - '[console] clear %player_name% EGG 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个鸡蛋 &a获得 &e1&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 64'
+      - '[console] clear %player_name% EGG 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个鸡蛋 &a获得 &e64&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:EGG%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% EGG %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鸡蛋 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:EGG%'
+      - '[console] eco give %player_name% %math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% EGG %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个鸡蛋 &a获得 &e%math_1 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_皮革:
+      material: 'LEATHER'
+      slot: 27
+      display_name: '&e&l皮革收购'
+      lore:
+      - '&7▏ &f单个价格: &e0.5元'
+      - '&7▏ &f一组价格: &e32.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 0.5'
+      - '[console] clear %player_name% LEATHER 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个皮革 &a获得 &e0.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 32.0'
+      - '[console] clear %player_name% LEATHER 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个皮革 &a获得 &e32.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:LEATHER%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% LEATHER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个皮革 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:LEATHER%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% LEATHER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个皮革 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_骨头:
+      material: 'BONE'
+      slot: 28
+      display_name: '&f&l骨头收购'
+      lore:
+      - '&7▏ &f单个价格: &e0.5元'
+      - '&7▏ &f一组价格: &e32.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 0.5'
+      - '[console] clear %player_name% BONE 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个骨头 &a获得 &e0.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 32.0'
+      - '[console] clear %player_name% BONE 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个骨头 &a获得 &e32.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BONE%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BONE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个骨头 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:BONE%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% BONE %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个骨头 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+    sell_羽毛:
+      material: 'FEATHER'
+      slot: 29
+      display_name: '&f&l羽毛收购'
+      lore:
+      - '&7▏ &f单个价格: &e0.5元'
+      - '&7▏ &f一组价格: &e32.0元'
+      - ''
+      - '&a&l▎ 点击出售方式 ▎'
+      - '&8▪ &7左键 &8| &a出售1个'
+      - '&8▪ &7右键 &8| &a出售64个'
+      - '&8▪ &7Shift+左键 &8| &a出售全部'
+      left_click_commands:
+      - '[console] eco give %player_name% 0.5'
+      - '[console] clear %player_name% FEATHER 1'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f1个羽毛 &a获得 &e0.5&a元'
+      - '[close]' 
+      right_click_commands:
+      - '[console] eco give %player_name% 32.0'
+      - '[console] clear %player_name% FEATHER 64'
+      - '[message] &8[&6系统商店&8] &a成功出售 &f64个羽毛 &a获得 &e32.0&a元'
+      - '[close]' 
+      shift_left_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:FEATHER%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% FEATHER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个羽毛 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+      shift_right_click_commands:
+      - '[meta] set cnt DOUBLE %checkitem_amount_mat:FEATHER%'
+      - '[console] eco give %player_name% %math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%'
+      - '[console] clear %player_name% FEATHER %deluxemenus_meta_cnt_DOUBLE_64%'
+      - '[message] &8[&6系统商店&8] &a成功出售全部 &f%deluxemenus_meta_cnt_DOUBLE_64%个羽毛 &a获得 &e%math_0.5 * {deluxemenus_meta_cnt_DOUBLE_64}%&a元'
+      - '[close]' 
+>>>>>>> refs/remotes/origin/main
 
 脚本化生成菜单
 ==================================================
 如需批量生成矿物、农作物收购菜单，建议用脚本（如 Python/Excel）自动生成 YAML 配置，减少重复劳动。  
 可将物品列表、价格等信息整理为表格，批量输出菜单配置片段。
+
+.. code-block:: bash 
+
+  # codes/scripts目录下有脚本。 
+  sell.csv是用来定义你要收购的物品的清单的， 列名第一行。 
+  generate_and_push_sell.sh 是用来是生成yml文件+推送到服务期的plugins目录的脚本。 
+  # 修改的话， 基本就是需要修改sell_header_template.yml 这个模版文件， 或者sell.csv文件即可。
+  # 运行脚本：
+  ./generate_and_push_sell.sh
 
 权限配置
 ==================================================
