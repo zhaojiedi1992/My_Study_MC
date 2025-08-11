@@ -34,7 +34,7 @@ else
             continue
         fi
 	# 等待1s，避免错误
-	sleep 1
+	sleep 0.5
         process_command "$line"
     done < "$COMMAND_FILE"
 fi
