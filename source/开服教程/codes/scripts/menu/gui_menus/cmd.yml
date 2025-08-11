@@ -122,16 +122,22 @@ items:
     lore:
       - "&b左键 &a➥ &c升级等级"
       - "&b当前: &a➥ &c%luckperms_primary_group_name%"
-      - "&b余额: &a➥ &c%vault_eco_balance_formatted%"
+      - "&b余额: &a➥ &c%vault_eco_balance%"
       - "&b需要: &a➥ &c%luckperms_meta_shengji_jinbi%"
     slot: 13
-    requirements:
-      - 'has: money %luckperms_meta_shengji_jinbi%'  # ← 这是官方标准写法
-    deny_commands:
-      - "[sound] ENTITY_VILLAGER_NO"
-      - "[message] &c金币不足，无法升级！"
+    click_requirement:
+      minimum_requirements: 1
+      stop_at_success: true
+      requirements:
+        enough_money:
+          type: has money
+          placeholder: '%luckperms_meta_shengji_jinbi%'
+      deny_commands:
+        - "[sound] ENTITY_VILLAGER_NO"
+        - "[message] &7你没有足够的金币升级！！！"
+        - "[close]"
     click_commands:
       - "[console] lp user %player_name% promote xiuxian_tongdao"
-      - "[money] take %luckperms_meta_shengji_jinbi%"
+      - "[takemoney] %luckperms_meta_shengji_jinbi%"
       - "[message] &a升级成功！"
       - "[close]"
