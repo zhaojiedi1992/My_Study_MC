@@ -52,7 +52,11 @@ Anti-Xray 有三种不同的模式。具体说明如下：
     /huskhomes:setspawn  
     # 注意找好位置，确保出生点在安全区域，出生点放置到npc, 可以交互。
     #
+    # 设置世界大小范围
+    修改dl1分区的server.properties文件，将max-world-size=20或者适当大小。 避免用户在等登录区域乱跑，乱挖矿。
 
+    
+    
 
 
 
