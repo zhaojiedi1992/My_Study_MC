@@ -7,7 +7,7 @@
    :caption: 开服教程
    :glob:
 
-   单机服/index
    群组服/index
+   单机服/index
    公共部分/index
    关于我们/index
