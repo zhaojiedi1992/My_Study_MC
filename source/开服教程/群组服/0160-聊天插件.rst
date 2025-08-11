@@ -59,26 +59,26 @@ CarbonChat简介
 .. code-block:: bash
 
     # 创建一个普通的carbot权限组。
-    /lp creategroup g-carbot 0  g-carbot
+    /lp creategroup g_carbot 0  g_carbot
     # 让默认组继承carbot组
-    /lp group default parent add g-carbot
+    /lp group default parent add g_carbot
 
     # 给carbot普通组安排权限（参考官方文档）
-    /lp group g-carbot permission set   carbon.channel.global.* true 
-    /lp group g-carbot permission set   carbon.whisper.* true  
-    /lp group g-carbot permission set   carbon.nickname.* true 
-    /lp group g-carbot permission set   carbon.messagetags true 
-    /lp group g-carbot permission set   carbon.ignore true 
-    /lp group g-carbot permission set   carbon.join true 
-    /lp group g-carbot permission set   carbon.help true 
-    /lp group g-carbot permission set   carbon.leave true 
-    /lp group g-carbot permission set   carbon.crossserver true 
-    /lp group g-carbot permission set   carbon.nickname.self true  
-    /lp group g-carbot permission set   carbon.nickname true 
-    /lp group g-carbot permission set   carbon.whisper true  
-    /lp group g-carbot permission set   carbon.whisper.* true 
-    /lp group g-carbot permission set   carbon.chatlinks true  
-    /lp group g-carbot permission set   carbon.itemlink true 
+    /lp group g_carbot permission set   carbon.channel.global.* true 
+    /lp group g_carbot permission set   carbon.whisper.* true  
+    /lp group g_carbot permission set   carbon.nickname.* true 
+    /lp group g_carbot permission set   carbon.messagetags true 
+    /lp group g_carbot permission set   carbon.ignore true 
+    /lp group g_carbot permission set   carbon.join true 
+    /lp group g_carbot permission set   carbon.help true 
+    /lp group g_carbot permission set   carbon.leave true 
+    /lp group g_carbot permission set   carbon.crossserver true 
+    /lp group g_carbot permission set   carbon.nickname.self true  
+    /lp group g_carbot permission set   carbon.nickname true 
+    /lp group g_carbot permission set   carbon.whisper true  
+    /lp group g_carbot permission set   carbon.whisper.* true 
+    /lp group g_carbot permission set   carbon.chatlinks true  
+    /lp group g_carbot permission set   carbon.itemlink true 
 
 命令冲突解决
 ==================================================

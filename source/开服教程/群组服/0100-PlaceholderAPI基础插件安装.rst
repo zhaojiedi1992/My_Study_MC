@@ -90,6 +90,17 @@ PlaceholderAPI 是 Minecraft 服务器最常用的变量支持插件，允许其
 - 官方变量列表：https://wiki.placeholderapi.com/users/placeholder-list/#standalone
 - 各插件官方文档通常也有详细变量说明
 
+
+权限配置
+==================================================
+这个插件，目前没有啥权限授予的， 不过还是创建一个虚拟组。 
+
+.. code-block:: bash 
+
+    /lp creategroup g_placeholderapi 0 g_placeholderapi
+    /lp group default parent add g_placeholderapi
+
+
 常见问题 QA
 ==================================================
 :Q1:  安装后变量无效？  

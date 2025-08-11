@@ -43,6 +43,15 @@ ProtocolLib 是一个专为 Minecraft 服务器开发的核心插件，主要用
 - 所有依赖 ProtocolLib 的插件需与其版本兼容
 - 如遇兼容性问题，优先升级 ProtocolLib 到最新版本
 
+权限配置
+==================================================
+这个插件，目前没有啥权限授予的， 不过还是创建一个虚拟组。 
+
+.. code-block:: bash 
+
+    /lp creategroup g_protocollib 0 g_protocollib
+    /lp group default parent add g_protocollib
+
 常见问题 QA
 ==================================================
 :Q1: ProtocolLib 安装后无效？  

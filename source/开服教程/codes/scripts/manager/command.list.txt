@@ -1,289 +1,300 @@
-# 1. 删除现有用户组（保留default）
-lp deletegroup lv_lianqiqi_1
-lp deletegroup lv_lianqiqi_2
-lp deletegroup lv_lianqiqi_3
-lp deletegroup lv_lianqiqi_4
-lp deletegroup lv_lianqiqi_5
-lp deletegroup lv_lianqiqi_6
-lp deletegroup lv_lianqiqi_7
-lp deletegroup lv_lianqiqi_9
-lp deletegroup lv_zhujiqi_1
-lp deletegroup lv_zhujiqi_2
-lp deletegroup lv_zhujiqi_3
-lp deletegroup lv_zhujiqi_4
-lp deletegroup lv_zhujiqi_5
-lp deletegroup lv_zhujiqi_6
-lp deletegroup lv_zhujiqi_7
-lp deletegroup lv_zhujiqi_8
-lp deletegroup lv_zhujiqi_9
-lp deletegroup lv_jindanqi_1
-lp deletegroup lv_jindanqi_2
-lp deletegroup lv_jindanqi_3
-lp deletegroup lv_yuanyingqi_1
-lp deletegroup lv_yuanyingqi_2
-lp deletegroup lv_yuanyingqi_3
-lp deletegroup lv_huashenqi_1
-lp deletegroup lv_huashenqi_2
-lp deletegroup lv_huashenqi_3
-lp deletegroup lv_lianxuqi_1
-lp deletegroup lv_lianxuqi_2
-lp deletegroup lv_lianxuqi_3
-lp deletegroup lv_hetiqi_1
-lp deletegroup lv_hetiqi_2
-lp deletegroup lv_hetiqi_3
-lp deletegroup lv_dachengqi_1
-lp deletegroup lv_dachengqi_2
-lp deletegroup lv_dachengqi_3
-lp deletegroup lv_dujieqi_1
-lp deletegroup lv_dujieqi_2
-lp deletegroup lv_dujieqi_3
+# 一、删除操作
+# 1. 删除原有用户组（保留default）
+lp deletegroup lv_lianqi_1
+lp deletegroup lv_lianqi_2
+lp deletegroup lv_lianqi_3
+lp deletegroup lv_lianqi_4
+lp deletegroup lv_lianqi_5
+lp deletegroup lv_lianqi_6
+lp deletegroup lv_lianqi_7
+lp deletegroup lv_lianqi_8
+lp deletegroup lv_lianqi_9
+lp deletegroup lv_zhuji_1
+lp deletegroup lv_zhuji_2
+lp deletegroup lv_zhuji_3
+lp deletegroup lv_zhuji_4
+lp deletegroup lv_zhuji_5
+lp deletegroup lv_zhuji_6
+lp deletegroup lv_zhuji_7
+lp deletegroup lv_zhuji_8
+lp deletegroup lv_zhuji_9
+lp deletegroup lv_jindan_1
+lp deletegroup lv_jindan_2
+lp deletegroup lv_jindan_3
+lp deletegroup lv_yuanying_1
+lp deletegroup lv_yuanying_2
+lp deletegroup lv_yuanying_3
+lp deletegroup lv_huashen_1
+lp deletegroup lv_huashen_2
+lp deletegroup lv_huashen_3
+lp deletegroup lv_lianxu_1
+lp deletegroup lv_lianxu_2
+lp deletegroup lv_lianxu_3
+lp deletegroup lv_heti_1
+lp deletegroup lv_heti_2
+lp deletegroup lv_heti_3
+lp deletegroup lv_dacheng_1
+lp deletegroup lv_dacheng_2
+lp deletegroup lv_dacheng_3
+lp deletegroup lv_dujie_1
+lp deletegroup lv_dujie_2
+lp deletegroup lv_dujie_3
 
-# 2. 修改default组配置
-lp modifygroup default weight 10
-lp modifygroup default displayname "境界阶段 凡境"
-lp group default meta set shengji_jinbi 1000
-lp group default permission set huskhomes.max_homes.3 true
-lp group default permission set dominion.limitation.default true
-
-# 3. 创建练气期用户组
-lp creategroup lv_lianqiqi_1 20 "境界阶段 练气期 1 层"
-lp group lv_lianqiqi_1 meta set shengji_jinbi 800
-lp group lv_lianqiqi_1 permission set huskhomes.max_homes.4 true
-lp group lv_lianqiqi_1 permission set dominion.limitation.lv_lianqiqi_1 true
-
-lp creategroup lv_lianqiqi_2 30 "境界阶段 练气期 2 层"
-lp group lv_lianqiqi_2 meta set shengji_jinbi 1200
-lp group lv_lianqiqi_2 permission set huskhomes.max_homes.5 true
-lp group lv_lianqiqi_2 permission set dominion.limitation.lv_lianqiqi_2 true
-
-lp creategroup lv_lianqiqi_3 40 "境界阶段 练气期 3 层"
-lp group lv_lianqiqi_3 meta set shengji_jinbi 1800
-lp group lv_lianqiqi_3 permission set huskhomes.max_homes.6 true
-lp group lv_lianqiqi_3 permission set dominion.limitation.lv_lianqiqi_3 true
-
-lp creategroup lv_lianqiqi_4 50 "境界阶段 练气期 4 层"
-lp group lv_lianqiqi_4 meta set shengji_jinbi 2500
-lp group lv_lianqiqi_4 permission set huskhomes.max_homes.7 true
-lp group lv_lianqiqi_4 permission set dominion.limitation.lv_lianqiqi_4 true
-
-lp creategroup lv_lianqiqi_5 60 "境界阶段 练气期 5 层"
-lp group lv_lianqiqi_5 meta set shengji_jinbi 3500
-lp group lv_lianqiqi_5 permission set huskhomes.max_homes.8 true
-lp group lv_lianqiqi_5 permission set dominion.limitation.lv_lianqiqi_5 true
-
-lp creategroup lv_lianqiqi_6 70 "境界阶段 练气期 6 层"
-lp group lv_lianqiqi_6 meta set shengji_jinbi 5000
-lp group lv_lianqiqi_6 permission set huskhomes.max_homes.9 true
-lp group lv_lianqiqi_6 permission set dominion.limitation.lv_lianqiqi_6 true
-
-lp creategroup lv_lianqiqi_7 80 "境界阶段 练气期 7 层"
-lp group lv_lianqiqi_7 meta set shengji_jinbi 7000
-lp group lv_lianqiqi_7 permission set huskhomes.max_homes.10 true
-lp group lv_lianqiqi_7 permission set dominion.limitation.lv_lianqiqi_7 true
-
-lp creategroup lv_lianqiqi_9 90 "境界阶段 练气期 9 层"
-lp group lv_lianqiqi_9 meta set shengji_jinbi 20000
-lp group lv_lianqiqi_9 permission set huskhomes.max_homes.11 true
-lp group lv_lianqiqi_9 permission set dominion.limitation.lv_lianqiqi_9 true
-
-# 4. 创建筑基期用户组
-lp creategroup lv_zhujiqi_1 100 "境界阶段 筑基期 1 层"
-lp group lv_zhujiqi_1 meta set shengji_jinbi 50000
-lp group lv_zhujiqi_1 permission set huskhomes.max_homes.12 true
-lp group lv_zhujiqi_1 permission set dominion.limitation.lv_zhujiqi_1 true
-
-lp creategroup lv_zhujiqi_2 110 "境界阶段 筑基期 2 层"
-lp group lv_zhujiqi_2 meta set shengji_jinbi 80000
-lp group lv_zhujiqi_2 permission set huskhomes.max_homes.13 true
-lp group lv_zhujiqi_2 permission set dominion.limitation.lv_zhujiqi_2 true
-
-lp creategroup lv_zhujiqi_3 120 "境界阶段 筑基期 3 层"
-lp group lv_zhujiqi_3 meta set shengji_jinbi 120000
-lp group lv_zhujiqi_3 permission set huskhomes.max_homes.14 true
-lp group lv_zhujiqi_3 permission set dominion.limitation.lv_zhujiqi_3 true
-
-lp creategroup lv_zhujiqi_4 130 "境界阶段 筑基期 4 层"
-lp group lv_zhujiqi_4 meta set shengji_jinbi 180000
-lp group lv_zhujiqi_4 permission set huskhomes.max_homes.15 true
-lp group lv_zhujiqi_4 permission set dominion.limitation.lv_zhujiqi_4 true
-
-lp creategroup lv_zhujiqi_5 140 "境界阶段 筑基期 5 层"
-lp group lv_zhujiqi_5 meta set shengji_jinbi 250000
-lp group lv_zhujiqi_5 permission set huskhomes.max_homes.16 true
-lp group lv_zhujiqi_5 permission set dominion.limitation.lv_zhujiqi_5 true
-
-lp creategroup lv_zhujiqi_6 150 "境界阶段 筑基期 6 层"
-lp group lv_zhujiqi_6 meta set shengji_jinbi 350000
-lp group lv_zhujiqi_6 permission set huskhomes.max_homes.17 true
-lp group lv_zhujiqi_6 permission set dominion.limitation.lv_zhujiqi_6 true
-
-lp creategroup lv_zhujiqi_7 160 "境界阶段 筑基期 7 层"
-lp group lv_zhujiqi_7 meta set shengji_jinbi 500000
-lp group lv_zhujiqi_7 permission set huskhomes.max_homes.18 true
-lp group lv_zhujiqi_7 permission set dominion.limitation.lv_zhujiqi_7 true
-
-lp creategroup lv_zhujiqi_8 170 "境界阶段 筑基期 8 层"
-lp group lv_zhujiqi_8 meta set shengji_jinbi 700000
-lp group lv_zhujiqi_8 permission set huskhomes.max_homes.19 true
-lp group lv_zhujiqi_8 permission set dominion.limitation.lv_zhujiqi_8 true
-
-lp creategroup lv_zhujiqi_9 180 "境界阶段 筑基期 9 层"
-lp group lv_zhujiqi_9 meta set shengji_jinbi 1000000
-lp group lv_zhujiqi_9 permission set huskhomes.max_homes.20 true
-lp group lv_zhujiqi_9 permission set dominion.limitation.lv_zhujiqi_9 true
-
-# 5. 创建金丹期用户组
-lp creategroup lv_jindanqi_1 190 "境界阶段 金丹期 初期"
-lp group lv_jindanqi_1 meta set shengji_jinbi 3000000
-lp group lv_jindanqi_1 permission set huskhomes.max_homes.21 true
-lp group lv_jindanqi_1 permission set dominion.limitation.lv_jindanqi_1 true
-
-lp creategroup lv_jindanqi_2 200 "境界阶段 金丹期 中期"
-lp group lv_jindanqi_2 meta set shengji_jinbi 5000000
-lp group lv_jindanqi_2 permission set huskhomes.max_homes.22 true
-lp group lv_jindanqi_2 permission set dominion.limitation.lv_jindanqi_2 true
-
-lp creategroup lv_jindanqi_3 210 "境界阶段 金丹期 后期"
-lp group lv_jindanqi_3 meta set shengji_jinbi 8000000
-lp group lv_jindanqi_3 permission set huskhomes.max_homes.23 true
-lp group lv_jindanqi_3 permission set dominion.limitation.lv_jindanqi_3 true
-
-# 6. 创建元婴期用户组
-lp creategroup lv_yuanyingqi_1 220 "境界阶段 元婴期 初期"
-lp group lv_yuanyingqi_1 meta set shengji_jinbi 20000000
-lp group lv_yuanyingqi_1 permission set huskhomes.max_homes.24 true
-lp group lv_yuanyingqi_1 permission set dominion.limitation.lv_yuanyingqi_1 true
-
-lp creategroup lv_yuanyingqi_2 230 "境界阶段 元婴期 中期"
-lp group lv_yuanyingqi_2 meta set shengji_jinbi 35000000
-lp group lv_yuanyingqi_2 permission set huskhomes.max_homes.25 true
-lp group lv_yuanyingqi_2 permission set dominion.limitation.lv_yuanyingqi_2 true
-
-lp creategroup lv_yuanyingqi_3 240 "境界阶段 元婴期 后期"
-lp group lv_yuanyingqi_3 meta set shengji_jinbi 60000000
-lp group lv_yuanyingqi_3 permission set huskhomes.max_homes.26 true
-lp group lv_yuanyingqi_3 permission set dominion.limitation.lv_yuanyingqi_3 true
-
-# 7. 创建化神期用户组
-lp creategroup lv_huashenqi_1 250 "境界阶段 化神期 初期"
-lp group lv_huashenqi_1 meta set shengji_jinbi 120000000
-lp group lv_huashenqi_1 permission set huskhomes.max_homes.27 true
-lp group lv_huashenqi_1 permission set dominion.limitation.lv_huashenqi_1 true
-
-lp creategroup lv_huashenqi_2 260 "境界阶段 化神期 中期"
-lp group lv_huashenqi_2 meta set shengji_jinbi 200000000
-lp group lv_huashenqi_2 permission set huskhomes.max_homes.28 true
-lp group lv_huashenqi_2 permission set dominion.limitation.lv_huashenqi_2 true
-
-lp creategroup lv_huashenqi_3 270 "境界阶段 化神期 后期"
-lp group lv_huashenqi_3 meta set shengji_jinbi 350000000
-lp group lv_huashenqi_3 permission set huskhomes.max_homes.29 true
-lp group lv_huashenqi_3 permission set dominion.limitation.lv_huashenqi_3 true
-
-# 8. 创建炼虚期用户组
-lp creategroup lv_lianxuqi_1 280 "境界阶段 炼虚期 初期"
-lp group lv_lianxuqi_1 meta set shengji_jinbi 700000000
-lp group lv_lianxuqi_1 permission set huskhomes.max_homes.30 true
-lp group lv_lianxuqi_1 permission set dominion.limitation.lv_lianxuqi_1 true
-
-lp creategroup lv_lianxuqi_2 290 "境界阶段 炼虚期 中期"
-lp group lv_lianxuqi_2 meta set shengji_jinbi 1200000000
-lp group lv_lianxuqi_2 permission set huskhomes.max_homes.31 true
-lp group lv_lianxuqi_2 permission set dominion.limitation.lv_lianxuqi_2 true
-
-lp creategroup lv_lianxuqi_3 300 "境界阶段 炼虚期 后期"
-lp group lv_lianxuqi_3 meta set shengji_jinbi 2000000000
-lp group lv_lianxuqi_3 permission set huskhomes.max_homes.32 true
-lp group lv_lianxuqi_3 permission set dominion.limitation.lv_lianxuqi_3 true
-
-# 9. 创建合体期用户组
-lp creategroup lv_hetiqi_1 310 "境界阶段 合体期 初期"
-lp group lv_hetiqi_1 meta set shengji_jinbi 4000000000
-lp group lv_hetiqi_1 permission set huskhomes.max_homes.33 true
-lp group lv_hetiqi_1 permission set dominion.limitation.lv_hetiqi_1 true
-
-lp creategroup lv_hetiqi_2 320 "境界阶段 合体期 中期"
-lp group lv_hetiqi_2 meta set shengji_jinbi 7000000000
-lp group lv_hetiqi_2 permission set huskhomes.max_homes.34 true
-lp group lv_hetiqi_2 permission set dominion.limitation.lv_hetiqi_2 true
-
-lp creategroup lv_hetiqi_3 330 "境界阶段 合体期 后期"
-lp group lv_hetiqi_3 meta set shengji_jinbi 12000000000
-lp group lv_hetiqi_3 permission set huskhomes.max_homes.35 true
-lp group lv_hetiqi_3 permission set dominion.limitation.lv_hetiqi_3 true
-
-# 10. 创建大乘期用户组
-lp creategroup lv_dachengqi_1 340 "境界阶段 大乘期 初期"
-lp group lv_dachengqi_1 meta set shengji_jinbi 25000000000
-lp group lv_dachengqi_1 permission set huskhomes.max_homes.36 true
-lp group lv_dachengqi_1 permission set dominion.limitation.lv_dachengqi_1 true
-
-lp creategroup lv_dachengqi_2 350 "境界阶段 大乘期 中期"
-lp group lv_dachengqi_2 meta set shengji_jinbi 45000000000
-lp group lv_dachengqi_2 permission set huskhomes.max_homes.37 true
-lp group lv_dachengqi_2 permission set dominion.limitation.lv_dachengqi_2 true
-
-lp creategroup lv_dachengqi_3 360 "境界阶段 大乘期 后期"
-lp group lv_dachengqi_3 meta set shengji_jinbi 80000000000
-lp group lv_dachengqi_3 permission set huskhomes.max_homes.38 true
-lp group lv_dachengqi_3 permission set dominion.limitation.lv_dachengqi_3 true
-
-# 11. 创建渡劫期用户组
-lp creategroup lv_dujieqi_1 370 "境界阶段 渡劫期 初期"
-lp group lv_dujieqi_1 meta set shengji_jinbi 150000000000
-lp group lv_dujieqi_1 permission set huskhomes.max_homes.39 true
-lp group lv_dujieqi_1 permission set dominion.limitation.lv_dujieqi_1 true
-
-lp creategroup lv_dujieqi_2 380 "境界阶段 渡劫期 中期"
-lp group lv_dujieqi_2 meta set shengji_jinbi 280000000000
-lp group lv_dujieqi_2 permission set huskhomes.max_homes.40 true
-lp group lv_dujieqi_2 permission set dominion.limitation.lv_dujieqi_2 true
-
-lp creategroup lv_dujieqi_3 390 "境界阶段 渡劫期 后期"
-lp group lv_dujieqi_3 meta set shengji_jinbi 500000000000
-lp group lv_dujieqi_3 permission set huskhomes.max_homes.41 true
-lp group lv_dujieqi_3 permission set dominion.limitation.lv_dujieqi_3 true
-
-# 12. 设置修仙通道轨道（xiuxian_tongdao）
+# 2. 删除原有track
 lp deletetrack xiuxian_tongdao
+
+
+# 二、创建与修改操作
+# 1. 修改default组
+lp modifygroup default weight 10 displayname "凡人境"
+
+# 2. 创建用户组（含权重、显示名）
+lp creategroup lv_lianqi_1 20 "练气1层"
+lp creategroup lv_lianqi_2 30 "练气2层"
+lp creategroup lv_lianqi_3 40 "练气3层"
+lp creategroup lv_lianqi_4 50 "练气4层"
+lp creategroup lv_lianqi_5 60 "练气5层"
+lp creategroup lv_lianqi_6 70 "练气6层"
+lp creategroup lv_lianqi_7 80 "练气7层"
+lp creategroup lv_lianqi_8 85 "练气8层"
+lp creategroup lv_lianqi_9 90 "练气9层"
+lp creategroup lv_zhuji_1 100 "筑基1层"
+lp creategroup lv_zhuji_2 110 "筑基2层"
+lp creategroup lv_zhuji_3 120 "筑基3层"
+lp creategroup lv_zhuji_4 130 "筑基4层"
+lp creategroup lv_zhuji_5 140 "筑基5层"
+lp creategroup lv_zhuji_6 150 "筑基6层"
+lp creategroup lv_zhuji_7 160 "筑基7层"
+lp creategroup lv_zhuji_8 170 "筑基8层"
+lp creategroup lv_zhuji_9 180 "筑基9层"
+lp creategroup lv_jindan_1 190 "金丹初"
+lp creategroup lv_jindan_2 200 "金丹中"
+lp creategroup lv_jindan_3 210 "金丹后"
+lp creategroup lv_yuanying_1 220 "元婴初"
+lp creategroup lv_yuanying_2 230 "元婴中"
+lp creategroup lv_yuanying_3 240 "元婴后"
+lp creategroup lv_huashen_1 250 "化神初"
+lp creategroup lv_huashen_2 260 "化神中"
+lp creategroup lv_huashen_3 270 "化神后"
+lp creategroup lv_lianxu_1 280 "炼虚初"
+lp creategroup lv_lianxu_2 290 "炼虚中"
+lp creategroup lv_lianxu_3 300 "炼虚后"
+lp creategroup lv_heti_1 310 "合体初"
+lp creategroup lv_heti_2 320 "合体中"
+lp creategroup lv_heti_3 330 "合体后"
+lp creategroup lv_dacheng_1 340 "大乘初"
+lp creategroup lv_dacheng_2 350 "大乘中"
+lp creategroup lv_dacheng_3 360 "大乘后"
+lp creategroup lv_dujie_1 370 "渡劫初"
+lp creategroup lv_dujie_2 380 "渡劫中"
+lp creategroup lv_dujie_3 390 "渡劫后"
+
+# 3. 创建track并设置顺序
 lp createtrack xiuxian_tongdao
 lp track xiuxian_tongdao append default
-lp track xiuxian_tongdao append lv_lianqiqi_1
-lp track xiuxian_tongdao append lv_lianqiqi_2
-lp track xiuxian_tongdao append lv_lianqiqi_3
-lp track xiuxian_tongdao append lv_lianqiqi_4
-lp track xiuxian_tongdao append lv_lianqiqi_5
-lp track xiuxian_tongdao append lv_lianqiqi_6
-lp track xiuxian_tongdao append lv_lianqiqi_7
-lp track xiuxian_tongdao append lv_lianqiqi_9
-lp track xiuxian_tongdao append lv_zhujiqi_1
-lp track xiuxian_tongdao append lv_zhujiqi_2
-lp track xiuxian_tongdao append lv_zhujiqi_3
-lp track xiuxian_tongdao append lv_zhujiqi_4
-lp track xiuxian_tongdao append lv_zhujiqi_5
-lp track xiuxian_tongdao append lv_zhujiqi_6
-lp track xiuxian_tongdao append lv_zhujiqi_7
-lp track xiuxian_tongdao append lv_zhujiqi_8
-lp track xiuxian_tongdao append lv_zhujiqi_9
-lp track xiuxian_tongdao append lv_jindanqi_1
-lp track xiuxian_tongdao append lv_jindanqi_2
-lp track xiuxian_tongdao append lv_jindanqi_3
-lp track xiuxian_tongdao append lv_yuanyingqi_1
-lp track xiuxian_tongdao append lv_yuanyingqi_2
-lp track xiuxian_tongdao append lv_yuanyingqi_3
-lp track xiuxian_tongdao append lv_huashenqi_1
-lp track xiuxian_tongdao append lv_huashenqi_2
-lp track xiuxian_tongdao append lv_huashenqi_3
-lp track xiuxian_tongdao append lv_lianxuqi_1
-lp track xiuxian_tongdao append lv_lianxuqi_2
-lp track xiuxian_tongdao append lv_lianxuqi_3
-lp track xiuxian_tongdao append lv_hetiqi_1
-lp track xiuxian_tongdao append lv_hetiqi_2
-lp track xiuxian_tongdao append lv_hetiqi_3
-lp track xiuxian_tongdao append lv_dachengqi_1
-lp track xiuxian_tongdao append lv_dachengqi_2
-lp track xiuxian_tongdao append lv_dachengqi_3
-lp track xiuxian_tongdao append lv_dujieqi_1
-lp track xiuxian_tongdao append lv_dujieqi_2
-lp track xiuxian_tongdao append lv_dujieqi_3
+lp track xiuxian_tongdao append lv_lianqi_1
+lp track xiuxian_tongdao append lv_lianqi_2
+lp track xiuxian_tongdao append lv_lianqi_3
+lp track xiuxian_tongdao append lv_lianqi_4
+lp track xiuxian_tongdao append lv_lianqi_5
+lp track xiuxian_tongdao append lv_lianqi_6
+lp track xiuxian_tongdao append lv_lianqi_7
+lp track xiuxian_tongdao append lv_lianqi_8
+lp track xiuxian_tongdao append lv_lianqi_9
+lp track xiuxian_tongdao append lv_zhuji_1
+lp track xiuxian_tongdao append lv_zhuji_2
+lp track xiuxian_tongdao append lv_zhuji_3
+lp track xiuxian_tongdao append lv_zhuji_4
+lp track xiuxian_tongdao append lv_zhuji_5
+lp track xiuxian_tongdao append lv_zhuji_6
+lp track xiuxian_tongdao append lv_zhuji_7
+lp track xiuxian_tongdao append lv_zhuji_8
+lp track xiuxian_tongdao append lv_zhuji_9
+lp track xiuxian_tongdao append lv_jindan_1
+lp track xiuxian_tongdao append lv_jindan_2
+lp track xiuxian_tongdao append lv_jindan_3
+lp track xiuxian_tongdao append lv_yuanying_1
+lp track xiuxian_tongdao append lv_yuanying_2
+lp track xiuxian_tongdao append lv_yuanying_3
+lp track xiuxian_tongdao append lv_huashen_1
+lp track xiuxian_tongdao append lv_huashen_2
+lp track xiuxian_tongdao append lv_huashen_3
+lp track xiuxian_tongdao append lv_lianxu_1
+lp track xiuxian_tongdao append lv_lianxu_2
+lp track xiuxian_tongdao append lv_lianxu_3
+lp track xiuxian_tongdao append lv_heti_1
+lp track xiuxian_tongdao append lv_heti_2
+lp track xiuxian_tongdao append lv_heti_3
+lp track xiuxian_tongdao append lv_dacheng_1
+lp track xiuxian_tongdao append lv_dacheng_2
+lp track xiuxian_tongdao append lv_dacheng_3
+lp track xiuxian_tongdao append lv_dujie_1
+lp track xiuxian_tongdao append lv_dujie_2
+lp track xiuxian_tongdao append lv_dujie_3
 
+
+# 三、权限与属性配置
+# 1. 设置权限继承（当前等级继承前一级）
+lp group lv_lianqi_1 parent add default
+lp group lv_lianqi_2 parent add lv_lianqi_1
+lp group lv_lianqi_3 parent add lv_lianqi_2
+lp group lv_lianqi_4 parent add lv_lianqi_3
+lp group lv_lianqi_5 parent add lv_lianqi_4
+lp group lv_lianqi_6 parent add lv_lianqi_5
+lp group lv_lianqi_7 parent add lv_lianqi_6
+lp group lv_lianqi_8 parent add lv_lianqi_7
+lp group lv_lianqi_9 parent add lv_lianqi_8
+lp group lv_zhuji_1 parent add lv_lianqi_9
+lp group lv_zhuji_2 parent add lv_zhuji_1
+lp group lv_zhuji_3 parent add lv_zhuji_2
+lp group lv_zhuji_4 parent add lv_zhuji_3
+lp group lv_zhuji_5 parent add lv_zhuji_4
+lp group lv_zhuji_6 parent add lv_zhuji_5
+lp group lv_zhuji_7 parent add lv_zhuji_6
+lp group lv_zhuji_8 parent add lv_zhuji_7
+lp group lv_zhuji_9 parent add lv_zhuji_8
+lp group lv_jindan_1 parent add lv_zhuji_9
+lp group lv_jindan_2 parent add lv_jindan_1
+lp group lv_jindan_3 parent add lv_jindan_2
+lp group lv_yuanying_1 parent add lv_jindan_3
+lp group lv_yuanying_2 parent add lv_yuanying_1
+lp group lv_yuanying_3 parent add lv_yuanying_2
+lp group lv_huashen_1 parent add lv_yuanying_3
+lp group lv_huashen_2 parent add lv_huashen_1
+lp group lv_huashen_3 parent add lv_huashen_2
+lp group lv_lianxu_1 parent add lv_huashen_3
+lp group lv_lianxu_2 parent add lv_lianxu_1
+lp group lv_lianxu_3 parent add lv_lianxu_2
+lp group lv_heti_1 parent add lv_lianxu_3
+lp group lv_heti_2 parent add lv_heti_1
+lp group lv_heti_3 parent add lv_heti_2
+lp group lv_dacheng_1 parent add lv_heti_3
+lp group lv_dacheng_2 parent add lv_dacheng_1
+lp group lv_dacheng_3 parent add lv_dacheng_2
+lp group lv_dujie_1 parent add lv_dacheng_3
+lp group lv_dujie_2 parent add lv_dujie_1
+lp group lv_dujie_3 parent add lv_dujie_2
+
+# 2. 设置升级金币数（meta信息）
+lp group default meta set shengji_jinbi 1000
+lp group lv_lianqi_1 meta set shengji_jinbi 800
+lp group lv_lianqi_2 meta set shengji_jinbi 1200
+lp group lv_lianqi_3 meta set shengji_jinbi 1800
+lp group lv_lianqi_4 meta set shengji_jinbi 2500
+lp group lv_lianqi_5 meta set shengji_jinbi 3500
+lp group lv_lianqi_6 meta set shengji_jinbi 5000
+lp group lv_lianqi_7 meta set shengji_jinbi 7000
+lp group lv_lianqi_8 meta set shengji_jinbi 10000
+lp group lv_lianqi_9 meta set shengji_jinbi 15000
+lp group lv_zhuji_1 meta set shengji_jinbi 50000
+lp group lv_zhuji_2 meta set shengji_jinbi 80000
+lp group lv_zhuji_3 meta set shengji_jinbi 120000
+lp group lv_zhuji_4 meta set shengji_jinbi 180000
+lp group lv_zhuji_5 meta set shengji_jinbi 250000
+lp group lv_zhuji_6 meta set shengji_jinbi 350000
+lp group lv_zhuji_7 meta set shengji_jinbi 500000
+lp group lv_zhuji_8 meta set shengji_jinbi 700000
+lp group lv_zhuji_9 meta set shengji_jinbi 1000000
+lp group lv_jindan_1 meta set shengji_jinbi 3000000
+lp group lv_jindan_2 meta set shengji_jinbi 5000000
+lp group lv_jindan_3 meta set shengji_jinbi 8000000
+lp group lv_yuanying_1 meta set shengji_jinbi 20000000
+lp group lv_yuanying_2 meta set shengji_jinbi 35000000
+lp group lv_yuanying_3 meta set shengji_jinbi 60000000
+lp group lv_huashen_1 meta set shengji_jinbi 120000000
+lp group lv_huashen_2 meta set shengji_jinbi 200000000
+lp group lv_huashen_3 meta set shengji_jinbi 350000000
+lp group lv_lianxu_1 meta set shengji_jinbi 700000000
+lp group lv_lianxu_2 meta set shengji_jinbi 1200000000
+lp group lv_lianxu_3 meta set shengji_jinbi 2000000000
+lp group lv_heti_1 meta set shengji_jinbi 4000000000
+lp group lv_heti_2 meta set shengji_jinbi 7000000000
+lp group lv_heti_3 meta set shengji_jinbi 12000000000
+lp group lv_dacheng_1 meta set shengji_jinbi 25000000000
+lp group lv_dacheng_2 meta set shengji_jinbi 45000000000
+lp group lv_dacheng_3 meta set shengji_jinbi 80000000000
+lp group lv_dujie_1 meta set shengji_jinbi 150000000000
+lp group lv_dujie_2 meta set shengji_jinbi 280000000000
+lp group lv_dujie_3 meta set shengji_jinbi 500000000000
+
+# 3. 设置家与领地权限（家的数量=领地的数量，均取自表格对应列）
+lp group default permission set huskhomes.max_homes.3 true
+lp group default permission set dominion.limitation.default true
+lp group lv_lianqi_1 permission set huskhomes.max_homes.4 true
+lp group lv_lianqi_1 permission set dominion.limitation.lv_lianqi_1 true
+lp group lv_lianqi_2 permission set huskhomes.max_homes.5 true
+lp group lv_lianqi_2 permission set dominion.limitation.lv_lianqi_2 true
+lp group lv_lianqi_3 permission set huskhomes.max_homes.6 true
+lp group lv_lianqi_3 permission set dominion.limitation.lv_lianqi_3 true
+lp group lv_lianqi_4 permission set huskhomes.max_homes.7 true
+lp group lv_lianqi_4 permission set dominion.limitation.lv_lianqi_4 true
+lp group lv_lianqi_5 permission set huskhomes.max_homes.8 true
+lp group lv_lianqi_5 permission set dominion.limitation.lv_lianqi_5 true
+lp group lv_lianqi_6 permission set huskhomes.max_homes.9 true
+lp group lv_lianqi_6 permission set dominion.limitation.lv_lianqi_6 true
+lp group lv_lianqi_7 permission set huskhomes.max_homes.10 true
+lp group lv_lianqi_7 permission set dominion.limitation.lv_lianqi_7 true
+lp group lv_lianqi_8 permission set huskhomes.max_homes.11 true
+lp group lv_lianqi_8 permission set dominion.limitation.lv_lianqi_8 true
+lp group lv_lianqi_9 permission set huskhomes.max_homes.12 true
+lp group lv_lianqi_9 permission set dominion.limitation.lv_lianqi_9 true
+lp group lv_zhuji_1 permission set huskhomes.max_homes.13 true
+lp group lv_zhuji_1 permission set dominion.limitation.lv_zhuji_1 true
+lp group lv_zhuji_2 permission set huskhomes.max_homes.14 true
+lp group lv_zhuji_2 permission set dominion.limitation.lv_zhuji_2 true
+lp group lv_zhuji_3 permission set huskhomes.max_homes.15 true
+lp group lv_zhuji_3 permission set dominion.limitation.lv_zhuji_3 true
+lp group lv_zhuji_4 permission set huskhomes.max_homes.16 true
+lp group lv_zhuji_4 permission set dominion.limitation.lv_zhuji_4 true
+lp group lv_zhuji_5 permission set huskhomes.max_homes.17 true
+lp group lv_zhuji_5 permission set dominion.limitation.lv_zhuji_5 true
+lp group lv_zhuji_6 permission set huskhomes.max_homes.18 true
+lp group lv_zhuji_6 permission set dominion.limitation.lv_zhuji_6 true
+lp group lv_zhuji_7 permission set huskhomes.max_homes.19 true
+lp group lv_zhuji_7 permission set dominion.limitation.lv_zhuji_7 true
+lp group lv_zhuji_8 permission set huskhomes.max_homes.20 true
+lp group lv_zhuji_8 permission set dominion.limitation.lv_zhuji_8 true
+lp group lv_zhuji_9 permission set huskhomes.max_homes.21 true
+lp group lv_zhuji_9 permission set dominion.limitation.lv_zhuji_9 true
+lp group lv_jindan_1 permission set huskhomes.max_homes.22 true
+lp group lv_jindan_1 permission set dominion.limitation.lv_jindan_1 true
+lp group lv_jindan_2 permission set huskhomes.max_homes.23 true
+lp group lv_jindan_2 permission set dominion.limitation.lv_jindan_2 true
+lp group lv_jindan_3 permission set huskhomes.max_homes.24 true
+lp group lv_jindan_3 permission set dominion.limitation.lv_jindan_3 true
+lp group lv_yuanying_1 permission set huskhomes.max_homes.25 true
+lp group lv_yuanying_1 permission set dominion.limitation.lv_yuanying_1 true
+lp group lv_yuanying_2 permission set huskhomes.max_homes.26 true
+lp group lv_yuanying_2 permission set dominion.limitation.lv_yuanying_2 true
+lp group lv_yuanying_3 permission set huskhomes.max_homes.27 true
+lp group lv_yuanying_3 permission set dominion.limitation.lv_yuanying_3 true
+lp group lv_huashen_1 permission set huskhomes.max_homes.28 true
+lp group lv_huashen_1 permission set dominion.limitation.lv_huashen_1 true
+lp group lv_huashen_2 permission set huskhomes.max_homes.29 true
+lp group lv_huashen_2 permission set dominion.limitation.lv_huashen_2 true
+lp group lv_huashen_3 permission set huskhomes.max_homes.30 true
+lp group lv_huashen_3 permission set dominion.limitation.lv_huashen_3 true
+lp group lv_lianxu_1 permission set huskhomes.max_homes.31 true
+lp group lv_lianxu_1 permission set dominion.limitation.lv_lianxu_1 true
+lp group lv_lianxu_2 permission set huskhomes.max_homes.32 true
+lp group lv_lianxu_2 permission set dominion.limitation.lv_lianxu_2 true
+lp group lv_lianxu_3 permission set huskhomes.max_homes.33 true
+lp group lv_lianxu_3 permission set dominion.limitation.lv_lianxu_3 true
+lp group lv_heti_1 permission set huskhomes.max_homes.34 true
+lp group lv_heti_1 permission set dominion.limitation.lv_heti_1 true
+lp group lv_heti_2 permission set huskhomes.max_homes.35 true
+lp group lv_heti_2 permission set dominion.limitation.lv_heti_2 true
+lp group lv_heti_3 permission set huskhomes.max_homes.36 true
+lp group lv_heti_3 permission set dominion.limitation.lv_heti_3 true
+lp group lv_dacheng_1 permission set huskhomes.max_homes.37 true
+lp group lv_dacheng_1 permission set dominion.limitation.lv_dacheng_1 true
+lp group lv_dacheng_2 permission set huskhomes.max_homes.38 true
+lp group lv_dacheng_2 permission set dominion.limitation.lv_dacheng_2 true
+lp group lv_dacheng_3 permission set huskhomes.max_homes.39 true
+lp group lv_dacheng_3 permission set dominion.limitation.lv_dacheng_3 true
+lp group lv_dujie_1 permission set huskhomes.max_homes.40 true
+lp group lv_dujie_1 permission set dominion.limitation.lv_dujie_1 true
+lp group lv_dujie_2 permission set huskhomes.max_homes.41 true
+lp group lv_dujie_2 permission set dominion.limitation.lv_dujie_2 true
+lp group lv_dujie_3 permission set huskhomes.max_homes.42 true
+lp group lv_dujie_3 permission set dominion.limitation.lv_dujie_3 true

@@ -40,11 +40,24 @@ Vault 不是一个经济系统本身，而是为插件开发者提供统一的�
     cp Vault.jar /home/mc/instances/proxy/plugins/
     # 重启所有服务端
 
+
+
 配置说明
 ==================================================
 - Vault 无需复杂配置，安装即用
 - 具体经济、权限、聊天功能由其他插件实现（如 EssentialsX、LuckPerms、CMI 等）
 - Vault 仅作为接口桥接，确保所有依赖插件都已安装
+
+
+
+权限配置
+==================================================
+这个插件，目前没有啥权限授予的， 不过还是创建一个虚拟组。 
+
+.. code-block:: bash 
+
+    /lp creategroup g_vault 0 g_vault
+    /lp group default parent add g_vault
 
 补充说明
 ==================================================

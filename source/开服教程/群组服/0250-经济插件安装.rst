@@ -55,6 +55,18 @@
 .. image:: ./imgs/测试金币.jpg
 .. image:: ./imgs/切换分区测试.jpg
 
+
+权限配置
+==================================================
+这个插件，目前没有啥权限授予的， 不过还是创建一个虚拟组。 
+
+.. code-block:: bash 
+
+    /lp creategroup g_xconomy
+    /lp group default parent add g_xconomy
+    /lp group g_xconomy permission set xconomy.user true 
+
+
 常见问题 QA
 ==================================================
 :Q1: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "connection" is null  

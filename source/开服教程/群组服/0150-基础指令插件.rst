@@ -56,47 +56,48 @@ EssentialsX 提供了非常多的基础能力，需要通过 LuckPerms 授权给
 .. code-block:: bash
 
     # 创建一个普通的ess权限组
-    /lp creategroup g-essentials 0 g-essentials
+    /lp creategroup g_essentials 0 g_essentials
     # 让默认组继承ess组
-    /lp group default parent add g-essentials
+    /lp group default parent add g_essentials
 
     # 给普通组分配常用权限（部分指令后续可用其他插件替代，但建议先全部授权）
-    /lp group g-essentials permission set essentials.afk true
-    /lp group g-essentials permission set essentials.afk.kickexempt true
-    /lp group g-essentials permission set essentials.back true
-    /lp group g-essentials permission set essentials.back.ondeath true
-    /lp group g-essentials permission set essentials.back.onteleport true
-    /lp group g-essentials permission set essentials.delhome true
-    /lp group g-essentials permission set essentials.disposal true
-    /lp group g-essentials permission set essentials.help true
-    /lp group g-essentials permission set essentials.home true
-    /lp group g-essentials permission set essentials.home.compass true
-    /lp group g-essentials permission set essentials.info true
-    /lp group g-essentials permission set essentials.list true
-    /lp group g-essentials permission set essentials.mail true
-    /lp group g-essentials permission set essentials.mail.send true
-    /lp group g-essentials permission set essentials.motd true
-    /lp group g-essentials permission set essentials.msg true
-    /lp group g-essentials permission set essentials.msg.color true
-    /lp group g-essentials permission set essentials.msg.format true
-    /lp group g-essentials permission set essentials.msg.url true
-    /lp group g-essentials permission set essentials.reply true
-    /lp group g-essentials permission set essentials.pay true
-    /lp group g-essentials permission set essentials.paytoggle true
-    /lp group g-essentials permission set essentials.sethome true
-    /lp group g-essentials permission set essentials.sethome.multiple true
-    /lp group g-essentials permission set essentials.time true
-    /lp group g-essentials permission set essentials.whois true
+    /lp group g_essentials permission set essentials.afk true
+    /lp group g_essentials permission set essentials.afk.kickexempt true
+    /lp group g_essentials permission set essentials.back true
+    /lp group g_essentials permission set essentials.back.ondeath true
+    /lp group g_essentials permission set essentials.back.onteleport true
+    /lp group g_essentials permission set essentials.delhome true
+    /lp group g_essentials permission set essentials.disposal true
+    /lp group g_essentials permission set essentials.help true
+    /lp group g_essentials permission set essentials.home true
+    /lp group g_essentials permission set essentials.home.compass true
+    /lp group g_essentials permission set essentials.info true
+    /lp group g_essentials permission set essentials.list true
+    /lp group g_essentials permission set essentials.mail true
+    /lp group g_essentials permission set essentials.mail.send true
+    /lp group g_essentials permission set essentials.motd true
+    /lp group g_essentials permission set essentials.msg true
+    /lp group g_essentials permission set essentials.msg.color true
+    /lp group g_essentials permission set essentials.msg.format true
+    /lp group g_essentials permission set essentials.msg.url true
+    /lp group g_essentials permission set essentials.reply true
+    /lp group g_essentials permission set essentials.pay true
+    /lp group g_essentials permission set essentials.paytoggle true
+    /lp group g_essentials permission set essentials.sethome true
+    /lp group g_essentials permission set essentials.sethome.multiple true
+    /lp group g_essentials permission set essentials.time true
+    /lp group g_essentials permission set essentials.whois true
     /lp group g-essentials permission set essentials.rules true
-    /lp group g-essentials permission set essentials.chat.color true
-    /lp group g-essentials permission set essentials.nick true
-    /lp group g-essentials permission set essentials.balance true
-    /lp group g-essentials permission set essentials.baltop true
-    /lp group g-essentials permission set essentials.tpa true
-    /lp group g-essentials permission set essentials.tpacancel true
-    /lp group g-essentials permission set essentials.tpaccept true
-    /lp group g-essentials permission set essentials.tpahere true
-    /lp group g-essentials permission set essentials.tpdeny true
+    /lp group g_essentials permission set essentials.chat.color true
+    /lp group g_essentials permission set essentials.nick true
+    /lp group g_essentials permission set essentials.balance true
+    /lp group g_essentials permission set essentials.baltop true
+    /lp group g_essentials permission set essentials.tpa true
+    /lp group g_essentials permission set essentials.tpacancel true
+    /lp group g_essentials permission set essentials.tpaccept true
+    /lp group g_essentials permission set essentials.tpahere true
+    /lp group g_essentials permission set essentials.tpdeny true
+    /lp group g_essentials permission set essentials.suicide true 
 
     # VIP权限示例
     #/lp creategroup gv-essentials 0 gv-essentials

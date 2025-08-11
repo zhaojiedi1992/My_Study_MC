@@ -14,6 +14,7 @@ process_command() {
         cmd="lp${cmd:3}"
     fi
     # 执行命令
+    echo "start: $cmd" 
     /etc/init.d/mc_dl1 conn "$cmd"
 }
 
