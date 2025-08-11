@@ -1,64 +1,50 @@
 ==================================================
 箱子商店安装
 ==================================================
-提供一个能力，可以在箱子上面点击，创建一个商店， 支持卖出和收购2种类型的。 
+箱子商店插件允许玩家在箱子上点击创建商店，支持卖出和收购两种类型，广泛用于生存区、地皮区等玩家自由交易场景。
 
-- spigotmc: https://www.spigotmc.org/resources/quickshop-hikari-a-powerful-user-friendly-and-reliable-chestshop-plugin-1-20-1-21.100125/
-- github: https://github.com/QuickShop-Community/QuickShop-Hikari
-- docs: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/intro
+插件简介
+==================================================
+- 支持一键创建买/卖商店，操作简单
+- 完美兼容 NBT 数据、附魔、药水、蛋等特殊物品
+- 国际化支持，自动切换客户端语言
+- 无限商店、黑名单、权限分级等高级功能
+- 支持双箱、UUID、聊天/GUI物品预览
+- 强力兼容世界/区域保护插件
+- 支持多种经济插件（Vault、GemsEconomy、TheNewEconomy等）
+- 税收、持续费用、权限管理、缓存优化
+- 支持 H2（本地）或 MySQL（远程）数据库
+- 高级事件总线与开发者API
+- 性能极佳，支持千级商店无延迟（需 ProtocolLib）
 
+关键链接
+==================================================
+- SpigotMC: https://www.spigotmc.org/resources/quickshop-hikari-a-powerful-user-friendly-and-reliable-chestshop-plugin-1-20-1-21.100125/
+- GitHub: https://github.com/QuickShop-Community/QuickShop-Hikari
+- 文档: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/intro
 
 效果图
 ==================================================
-
 .. image:: https://proxy.spigotmc.org/a9a1b1c3654664df0a65bc64c2b883a551a7bc57/68747470733a2f2f757365722d696d616765732e67697468756275736572636f6e74656e742e636f6d2f33303830323536352f3135343733323532372d38353963346265642d313534382d343162632d626462662d3363313935346633363864632e6a7067
 
-
-简介
+安装步骤
 ==================================================
-
-- 使用方便，只需单击并输入价格即可创建商店。
-- NBT 数据、附魔、工具伤害、药水和生物蛋支持。
-- 根据客户端语言动态切换显示语言，国际化友好。
-- 无限商店支持。- 黑名单支持和绕过权限。
-- 在双箱中买卖物品的商店。
-- UUID 支持（当然）
-- 聊天和 GUI 中的酷炫物品预览。
-- 聊天控制面板用于更改商店设置。只需点击即可修改所有内容。
-- 支持世界/地区保护插件，并可下载大量兼容模块。
-- 基于ProtocolLib的虚拟 DisplayItem（性能更佳）支持。
-- 支持多种货币，您可以在 GemsEconomy、TheNewEconomy 或任何支持 Reserve 的经济体商店中使用不同的货币。当然，我们也支持 Vault（默认）！
-- 税收和持续费用支持！
-- 如果玩家没有权限，则隐藏帮助命令。
-- 标示标题颜色并在信息标志上清晰描述不同商店的状态。
-- 支持迷你消息，随心所欲创建精美消息。
-- H2（本地）或 MySQL（远程）支持。
-- 先进的交易机制，当执行失败时回滚任何库存/经济操作以防止玩家重复。
-- InventoryWrapper API 为开发人员提供自定义库存功能。
-- 高级事件总线允许用户阻止保护检查事件传输到特定插件。
-- 快速缓存层，处理超过 1000+ 个商店，无任何延迟！（需要安装 ProtocolLib）
-- 每个商店的权限管理。
-- 店主与其他玩家之间的购物福利！
-
-下载安装
-==================================================
-直接从spigotmc下载jar包即可。放到plugins目录， 重启一下分区。
-
+1. 从 SpigotMC 下载 QuickShop-Hikari.jar
+2. 放到目标分区的 plugins 目录（如地皮区 dp1、生存区 sc1）
+3. 重启服务端
 
 创建数据库
 ==================================================
+.. code-block:: sql
 
-.. code-block:: bash 
-
-  CREATE DATABASE d_quickshop CHARACTER SET utf8 COLLATE utf8_general_ci;
-
+    CREATE DATABASE d_quickshop CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 配置修改
 ==================================================
+主要修改 config.yml 数据库和语言部分，其他参数可按需调整。
 
-.. code-block:: bash 
+.. code-block:: diff
 
-    root@mc:/home/mc/instances/dl1/plugins/QuickShop-Hikari# diff config.yml config.yml.default
     9c9
     < game-language: zh_cn
     ---
@@ -90,25 +76,54 @@
 
 权限配置
 ==================================================
+参考官方 plugin.yml，推荐如下分组授权：
 
-.. code-block:: bash 
+.. code-block:: bash
 
-  # refer : https://github.com/QuickShop-Community/QuickShop-Hikari/blob/hikari/quickshop-bukkit/src/main/resources/plugin.yml
-  /lp group default permission set quickshop.player true 
-  /lp group owner permission set quickshop.playyer true 
-  /lp group owner permission set quickshop.moderator true 
+  # 创建箱子商店普通权限组
+  /lp creategroup g-quickshop 0 g-quickshop
+
+  # 将 default 组继承箱子商店普通权限组
+  /lp group default parent add g-quickshop
+
+  # 给 g-quickshop 组分配玩家基础权限
+  /lp group g-quickshop permission set quickshop.player true
 
 
-
-测试
+测试方法
 ==================================================
-进入游戏， 找个地方，放置一个箱子， 然后拿一个钻石左键这个箱子， 看是否会提示创建商店的信息，如果无，那就是插件安装不符合预期的。 
+进入游戏，放置一个箱子，拿钻石左键点击箱子，若弹出创建商店提示则插件安装成功。 
 
+如果没有反应，可以通过luckperm的verbose来debug下。 
 
 
 视频使用教程
 ==================================================
-
 .. raw:: html
 
   <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=433226339&bvid=BV1LG411u7BE&cid=908146945&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+常见问题 QA
+==================================================
+:Q1: 无法创建商店或命令无效？  
+:A1: 检查插件是否安装、数据库配置是否正确，查看服务端日志。
+
+:Q2: 经济功能无法使用？  
+:A2: 检查 Vault 或其他经济插件是否安装，数据库连接是否正常。
+
+:Q3: 玩家无法管理商店？  
+:A3: 检查 LuckPerms 权限配置，确认已授权 quickshop.player/quickshop.moderator/quickshop.admin。
+
+:Q4: 跨服消息不同步？  
+:A4: 检查 bungee-cross-server-msg 参数是否开启，所有分区配置是否一致。
+
+优化建议
+==================================================
+- 推荐所有分区统一安装 QuickShop-Hikari，保证体验一致
+- 使用 MySQL 数据库后端，提升性能和数据安全
+- 定期备份数据库，防止玩家商店数据丢失
+- 合理分配权限，避免玩家滥用商店功能
+- 配合 Vault、LuckPerms、ProtocolLib 等插件实现完整体验
+
+.. note::
+   箱子商店是玩家自由交易的核心插件，建议优先安装和维护，定期检查配置和插

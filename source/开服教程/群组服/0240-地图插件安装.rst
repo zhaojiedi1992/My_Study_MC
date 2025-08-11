@@ -24,4 +24,3 @@ BlueMap地图插件安装
 
 这个配置完毕后，启用web的， 就可以web网页查看了。 http://<ip>:8100 查看了。 
 
-.. image:: ./imgs/blumap.jpg
