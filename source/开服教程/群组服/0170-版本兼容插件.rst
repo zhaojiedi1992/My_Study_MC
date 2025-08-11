@@ -68,6 +68,11 @@ ViaVersion 配置文件 config.yml 主要参数：
     > max-pps: 800
     > max-pps-kick-msg: You are sending too many packets!
 
+权限设置
+==================================================
+通过 LuckPerms 授权  viaversion相关权限,这个没啥权限的， 不做配置。
+
+
 常见问题 QA
 ==================================================
 :Q1: 玩家提示 "You are sending too many packets" 被踢出？  

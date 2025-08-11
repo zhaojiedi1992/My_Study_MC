@@ -98,6 +98,7 @@ EssentialsX 提供了非常多的基础能力，需要通过 LuckPerms 授权给
     /lp group g_essentials permission set essentials.tpahere true
     /lp group g_essentials permission set essentials.tpdeny true
     /lp group g_essentials permission set essentials.suicide true 
+    /lp user panda permission set essentials.suicide true
 
     # VIP权限示例
     #/lp creategroup gv-essentials 0 gv-essentials

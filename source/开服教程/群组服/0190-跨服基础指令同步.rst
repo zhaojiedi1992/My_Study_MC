@@ -118,17 +118,15 @@ EssentialsX 默认的 home、tp 等命令仅支持分区内操作，会与 HuskH
 
 权限配置
 ==================================================
-HuskHomes 默认权限已适配大多数场景，无需额外配置。  
-如需自定义权限，可通过 LuckPerms 授权，参考官方命令文档：
+HuskHomes 默认权限已适配大多数场景，无需额外配置。  如需自定义权限，可通过 LuckPerms 授权，参考官方命令文档：
 
 .. code-block:: bash
 
     # https://william278.net/docs/huskhomes/commands
     # 示例：授权玩家使用 tp、home、warp 等命令
-    /lp group default permission set huskhomes.command.home true
-    /lp group default permission set huskhomes.command.sethome true
-    /lp group default permission set huskhomes.command.tp true
-    /lp group default permission set huskhomes.command.warp true
+    # HuskHomes 默认权限已适配大多数场景，无需额外配置
+
+
 
 常见问题 QA
 ==================================================

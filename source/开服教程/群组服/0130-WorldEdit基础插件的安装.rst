@@ -48,12 +48,8 @@ FastAsyncWorldEdit (FAWE) 是 WorldEdit 的高性能分支，在速度和内存�
 
 权限配置
 ==================================================
-这个插件，we这个插件， 一般只有owner才给自己的权限的， 普通用户的不需要有这个权限的。不过我们还是创建出来用户组，对齐前面的。
+这个插件，we这个插件， 一般只有owner才给自己的权限的。
 
-.. code-block:: bash 
-
-    /lp creategroup g_we  0  g_we
-    /lp group default parent add g_we
 
 常见问题 QA
 ==================================================
