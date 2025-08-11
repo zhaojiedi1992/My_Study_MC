@@ -114,3 +114,24 @@ items:
     display_name: "&b&l系统购买商店"
     click_commands: 
     - '[openguimenu] buy'
+
+
+  up:
+    material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjVjMTQwZTA4NDI5MzA5ZGQzOGYxZWM3ZWQzZDE3NjU1NTZlNTQ3NmRjNmMzZmJmNTNlMmNiMmQxYjE1In19fQ=='
+    display_name: "&b&l点击升级"
+    lore:
+      - "&b左键 &a➥ &c升级等级"
+      - "&b当前: &a➥ &c%luckperms_primary_group_name%"
+      - "&b余额: &a➥ &c%vault_eco_balance_formatted%"
+      - "&b需要: &a➥ &c%luckperms_meta_shengji_jinbi%"
+    slot: 13
+    requirements:
+      - 'has: money %luckperms_meta_shengji_jinbi%'  # ← 这是官方标准写法
+    deny_commands:
+      - "[sound] ENTITY_VILLAGER_NO"
+      - "[message] &c金币不足，无法升级！"
+    click_commands:
+      - "[console] lp user %player_name% promote xiuxian_tongdao"
+      - "[money] take %luckperms_meta_shengji_jinbi%"
+      - "[message] &a升级成功！"
+      - "[close]"
