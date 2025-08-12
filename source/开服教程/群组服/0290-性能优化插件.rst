@@ -56,13 +56,15 @@ JulySafe简介
 julysafe 是需要开源收费的， 你可以自己编译下的。 他的依赖项也是作者自己的插件， 也是需要编译的。
 
 1. 克隆 JulySafe 和 VoidFramework 仓库到本地：
-   ```
+
+.. code-block:: bash
+
    git clone https://github.com/julyss2019/JulySafe.git
    git clone https://github.com/julyss2019/VoidFramework-Bukkit.git
-   ```
-2. 使用 Maven 或 Gradle 编译两个项目，生成 jar 文件。
-3. 将编译好的 jar 文件放入服务器的 `plugins` 文件夹。
-4. 重启服务器，检查插件是否正常加载。
+
+1. 使用 Maven 或 Gradle 编译两个项目，生成 jar 文件。
+2. 将编译好的 jar 文件放入服务器的 `plugins` 文件夹。
+3. 重启服务器，检查插件是否正常加载。
 
 常见问题 QA
 ==================================================

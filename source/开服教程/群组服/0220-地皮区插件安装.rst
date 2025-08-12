@@ -155,7 +155,9 @@
    # 申请一块地皮，脚下的     
   /lp group g_plots permission set plots.claim true  
    # 申请一块地皮,随机        
-  /lp group g_plots permission set plots.auto true          
+  /lp group g_plots permission set plots.auto true  
+  # 去别人家的。 可以选择性授权。
+  /lp group g_plots permission set plots.visit true             
 
   # 地块编辑与管理
    # 允许在自己地块建造/破坏

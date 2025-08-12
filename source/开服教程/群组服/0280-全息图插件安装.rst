@@ -14,7 +14,11 @@ DecentHolograms 是一款高性能、功能丰富的全息图插件，可用于�
 - 提供强大 API，便于二次开发
 - 免费开源，长期维护
 
-.. image:: https://raw.githubusercontent.com/DecentSoftware-eu/DecentHolograms/master/.github/images/logo.png
+
+效果图
+==================================================
+
+.. image:: ./imgs/全息图效果.jpg
    :width: 400px
    :align: center
 
