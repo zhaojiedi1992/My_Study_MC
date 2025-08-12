@@ -76,6 +76,7 @@ JulySafe 是需要开源收费的，你可以自己编译下的。它的依赖�
 luckperm权限配置
 ==================================================
 JulySafe 支持权限系统，可通过 LuckPerms 等插件分配管理权限。常用权限节点包括：
+
 - `julysafe.admin`：管理全部功能
 - `julysafe.bypass`：绕过部分限制
 - `julysafe.command.*`：使用所有 JulySafe 命令
