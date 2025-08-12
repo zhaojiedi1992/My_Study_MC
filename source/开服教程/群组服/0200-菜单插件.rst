@@ -79,12 +79,13 @@ DeluxeMenus 的菜单配置采用 YAML 格式，支持多层嵌套和变量调�
 
 权限配置
 ==================================================
-通过 LuckPerms 授权玩家使用菜单命令：
+通过 LuckPerms 授权玩家使用菜单命令,这个默认注册命令了， 命令可以检查权限的， 不用单独做权限设置的。 
+
+
 
 .. code-block:: bash
 
-    /lp group default permission set deluxemenus.open.main_menu true
-    /lp group default permission set deluxemenus.open.* true
+   # null
 
 常见问题 QA
 ==================================================

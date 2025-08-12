@@ -21,6 +21,13 @@
 .. note::
    地皮插件仅需在地皮分区（如 dp1）安装，其他分区无需部署。
 
+
+关键链接
+==================================================
+
+- github: https://github.com/IntellectualSites/PlotSquared
+- wiki: https://intellectualsites.gitbook.io/plotsquared/
+
 创建数据库
 ==================================================
 .. code-block:: sql
@@ -127,6 +134,46 @@
     ...
     # 合并4个地皮为1个
     plot merge
+
+
+权限配置
+==================================================
+
+.. code-block:: bash 
+
+  /lp creategroup g_plots 0 g_plots
+  /lp group default parent add g_plots
+  # 基础地块操作
+  # 允许创建1个地块
+  /lp group g_plots permission set plots.plot.1 true
+  # 传送至自己的地块  
+  /lp group g_plots permission set plots.home true  
+  # 查看自己的地块信息          
+  /lp group g_plots permission set plots.info true   
+   # 放弃自己的地块         
+  /lp group g_plots permission set plots.abandon true   
+   # 申请一块地皮，脚下的     
+  /lp group g_plots permission set plots.claim true  
+   # 申请一块地皮,随机        
+  /lp group g_plots permission set plots.auto true          
+
+  # 地块编辑与管理
+   # 允许在自己地块建造/破坏
+  /lp group g_plots permission set plots.build true 
+    # 邀请其他玩家进入地块         
+  /lp group g_plots permission set plots.add true    
+     # 移除被邀请的玩家       
+  /lp group g_plots permission set plots.remove true   
+   # 允许设置地块基础规则（如禁止他人进入/破坏）    
+  /lp group g_plots permission set plots.flag.set true       
+
+  # 其他常用功能
+     # 查看自己的地块列表
+  /lp group g_plots permission set plots.list true    
+    # 允许标记地块为出售状态（按需开启）     
+  /lp group g_plots permission set plots.sell true          
+
+
 
 常见问题 QA
 ==================================================

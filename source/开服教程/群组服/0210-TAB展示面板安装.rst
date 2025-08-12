@@ -93,10 +93,23 @@ proxy侧的安装
 ==================================================
 
 
+
+
+
 效果图
 ==================================================
 .. image:: ./imgs/计分板效果图.jpg 
 .. image:: ./imgs/tab效果图.jpg
+
+权限配置
+==================================================
+.. code-block:: bash 
+
+    # 创建一个普通的carbot权限组。
+    /lp creategroup g_tab 0  g_tab
+    # 让默认组继承carbot组
+    /lp group default parent add g_tab
+    /lp group g_authme permission set  tab.scoreboard.toggle  true 
 
 常见问题 QA
 ==================================================
