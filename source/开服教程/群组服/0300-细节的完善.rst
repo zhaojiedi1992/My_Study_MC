@@ -106,36 +106,25 @@ proxy的图标优化
 
     # 标题行（彩虹动画+加粗）
     /dh l add top_money 1 <RAINBOW1>&l===== 全服财富排行榜 Top10 =====</RAINBOW>
-
     # 第1名（金色RGB+火焰符号+加粗）
     /dh l add top_money 1 &l🏆 #1: <#FFD700>%xconomy_top_player_1%</#> - <#FFA500>%xconomy_top_balance_formatted_1%</#>
-
     # 第2名（银色RGB+奖牌符号+加粗）
     /dh l add top_money 1 &l🥈 #2: <#C0C0C0>%xconomy_top_player_2%</#> - <#E0E0E0>%xconomy_top_balance_formatted_2%</#>
-
     # 第3名（铜色RGB+奖牌符号+加粗）
     /dh l add top_money 1 &l🥉 #3: <#CD7F32>%xconomy_top_player_3%</#> - <#D2B48C>%xconomy_top_balance_formatted_3%</#>
-
     # 第4名（基础颜色）
     /dh l add top_money 1 &7#4: %xconomy_top_player_4% - &6%xconomy_top_balance_formatted_4%
-
     /dh l add top_money 1 &7#5: %xconomy_top_player_5% - &6%xconomy_top_balance_formatted_5%
-
     # 第6名（基础颜色）
     /dh l add top_money 1 &7#6: %xconomy_top_player_6% - &6%xconomy_top_balance_formatted_6%
-
     # 第7名（基础颜色）
     /dh l add top_money 1 &7#7: %xconomy_top_player_7% - &6%xconomy_top_balance_formatted_7%
-
     # 第8名（基础颜色）
     /dh l add top_money 1 &7#8: %xconomy_top_player_8% - &6%xconomy_top_balance_formatted_8%
-
     # 第9名（基础颜色）
     /dh l add top_money 1 &7#9: %xconomy_top_player_9% - &6%xconomy_top_balance_formatted_9%
-
     # 第10名（基础颜色）
     /dh l add top_money 1 &7#10: %xconomy_top_player_10% - &6%xconomy_top_balance_formatted_10%
-
     # 底部更新提示（灰色渐变）
     /dh l add top_money 1 <#888888>数据每5分钟自动更新</#AAAAAA>
 
