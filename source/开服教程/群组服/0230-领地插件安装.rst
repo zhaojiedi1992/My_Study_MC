@@ -1,34 +1,52 @@
 ==================================================
 领地插件安装
 ==================================================
-领地插件是为了让用户可以圈地，保护自己的物品和区域的。 Residence是比较经典的， 历史包袱也比较多，这次我们使用的是Dominion
+领地插件用于让玩家圈定、保护自己的物品和区域，防止他人破坏或偷窃。常见方案有 Residence、GriefPrevention、Lands、RedProtect 等。本教程推荐使用 Dominion 插件，兼容性好、功能现代、支持多分区同步。
 
-
-- `dominion github  <https://github.com/LunaDeerMC/Dominion>`_ 
-- `dominion dock <https://dominion.lunadeer.cn/>`_ 
-
-安装
+插件简介
 ==================================================
-下载 `dominion download <https://hangar.papermc.io/zhangyuheng/Dominion>`_ ，然后放到dl1 dp1 dp2 的plugin目录即可。
+- 支持多分区、多世界领地保护
+- 支持 MySQL 数据库后端，数据可跨服同步
+- 支持多种权限分级、子领地、租赁、成员管理
+- 支持与 LuckPerms、WorldEdit、PlaceholderAPI 等插件联动
+- 免费开源，文档完善
 
+.. image:: https://dominion.lunadeer.cn/img/logo.png
+   :width: 300px
+   :align: center
 
-.. note::  注意这个领地插件，不需要再地皮区域部署的。
-
-
-创建db
+关键链接
 ==================================================
-.. code-block:: bash 
+- GitHub: https://github.com/LunaDeerMC/Dominion
+- 文档: https://dominion.lunadeer.cn/
+- 下载: https://hangar.papermc.io/zhangyuheng/Dominion
+
+安装步骤
+==================================================
+1. 下载 Dominion 插件 jar 包，放到 dl1、dp1、dp2 等需要领地保护的分区 plugins 目录
+2. 仅需在生存/主城等分区安装，地皮区无需部署
+
+.. code-block:: bash
+
+    wget https://hangarcdn.papermc.io/plugins/zhangyuheng/Dominion/versions/latest/PAPER/Dominion.jar
+    cp Dominion.jar /home/mc/instances/dl1/plugins/
+    cp Dominion.jar /home/mc/instances/dp1/plugins/
+    cp Dominion.jar /home/mc/instances/dp2/plugins/
+    # 其他分区如需领地保护同理
+
+创建数据库
+==================================================
+.. code-block:: sql
 
     CREATE DATABASE d_dominion CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-修改配置文件
+配置文件修改
 ==================================================
+主要修改 config.yml 的数据库连接、分区标识、语言等参数，确保每个分区 server-id 唯一。
 
-.. code-block:: bash 
+.. code-block:: diff
 
-    # refre : https://dominion.lunadeer.cn/notes/doc/owner/other/multi-server/ 其中server_id 我们设置为分区对应的端口号，避免冲突。
-    root@mc:/home/mc/instances/dl1/plugins/Dominion# diff config.yml config.yml.default
+    # 参考官方多服部署文档：https://dominion.lunadeer.cn/notes/doc/owner/other/multi-server/
     12c12
     <   type: mysql
     ---
@@ -66,10 +84,37 @@
     ---
     > language: en_us
 
+.. note::
+   server-id 建议设置为分区端口号，避免冲突。
 
-给登录区设置一个领地
+基础使用
 ==================================================
-给登录区设置一个领地 直接进入游戏。 通过/dom create 就可以创建一个领地了，名字可以设置为分区的名字，比如dl1 就设置dl1就好。 
+- 进入游戏后，使用 `/dom auto_create <领地名>` 创建领地，建议领地名与分区名一致（如 dl1）。
+- 通过 `/dom addmember <领地名> <玩家名>` 添加成员
+- 通过 `/dom setflag <领地名> <权限项> <true/false>` 设置领地权限
+- 更多命令详见官方文档：https://dominion.lunadeer.cn/notes/doc/owner/command/
+
+权限配置
+==================================================
+通过 LuckPerms 授权玩家，这个插件，默认玩家就有权限的，不用额外配置的。 
 
 
+常见问题 QA
+==================================================
+:Q1: 领地数据不同步？  
+:A1: 检查所有分区是否都连接同一个数据库，server-id 是否唯一。
 
+
+:Q2: 领地命令无效或报错？  
+:A2: 检查插件是否安装、数据库配置是否正确，查看服务端日志。
+
+:Q3: 领地与地皮冲突？  
+:A3: 地皮区无需安装 Dominion，避免功能重叠。
+
+优化建议
+==================================================
+- 仅在需要领地保护的分区安装 Dominion，地皮区无需部署
+- 所有分区统一数据库配置，保证数据同步
+- 定期备份数据库，防止玩家领地数据丢失
+- 合理分配权限，避免玩家滥用领地功能
+- 配合 LuckPerms、WorldEdit 等插件实现完整体验

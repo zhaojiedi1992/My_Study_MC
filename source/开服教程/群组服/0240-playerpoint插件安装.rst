@@ -17,8 +17,8 @@ PlayerPoints 是一款常用的点券/积分插件，支持玩家点数管理、
 关键链接
 ==================================================
 - SpigotMC: https://www.spigotmc.org/resources/playerpoints.80745/
-- GitHub: https://github.com/Blackixx/PlayerPoints
-- 官方文档: https://github.com/Blackixx/PlayerPoints/wiki
+- GitHub: https://github.com/Rosewood-Development/PlayerPoints
+- 官方文档: https://github.com/Rosewood-Development/PlayerPoints/wiki
 
 安装步骤
 ==================================================
@@ -66,25 +66,10 @@ PlayerPoints 是一款常用的点券/积分插件，支持玩家点数管理、
 
 权限配置
 ==================================================
-通过 LuckPerms 授权玩家和管理员相关命令权限。
+这里不建议给普通用户playerpoint的权限， 积分和金币不一样， 不支持转账这些操作。 
+如果你有需要，可以参考官方文档适当给一些权限。
 
-.. code-block:: bash
 
-    # 创建一个 playerpoints 普通权限组
-    /lp creategroup g-playerpoints 0 g-playerpoints
-
-    # 将 default 组继承 playerpoints 普通权限组
-    /lp group default parent add g-playerpoints
-
-    # 给 g-playerpoints 组分配玩家常用权限
-    /lp group g-playerpoints permission set playerpoints.command.balance true
-    /lp group g-playerpoints permission set playerpoints.command.pay true
-    /lp group g-playerpoints permission set playerpoints.command.top true
-
-    # 管理员权限建议单独分组或直接给 admin 组
-    /lp group owner permission set playerpoints.command.give true
-    /lp group owner permission set playerpoints.command.take true
-    /lp group owner permission set playerpoints.command.set  true 
 
 常见问题 QA
 ==================================================

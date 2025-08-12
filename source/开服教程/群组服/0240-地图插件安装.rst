@@ -1,26 +1,77 @@
 ==================================================
-BlueMap地图插件安装
+BlueMap 地图插件安装
 ==================================================
 
-.. note:: 这个非必须的， 可以先不做安装。
+BlueMap 是一款高性能的 3D Web 地图插件，可将 Minecraft 世界实时渲染为网页地图，支持玩家位置、标记、实时刷新等功能，极大提升服务器的可视化和管理体验。
 
-
-`bluemap下载地址 <https://github.com/BlueMap-Minecraft/BlueMap/releases>`_ 
-
-创建数据库
+插件简介
 ==================================================
+- 实时渲染 Minecraft 世界为 3D 网页地图
+- 支持多世界、玩家位置、标记、区域等功能
+- 高性能渲染，支持大地图和高并发访问
+- 可自定义样式、标记、权限等
+- 支持与 LuckPerms、PlaceholderAPI 等插件联动
+- 免费开源，长期维护
 
-.. code-block:: sql 
- 
+.. image:: https://raw.githubusercontent.com/BlueMap-Minecraft/BlueMap/master/web/images/logo.png
+   :width: 400px
+   :align: center
+
+关键链接
+==================================================
+- GitHub: https://github.com/BlueMap-Minecraft/BlueMap
+- 下载地址: https://github.com/BlueMap-Minecraft/BlueMap/releases
+- 官方文档: https://bluemap.bluecolored.de/wiki/
+
+.. note::
+   BlueMap 为可选插件，非必须。服务器资源有限或无公网需求可暂不安装。
+
+安装步骤
+==================================================
+1. 下载 BlueMap.jar，放到需要地图展示的分区 plugins 目录（如主城、生存区等）
+2. 重启服务端，生成默认配置文件和 web 目录
+3. 配置 web 端口（默认 8100），开放防火墙端口
+
+.. code-block:: bash
+
+    wget https://github.com/BlueMap-Minecraft/BlueMap/releases/latest/download/BlueMap.jar
+    cp BlueMap.jar /home/mc/instances/dl1/plugins/
+    # 其他分区如需地图展示同理
+    systemctl restart mc_dl1
+
+创建数据库（可选）
+==================================================
+如需与其他插件联动或存储自定义数据，可创建数据库：
+
+.. code-block:: sql
+
     CREATE DATABASE d_bluemap CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-
-配置
+配置说明
 ==================================================
+- 配置文件位于 plugins/BlueMap/config.conf
+- 可设置渲染世界、地图名称、web 端口、权限等
+- 默认 web 端口为 8100，可通过 http://<服务器IP>:8100 访问地图
+- 支持自定义标记、玩家显示、地图样式等
 
-.. code-block:: bash 
+.. code-block:: bash
 
-    pass 
+    # 修改 web 端口示例
+    plugins/BlueMap/webserver.conf
+    # 修改 world 渲染参数
+    plugins/BlueMap/maps.conf
 
-这个配置完毕后，启用web的， 就可以web网页查看了。 http://<ip>:8100 查看了。 
+常见问题 QA
+==================================================
+:Q1: 地图无法访问或端口被占用？  
+:A1: 检查 webserver.conf 端口设置，确认防火墙已放行对应端口。
+
+:Q2: 地图渲染不完整或卡顿？  
+:A2: 检查服务器性能，适当调整渲染线程数，定期手动渲染大区块。
+
+:Q3: 玩家位置不显示？  
+:A3: 检查权限配置，确认已启用玩家同步功能。
+
+:Q4: 如何添加自定义标记或区域？  
+:A4: 编辑 maps.conf 或使用 BlueMap API，详见官方文档。
 

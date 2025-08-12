@@ -1,79 +1,102 @@
-.. _配置NPC:
-
 ==================================================
 NPC插件安装
 ==================================================
-NPC插件，可以在系统里面提供一些交互能力，提升游玩特性。 
+NPC（非玩家角色）插件可在服务器内创建可交互的虚拟角色，广泛用于菜单入口、功能指引、剧情交互等场景，极大提升服务器可玩性和沉浸感。
 
-这里还是选择这个经典款的。 
-
-- `Citizens2 <https://github.com/CitizensDev/Citizens2>`_ 
-- `wiki <https://wiki.citizensnpcs.co/Citizens_Wiki>`_ 
-- `Citizens2 ci <https://ci.citizensnpcs.co/job/Citizens2/>`_ 
-
-
-- `Denizen <https://ci.citizensnpcs.co/job/Denizen/>`_ 
-
-安装
+插件对比
 ==================================================
-从上面ci的链接获取最新的开发版本即可,需要Citizens2 + Denizen
-放到plugins目录，然后重启下。 
+.. csv-table:: 主流NPC插件对比
+   :header: "插件名称", "是否免费", "核心功能", "脚本支持", "兼容性", "推荐指数", "备注"
+   :widths: 15, 8, 20, 12, 12, 10, 20
 
+   "Citizens2", "是", "NPC创建、动作、命令绑定", "Denizen/外部脚本", "Spigot/Paper", "★★★★★", "最主流，生态丰富"
+   "Denizen", "是", "高级脚本、对话、任务", "内置脚本", "Spigot/Paper", "★★★★", "需配合Citizens2"
+   "MythicMobs", "部分免费", "怪物/NPC/技能", "内置脚本", "Spigot/Paper", "★★★", "偏向怪物与Boss"
+   "CommandNPC", "是", "NPC绑定命令", "无", "Spigot/Paper", "★★★", "轻量级，功能单一"
+   "NPCLib", "是", "临时NPC、动画", "API开发", "Spigot/Paper", "★★", "偏向开发者"
+   "Quests", "是", "任务NPC", "内置脚本", "Spigot/Paper", "★★★", "任务系统为主"
 
-配置登录1区
+推荐选择项
 ==================================================
+- **Citizens2 + Denizen**：功能最全，生态丰富，支持命令、脚本、对话、动作等，适合绝大多数服务器。
+- 轻量需求可用 CommandNPC，复杂剧情建议配合 Denizen。
 
-.. code-block:: bash 
-
-# 进入游戏，后，/dom tp dl1 然后执行如下指令创建一个main机器人
-1. 创建一个npc
-/npc create &3熊猫乐园
-2. 设置自动转头，看用户。
-/npc lookclose
-3. 设置右键执行那个命令, 用户身份执行cmd命令。 相当于用户直接输入/cmd  这个需要配合菜单使用的， 菜单你绑定的命令是啥这里就是啥。 
-/npc command add -p cmd
-4. 配置保存
-/citizens save
-
-
-
-配置生存区域npc
+插件简介
 ==================================================
-设计一个5*5*5的空间大小的位置，然后掏空直接，让中间形成一个3*3*3的空间。 
-然后再里面放置2npc, 分别对应rtp机器人， 主菜单机器人。
+- **Citizens2**：最主流的NPC插件，支持NPC创建、动作、皮肤、命令绑定、路径巡逻等，生态丰富。
+- **Denizen**：Citizens2的脚本扩展，支持复杂对话、任务、剧情、条件判断等。
+- 支持与菜单、全息、任务、权限等插件联动。
+- 免费开源，长期维护。
 
-.. code-block:: bash 
+关键链接
+==================================================
+- Citizens2: https://github.com/CitizensDev/Citizens2
+- Wiki: https://wiki.citizensnpcs.co/Citizens_Wiki
+- CI下载: https://ci.citizensnpcs.co/job/Citizens2/
+- Denizen: https://ci.citizensnpcs.co/job/Denizen/
 
-    # 进入游戏后进入生存一区0,0,0位置，然后布局一个3*3*3空间，然后圈地，/dom auto_creae sc1
-    1. 创建一个npc
-    /npc create &3点击主菜单
-    #2. 设置自动转头，看用户。
+安装步骤
+==================================================
+1. 从 CI 下载最新 Citizens2 和 Denizen jar 包
+2. 放到所有需要NPC的分区 plugins 目录
+3. 重启服务端
+
+.. code-block:: bash
+
+    wget https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/Citizens-2.x.x.jar
+    wget https://ci.citizensnpcs.co/job/Denizen/lastSuccessfulBuild/artifact/target/Denizen-1.x.x.jar
+    cp Citizens-2.x.x.jar /home/mc/instances/dl1/plugins/
+    cp Denizen-1.x.x.jar /home/mc/instances/dl1/plugins/
+    # 其他分区同理
+
+基础用法示例
+==================================================
+以登录分区和生存区为例：
+
+.. code-block:: bash
+
+    # 登录分区创建主菜单NPC
+    /npc create &3熊猫乐园
     /npc lookclose
-    #3. 设置右键执行那个命令, 用户身份执行cmd命令。 相当于用户直接输入/cmd  这个需要配合菜单使用的， 菜单你绑定的命令是啥这里就是啥。 
-    /npc command add -p cmd
-    #4. 设置下主菜单的皮肤为我自己的皮肤,要是正版用户id
-    /npc skin mc__panda
-
-
-    # 生存2区设置
-    #1. 创建一个npc
-    /npc create &3点我随机tp
-    #2. 设置自动转头，看用户。
-    /npc lookclose
-    #3. 设置右键执行那个命令, 
-    /npc command add -p rtp
-    #4. 镜像皮肤
-    /npc mirrorskin
-
+    /npc command add -p menu
     /citizens save
 
+    # 生存区创建主菜单和随机TP NPC
+    /npc create &3点击主菜单
+    /npc lookclose
+    /npc command add -p menu
+    /npc skin mc__panda
 
-    # 登录分区设置。
-    同理一样的。
+    /npc create &3点我随机tp
+    /npc lookclose
+    /npc command add -p rtp
+    /npc mirrorskin
+    /citizens save
 
+    # 其他分区同理
 
-.. note:: 这里地皮一区，你也可以参考这个配置下， 不过我是通过全息文字配置的。 具体自己参考下面的文档进行配置。
+进阶用法
+==================================================
+- 支持 NPC 路径巡逻、动作、对话、脚本等高级功能
+- 配合 Denizen 可实现复杂剧情、任务、条件判断
+- 可与菜单插件、全息插件联动，打造沉浸式体验
 
+权限配置
+==================================================
+这个插件，也不需要额外授权的。 主要是管理员在使用。 
 
+常见问题 QA
+==================================================
+:Q1: NPC无法创建或命令无效？  
+:A1: 检查 Citizens2 是否安装，查看服务端日志，确认权限已授权。
+
+:Q2: NPC皮肤不显示或动作异常？  
+:A2: 检查皮肤ID是否正确，部分功能需正版账号支持。
+
+:Q3: NPC命令无效或无权限？  
+:A3: 检查 LuckPerms 权限配置，确认已授权 citizens.npc.* 相关权限。
+
+:Q4: Denizen脚本报错？  
+:A4: 检查脚本语法，参考官方文档和示例。
 
 
