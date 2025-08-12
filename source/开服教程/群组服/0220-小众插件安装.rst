@@ -6,8 +6,11 @@
 ChestSort
 ==================================================
 
+ChestSort 可以在您使用后自动对每个箱子、木桶等进行排序。每个玩家都可以使用简单的命令/sort（或 /chestsort）启用或禁用此功能。玩家还可以使用命令/invsort对自己的物品栏进行排序，或者使用/invsort on|off自动排序。如果您不想自动排序，也可以在玩家物品栏、箱子等中使用热键（鼠标中键单击、双击、按住 Shift 单击和按住 Shift 并右键单击）对其进行排序。
 
-`箱子排序 <https://github.com/mfnalex/ChestSort>`_ 
+- spigotmc: https://www.spigotmc.org/resources/chestsort-api.59773/
+- github: https://github.com/mfnalex/ChestSort
+
 
 安装没啥问题， 直接放到plugin目录即可，重启就好了， 没啥配置要修改的。 
 
@@ -21,6 +24,21 @@ ChestSort
    "Shift + 鼠标左键单击","将鼠标悬停在空的库存/容器槽上并使用它。","-"
    "双击","将鼠标悬停在空的库存/容器槽上并执行此操作。","-"
    "Shift + 右键单击","将鼠标悬停在空的库存/容器槽上并使用它。","-"
+
+权限配置
+==================================================
+
+.. code-block:: bash
+
+    /lp creategroup g_chestsort 0 g_chestsort
+    /lp group default parent add g_chestsort
+    # 基础箱子操作
+    # 允许使用箱子排序功能
+    /lp group g_chestsort permission set chestsort.use true
+    /lp group g_chestsort permission set chestsort.use.* true
+
+    /lp group g_chestsort permission set chestsort.hotkey true
+    /lp group g_chestsort permission set chestsort.hotkey.* true
 
 
 
@@ -64,22 +82,9 @@ SkinsRestorer
 
 .. code-block:: bash 
 
-    /lp group default permission set skinsrestorer.player true 
+    /lp creategroup g_skinsrestorer 0 g_skinsrestorer
+    /lp group default parent add g_skinsrestorer
+    /lp group g_skinsrestorer permission set skinsrestorer.player true 
 
 
-箱子排序
-==================================================
-
-ChestSort 可以在您使用后自动对每个箱子、木桶等进行排序。每个玩家都可以使用简单的命令/sort（或 /chestsort）启用或禁用此功能。玩家还可以使用命令/invsort对自己的物品栏进行排序，或者使用/invsort on|off自动排序。如果您不想自动排序，也可以在玩家物品栏、箱子等中使用热键（鼠标中键单击、双击、按住 Shift 单击和按住 Shift 并右键单击）对其进行排序。
-
-- spigotmc: https://www.spigotmc.org/resources/chestsort-api.59773/
-- github: https://github.com/mfnalex/ChestSort
-
-.. code-block:: bash 
-
-    # 直接放到plugins目录即可， 修改下语言就行了,他的语言修改比较奇怪，需要再config.yml里面注释掉英文的，启用中文的行。
-    # 另外关于gui.yml文件，请你找豆包给你翻译下就好了。 
-    # 这个文件里面有一些dispalyname  lore的描述内容帮忙更新为中文的。
-
-    # 权限的添加。
     
