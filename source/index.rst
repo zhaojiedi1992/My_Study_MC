@@ -8,6 +8,7 @@
 
     开服教程/index
     游玩教程/index
+    红石/index
     公共部分/index
     关于我们/index
     
