@@ -98,7 +98,6 @@ proxy的图标优化
 
 先看看效果图吧。
 
-.. image:: ./imgs/经济排行榜.jpg
 
 .. code-block:: bash 
 
