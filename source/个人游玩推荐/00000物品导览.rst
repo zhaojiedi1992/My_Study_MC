@@ -1,0 +1,529 @@
+Minecraft物品导览 (1.21.x版本)
+================================
+
+本页面展示了Minecraft 1.21.x版本中的主要物品，并标记了是否可以自动化生成以及对应的生产方法链接。
+
+资源类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:oak_log", "原木", "是", :doc:`001前期/00101树场`
+   "minecraft:oak_planks", "木板", "是", :doc:`001前期/00101树场`
+   "minecraft:stick", "木棍", "是", :doc:`001前期/00101树场`
+   "minecraft:coal", "煤炭", "是", :doc:`002中期/00208凋零玫瑰农场`
+   "minecraft:iron_ingot", "铁锭", "是", :doc:`001前期/00109刷铁机`
+   "minecraft:gold_ingot", "金锭", "是", :doc:`001前期/00105猪人塔`
+   "minecraft:diamond", "钻石", "否", "手动挖矿"
+   "minecraft:redstone", "红石", "否", "手动挖矿"
+   "minecraft:lapis_lazuli", "青金石", "否", "手动挖矿"
+   "minecraft:quartz", "下界石英", "否", "下界探索"
+   "minecraft:slime_ball", "粘液球", "是", :doc:`002中期/00211史莱姆农场`
+   "minecraft:ender_pearl", "末影珍珠", "是", :doc:`002中期/00207小黑塔`
+   "minecraft:wither_skeleton_skull", "凋零骷髅头颅", "是", :doc:`002中期/00209凋零骷髅农场`
+   "minecraft:prismarine_shard", "海晶碎片", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:prismarine_crystals", "海晶砂粒", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:wither_rose", "凋灵玫瑰", "是", :doc:`002中期/00208凋零玫瑰农场`
+   "minecraft:sponge", "海绵", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:flint", "燧石", "否", "砂砾挖掘"
+   "minecraft:glass", "玻璃", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:leather", "皮革", "是", :doc:`004大后期/00407泥土机`
+   "minecraft:bone_meal", "骨粉", "是", :doc:`001前期/00104沼泽刷怪塔`
+   "minecraft:string", "线", "是", :doc:`004大后期/00406刷线机`
+   "minecraft:feather", "羽毛", "是", :doc:`003后期/00300烤鸡机`
+   "minecraft:gunpowder", "火药", "是", :doc:`002中期/00212苦力怕农场`
+   "minecraft:copper_ingot", "铜锭", "否", "手动挖矿"
+   "minecraft:amethyst_shard", "紫水晶碎片", "是", :doc:`003后期/00314紫水晶农场`
+   "minecraft:heavy_core", "沉重核心", "否", "试炼大厅探索"
+   "minecraft:breeze_rod", "旋风棒", "否", "试炼大厅探索"
+   "minecraft:wind_charge", "风弹", "否", "试炼大厅探索"
+
+作物类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:wheat", "小麦", "是", "自动农场"
+   "minecraft:carrot", "胡萝卜", "是", "自动农场"
+   "minecraft:potato", "马铃薯", "是", "自动农场"
+   "minecraft:sugar_cane", "甘蔗", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:melon_slice", "西瓜", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:pumpkin", "南瓜", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:cactus", "仙人掌", "是", "自动农场"
+   "minecraft:cocoa_beans", "可可豆", "是", :doc:`003后期/00313可可豆农场`
+   "minecraft:beetroot", "甜菜根", "是", "自动农场"
+   "minecraft:nether_wart", "下界疣", "否", "下界探索"
+   "minecraft:bamboo", "竹子", "是", :doc:`001前期/00100竹子农场`
+   "minecraft:sweet_berries", "甜浆果", "是", :doc:`003后期/00309细雪农场`
+   "minecraft:glow_berries", "发光浆果", "是", "自动农场"
+   "minecraft:mushroom", "蘑菇", "是", :doc:`003后期/00311红灰蘑菇牛农场`
+   "minecraft:kelp", "海带", "是", "自动农场"
+   "minecraft:seagrass", "海草", "是", "自动农场"
+   "minecraft:lily_pad", "睡莲", "否", "手动收集"
+   "minecraft:moss", "苔藓", "是", "自动苔藓农场"
+   "minecraft:pitcher_plant", "瓶子草", "是", :doc:`003后期/00310刷花机`
+
+建筑类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:stone", "石头", "是", :doc:`001前期/00102刷石机`
+   "minecraft:cobblestone", "圆石", "是", :doc:`001前期/00102刷石机`
+   "minecraft:sand", "沙子", "是", :doc:`003后期/00321刷沙机`
+   "minecraft:gravel", "砂砾", "否", "手动挖掘"
+   "minecraft:dirt", "泥土", "是", :doc:`004大后期/00407泥土机`
+   "minecraft:grass_block", "草方块", "是", :doc:`004大后期/00407泥土机`
+   "minecraft:obsidian", "黑曜石", "是", :doc:`004大后期/00402黑曜石农场`
+   "minecraft:end_stone", "末地石", "否", "末地探索"
+   "minecraft:netherrack", "下界岩", "否", "下界探索"
+   "minecraft:concrete", "混凝土", "是", :doc:`003后期/00320固化机`
+   "minecraft:bricks", "砖块", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:deepslate", "深板岩", "是", "自动挖矿"
+   "minecraft:tuff", "凝灰岩", "是", "自动挖矿"
+   "minecraft:copper_block", "铜块", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:trial_spawner", "试炼刷怪笼", "否", "试炼大厅探索"
+
+装饰类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:white_wool", "羊毛", "是", :doc:`003后期/00301羊毛机`
+   "minecraft:white_carpet", "地毯", "是", :doc:`003后期/00305刷羊毛毯机`
+   "minecraft:froglight", "蛙鸣灯", "是", :doc:`004大后期/00401蛙明灯农场`
+   "minecraft:sea_lantern", "海晶灯", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:glowstone", "萤石", "否", "下界探索"
+   "minecraft:beacon", "信标", "否", "手动制作"
+   "minecraft:redstone_lamp", "红石灯", "是", "红石电路"
+   "minecraft:jack_o_lantern", "南瓜灯", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:torch", "火把", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:lantern", "灯笼", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:stained_glass", "彩色玻璃", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:concrete", "彩色混凝土", "是", :doc:`003后期/00320固化机`
+   "minecraft:terracotta", "陶瓦", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:glow_lichen", "发光地衣", "是", "自动收集"
+   "minecraft:scaffolding", "脚手架", "是", :doc:`001前期/00100竹子农场`
+   "minecraft:chain", "链", "是", "自动合成"
+   "minecraft:candle", "蜡烛", "是", :doc:`002中期/00200蜜蜂农场`
+
+工具类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:wooden_pickaxe", "镐子", "否", "手动制作"
+   "minecraft:wooden_axe", "斧头", "否", "手动制作"
+   "minecraft:wooden_shovel", "铲子", "否", "手动制作"
+   "minecraft:wooden_hoe", "锄头", "否", "手动制作"
+   "minecraft:wooden_sword", "剑", "否", "手动制作"
+   "minecraft:bow", "弓", "否", "手动制作"
+   "minecraft:crossbow", "弩", "否", "手动制作"
+   "minecraft:mace", "重锤", "否", "试炼大厅探索"
+   "minecraft:fishing_rod", "钓鱼竿", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:trident", "三叉戟", "否", "击杀溺尸"
+   "minecraft:shield", "盾牌", "否", "手动制作"
+   "minecraft:shears", "剪刀", "否", "手动制作"
+   "minecraft:bucket", "桶", "否", "手动制作"
+
+盔甲类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:leather_helmet", "皮革头盔", "否", "手动制作"
+   "minecraft:iron_helmet", "铁头盔", "否", "手动制作"
+   "minecraft:golden_helmet", "金头盔", "否", "手动制作"
+   "minecraft:diamond_helmet", "钻石头盔", "否", "手动制作"
+   "minecraft:netherite_helmet", "下界合金头盔", "否", "手动制作"
+   "minecraft:elytra", "鞘翅", "否", "末地城探索"
+   "minecraft:turtle_helmet", "海龟壳", "否", "手动养殖"
+
+食物类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:bread", "面包", "是", "自动农场"
+   "minecraft:cooked_beef", "熟牛排", "是", :doc:`003后期/00306烤牛机`
+   "minecraft:cooked_porkchop", "熟猪排", "是", "自动农场"
+   "minecraft:cooked_chicken", "熟鸡肉", "是", :doc:`003后期/00300烤鸡机`
+   "minecraft:cooked_mutton", "熟羊肉", "是", :doc:`003后期/00301羊毛机`
+   "minecraft:cooked_rabbit", "熟兔肉", "是", :doc:`003后期/00317兔脚皮农场`
+   "minecraft:cooked_cod", "熟鳕鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:cooked_salmon", "熟鲑鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:golden_apple", "金苹果", "否", "手动制作"
+   "minecraft:melon_slice", "西瓜片", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:pumpkin_pie", "南瓜派", "是", "自动合成"
+   "minecraft:honey_bottle", "蜂蜜瓶", "是", :doc:`002中期/00200蜜蜂农场`
+   "minecraft:honey_block", "蜂蜜块", "是", :doc:`002中期/00200蜜蜂农场`
+   "minecraft:milk_bucket", "牛奶", "是", :doc:`003后期/00306烤牛机`
+   "minecraft:egg", "鸡蛋", "是", :doc:`003后期/00300烤鸡机`
+   "minecraft:chicken", "生鸡肉", "是", :doc:`003后期/00300烤鸡机`
+   "minecraft:beef", "生牛肉", "是", :doc:`003后期/00306烤牛机`
+   "minecraft:porkchop", "生猪肉", "是", "自动农场"
+   "minecraft:mutton", "生羊肉", "是", :doc:`003后期/00301羊毛机`
+   "minecraft:rabbit", "生兔肉", "是", :doc:`003后期/00317兔脚皮农场`
+   "minecraft:cod", "生鳕鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:salmon", "生鲑鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:carrot", "胡萝卜", "是", "自动农场"
+   "minecraft:baked_potato", "烤马铃薯", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:potato", "马铃薯", "是", "自动农场"
+   "minecraft:beetroot", "甜菜根", "是", "自动农场"
+   "minecraft:mushroom_stew", "蘑菇煲", "是", :doc:`003后期/00311红灰蘑菇牛农场`
+   "minecraft:cookie", "曲奇", "是", "自动合成"
+   "minecraft:cake", "蛋糕", "是", "自动合成"
+   "minecraft:dried_kelp", "干海带", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:rotten_flesh", "腐肉", "是", :doc:`001前期/00104沼泽刷怪塔`
+   "minecraft:spider_eye", "蜘蛛眼", "是", :doc:`001前期/00104沼泽刷怪塔`
+   "minecraft:glow_berries", "发光浆果", "是", "自动农场"
+   "minecraft:sweet_berries", "甜浆果", "是", :doc:`003后期/00309细雪农场`
+   "minecraft:chorus_fruit", "紫颂果", "是", :doc:`003后期/00315紫颂果农场`
+   "minecraft:apple", "苹果", "是", :doc:`001前期/00101树场`
+
+特殊类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:experience_bottle", "经验瓶", "否", "附魔台分解"
+   "minecraft:ender_eye", "末影之眼", "否", "手动制作"
+   "minecraft:ender_chest", "末影箱", "否", "手动制作"
+   "minecraft:shulker_shell", "潜影壳", "是", :doc:`002中期/00210潜影贝农场`
+   "minecraft:firework_rocket", "烟花火箭", "否", "手动制作"
+   "minecraft:enchanted_book", "附魔书", "否", "村民交易"
+   "minecraft:name_tag", "命名牌", "否", "手动收集"
+   "minecraft:saddle", "马鞍", "否", "手动收集"
+   "minecraft:totem_of_undying", "不死图腾", "否", "击杀唤魔者"
+   "minecraft:heart_of_the_sea", "海洋之心", "否", "埋藏的宝藏"
+   "minecraft:nautilus_shell", "鹦鹉螺壳", "否", "埋藏的宝藏"
+   "minecraft:trident", "三叉戟", "否", "击杀溺尸"
+   "minecraft:elytra", "鞘翅", "否", "末地城探索"
+   "minecraft:dragon_egg", "龙蛋", "否", "末影龙掉落"
+   "minecraft:nether_star", "下界之星", "是", :doc:`002中期/00205杀凋机`
+   "minecraft:wither_skeleton_skull", "凋零骷髅头颅", "是", :doc:`002中期/00209凋零骷髅农场`
+   "minecraft:armor_stand", "盔甲架", "否", "手动制作"
+   "minecraft:item_frame", "物品展示框", "否", "手动制作"
+   "minecraft:painting", "画", "否", "手动制作"
+   "minecraft:map", "地图", "否", "手动制作"
+   "minecraft:book", "书", "否", "手动制作"
+   "minecraft:recovery_compass", "追溯指针", "否", "手动制作"
+
+红石类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:redstone", "红石粉", "否", "手动挖矿"
+   "minecraft:redstone_torch", "红石火把", "是", "自动合成"
+   "minecraft:repeater", "红石中继器", "是", "自动合成"
+   "minecraft:comparator", "红石比较器", "是", "自动合成"
+   "minecraft:piston", "活塞", "是", "自动合成"
+   "minecraft:sticky_piston", "粘性活塞", "是", "自动合成"
+   "minecraft:observer", "观察者", "是", "自动合成"
+   "minecraft:hopper", "漏斗", "是", "自动合成"
+   "minecraft:dropper", "投掷器", "是", "自动合成"
+   "minecraft:dispenser", "发射器", "是", "自动合成"
+   "minecraft:target", "标靶", "是", "自动合成"
+   "minecraft:lightning_rod", "避雷针", "是", "自动合成"
+   "minecraft:sculk_sensor", "幽匿感测体", "否", "深暗之域探索"
+
+运输类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:minecart", "矿车", "是", "自动合成"
+   "minecraft:furnace_minecart", "熔炉矿车", "是", "自动合成"
+   "minecraft:hopper_minecart", "漏斗矿车", "是", "自动合成"
+   "minecraft:chest_minecart", "运输矿车", "是", "自动合成"
+   "minecraft:rail", "铁轨", "是", :doc:`003后期/00304刷铁轨机`
+   "minecraft:powered_rail", "充能铁轨", "是", "自动合成"
+   "minecraft:detector_rail", "探测铁轨", "是", "自动合成"
+   "minecraft:activator_rail", "激活铁轨", "是", "自动合成"
+   "minecraft:boat", "船", "是", "自动合成"
+   "minecraft:chest_boat", "运输船", "是", "自动合成"
+   "minecraft:elytra", "鞘翅", "否", "末地城探索"
+
+存储类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:chest", "箱子", "是", "自动合成"
+   "minecraft:trapped_chest", "陷阱箱", "是", "自动合成"
+   "minecraft:ender_chest", "末影箱", "否", "手动制作"
+   "minecraft:barrel", "木桶", "是", "自动合成"
+   "minecraft:shulker_box", "潜影盒", "是", :doc:`002中期/00210潜影贝农场`
+   "minecraft:hopper", "漏斗", "是", "自动合成"
+   "minecraft:furnace", "熔炉", "是", "自动合成"
+   "minecraft:blast_furnace", "高炉", "是", "自动合成"
+   "minecraft:smoker", "烟熏炉", "是", "自动合成"
+   "minecraft:composter", "堆肥桶", "是", "自动合成"
+   "minecraft:brewing_stand", "酿造台", "是", "自动合成"
+
+装饰性方块
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:oak_stairs", "楼梯", "是", "自动合成"
+   "minecraft:oak_slab", "台阶", "是", "自动合成"
+   "minecraft:oak_fence", "栅栏", "是", "自动合成"
+   "minecraft:oak_fence_gate", "栅栏门", "是", "自动合成"
+   "minecraft:glass_pane", "玻璃板", "是", "自动合成"
+   "minecraft:iron_bars", "铁栏杆", "是", "自动合成"
+   "minecraft:oak_door", "门", "是", "自动合成"
+   "minecraft:oak_trapdoor", "活板门", "是", "自动合成"
+   "minecraft:white_carpet", "地毯", "是", :doc:`003后期/00305刷羊毛毯机`
+   "minecraft:oak_sign", "告示牌", "是", "自动合成"
+   "minecraft:white_banner", "旗帜", "是", "自动合成"
+   "minecraft:chain", "链", "是", "自动合成"
+   "minecraft:lantern", "灯笼", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:campfire", "营火", "是", "自动合成"
+   "minecraft:lectern", "讲台", "是", "自动合成"
+   "minecraft:loom", "织布机", "是", "自动合成"
+   "minecraft:cartography_table", "制图台", "是", "自动合成"
+   "minecraft:smithing_table", "锻造台", "是", "自动合成"
+   "minecraft:grindstone", "磨石", "是", "自动合成"
+   "minecraft:stonecutter", "切石机", "是", "自动合成"
+
+植物类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:oak_sapling", "树苗", "是", :doc:`001前期/00101树场`
+   "minecraft:poppy", "花", "是", :doc:`003后期/00310刷花机`
+   "minecraft:grass", "草", "是", :doc:`003后期/00310刷花机`
+   "minecraft:fern", "蕨", "是", :doc:`003后期/00310刷花机`
+   "minecraft:vine", "藤蔓", "否", "手动收集"
+   "minecraft:moss_block", "苔藓", "否", "手动收集"
+   "minecraft:kelp", "海带", "是", "自动农场"
+   "minecraft:seagrass", "海草", "是", "自动农场"
+   "minecraft:lily_pad", "睡莲", "否", "手动收集"
+   "minecraft:cactus", "仙人掌", "是", "自动农场"
+   "minecraft:bamboo", "竹子", "是", :doc:`001前期/00100竹子农场`
+   "minecraft:sugar_cane", "甘蔗", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:wheat_seeds", "小麦种子", "是", "自动农场"
+   "minecraft:beetroot_seeds", "甜菜种子", "是", "自动农场"
+   "minecraft:melon_seeds", "西瓜种子", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:pumpkin_seeds", "南瓜种子", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:cocoa_beans", "可可豆", "是", :doc:`003后期/00313可可豆农场`
+   "minecraft:nether_wart", "下界疣", "否", "下界探索"
+   "minecraft:chorus_fruit", "紫颂果", "是", :doc:`003后期/00315紫颂果农场`
+   "minecraft:crimson_fungus", "绯红菌", "否", "下界探索"
+   "minecraft:warped_fungus", "诡异菌", "否", "下界探索"
+   "minecraft:mushroom", "蘑菇", "是", :doc:`003后期/00311红灰蘑菇牛农场`
+   "minecraft:glow_lichen", "发光地衣", "是", "自动收集"
+   "minecraft:glow_berries", "发光浆果", "是", "自动农场"
+   "minecraft:sweet_berries", "甜浆果", "是", :doc:`003后期/00309细雪农场`
+   "minecraft:azalea", "杜鹃花丛", "否", "手动收集"
+   "minecraft:moss_carpet", "苔藓地毯", "是", "自动合成"
+   "minecraft:hanging_roots", "垂根", "否", "手动收集"
+   "minecraft:pointed_dripstone", "滴水石锥", "否", "手动收集"
+   "minecraft:cave_vines", "悬挂式藤蔓", "是", "自动收集"
+   "minecraft:sculk", "幽匿块", "否", "深暗之域探索"
+   "minecraft:deepslate", "深板岩", "是", "自动挖矿"
+
+燃料类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:coal", "煤炭", "是", :doc:`002中期/00208凋零玫瑰农场`
+   "minecraft:charcoal", "木炭", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:lava_bucket", "岩浆桶", "是", :doc:`003后期/00312岩浆机`
+   "minecraft:blaze_rod", "烈焰棒", "是", :doc:`002中期/00206烈焰人农场`
+   "minecraft:dried_kelp", "干海带", "是", :doc:`001前期/00101极简8倍速熔炉组`
+   "minecraft:oak_planks", "木板", "是", :doc:`001前期/00101树场`
+   "minecraft:oak_log", "原木", "是", :doc:`001前期/00101树场`
+   "minecraft:stick", "木棍", "是", :doc:`001前期/00101树场`
+   "minecraft:bamboo", "竹子", "是", :doc:`001前期/00100竹子农场`
+   "minecraft:coal_block", "煤炭块", "是", "自动合成"
+   "minecraft:dried_kelp_block", "干海带块", "是", "自动合成"
+
+酿造类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:brewing_stand", "酿造台", "是", "自动合成"
+   "minecraft:potion", "药水", "是", :doc:`003后期/00308炼药机`
+   "minecraft:fermented_spider_eye", "发酵蛛眼", "是", :doc:`001前期/00104沼泽刷怪塔`
+   "minecraft:glistering_melon_slice", "闪烁的西瓜", "是", :doc:`002中期/00202西瓜机`
+   "minecraft:golden_carrot", "金胡萝卜", "否", "手动制作"
+   "minecraft:blaze_powder", "烈焰粉", "是", :doc:`002中期/00206烈焰人农场`
+   "minecraft:magma_cream", "岩浆膏", "是", :doc:`003后期/00319岩浆怪农场`
+   "minecraft:phantom_membrane", "幻翼膜", "是", :doc:`003后期/00316幻翼农场`
+   "minecraft:rabbit_foot", "兔子脚", "是", :doc:`003后期/00317兔脚皮农场`
+   "minecraft:pufferfish", "河豚", "否", "手动收集"
+
+村民交易物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:emerald", "绿宝石", "是", :doc:`001前期/00107绿宝石农场`
+   "minecraft:enchanted_book", "附魔书", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:name_tag", "命名牌", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:saddle", "马鞍", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:glass", "玻璃", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:compass", "指南针", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:clock", "时钟", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:glowstone", "萤石", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:redstone", "红石", "是", :doc:`001前期/00103丐版村民交易所`
+   "minecraft:lapis_lazuli", "青金石", "是", :doc:`001前期/00103丐版村民交易所`
+
+下界物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:netherrack", "下界岩", "否", "下界探索"
+   "minecraft:glowstone", "萤石", "否", "下界探索"
+   "minecraft:quartz", "下界石英", "否", "下界探索"
+   "minecraft:blaze_rod", "烈焰棒", "是", :doc:`002中期/00206烈焰人农场`
+   "minecraft:ghast_tear", "恶魂之泪", "是", :doc:`002中期/00213恶魂农场`
+   "minecraft:magma_cream", "岩浆膏", "是", :doc:`003后期/00319岩浆怪农场`
+   "minecraft:wither_skeleton_skull", "凋零骷髅头颅", "是", :doc:`002中期/00209凋零骷髅农场`
+   "minecraft:nether_wart", "下界疣", "否", "下界探索"
+   "minecraft:crimson_fungus", "绯红菌", "否", "下界探索"
+   "minecraft:warped_fungus", "诡异菌", "否", "下界探索"
+   "minecraft:hoglin", "猪兽", "是", :doc:`004大后期/00404击猪兽农场`
+
+末地物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:end_stone", "末地石", "否", "末地探索"
+   "minecraft:ender_pearl", "末影珍珠", "是", :doc:`002中期/00207小黑塔`
+   "minecraft:shulker_shell", "潜影壳", "是", :doc:`002中期/00210潜影贝农场`
+   "minecraft:chorus_fruit", "紫颂果", "是", :doc:`003后期/00315紫颂果农场`
+   "minecraft:elytra", "鞘翅", "否", "末地城探索"
+   "minecraft:dragon_egg", "龙蛋", "否", "末影龙掉落"
+   "minecraft:dragon_breath", "龙息", "否", "末影龙战斗"
+
+冰雪类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:ice", "冰", "是", :doc:`003后期/00302刷冰机`
+   "minecraft:packed_ice", "浮冰", "是", :doc:`003后期/00302刷冰机`
+   "minecraft:blue_ice", "蓝冰", "是", :doc:`003后期/00302刷冰机`
+   "minecraft:snow", "雪", "是", :doc:`003后期/00303刷雪机`
+   "minecraft:snowball", "雪球", "是", :doc:`003后期/00303刷雪机`
+   "minecraft:powder_snow", "细雪", "是", :doc:`003后期/00309细雪农场`
+
+珊瑚类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:tube_coral", "管状珊瑚", "是", :doc:`003后期/00318刷珊瑚机`
+   "minecraft:brain_coral", "脑纹珊瑚", "是", :doc:`003后期/00318刷珊瑚机`
+   "minecraft:bubble_coral", "气泡珊瑚", "是", :doc:`003后期/00318刷珊瑚机`
+   "minecraft:fire_coral", "火珊瑚", "是", :doc:`003后期/00318刷珊瑚机`
+   "minecraft:horn_coral", "鹿角珊瑚", "是", :doc:`003后期/00318刷珊瑚机`
+
+海洋类物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:prismarine_shard", "海晶碎片", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:prismarine_crystals", "海晶砂粒", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:sea_lantern", "海晶灯", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:sponge", "海绵", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:wet_sponge", "湿海绵", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:cod", "鳕鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:salmon", "鲑鱼", "是", :doc:`003后期/00307自动钓鱼机`
+   "minecraft:tropical_fish", "热带鱼", "否", "手动收集"
+   "minecraft:pufferfish", "河豚", "否", "手动收集"
+   "minecraft:ink_sac", "墨囊", "是", :doc:`004大后期/00405守卫者农场`
+   "minecraft:glow_ink_sac", "发光墨囊", "是", :doc:`004大后期/00405守卫者农场`
+
+特殊方块
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:beacon", "信标", "否", "手动制作"
+   "minecraft:conduit", "潮涌核心", "否", "手动制作"
+   "minecraft:end_portal_frame", "末地传送门框架", "否", "创造模式"
+   "minecraft:bedrock", "基岩", "否", "创造模式"
+   "minecraft:command_block", "命令方块", "否", "创造模式"
+   "minecraft:structure_block", "结构方块", "否", "创造模式"
+   "minecraft:barrier", "屏障", "否", "创造模式"
+   "minecraft:light", "光源方块", "否", "创造模式"
+
+1.21.x新增物品
+==================================================
+
+.. csv-table::
+   :header: "物品ID", "物品名称", "是否可自动化", "生产链接"
+   :widths: 15, 15, 10, 25
+
+   "minecraft:heavy_core", "沉重核心", "否", "试炼大厅探索"
+   "minecraft:breeze_rod", "旋风棒", "否", "试炼大厅探索"
+   "minecraft:wind_charge", "风弹", "否", "试炼大厅探索"
+   "minecraft:mace", "重锤", "否", "试炼大厅探索"
+   "minecraft:trial_key", "试炼钥匙", "否", "试炼大厅探索"
+   "minecraft:ominous_trial_key", "不祥试炼钥匙", "否", "试炼大厅探索"
+   "minecraft:copper_grate", "铜格栅", "是", "自动合成"
+   "minecraft:copper_bulb", "铜灯", "是", "自动合成"
+   "minecraft:copper_door", "铜门", "是", "自动合成"
+   "minecraft:copper_trapdoor", "铜活板门", "是", "自动合成"
+   "minecraft:chiseled_copper", "雕纹铜块", "是", "自动合成"
+   "minecraft:copper_chest", "铜箱子", "是", "自动合成"
+   "minecraft:tuff_slab", "凝灰岩台阶", "是", "自动合成"
+   "minecraft:tuff_stairs", "凝灰岩楼梯", "是", "自动合成"
+   "minecraft:tuff_wall", "凝灰岩墙", "是", "自动合成"
+   "minecraft:chiseled_tuff", "雕纹凝灰岩", "是", "自动合成"
+   "minecraft:polished_tuff", "磨制凝灰岩", "是", "自动合成"
