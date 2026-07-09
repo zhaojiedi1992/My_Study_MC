@@ -8,4 +8,4 @@
    :glob:
 
    *
-   MOD介绍/Impact常用命令
+   MOD介绍/index
