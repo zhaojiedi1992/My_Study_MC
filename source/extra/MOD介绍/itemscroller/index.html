@@ -299,6 +299,184 @@ kbd{
 .slide.active .anim:nth-child(7){animation-delay:.47s}
 .slide.active .anim:nth-child(8){animation-delay:.54s}
 
+/* ═══════════════════════════════════
+   MC 像素风库存动画通用样式
+   ═══════════════════════════════════ */
+.mc-demo {
+  display: flex;
+  gap: clamp(16px,3vw,40px);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 1.5vh auto;
+  flex-wrap: wrap;
+}
+
+/* 库存 GUI 容器 */
+.mc-gui {
+  background: #c6c6c6;
+  border: 2px solid;
+  border-color: #fff #555 #555 #fff;
+  padding: 6px;
+  position: relative;
+  flex-shrink: 0;
+}
+.mc-gui-title {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(9px,1.1vw,13px);
+  font-weight: 900;
+  color: #3f3f3f;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 0 rgba(255,255,255,.6);
+}
+.mc-slots {
+  display: grid;
+  gap: 2px;
+}
+.mc-slot {
+  width: clamp(28px,3.2vw,40px);
+  height: clamp(28px,3.2vw,40px);
+  background: #8b8b8b;
+  border: 2px solid;
+  border-color: #373737 #fff #fff #373737;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.mc-slot.hover-glow {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.9) inset;
+  background: #9b9b9b;
+}
+
+/* 物品图标（像素风 emoji 替代） */
+.mc-item {
+  width: 70%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px,1.8vw,22px);
+  image-rendering: pixelated;
+  line-height: 1;
+  user-select: none;
+}
+.mc-count {
+  position: absolute;
+  bottom: 0;
+  right: 1px;
+  font-family: 'Courier New', monospace;
+  font-size: clamp(8px,1vw,11px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* 鼠标光标 */
+.mc-cursor {
+  position: absolute;
+  width: clamp(12px,1.5vw,18px);
+  height: clamp(16px,2vw,24px);
+  pointer-events: none;
+  z-index: 20;
+  filter: drop-shadow(1px 1px 0 #000);
+}
+.mc-cursor svg { width: 100%; height: 100%; }
+
+/* 滚轮动画 */
+@keyframes scroll-move-item {
+  0%   { transform: translate(0,0) scale(1); opacity:1; }
+  40%  { transform: translate(var(--tx), var(--ty)) scale(.85); opacity:.9; }
+  85%  { transform: translate(calc(var(--tx)*1.9), calc(var(--ty)*1.0)) scale(.7); opacity:.5; }
+  100% { transform: translate(calc(var(--tx)*2.2), calc(var(--ty)*1.0)) scale(.5); opacity:0; }
+}
+.flying-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px,1.8vw,22px);
+  pointer-events: none;
+  z-index: 30;
+  animation: scroll-move-item 1.1s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* 滚轮图标动画 */
+@keyframes wheel-up {
+  0%,100% { transform: translateY(0); opacity:.3; }
+  50%      { transform: translateY(-6px); opacity:1; }
+}
+.wheel-anim { animation: wheel-up 1.1s ease-in-out infinite; }
+
+/* 数字计数变化动画 */
+@keyframes count-down {
+  0%  { content: '64'; }
+  14% { content: '56'; }
+  28% { content: '48'; }
+  42% { content: '40'; }
+  56% { content: '32'; }
+  71% { content: '24'; }
+  85% { content: '16'; }
+  100%{ content: '8'; }
+}
+.mc-count.counting { animation: count-flash 1.1s steps(1) infinite; }
+@keyframes count-flash {
+  0%,10%  { opacity:1; transform:scale(1); }
+  11%,20% { opacity:0; transform:scale(1.4); }
+  21%     { opacity:1; transform:scale(1); }
+}
+
+/* 拖拽路径光晕 */
+@keyframes slot-scan {
+  0%,100% { background: #8b8b8b; border-color: #373737 #fff #fff #373737; }
+  50%     { background: rgba(96,165,250,.5); border-color: #60a5fa; box-shadow: 0 0 8px rgba(96,165,250,.8); }
+}
+
+/* 空格闪入动画（移动后目标格） */
+@keyframes item-land {
+  0%   { transform: scale(0); opacity:0; }
+  60%  { transform: scale(1.25); opacity:1; }
+  100% { transform: scale(1); opacity:1; }
+}
+.item-landing { animation: item-land .5s cubic-bezier(.2,1.5,.4,1) forwards; }
+
+/* 配方量产动画 */
+@keyframes craft-pulse {
+  0%,100% { transform: scale(1);   box-shadow: none; }
+  50%      { transform: scale(1.04); box-shadow: 0 0 12px rgba(251,146,60,.5); }
+}
+@keyframes arrow-march {
+  0%,100% { transform: translateX(0); opacity:.6; }
+  50%      { transform: translateX(6px); opacity:1; }
+}
+.craft-arrow-anim { animation: arrow-march .9s ease-in-out infinite; }
+
+/* 丢弃粒子 */
+@keyframes toss-particle {
+  0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity:1; }
+  100% { transform: translate(var(--px), var(--py)) rotate(var(--pr)) scale(.2); opacity:0; }
+}
+
+/* 滚轮 SVG 指示器 */
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: .85;
+}
+.scroll-indicator span {
+  font-size: clamp(9px,1vw,12px);
+  color: rgba(255,255,255,.7);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
 /* ── responsive tweaks ── */
 @media(max-width:900px){
   .card-grid-3{grid-template-columns:1fr 1fr}
@@ -373,6 +551,60 @@ kbd{
     🖱️ 滚轮移物
   </h2>
   <p class="sec-sub anim">悬停物品格 → 滚动鼠标滚轮 → 物品自动转移</p>
+
+  <!-- ★ 滚轮移物动画 ★ -->
+  <div class="mc-demo anim" id="demo-scroll">
+    <!-- 箱子 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">箱子</span>
+      <div class="mc-gui">
+        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="chest-slots">
+          <!-- 5格钻石 + 4格空 -->
+          <div class="mc-slot hover-glow" id="cs0"><div class="mc-item">💎</div><span class="mc-count" id="cs0c">64</span></div>
+          <div class="mc-slot" id="cs1"><div class="mc-item">💎</div><span class="mc-count">64</span></div>
+          <div class="mc-slot" id="cs2"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot" id="cs3"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot" id="cs4"><div class="mc-item">🪵</div><span class="mc-count">32</span></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 鼠标滚轮 + 飞行物品 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+      <div class="scroll-indicator">
+        <svg width="28" height="46" viewBox="0 0 28 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="24" height="42" rx="10" stroke="rgba(255,255,255,.5)" stroke-width="2.5"/>
+          <rect class="wheel-anim" x="11" y="9" width="6" height="10" rx="3" fill="rgba(255,255,255,.8)"/>
+        </svg>
+        <span>向上滚</span>
+      </div>
+      <!-- 飞行中的物品粒子，由 JS 生成 -->
+      <canvas id="fly-canvas" style="position:absolute;pointer-events:none;left:-80px;top:-20px" width="220" height="80"></canvas>
+    </div>
+
+    <!-- 背包 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">背包</span>
+      <div class="mc-gui">
+        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)">
+          <div class="mc-slot" id="inv0"></div>
+          <div class="mc-slot" id="inv1"></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">32</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">16</span></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="anim" style="width:100%;max-width:880px">
     <table class="op-table">
       <tr>
@@ -406,6 +638,27 @@ kbd{
     ✋ 拖拽批量操作
   </h2>
   <p class="sec-sub anim">按住快捷键 + 拖拽鼠标，路径上的每个格子都会被处理</p>
+
+  <!-- ★ 拖拽扫描动画 ★ -->
+  <div class="anim" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:900px;margin:0 auto 1.5vh">
+    <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">按住 Shift + 鼠标左键拖拽 → 整行瞬间清空移走</span>
+    <div class="mc-gui" style="position:relative">
+      <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="drag-grid">
+        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🌾</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🌾</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
+      </div>
+      <!-- 拖拽光标由 JS 注入 -->
+      <canvas id="drag-canvas" style="position:absolute;inset:0;pointer-events:none;width:100%;height:100%"></canvas>
+    </div>
+  </div>
+
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
     <div class="card" style="border-color:#a855f733">
       <div class="card-title" style="font-size:clamp(1rem,1.5vw,1.2rem);margin-bottom:.6em;color:#c084fc">📥 移入操作</div>
@@ -437,6 +690,28 @@ kbd{
     🗑️ 批量丢弃垃圾
   </h2>
   <p class="sec-sub anim">挖矿回来背包塞满圆石、泥土？一拖搞定！</p>
+
+  <!-- ★ 批量丢弃动画 ★ -->
+  <div class="anim" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:0 auto 1.5vh">
+    <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">按住 Q + 左键拖过 → 垃圾物品全部扔出</span>
+    <div style="position:relative">
+      <div class="mc-gui">
+        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="toss-grid">
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">💎</div><span class="mc-count">3</span></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">32</span></div>
+          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+        </div>
+      </div>
+      <canvas id="toss-canvas" style="position:absolute;top:-40px;left:-40px;pointer-events:none" width="460" height="200"></canvas>
+    </div>
+  </div>
+
   <div class="stat-row anim">
     <div class="stat-box">
       <span class="stat-num ac-orange">36</span>
@@ -509,6 +784,70 @@ kbd{
     ⚡ 批量合成·量产神器
   </h2>
   <p class="sec-sub anim">材料充足？一个按键，自动量产到材料耗尽</p>
+
+  <!-- ★ 批量合成量产动画 ★ -->
+  <div class="anim" style="display:flex;align-items:center;justify-content:center;gap:clamp(10px,2.5vw,32px);width:100%;max-width:860px;margin:0 auto 1.5vh;flex-wrap:wrap">
+    <!-- 背包材料 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">背包（原木）</span>
+      <div class="mc-gui">
+        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat0">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat1">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat2">48</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat3">32</span></div>
+          <div class="mc-slot" id="mat4"></div>
+          <div class="mc-slot" id="mat5"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 箭头+键位 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,11px);color:rgba(255,255,255,.6);text-align:center;line-height:1.8">
+        按住<br><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd>
+      </div>
+      <div class="craft-arrow-anim" style="font-size:clamp(1.5rem,3vw,3rem);color:rgba(251,146,60,.9)">➜</div>
+      <canvas id="craft-sparks" width="60" height="60" style="position:relative;margin-top:-20px;pointer-events:none"></canvas>
+    </div>
+
+    <!-- 合成台 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">合成台</span>
+      <div class="mc-gui" id="craft-gui" style="animation:craft-pulse 0.9s ease-in-out infinite">
+        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+          <div class="mc-slot"><div class="mc-item" id="ci0">🪵</div></div>
+          <div class="mc-slot"><div class="mc-item" id="ci1">🪵</div></div>
+          <div class="mc-slot"><div class="mc-item" id="ci2">🪵</div></div>
+          <div class="mc-slot"><div class="mc-item" id="ci3">🪵</div></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+          <div class="mc-slot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二箭头 -->
+    <div class="craft-arrow-anim" style="font-size:clamp(1.5rem,3vw,3rem);color:rgba(251,146,60,.9);animation-delay:.3s">➜</div>
+
+    <!-- 成品输出 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">输出（木板）</span>
+      <div class="mc-gui">
+        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out0">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out1">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out2">64</span></div>
+          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out3">64</span></div>
+          <div class="mc-slot"><div class="mc-item" id="out4s">🪵</div><span class="mc-count" id="out4">48</span></div>
+          <div class="mc-slot" id="out5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
     <div class="card" style="border-color:#f472b633;padding:2em">
       <kbd style="font-size:1.1em">Ctrl</kbd> + <kbd style="font-size:1.1em">C</kbd>
@@ -860,6 +1199,231 @@ document.addEventListener('touchend',e=>{
 },{passive:true});
 
 updateDotColor();
+
+/* ═══════════════════════════════════════════════
+   MC 动画系统
+   ═══════════════════════════════════════════════ */
+
+// ── 工具：随机范围 ──
+function rnd(a,b){return a+Math.random()*(b-a);}
+
+// ══════════════════════════════════════
+// 动画 1：滚轮移物 —— 物品飞行 Canvas
+// ══════════════════════════════════════
+(function initScrollAnim(){
+  const canvas = document.getElementById('fly-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const ITEMS_FL = ['💎','💎','🪨','🪵'];
+  const particles = [];
+
+  function spawnFly(){
+    particles.push({
+      x:10, y:H/2+rnd(-15,15),
+      vx:rnd(2.5,4.5), vy:rnd(-1.2,1.2),
+      life:1, decay:rnd(.012,.022),
+      icon:ITEMS_FL[Math.floor(Math.random()*ITEMS_FL.length)],
+      size:rnd(16,22)
+    });
+  }
+
+  let spawnTimer=0;
+  const chestCount=document.getElementById('cs0c');
+  let countVal=64;
+
+  function tickFly(){
+    ctx.clearRect(0,0,W,H);
+    spawnTimer++;
+    if(spawnTimer%28===0){
+      spawnFly();
+      if(chestCount){
+        countVal=Math.max(0,countVal-8);
+        if(countVal===0) countVal=64;
+        chestCount.textContent=countVal;
+      }
+      const inv0=document.getElementById('inv0');
+      if(inv0){
+        inv0.innerHTML='<div class="mc-item" style="animation:item-land .4s cubic-bezier(.2,1.5,.4,1) both">💎</div>';
+        setTimeout(()=>{if(inv0)inv0.innerHTML='';},700);
+      }
+    }
+    particles.forEach(p=>{
+      ctx.save();
+      ctx.globalAlpha=p.life*.9;
+      ctx.font=p.size+'px serif';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(p.icon,p.x,p.y);
+      ctx.globalAlpha=p.life*.3;
+      ctx.beginPath(); ctx.arc(p.x-6,p.y,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(96,165,250,0.8)'; ctx.fill();
+      ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
+    });
+    for(let i=particles.length-1;i>=0;i--) if(particles[i].life<=0) particles.splice(i,1);
+    const slots=document.querySelectorAll('#chest-slots .mc-slot');
+    slots.forEach((s,i)=>s.classList.toggle('hover-glow',i===Math.floor(spawnTimer/28)%5));
+    requestAnimationFrame(tickFly);
+  }
+  tickFly();
+})();
+
+// ══════════════════════════════════════
+// 动画 2：拖拽扫描 —— 光标扫格消失
+// ══════════════════════════════════════
+(function initDragAnim(){
+  const gui=document.getElementById('drag-grid');
+  if(!gui) return;
+  const ITEMS_DRAG=['🪨','🪨','🪵','🌾','🪨','🪵','🌾','🪨','🪵'];
+  let phase=0, step=0, timer=0;
+  const SCAN_DELAY=16, RESET_DELAY=80;
+  function getSlots(){ return gui.querySelectorAll('.mc-slot'); }
+  function resetAll(){
+    getSlots().forEach((s,i)=>{
+      s.innerHTML='<div class="mc-item">'+ITEMS_DRAG[i]+'</div><span class="mc-count">64</span>';
+      s.classList.remove('hover-glow');
+    });
+  }
+  function tickDrag(){
+    timer++;
+    if(phase===0){
+      if(timer%SCAN_DELAY===0){
+        const slots=getSlots();
+        slots.forEach(s=>s.classList.remove('hover-glow'));
+        if(step<slots.length){
+          slots[step].classList.add('hover-glow');
+          const snap=step;
+          setTimeout(()=>{
+            const ss=getSlots();
+            if(ss[snap]){ ss[snap].innerHTML=''; ss[snap].classList.remove('hover-glow'); }
+          },120);
+          step++;
+        } else { phase=1; timer=0; }
+      }
+    } else {
+      if(timer>RESET_DELAY){ resetAll(); step=0; phase=0; timer=0; }
+    }
+    requestAnimationFrame(tickDrag);
+  }
+  tickDrag();
+})();
+
+// ══════════════════════════════════════
+// 动画 3：批量丢弃 —— 粒子爆射
+// ══════════════════════════════════════
+(function initTossAnim(){
+  const canvas=document.getElementById('toss-canvas');
+  const grid=document.getElementById('toss-grid');
+  if(!canvas||!grid) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const ITEMS_TOSS=['🪨','🪨','🪵','🪨','💎','🪨','🪨','🪵','🪨'];
+  const sparks=[];
+  let scanStep=0, scanTimer=0, phase=0;
+  const SCAN_DELAY=20, RESET_DELAY=100;
+  function getSlots(){ return grid.querySelectorAll('.mc-slot'); }
+  function resetAll(){
+    getSlots().forEach((s,i)=>{
+      s.innerHTML=i===4
+        ?'<div class="mc-item">💎</div><span class="mc-count">3</span>'
+        :'<div class="mc-item">'+ITEMS_TOSS[i]+'</div><span class="mc-count">64</span>';
+      s.classList.remove('hover-glow');
+    });
+  }
+  function spawnSparks(x,y,icon){
+    for(let i=0;i<6;i++){
+      const angle=rnd(0,Math.PI*2), speed=rnd(2,6);
+      sparks.push({x,y,icon,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-rnd(1,3),
+        life:1,decay:rnd(.04,.08),size:rnd(12,18),gravity:.3});
+    }
+  }
+  function tickToss(){
+    ctx.clearRect(0,0,W,H);
+    scanTimer++;
+    if(phase===0){
+      if(scanTimer%SCAN_DELAY===0){
+        const slots=getSlots();
+        slots.forEach(s=>s.classList.remove('hover-glow'));
+        if(scanStep<slots.length){
+          if(scanStep!==4){
+            const s=slots[scanStep];
+            const rect=s.getBoundingClientRect();
+            const cr=canvas.getBoundingClientRect();
+            const cx=rect.left-cr.left+rect.width/2, cy=rect.top-cr.top+rect.height/2;
+            s.classList.add('hover-glow');
+            const snap=scanStep, icon=ITEMS_TOSS[scanStep];
+            setTimeout(()=>{
+              const ss=getSlots();
+              if(ss[snap]){ ss[snap].innerHTML=''; ss[snap].classList.remove('hover-glow'); }
+              spawnSparks(cx,cy,icon);
+            },80);
+          }
+          scanStep++;
+        } else { phase=1; scanTimer=0; }
+      }
+    } else {
+      if(scanTimer>RESET_DELAY){ resetAll(); scanStep=0; phase=0; scanTimer=0; }
+    }
+    sparks.forEach(p=>{
+      ctx.save(); ctx.globalAlpha=p.life;
+      ctx.font=p.size+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(p.icon,p.x,p.y); ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.life-=p.decay;
+    });
+    for(let i=sparks.length-1;i>=0;i--) if(sparks[i].life<=0) sparks.splice(i,1);
+    requestAnimationFrame(tickToss);
+  }
+  tickToss();
+})();
+
+// ══════════════════════════════════════
+// 动画 4：量产合成 —— 数字递减 + 火花
+// ══════════════════════════════════════
+(function initCraftAnim(){
+  const sparkCanvas=document.getElementById('craft-sparks');
+  if(!sparkCanvas) return;
+  const ctx=sparkCanvas.getContext('2d');
+  const W=sparkCanvas.width, H=sparkCanvas.height;
+  const sparks=[];
+  const matIds=['mat0','mat1','mat2','mat3'];
+  let matVals=[64,64,48,32];
+  let craftTimer=0;
+  const CRAFT_INTERVAL=50;
+  function spawnCraftSparks(){
+    for(let i=0;i<5;i++){
+      const angle=rnd(-Math.PI*.8,-Math.PI*.2);
+      sparks.push({x:W/2,y:H/2,vx:Math.cos(angle)*rnd(2,5),vy:Math.sin(angle)*rnd(2,5),
+        life:1,decay:rnd(.05,.09),color:`hsl(${rnd(20,50)},100%,65%)`,r:rnd(2,4)});
+    }
+  }
+  function tickCraft(){
+    ctx.clearRect(0,0,W,H);
+    craftTimer++;
+    if(craftTimer%CRAFT_INTERVAL===0){
+      let allDone=true;
+      for(let i=0;i<matVals.length;i++){
+        if(matVals[i]>0){
+          matVals[i]=Math.max(0,matVals[i]-8); allDone=false;
+          const el=document.getElementById(matIds[i]);
+          if(el){ el.textContent=matVals[i]||'';
+            if(matVals[i]===0){ const sl=el.closest('.mc-slot'); if(sl) sl.innerHTML=''; }
+          }
+        }
+      }
+      if(allDone){ matVals=[64,64,48,32]; }
+      spawnCraftSparks();
+    }
+    sparks.forEach(p=>{
+      ctx.save(); ctx.globalAlpha=p.life;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color; ctx.fill(); ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.15; p.life-=p.decay;
+    });
+    for(let i=sparks.length-1;i>=0;i--) if(sparks[i].life<=0) sparks.splice(i,1);
+    requestAnimationFrame(tickCraft);
+  }
+  tickCraft();
+})();
 </script>
 </body>
 </html>
