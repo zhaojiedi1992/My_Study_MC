@@ -9,6 +9,9 @@ Item Scroller 是一款 Fabric/Ornithe 客户端 MOD，通过鼠标滚轮与快�
      <a href="index.html" target="_blank" style="display:inline-block;padding:10px 24px;background:#57A64E;color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
        🎮 打开演示文稿（PPT风格）
      </a>
+     <a href="animations/index.html" target="_blank" style="display:inline-block;margin-left:8px;padding:10px 24px;background:#287C9E;color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
+       ▶ 打开 7 个独立动画
+     </a>
    </p>
 
 核心功能概览

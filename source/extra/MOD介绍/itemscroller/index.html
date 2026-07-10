@@ -8,7 +8,11 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f}
-body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
+body{
+  font-family:"Nunito","Noto Sans SC",sans-serif;
+  color:#f5f7fa;
+  cursor:default;
+}
 
 /* ── canvas bg ── */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
@@ -23,6 +27,7 @@ body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
   display:flex;flex-direction:column;
   justify-content:center;align-items:center;
   padding:5vh 7vw 10vh;
+  color:#f5f7fa;
   opacity:0;
   transform:translateY(60px) scale(.97);
   pointer-events:none;
@@ -59,7 +64,7 @@ body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
   position:absolute;top:3vh;left:4vw;
   font-size:clamp(12px,1.4vw,18px);
   font-weight:800;letter-spacing:2px;
-  color:rgba(255,255,255,.4);
+  color:rgba(255,255,255,.72);
 }
 
 /* ── pill tags ── */
@@ -98,7 +103,7 @@ body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
 }
 .sec-sub{
   font-size:clamp(.95rem,1.7vw,1.4rem);
-  color:rgba(255,255,255,.85);
+  color:rgba(255,255,255,.92);
   text-align:center;margin-bottom:3vh;
 }
 
@@ -113,8 +118,9 @@ body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
 .card-grid-4{grid-template-columns:1fr 1fr 1fr 1fr}
 
 .card{
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.18);
+  color:#f5f7fa;
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.24);
   border-radius:clamp(12px,1.5vw,20px);
   padding:clamp(14px,2vw,28px);
   backdrop-filter:blur(12px);
@@ -134,13 +140,55 @@ body{font-family:"Nunito","Noto Sans SC",sans-serif;cursor:default}
 .card-title{
   font-size:clamp(.9rem,1.5vw,1.3rem);
   font-weight:900;letter-spacing:.5px;
+  color:#f8fafc;
   margin-bottom:.3em;
 }
 .card-desc{
   font-size:clamp(.78rem,1.1vw,1rem);
-  color:rgba(255,255,255,.85);
+  color:rgba(255,255,255,.9);
   line-height:1.55;
 }
+
+/* ── standalone animation file links ── */
+.animation-library-link{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-top:2.4vh;
+  padding:.7em 1.15em;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:6px;
+  background:#f4f5f6;
+  color:#15131c;
+  text-decoration:none;
+  font-size:clamp(.78rem,1.1vw,.98rem);
+  font-weight:900;
+  box-shadow:0 5px 0 rgba(0,0,0,.32);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.animation-library-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 0 rgba(0,0,0,.32);
+}
+.slide-demo-link{
+  position:absolute;
+  top:3vh;
+  right:4vw;
+  z-index:4;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:.48em .75em;
+  border:1px solid rgba(255,255,255,.4);
+  border-radius:5px;
+  background:rgba(7,8,10,.84);
+  color:#fff;
+  text-decoration:none;
+  font-size:clamp(10px,.9vw,13px);
+  font-weight:800;
+  backdrop-filter:blur(8px);
+}
+.slide-demo-link:hover{background:rgba(255,255,255,.14);color:#fff}
 
 /* ── kbd ── */
 kbd{
@@ -164,6 +212,7 @@ kbd{
 .op-table td{
   padding:clamp(8px,1.2vh,16px) clamp(10px,1.5vw,20px);
   font-size:clamp(.85rem,1.2vw,1.1rem);
+  color:#f5f7fa;
   vertical-align:middle;
 }
 .op-table td:first-child{
@@ -209,7 +258,7 @@ kbd{
 }
 .stat-label{
   font-size:clamp(.78rem,1vw,.95rem);
-  color:rgba(255,255,255,.7);
+  color:rgba(255,255,255,.82);
   font-weight:700;letter-spacing:1px;margin-top:.3em;
 }
 
@@ -220,8 +269,9 @@ kbd{
   display:flex;align-items:center;gap:1em;
   padding:clamp(10px,1.5vh,18px) clamp(14px,2vw,22px);
   margin-bottom:clamp(6px,1vh,12px);
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
+  color:#f5f7fa;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);
   border-radius:12px;
   font-size:clamp(.88rem,1.2vw,1.1rem);
   font-weight:700;
@@ -237,6 +287,7 @@ kbd{
   font-weight:900;font-size:.95em;
   background:rgba(255,255,255,.15);
 }
+.steps .step-copy{min-width:0;line-height:1.45}
 
 /* ── cover badges row ── */
 .badge-row{display:flex;gap:1em;flex-wrap:wrap;justify-content:center;margin-top:3vh}
@@ -244,9 +295,9 @@ kbd{
   padding:.5em 1.3em;border-radius:99px;
   font-size:clamp(.7rem,1vw,.9rem);
   font-weight:800;letter-spacing:.5px;
-  background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.2);
-  color:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.3);
+  color:#fff;
 }
 
 /* ── nav dots ── */
@@ -277,7 +328,7 @@ kbd{
 .ac-violet{color:#c084fc}
 .ac-blue{color:#60a5fa}
 .ac-green{color:#4ade80}
-.ac-purple{color:#a855f7}
+.ac-purple{color:#c084fc}
 .ac-orange{color:#fb923c}
 .ac-cyan{color:#22d3ee}
 .ac-pink{color:#f472b6}
@@ -337,11 +388,11 @@ kbd{
   gap: 8px;
   padding: .45em 1.1em;
   border-radius: 99px;
-  background: rgba(255,255,255,.08);
-  border: 1.5px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.12);
+  border: 1.5px solid rgba(255,255,255,.34);
   font-size: clamp(11px,1.15vw,14px);
   font-weight: 800;
-  color: rgba(255,255,255,.85);
+  color: #f7f9fb;
   letter-spacing: .5px;
   animation: hint-pulse 1.8s ease-in-out infinite;
 }
@@ -369,7 +420,7 @@ kbd{
 .mc-gui-label{
   font-family: 'Courier New', monospace;
   font-size: clamp(9px,1vw,12px);
-  color: rgba(255,255,255,.5);
+  color: rgba(255,255,255,.82);
   letter-spacing: 1px;
   text-align: center;
   margin-bottom: 6px;
@@ -477,7 +528,7 @@ kbd{
 /* 箭头 */
 .craft-arrow-anim{
   font-size: clamp(1.3rem,2.6vw,2.4rem);
-  color: rgba(255,255,255,.55);
+  color: rgba(255,255,255,.78);
 }
 .craft-arrow-anim.pulse{ animation: arrow-march .7s ease-in-out infinite; }
 @keyframes arrow-march{
@@ -560,6 +611,16 @@ kbd{
 }
 
 /* ── responsive tweaks ── */
+@media(min-width:901px){
+  .s5 .stat-row{margin:1vh 0}
+  .s5 .stat-box{padding:1em 1.5em}
+  .s5 .steps{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+  .s5 .steps li{margin:0;padding:10px 16px}
+}
 @media(max-width:900px){
   .card-grid-3{grid-template-columns:1fr 1fr}
   .card-grid-4{grid-template-columns:1fr 1fr}
@@ -570,6 +631,7 @@ kbd{
   .card-grid-2,.card-grid-3,.card-grid-4{grid-template-columns:1fr}
   .stat-row{gap:12px}
   .stat-box{min-width:120px;padding:1em 1.2em}
+  .slide-demo-link{top:2.4vh;right:3vw;padding:.42em .55em}
 }
 </style>
 </head>
@@ -591,7 +653,10 @@ kbd{
     <span class="badge">🖱️ 滚轮操控</span>
     <span class="badge">Fabric 1.8-1.21</span>
   </div>
-  <p class="anim" style="margin-top:4vh;font-size:clamp(.75rem,1vw,.9rem);color:rgba(255,255,255,.3);letter-spacing:2px">← → 翻页 &nbsp;·&nbsp; 空格下一页 &nbsp;·&nbsp; 点击圆点跳转</p>
+  <a class="animation-library-link anim" href="animations/index.html" target="_blank">
+    <span aria-hidden="true">▶</span> 打开 7 个独立动画文件 <span aria-hidden="true">↗</span>
+  </a>
+  <p class="anim" style="margin-top:4vh;font-size:clamp(.75rem,1vw,.9rem);color:rgba(255,255,255,.72);letter-spacing:2px">← → 翻页 &nbsp;·&nbsp; 空格下一页 &nbsp;·&nbsp; 点击圆点跳转</p>
 </div>
 
 <!-- S2: 什么是 Item Scroller -->
@@ -628,6 +693,7 @@ kbd{
 <!-- S3: 滚轮操作 -->
 <div class="slide s3" id="s3">
   <span class="snum">03 / 12</span>
+  <a class="slide-demo-link" href="animations/scroll-transfer.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-green anim" style="border-color:#4ade8033">核心操作 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🖱️ 滚轮移物
@@ -719,6 +785,7 @@ kbd{
 <!-- S4: 拖拽操作 -->
 <div class="slide s4" id="s4">
   <span class="snum">04 / 12</span>
+  <a class="slide-demo-link" href="animations/drag-transfer.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-purple anim" style="border-color:#a855f733">核心操作 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ✋ 拖拽批量操作
@@ -777,6 +844,7 @@ kbd{
 <!-- S5: 丢弃场景 -->
 <div class="slide s5" id="s5">
   <span class="snum">05 / 12</span>
+  <a class="slide-demo-link" href="animations/bulk-discard.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-orange anim" style="border-color:#fb923c33">实战场景</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🗑️ 批量丢弃垃圾
@@ -837,6 +905,7 @@ kbd{
 <!-- S6: 配方存储 -->
 <div class="slide s6" id="s6">
   <span class="snum">06 / 12</span>
+  <a class="slide-demo-link" href="animations/recipe-save.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-cyan anim" style="border-color:#22d3ee33">配方系统 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     📋 存储 144 个配方
@@ -876,6 +945,7 @@ kbd{
 <!-- S7: 批量合成 -->
 <div class="slide s7" id="s7">
   <span class="snum">07 / 12</span>
+  <a class="slide-demo-link" href="animations/bulk-craft.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-pink anim" style="border-color:#f472b633">配方系统 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⚡ 批量合成·量产神器
@@ -901,7 +971,7 @@ kbd{
       </div>
 
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div style="font-family:'Courier New',monospace;font-size:clamp(8px,.95vw,11px);color:rgba(255,255,255,.6);text-align:center;line-height:1.7">
+        <div style="font-family:'Courier New',monospace;font-size:clamp(8px,.95vw,11px);color:rgba(255,255,255,.82);text-align:center;line-height:1.7">
           按住<br><kbd style="font-size:.85em">Ctrl</kbd>+<kbd style="font-size:.85em">Alt</kbd>+<kbd style="font-size:.85em">C</kbd>
         </div>
         <div class="craft-arrow-anim" id="craft-arrow1">➜</div>
@@ -970,6 +1040,7 @@ kbd{
 <!-- S8: 村民交易 -->
 <div class="slide s8" id="s8">
   <span class="snum">08 / 12</span>
+  <a class="slide-demo-link" href="animations/villager-trade.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-lime anim" style="border-color:#a3e63533">村民交易系统</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a3e635);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🏪 村民交易全升级
@@ -1009,6 +1080,7 @@ kbd{
 <!-- S9: 副手+其他功能 -->
 <div class="slide s9" id="s9">
   <span class="snum">09 / 12</span>
+  <a class="slide-demo-link" href="animations/offhand-swap.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
   <p class="pill ac-sky anim" style="border-color:#38bdf833">更多实用功能</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🤚 副手 & 其他技巧
@@ -1123,10 +1195,10 @@ kbd{
     <div class="card" style="border-color:#2dd4bf33">
       <div class="card-title ac-teal" style="margin-bottom:1em">📥 下载安装</div>
       <ul class="steps" style="counter-reset:s">
-        <li style="margin-bottom:.5em">确认安装了 <strong>Fabric</strong> 加载器</li>
-        <li style="margin-bottom:.5em">在 <strong>CurseForge</strong> / <strong>Modrinth</strong> 搜索 <kbd>Item Scroller</kbd></li>
-        <li style="margin-bottom:.5em">下载 .jar 文件放入 <kbd>mods/</kbd> 文件夹</li>
-        <li>启动游戏，自动生效！🎉</li>
+        <li style="margin-bottom:.5em"><span class="step-copy">确认安装了 <strong>Fabric</strong> 加载器</span></li>
+        <li style="margin-bottom:.5em"><span class="step-copy">在 <strong>CurseForge</strong> / <strong>Modrinth</strong> 搜索 <kbd>Item Scroller</kbd></span></li>
+        <li style="margin-bottom:.5em"><span class="step-copy">下载 .jar 文件放入 <kbd>mods/</kbd> 文件夹</span></li>
+        <li><span class="step-copy">启动游戏，自动生效！🎉</span></li>
       </ul>
     </div>
     <div class="card" style="border-color:#2dd4bf33">
@@ -1145,7 +1217,7 @@ kbd{
     <div style="font-size:clamp(1.5rem,3.5vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#2dd4bf,#60a5fa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
       感谢观看！快去试试吧 🎮
     </div>
-    <p style="margin-top:1em;color:rgba(255,255,255,.6);font-size:clamp(.75rem,1vw,.9rem);letter-spacing:2px">
+    <p style="margin-top:1em;color:rgba(255,255,255,.74);font-size:clamp(.75rem,1vw,.9rem);letter-spacing:2px">
       Item Scroller · 让每一次物品操作都变得简单
     </p>
   </div>
@@ -1260,6 +1332,7 @@ document.querySelectorAll('.dot').forEach(d=>{
 
 // ── keyboard ──
 document.addEventListener('keydown',e=>{
+  if(e.target.closest('a,button,input,textarea,select')) return;
   if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1,1);}
   else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(cur-1,-1);}
   else if(e.key==='Home'){go(1,-1);}
@@ -1268,7 +1341,8 @@ document.addEventListener('keydown',e=>{
 
 // ── click to advance ──
 document.getElementById('deck').addEventListener('click',e=>{
-  if(!e.target.closest('#nav')) go(cur+1,1);
+  if(e.target.closest('a,button,.mc-demo')) return;
+  go(cur+1,1);
 });
 
 // ── mouse wheel ──

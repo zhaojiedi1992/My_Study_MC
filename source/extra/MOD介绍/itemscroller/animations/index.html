@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Item Scroller - 独立动画演示</title>
+<style>
+:root{
+  --bg:#111315;
+  --surface:#1a1d20;
+  --surface-2:#22262a;
+  --line:#343a40;
+  --text:#f3f5f7;
+  --muted:#aab1b8;
+  --slot:#8b8b8b;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  background:var(--bg);
+  font-family:Inter,"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  letter-spacing:0;
+}
+a{color:inherit}
+.page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:24px 0 44px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:34px}
+.back{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--muted);text-decoration:none;font-size:14px;font-weight:700;
+}
+.back:hover{color:#fff}
+.file-count{color:#8f979f;font:700 12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.intro{max-width:760px;margin-bottom:28px}
+.eyebrow{margin:0 0 7px;color:#70d6b0;font:800 12px ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
+h1{margin:0;font-size:clamp(30px,5vw,54px);line-height:1.08;letter-spacing:0}
+.lead{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.demo-card{
+  --accent:#79d4b2;
+  display:flex;min-width:0;min-height:264px;flex-direction:column;
+  overflow:hidden;text-decoration:none;background:var(--surface);
+  border:1px solid var(--line);border-radius:7px;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.demo-card:hover,.demo-card:focus-visible{transform:translateY(-3px);border-color:var(--accent);background:#1d2124;outline:none}
+.preview{
+  height:146px;display:flex;align-items:center;justify-content:center;gap:13px;
+  padding:16px;background:#0d0f10;border-bottom:1px solid var(--line);overflow:hidden;
+}
+.window{padding:6px;background:#c6c6c6;border:3px solid;border-color:#fff #555 #555 #fff;box-shadow:3px 3px 0 #0007}
+.window.narrow{padding:5px}
+.slots{display:grid;grid-template-columns:repeat(5,24px);gap:2px}
+.slots.cols-3{grid-template-columns:repeat(3,24px)}
+.slots.cols-6{grid-template-columns:repeat(6,22px)}
+.slot{width:24px;height:24px;position:relative;background:var(--slot);border:2px solid;border-color:#373737 #fff #fff #373737}
+.cols-6 .slot{width:22px;height:22px}
+.item{position:absolute;inset:5px;image-rendering:pixelated;box-shadow:inset -3px -3px #0003}
+.item.green{background:#42b67f}.item.cyan{background:#4cd9d7}.item.gray{background:#777}.item.brown{background:#9a6a37}.item.gold{background:#dfbd4c}.item.red{background:#c85a55}.item.blue{background:#528dc7}.item.white{background:#d9d9d9}
+.arrow{color:var(--accent);font-size:23px;font-weight:900}
+.mouse{width:22px;height:34px;border:2px solid #e5e7e9;border-radius:10px;position:relative}
+.mouse::before{content:"";position:absolute;left:7px;top:5px;width:5px;height:8px;border-radius:3px;background:var(--accent)}
+.recipe-panel{display:grid;grid-template-columns:repeat(2,28px);gap:4px;padding:7px;background:#34383b;border:1px solid #555}
+.recipe{width:28px;height:28px;border:1px solid #777;background:#17191a;position:relative}
+.recipe.active{outline:2px solid var(--accent)}
+.trade-list{width:154px;display:grid;gap:4px}
+.trade{height:25px;background:#c6c6c6;border:2px solid;border-color:#fff #555 #555 #fff;display:flex;align-items:center;gap:5px;padding:2px 5px}
+.trade i{display:block;width:13px;height:13px;background:#48a36c;box-shadow:inset -3px -3px #0003}
+.trade span{height:4px;flex:1;background:#717171}
+.trade b{color:#ba8e24;font-size:13px}
+.player{width:88px;height:102px;position:relative;background:#c6c6c6;border:3px solid;border-color:#fff #555 #555 #fff}
+.body-shape{position:absolute;left:31px;top:18px;width:25px;height:50px;background:#59636b;box-shadow:0 -13px 0 -4px #7c8a92}
+.offhand{position:absolute;left:7px;top:45px;width:25px;height:25px;background:#8b8b8b;border:2px solid;border-color:#373737 #fff #fff #373737}
+.card-copy{display:flex;flex:1;flex-direction:column;padding:17px 18px 16px}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.number{color:var(--accent);font:800 12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.key{padding:3px 7px;color:#d9dde0;background:#282d31;border:1px solid #485058;border-bottom-width:2px;border-radius:4px;font:700 11px ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap}
+h2{margin:0;font-size:19px;line-height:1.35;letter-spacing:0}
+.desc{margin:7px 0 15px;color:var(--muted);font-size:13px;line-height:1.55}
+.open{display:flex;align-items:center;gap:7px;margin-top:auto;color:var(--accent);font-size:13px;font-weight:800}
+.open::after{content:"\2197";font-size:15px}
+.footer{display:flex;justify-content:space-between;gap:20px;margin-top:26px;padding-top:18px;border-top:1px solid #2b3034;color:#858d95;font-size:12px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+  .page{width:min(100% - 22px,460px);padding-top:16px}
+  .topbar{margin-bottom:25px}.lead{font-size:14px}.grid{grid-template-columns:1fr}
+  .demo-card{min-height:244px}.preview{height:132px}.footer{flex-direction:column;gap:6px}
+}
+@media(prefers-reduced-motion:reduce){.demo-card{transition:none}}
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="topbar" aria-label="页面导航">
+    <a class="back" href="../index.html"><span aria-hidden="true">&#8592;</span> 返回 Item Scroller 演示文稿</a>
+    <span class="file-count">7 HTML FILES</span>
+  </nav>
+
+  <header class="intro">
+    <p class="eyebrow">Interactive inventory demos</p>
+    <h1>Item Scroller 独立动画</h1>
+    <p class="lead">每个效果都是可单独打开的完整演示文件，保留容器格、堆叠数量、鼠标路径和快捷键反馈。</p>
+  </header>
+
+  <section class="grid" aria-label="动画文件列表">
+    <a class="demo-card" style="--accent:#63d59a" href="scroll-transfer.html" target="_blank">
+      <div class="preview" aria-hidden="true">
+        <div class="window"><div class="slots cols-3">
+          <div class="slot"><i class="item cyan"></i></div><div class="slot"><i class="item gray"></i></div><div class="slot"></div>
+          <div class="slot"><i class="item brown"></i></div><div class="slot"></div><div class="slot"></div>
+        </div></div><div class="mouse"></div><div class="window"><div class="slots cols-3">
+          <div class="slot"></div><div class="slot"><i class="item gray"></i></div><div class="slot"></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div></div>
+      </div>
+      <div class="card-copy"><div class="card-meta"><span class="number">01</span><span class="key">WHEEL</span></div><h2>滚轮逐个转移</h2><p class="desc">箱子和背包之间逐件移动，数量随每次滚轮刻度同步变化。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#b98af0" href="drag-transfer.html" target="_blank">
+      <div class="preview" aria-hidden="true">
+        <div class="window"><div class="slots cols-6">
+          <div class="slot"><i class="item gray"></i></div><div class="slot"><i class="item brown"></i></div><div class="slot"><i class="item gold"></i></div><div class="slot"><i class="item gray"></i></div><div class="slot"><i class="item brown"></i></div><div class="slot"><i class="item gold"></i></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div></div>
+      </div>
+      <div class="card-copy"><div class="card-meta"><span class="number">02</span><span class="key">SHIFT + DRAG</span></div><h2>拖拽横扫整行</h2><p class="desc">光标连续经过每个槽位，整堆物品依次转移到玩家背包。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#ee9363" href="bulk-discard.html" target="_blank">
+      <div class="preview" aria-hidden="true">
+        <div class="window"><div class="slots cols-6">
+          <div class="slot"><i class="item gray"></i></div><div class="slot"><i class="item brown"></i></div><div class="slot"><i class="item gray"></i></div><div class="slot"><i class="item cyan"></i></div><div class="slot"><i class="item gray"></i></div><div class="slot"><i class="item brown"></i></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div></div><span class="arrow">&#8595;</span>
+      </div>
+      <div class="card-copy"><div class="card-meta"><span class="number">03</span><span class="key">SHIFT + Q</span></div><h2>批量丢弃与保护</h2><p class="desc">垃圾物品按路径抛出，钻石和工具槽会被保护规则跳过。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#58c8d2" href="recipe-save.html" target="_blank">
+      <div class="preview" aria-hidden="true">
+        <div class="window"><div class="slots cols-3">
+          <div class="slot"><i class="item brown"></i></div><div class="slot"><i class="item brown"></i></div><div class="slot"></div>
+          <div class="slot"><i class="item brown"></i></div><div class="slot"><i class="item brown"></i></div><div class="slot"></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div></div><span class="arrow">&#8594;</span><div class="recipe-panel"><div class="recipe active"><i class="item brown"></i></div><div class="recipe"></div><div class="recipe"></div><div class="recipe"></div></div>
+      </div>
+      <div class="card-copy"><div class="card-meta"><span class="number">04</span><span class="key">A + MIDDLE</span></div><h2>配方捕获与保存</h2><p class="desc">读取合成格布局，保存到 12 x 12 配方面板中的独立槽位。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#ef6ea8" href="bulk-craft.html" target="_blank">
+      <div class="preview" aria-hidden="true">
+        <div class="window narrow"><div class="slots cols-3">
+          <div class="slot"></div><div class="slot"><i class="item brown"></i></div><div class="slot"></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div></div><span class="arrow">&#8658;</span><div class="slot"><i class="item gold"></i></div>
+      </div>
+      <div class="card-copy"><div class="card-meta"><span class="number">05</span><span class="key">CTRL + ALT + C</span></div><h2>循环批量合成</h2><p class="desc">材料自动填格、取出结果并循环，产物堆叠严格按配方数量增长。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#a4d35f" href="villager-trade.html" target="_blank">
+      <div class="preview" aria-hidden="true"><div class="trade-list">
+        <div class="trade"><b>&#9733;</b><i></i><span></span><i style="background:#5e87b1"></i></div>
+        <div class="trade"><b>&#9733;</b><i></i><span></span><i style="background:#d1b050"></i></div>
+        <div class="trade"><b>&#9734;</b><i></i><span></span><i style="background:#a05a55"></i></div>
+      </div></div>
+      <div class="card-copy"><div class="card-meta"><span class="number">06</span><span class="key">FAVORITES</span></div><h2>收藏村民交易</h2><p class="desc">自动遍历收藏交易，填入成本、收取产物，并实时更新库存。</p><span class="open">打开独立动画</span></div>
+    </a>
+
+    <a class="demo-card" style="--accent:#64b7e5" href="offhand-swap.html" target="_blank">
+      <div class="preview" aria-hidden="true"><div class="player"><div class="body-shape"></div><div class="offhand"><i class="item blue"></i></div></div><span class="arrow">F</span><div class="window narrow"><div class="slots cols-3"><div class="slot"><i class="item gold"></i></div><div class="slot"><i class="item gray"></i></div><div class="slot"></div></div></div></div>
+      <div class="card-copy"><div class="card-meta"><span class="number">07</span><span class="key">F</span></div><h2>副手快速交换</h2><p class="desc">悬停背包物品按下 F，主库存槽和副手槽同步交换。</p><span class="open">打开独立动画</span></div>
+    </a>
+  </section>
+
+  <footer class="footer"><span>Item Scroller animation set</span><span>每个页面均可单独运行与重播</span></footer>
+</main>
+</body>
+</html>
