@@ -171,6 +171,7 @@ body{
   box-shadow:0 7px 0 rgba(0,0,0,.32);
 }
 .slide-demo-link{
+  --play-accent:#fff;
   position:absolute;
   top:3vh;
   right:4vw;
@@ -179,16 +180,91 @@ body{
   align-items:center;
   gap:7px;
   padding:.48em .75em;
-  border:1px solid rgba(255,255,255,.4);
+  border:1px solid color-mix(in srgb,var(--play-accent) 55%,transparent);
   border-radius:5px;
   background:rgba(7,8,10,.84);
   color:#fff;
   text-decoration:none;
+  font-family:inherit;
   font-size:clamp(10px,.9vw,13px);
   font-weight:800;
   backdrop-filter:blur(8px);
+  box-shadow:0 3px 0 rgba(0,0,0,.35);
+  cursor:pointer;
 }
-.slide-demo-link:hover{background:rgba(255,255,255,.14);color:#fff}
+.slide-demo-link::before{content:'▶';color:var(--play-accent);font-size:.9em}
+.slide-demo-link:hover{background:rgba(255,255,255,.14);color:#fff;transform:translateY(-1px)}
+.slide-demo-link:focus-visible{outline:2px solid var(--play-accent);outline-offset:3px}
+
+/* ── in-deck animation player ── */
+.animation-modal[hidden]{display:none}
+.animation-modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(10px,2vw,28px);
+  background:rgba(2,4,5,.9);
+  backdrop-filter:blur(12px);
+}
+.animation-player{
+  width:min(1220px,96vw);
+  height:min(920px,94vh);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:#0e1113;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:8px;
+  box-shadow:0 24px 80px rgba(0,0,0,.65);
+}
+.animation-player-head{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:9px 12px 9px 18px;
+  background:#171b1e;
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+.animation-player-name{min-width:0}
+.animation-player-name small{
+  display:block;
+  margin-bottom:2px;
+  color:#8e9aa2;
+  font:800 10px 'Courier New',monospace;
+  letter-spacing:1px;
+}
+.animation-player-name strong{
+  display:block;
+  overflow:hidden;
+  color:#f6f8fa;
+  font-size:clamp(14px,1.4vw,18px);
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.animation-player-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.animation-open,.animation-close{
+  height:36px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:5px;
+  background:#242a2e;
+  color:#f5f7f8;
+  font-family:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.animation-open{gap:7px;padding:0 11px;text-decoration:none;font-size:12px}
+.animation-close{width:36px;padding:0;font-size:22px;line-height:1}
+.animation-open:hover,.animation-close:hover{background:#343c41;border-color:rgba(255,255,255,.5)}
+.animation-open:focus-visible,.animation-close:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.animation-frame{width:100%;min-height:0;flex:1;border:0;background:#101315}
 
 /* ── kbd ── */
 kbd{
@@ -632,6 +708,11 @@ kbd{
   .stat-row{gap:12px}
   .stat-box{min-width:120px;padding:1em 1.2em}
   .slide-demo-link{top:2.4vh;right:3vw;padding:.42em .55em}
+  .animation-modal{padding:0}
+  .animation-player{width:100%;height:100%;border:0;border-radius:0}
+  .animation-player-head{min-height:54px;padding-left:12px}
+  .animation-open span{display:none}
+  .animation-open{width:36px;padding:0;font-size:15px}
 }
 </style>
 </head>
@@ -693,7 +774,7 @@ kbd{
 <!-- S3: 滚轮操作 -->
 <div class="slide s3" id="s3">
   <span class="snum">03 / 12</span>
-  <a class="slide-demo-link" href="animations/scroll-transfer.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#4ade80" type="button" data-animation="animations/scroll-transfer.html" data-title="滚轮逐个转移">播放对应动画</button>
   <p class="pill ac-green anim" style="border-color:#4ade8033">核心操作 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🖱️ 滚轮移物
@@ -785,7 +866,7 @@ kbd{
 <!-- S4: 拖拽操作 -->
 <div class="slide s4" id="s4">
   <span class="snum">04 / 12</span>
-  <a class="slide-demo-link" href="animations/drag-transfer.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#c084fc" type="button" data-animation="animations/drag-transfer.html" data-title="拖拽横扫整行">播放对应动画</button>
   <p class="pill ac-purple anim" style="border-color:#a855f733">核心操作 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ✋ 拖拽批量操作
@@ -844,7 +925,7 @@ kbd{
 <!-- S5: 丢弃场景 -->
 <div class="slide s5" id="s5">
   <span class="snum">05 / 12</span>
-  <a class="slide-demo-link" href="animations/bulk-discard.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#fb923c" type="button" data-animation="animations/bulk-discard.html" data-title="批量丢弃与保护">播放对应动画</button>
   <p class="pill ac-orange anim" style="border-color:#fb923c33">实战场景</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🗑️ 批量丢弃垃圾
@@ -905,7 +986,7 @@ kbd{
 <!-- S6: 配方存储 -->
 <div class="slide s6" id="s6">
   <span class="snum">06 / 12</span>
-  <a class="slide-demo-link" href="animations/recipe-save.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#22d3ee" type="button" data-animation="animations/recipe-save.html" data-title="配方捕获与保存">播放对应动画</button>
   <p class="pill ac-cyan anim" style="border-color:#22d3ee33">配方系统 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     📋 存储 144 个配方
@@ -945,7 +1026,7 @@ kbd{
 <!-- S7: 批量合成 -->
 <div class="slide s7" id="s7">
   <span class="snum">07 / 12</span>
-  <a class="slide-demo-link" href="animations/bulk-craft.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#f472b6" type="button" data-animation="animations/bulk-craft.html" data-title="循环批量合成">播放对应动画</button>
   <p class="pill ac-pink anim" style="border-color:#f472b633">配方系统 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⚡ 批量合成·量产神器
@@ -1040,7 +1121,7 @@ kbd{
 <!-- S8: 村民交易 -->
 <div class="slide s8" id="s8">
   <span class="snum">08 / 12</span>
-  <a class="slide-demo-link" href="animations/villager-trade.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#a3e635" type="button" data-animation="animations/villager-trade.html" data-title="收藏村民交易">播放对应动画</button>
   <p class="pill ac-lime anim" style="border-color:#a3e63533">村民交易系统</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a3e635);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🏪 村民交易全升级
@@ -1080,7 +1161,7 @@ kbd{
 <!-- S9: 副手+其他功能 -->
 <div class="slide s9" id="s9">
   <span class="snum">09 / 12</span>
-  <a class="slide-demo-link" href="animations/offhand-swap.html" target="_blank">独立动画文件 <span aria-hidden="true">↗</span></a>
+  <button class="slide-demo-link animation-trigger" style="--play-accent:#38bdf8" type="button" data-animation="animations/offhand-swap.html" data-title="副手快速交换">播放对应动画</button>
   <p class="pill ac-sky anim" style="border-color:#38bdf833">更多实用功能</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🤚 副手 & 其他技巧
@@ -1241,6 +1322,25 @@ kbd{
   <button class="dot" data-n="12" title="安装指南"></button>
 </div>
 
+<!-- contextual animation player -->
+<div class="animation-modal" id="animation-modal" hidden>
+  <section class="animation-player" role="dialog" aria-modal="true" aria-labelledby="animation-player-title">
+    <header class="animation-player-head">
+      <div class="animation-player-name">
+        <small>ITEM SCROLLER ANIMATION</small>
+        <strong id="animation-player-title">动画演示</strong>
+      </div>
+      <div class="animation-player-actions">
+        <a class="animation-open" id="animation-open" href="animations/index.html" target="_blank" title="在新窗口单独打开">
+          <span aria-hidden="true">↗</span><span>单独打开</span>
+        </a>
+        <button class="animation-close" id="animation-close" type="button" title="关闭动画" aria-label="关闭动画">×</button>
+      </div>
+    </header>
+    <iframe class="animation-frame" id="animation-frame" src="about:blank" title="Item Scroller 动画演示"></iframe>
+  </section>
+</div>
+
 <script>
 // ── state ──
 let cur = 1;
@@ -1330,8 +1430,50 @@ document.querySelectorAll('.dot').forEach(d=>{
   });
 });
 
+// ── contextual animation player ──
+const animationModal = document.getElementById('animation-modal');
+const animationFrame = document.getElementById('animation-frame');
+const animationTitle = document.getElementById('animation-player-title');
+const animationOpen = document.getElementById('animation-open');
+const animationClose = document.getElementById('animation-close');
+let animationModalOpen = false;
+let lastAnimationTrigger = null;
+
+function openAnimationPlayer(trigger){
+  const file = trigger.dataset.animation;
+  const title = trigger.dataset.title;
+  lastAnimationTrigger = trigger;
+  animationTitle.textContent = title;
+  animationOpen.href = file;
+  animationFrame.title = title + ' · Item Scroller 动画演示';
+  animationFrame.src = file + '?autoplay=1&embed=1';
+  animationModal.hidden = false;
+  animationModalOpen = true;
+  animationClose.focus();
+}
+
+function closeAnimationPlayer(){
+  if(!animationModalOpen) return;
+  animationFrame.src = 'about:blank';
+  animationModal.hidden = true;
+  animationModalOpen = false;
+  if(lastAnimationTrigger) lastAnimationTrigger.focus();
+}
+
+document.querySelectorAll('.animation-trigger').forEach(trigger=>{
+  trigger.addEventListener('click',()=>openAnimationPlayer(trigger));
+});
+animationClose.addEventListener('click',closeAnimationPlayer);
+animationModal.addEventListener('click',e=>{
+  if(e.target===animationModal) closeAnimationPlayer();
+});
+
 // ── keyboard ──
 document.addEventListener('keydown',e=>{
+  if(animationModalOpen){
+    if(e.key==='Escape'){e.preventDefault();closeAnimationPlayer();}
+    return;
+  }
   if(e.target.closest('a,button,input,textarea,select')) return;
   if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1,1);}
   else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(cur-1,-1);}
@@ -1348,6 +1490,7 @@ document.getElementById('deck').addEventListener('click',e=>{
 // ── mouse wheel ──
 let wt=0;
 document.addEventListener('wheel',e=>{
+  if(animationModalOpen) return;
   const now=Date.now();
   if(now-wt<600) return;
   wt=now;
@@ -1357,8 +1500,9 @@ document.addEventListener('wheel',e=>{
 
 // ── touch swipe ──
 let tx=0,ty=0;
-document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchstart',e=>{if(animationModalOpen)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
 document.addEventListener('touchend',e=>{
+  if(animationModalOpen) return;
   const dx=e.changedTouches[0].clientX-tx;
   const dy=e.changedTouches[0].clientY-ty;
   if(Math.abs(dx)<30&&Math.abs(dy)<30) return;
