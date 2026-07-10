@@ -300,181 +300,263 @@ kbd{
 .slide.active .anim:nth-child(8){animation-delay:.54s}
 
 /* ═══════════════════════════════════
-   MC 像素风库存动画通用样式
+   MC 真实像素风 GUI 动画演示
    ═══════════════════════════════════ */
-.mc-demo {
-  display: flex;
-  gap: clamp(16px,3vw,40px);
-  align-items: center;
-  justify-content: center;
+
+/* 整个可点击演示区域 */
+.mc-demo-wrap{
+  position: relative;
   width: 100%;
   max-width: 900px;
-  margin: 1.5vh auto;
+  margin: 1.2vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.mc-demo{
+  display: flex;
+  gap: clamp(14px,2.6vw,36px);
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 14px;
+  padding: 10px;
+  transition: background .2s ease;
+  position: relative;
+}
+.mc-demo:hover{ background: rgba(255,255,255,.03); }
+.mc-demo.playing{ cursor: default; }
+
+/* 播放提示胶囊 */
+.mc-play-hint{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .45em 1.1em;
+  border-radius: 99px;
+  background: rgba(255,255,255,.08);
+  border: 1.5px solid rgba(255,255,255,.22);
+  font-size: clamp(11px,1.15vw,14px);
+  font-weight: 800;
+  color: rgba(255,255,255,.85);
+  letter-spacing: .5px;
+  animation: hint-pulse 1.8s ease-in-out infinite;
+}
+.mc-play-hint.done{
+  background: rgba(74,222,128,.12);
+  border-color: rgba(74,222,128,.4);
+  color: #86efac;
+  animation: none;
+}
+@keyframes hint-pulse{
+  0%,100%{ transform: scale(1); opacity:.85; }
+  50%     { transform: scale(1.04); opacity:1; }
 }
 
-/* 库存 GUI 容器 */
-.mc-gui {
+/* 库存 GUI 容器（真实 MC 面板配色） */
+.mc-gui{
   background: #c6c6c6;
-  border: 2px solid;
-  border-color: #fff #555 #555 #fff;
+  border: 3px solid;
+  border-color: #ffffff #545454 #545454 #ffffff;
   padding: 6px;
   position: relative;
   flex-shrink: 0;
+  box-shadow: 2px 2px 0 rgba(0,0,0,.35);
 }
-.mc-gui-title {
+.mc-gui-label{
   font-family: 'Courier New', monospace;
-  font-size: clamp(9px,1.1vw,13px);
-  font-weight: 900;
-  color: #3f3f3f;
-  letter-spacing: 0.5px;
-  margin-bottom: 5px;
-  text-shadow: 1px 1px 0 rgba(255,255,255,.6);
+  font-size: clamp(9px,1vw,12px);
+  color: rgba(255,255,255,.5);
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 6px;
+  font-weight: 700;
 }
-.mc-slots {
+.mc-slots{
   display: grid;
   gap: 2px;
 }
-.mc-slot {
-  width: clamp(28px,3.2vw,40px);
-  height: clamp(28px,3.2vw,40px);
+.mc-gap{ height: 5px; }
+.mc-slot{
+  width: clamp(28px,3.4vw,42px);
+  height: clamp(28px,3.4vw,42px);
   background: #8b8b8b;
   border: 2px solid;
-  border-color: #373737 #fff #fff #373737;
+  border-color: #373737 #ffffff #ffffff #373737;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
 }
-.mc-slot.hover-glow {
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.9) inset;
-  background: #9b9b9b;
+.mc-slot.hotbar-first{ border-color:#ffffff; box-shadow:0 0 0 1px #fff inset; }
+.mc-slot.hover-glow{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.95) inset;
+  background: #a3a3a3;
+}
+.mc-slot.slot-blocked{
+  box-shadow: 0 0 0 2px rgba(251,113,133,.9) inset;
+  background: rgba(251,113,133,.25);
 }
 
-/* 物品图标（像素风 emoji 替代） */
-.mc-item {
-  width: 70%;
-  height: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(14px,1.8vw,22px);
+/* 物品图标（真实像素方块贴图，Canvas 生成后作为背景图） */
+.mc-item{
+  width: 78%;
+  height: 78%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   image-rendering: pixelated;
-  line-height: 1;
-  user-select: none;
+  pointer-events: none;
+  position: relative;
 }
-.mc-count {
+.mc-count{
   position: absolute;
   bottom: 0;
-  right: 1px;
+  right: 2px;
   font-family: 'Courier New', monospace;
   font-size: clamp(8px,1vw,11px);
   font-weight: 900;
   color: #fff;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: 1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
   line-height: 1;
   z-index: 2;
-}
-
-/* 鼠标光标 */
-.mc-cursor {
-  position: absolute;
-  width: clamp(12px,1.5vw,18px);
-  height: clamp(16px,2vw,24px);
   pointer-events: none;
-  z-index: 20;
-  filter: drop-shadow(1px 1px 0 #000);
 }
-.mc-cursor svg { width: 100%; height: 100%; }
 
-/* 滚轮动画 */
-@keyframes scroll-move-item {
-  0%   { transform: translate(0,0) scale(1); opacity:1; }
-  40%  { transform: translate(var(--tx), var(--ty)) scale(.85); opacity:.9; }
-  85%  { transform: translate(calc(var(--tx)*1.9), calc(var(--ty)*1.0)) scale(.7); opacity:.5; }
-  100% { transform: translate(calc(var(--tx)*2.2), calc(var(--ty)*1.0)) scale(.5); opacity:0; }
+/* 物品飞入目标格 */
+@keyframes item-land{
+  0%   { transform: scale(0) rotate(-20deg); opacity:0; }
+  55%  { transform: scale(1.3) rotate(6deg); opacity:1; }
+  100% { transform: scale(1) rotate(0); opacity:1; }
 }
-.flying-item {
+.item-landing{ animation: item-land .45s cubic-bezier(.2,1.5,.4,1) both; }
+@keyframes item-vanish{
+  0%   { transform: scale(1); opacity:1; }
+  100% { transform: scale(.15) rotate(25deg); opacity:0; }
+}
+.item-vanishing{ animation: item-vanish .28s ease-in forwards; }
+
+/* 拖拽用的小手光标 */
+.mc-hand{
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(14px,1.8vw,22px);
+  width: clamp(22px,2.6vw,32px);
+  height: clamp(22px,2.6vw,32px);
   pointer-events: none;
-  z-index: 30;
-  animation: scroll-move-item 1.1s cubic-bezier(.4,0,.2,1) infinite;
+  z-index: 40;
+  opacity: 0;
+  transition: left .18s linear, top .18s linear;
+  filter: drop-shadow(1px 2px 1px rgba(0,0,0,.6));
 }
+.mc-hand.show{ opacity: 1; }
+.mc-hand svg{ width:100%; height:100%; }
 
-/* 滚轮图标动画 */
-@keyframes wheel-up {
-  0%,100% { transform: translateY(0); opacity:.3; }
-  50%      { transform: translateY(-6px); opacity:1; }
-}
-.wheel-anim { animation: wheel-up 1.1s ease-in-out infinite; }
-
-/* 数字计数变化动画 */
-@keyframes count-down {
-  0%  { content: '64'; }
-  14% { content: '56'; }
-  28% { content: '48'; }
-  42% { content: '40'; }
-  56% { content: '32'; }
-  71% { content: '24'; }
-  85% { content: '16'; }
-  100%{ content: '8'; }
-}
-.mc-count.counting { animation: count-flash 1.1s steps(1) infinite; }
-@keyframes count-flash {
-  0%,10%  { opacity:1; transform:scale(1); }
-  11%,20% { opacity:0; transform:scale(1.4); }
-  21%     { opacity:1; transform:scale(1); }
-}
-
-/* 拖拽路径光晕 */
-@keyframes slot-scan {
-  0%,100% { background: #8b8b8b; border-color: #373737 #fff #fff #373737; }
-  50%     { background: rgba(96,165,250,.5); border-color: #60a5fa; box-shadow: 0 0 8px rgba(96,165,250,.8); }
-}
-
-/* 空格闪入动画（移动后目标格） */
-@keyframes item-land {
-  0%   { transform: scale(0); opacity:0; }
-  60%  { transform: scale(1.25); opacity:1; }
-  100% { transform: scale(1); opacity:1; }
-}
-.item-landing { animation: item-land .5s cubic-bezier(.2,1.5,.4,1) forwards; }
-
-/* 配方量产动画 */
-@keyframes craft-pulse {
-  0%,100% { transform: scale(1);   box-shadow: none; }
-  50%      { transform: scale(1.04); box-shadow: 0 0 12px rgba(251,146,60,.5); }
-}
-@keyframes arrow-march {
-  0%,100% { transform: translateX(0); opacity:.6; }
-  50%      { transform: translateX(6px); opacity:1; }
-}
-.craft-arrow-anim { animation: arrow-march .9s ease-in-out infinite; }
-
-/* 丢弃粒子 */
-@keyframes toss-particle {
-  0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity:1; }
-  100% { transform: translate(var(--px), var(--py)) rotate(var(--pr)) scale(.2); opacity:0; }
-}
-
-/* 滚轮 SVG 指示器 */
-.scroll-indicator {
+/* 鼠标滚轮 SVG 指示器 */
+.scroll-indicator{
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  opacity: .85;
+  opacity: .9;
 }
-.scroll-indicator span {
+.scroll-indicator span{
   font-size: clamp(9px,1vw,12px);
   color: rgba(255,255,255,.7);
   font-weight: 700;
   letter-spacing: 1px;
+}
+@keyframes wheel-scroll-up{
+  0%,100% { transform: translateY(0); opacity:.35; }
+  50%      { transform: translateY(-7px); opacity:1; }
+}
+.wheel-scrolling .mc-mouse-wheel{ animation: wheel-scroll-up .5s ease-in-out infinite; }
+
+/* 箭头 */
+.craft-arrow-anim{
+  font-size: clamp(1.3rem,2.6vw,2.4rem);
+  color: rgba(255,255,255,.55);
+}
+.craft-arrow-anim.pulse{ animation: arrow-march .7s ease-in-out infinite; }
+@keyframes arrow-march{
+  0%,100% { transform: translateX(0); opacity:.6; }
+  50%      { transform: translateX(6px); opacity:1; }
+}
+
+/* 合成台脉冲（合成中） */
+@keyframes craft-pulse{
+  0%,100% { box-shadow: 2px 2px 0 rgba(0,0,0,.35); }
+  50%      { box-shadow: 2px 2px 0 rgba(0,0,0,.35), 0 0 14px rgba(251,146,60,.65); }
+}
+.mc-gui.crafting{ animation: craft-pulse .5s ease-in-out infinite; }
+
+/* ── 箱子图标 + 开盖动画 ── */
+.mc-chest{
+  width: clamp(46px,5vw,64px);
+  height: clamp(40px,4.4vw,56px);
+  position: relative;
+  perspective: 160px;
+  margin: 0 auto 4px;
+}
+.chest-body{
+  position: absolute; left: 8%; bottom: 0; width: 84%; height: 62%;
+  background: linear-gradient(180deg,#a56b34,#7c4c1f);
+  border: 2px solid #3f2810;
+  border-radius: 2px;
+}
+.chest-body::after{
+  content:''; position:absolute; left:50%; top:8%; transform:translateX(-50%);
+  width:16%; height:34%;
+  background:#2a2a2a; border:1px solid #111;
+  border-radius: 1px;
+}
+.chest-lid{
+  position: absolute; left: 8%; top: 0; width: 84%; height: 42%;
+  background: linear-gradient(180deg,#c68a48,#93602c);
+  border: 2px solid #3f2810;
+  border-radius: 2px 2px 0 0;
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  transition: transform .4s cubic-bezier(.34,1.1,.64,1);
+}
+.mc-chest.open .chest-lid{
+  transform: rotateX(-108deg) translateY(-3px);
+}
+
+/* 掉落/丢弃物品（重力抛出） */
+@keyframes item-toss{
+  0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity:1; }
+  100% { transform: translate(var(--tx),var(--ty)) rotate(var(--tr)) scale(.35); opacity:0; }
+}
+.toss-particle{
+  position: absolute;
+  width: 20px; height: 20px;
+  pointer-events: none;
+  z-index: 35;
+}
+
+/* 保护罩效果（钻石不丢） */
+@keyframes shield-flash{
+  0%,100%{ opacity:0; transform: scale(.7); }
+  40%     { opacity:1; transform: scale(1.15); }
+  70%     { opacity:1; transform: scale(1); }
+}
+.shield-flash{
+  position:absolute; inset:-4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size: 14px;
+  pointer-events:none;
+  animation: shield-flash .6s ease-out forwards;
+}
+
+/* 火花粒子（合成量产） */
+.spark-particle{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index: 35;
 }
 
 /* ── responsive tweaks ── */
@@ -552,57 +634,61 @@ kbd{
   </h2>
   <p class="sec-sub anim">悬停物品格 → 滚动鼠标滚轮 → 物品自动转移</p>
 
-  <!-- ★ 滚轮移物动画 ★ -->
-  <div class="mc-demo anim" id="demo-scroll">
-    <!-- 箱子 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">箱子</span>
-      <div class="mc-gui">
-        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="chest-slots">
-          <!-- 5格钻石 + 4格空 -->
-          <div class="mc-slot hover-glow" id="cs0"><div class="mc-item">💎</div><span class="mc-count" id="cs0c">64</span></div>
-          <div class="mc-slot" id="cs1"><div class="mc-item">💎</div><span class="mc-count">64</span></div>
-          <div class="mc-slot" id="cs2"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot" id="cs3"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot" id="cs4"><div class="mc-item">🪵</div><span class="mc-count">32</span></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
+  <!-- ★ 滚轮移物动画（点击播放） ★ -->
+  <div class="mc-demo-wrap">
+    <div class="mc-demo" id="demo-scroll">
+      <!-- 箱子 -->
+      <div style="text-align:center">
+        <div class="mc-gui-label">箱子</div>
+        <div class="mc-chest" id="scroll-chest">
+          <div class="chest-lid"></div>
+          <div class="chest-body"></div>
+        </div>
+        <div class="mc-gui">
+          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="chest-slots">
+            <div class="mc-slot" id="cs0"><div class="mc-item" data-item="diamond"></div><span class="mc-count" id="cs0c">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="diamond"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">32</span></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 鼠标滚轮 -->
+      <div style="position:relative">
+        <div class="scroll-indicator" id="scroll-mouse">
+          <svg width="26" height="42" viewBox="0 0 26 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="22" height="38" rx="9" stroke="rgba(255,255,255,.6)" stroke-width="2.5"/>
+            <rect class="mc-mouse-wheel" x="10" y="8" width="6" height="9" rx="3" fill="rgba(255,255,255,.85)"/>
+          </svg>
+          <span>向上滚</span>
+        </div>
+      </div>
+
+      <!-- 背包 -->
+      <div style="text-align:center">
+        <div class="mc-gui-label">背包</div>
+        <div class="mc-gui">
+          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="scroll-inv">
+            <div class="mc-slot" id="inv0"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">32</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count">16</span></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 鼠标滚轮 + 飞行物品 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
-      <div class="scroll-indicator">
-        <svg width="28" height="46" viewBox="0 0 28 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="24" height="42" rx="10" stroke="rgba(255,255,255,.5)" stroke-width="2.5"/>
-          <rect class="wheel-anim" x="11" y="9" width="6" height="10" rx="3" fill="rgba(255,255,255,.8)"/>
-        </svg>
-        <span>向上滚</span>
-      </div>
-      <!-- 飞行中的物品粒子，由 JS 生成 -->
-      <canvas id="fly-canvas" style="position:absolute;pointer-events:none;left:-80px;top:-20px" width="220" height="80"></canvas>
-    </div>
-
-    <!-- 背包 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">背包</span>
-      <div class="mc-gui">
-        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)">
-          <div class="mc-slot" id="inv0"></div>
-          <div class="mc-slot" id="inv1"></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">32</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">16</span></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-        </div>
-      </div>
-    </div>
+    <div class="mc-play-hint" id="hint-scroll">👆 点击箱子，看滚轮把钻石移进背包</div>
   </div>
 
   <div class="anim" style="width:100%;max-width:880px">
@@ -639,24 +725,30 @@ kbd{
   </h2>
   <p class="sec-sub anim">按住快捷键 + 拖拽鼠标，路径上的每个格子都会被处理</p>
 
-  <!-- ★ 拖拽扫描动画 ★ -->
-  <div class="anim" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:900px;margin:0 auto 1.5vh">
-    <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">按住 Shift + 鼠标左键拖拽 → 整行瞬间清空移走</span>
-    <div class="mc-gui" style="position:relative">
-      <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="drag-grid">
-        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🌾</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🌾</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-        <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
+  <!-- ★ 拖拽扫描动画（点击播放） ★ -->
+  <div class="mc-demo-wrap">
+    <div class="mc-demo" id="demo-drag" style="position:relative">
+      <div style="text-align:center">
+        <div class="mc-gui-label">容器 · 按住 Shift 左键拖拽</div>
+        <div class="mc-gui" style="position:relative">
+          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="drag-grid">
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="wheat"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="wheat"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
+          </div>
+          <div class="mc-hand" id="drag-hand">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 21V11.5a2 2 0 1 1 4 0V16m0-4.5V8a2 2 0 1 1 4 0v4m0-2a2 2 0 1 1 4 0v5c0 3-2 6-6 6h-1c-3 0-5-1.5-6-3.5L4.5 15c-.5-1 0-2 1-2 .7 0 1.2.4 1.5 1l1 2" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" fill="rgba(255,255,255,.15)"/></svg>
+          </div>
+        </div>
       </div>
-      <!-- 拖拽光标由 JS 注入 -->
-      <canvas id="drag-canvas" style="position:absolute;inset:0;pointer-events:none;width:100%;height:100%"></canvas>
     </div>
+    <div class="mc-play-hint" id="hint-drag">👆 点击容器，看 Shift 拖拽横扫整行</div>
   </div>
 
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
@@ -691,25 +783,30 @@ kbd{
   </h2>
   <p class="sec-sub anim">挖矿回来背包塞满圆石、泥土？一拖搞定！</p>
 
-  <!-- ★ 批量丢弃动画 ★ -->
-  <div class="anim" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:720px;margin:0 auto 1.5vh">
-    <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">按住 Q + 左键拖过 → 垃圾物品全部扔出</span>
-    <div style="position:relative">
-      <div class="mc-gui">
-        <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="toss-grid">
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">💎</div><span class="mc-count">3</span></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count">32</span></div>
-          <div class="mc-slot"><div class="mc-item">🪨</div><span class="mc-count">64</span></div>
+  <!-- ★ 批量丢弃动画（点击播放） ★ -->
+  <div class="mc-demo-wrap">
+    <div class="mc-demo" id="demo-toss" style="position:relative">
+      <div style="text-align:center">
+        <div class="mc-gui-label">背包 · 按住 Q 左键拖过</div>
+        <div class="mc-gui" style="position:relative">
+          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="toss-grid">
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="diamond"></div><span class="mc-count">3</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">32</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
+          </div>
+          <div class="mc-hand" id="toss-hand">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 21V11.5a2 2 0 1 1 4 0V16m0-4.5V8a2 2 0 1 1 4 0v4m0-2a2 2 0 1 1 4 0v5c0 3-2 6-6 6h-1c-3 0-5-1.5-6-3.5L4.5 15c-.5-1 0-2 1-2 .7 0 1.2.4 1.5 1l1 2" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" fill="rgba(255,255,255,.15)"/></svg>
+          </div>
         </div>
       </div>
-      <canvas id="toss-canvas" style="position:absolute;top:-40px;left:-40px;pointer-events:none" width="460" height="200"></canvas>
     </div>
+    <div class="mc-play-hint" id="hint-toss">👆 点击背包，看垃圾一拖全飞出去（钻石会被保护）</div>
   </div>
 
   <div class="stat-row anim">
@@ -785,67 +882,67 @@ kbd{
   </h2>
   <p class="sec-sub anim">材料充足？一个按键，自动量产到材料耗尽</p>
 
-  <!-- ★ 批量合成量产动画 ★ -->
-  <div class="anim" style="display:flex;align-items:center;justify-content:center;gap:clamp(10px,2.5vw,32px);width:100%;max-width:860px;margin:0 auto 1.5vh;flex-wrap:wrap">
-    <!-- 背包材料 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">背包（原木）</span>
-      <div class="mc-gui">
-        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat0">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat1">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat2">48</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="mat3">32</span></div>
-          <div class="mc-slot" id="mat4"></div>
-          <div class="mc-slot" id="mat5"></div>
+  <!-- ★ 批量合成量产动画（点击播放） ★ -->
+  <div class="mc-demo-wrap">
+    <div class="mc-demo" id="demo-craft" style="gap:clamp(8px,2vw,28px)">
+      <!-- 背包材料 -->
+      <div style="text-align:center">
+        <div class="mc-gui-label">背包（原木）</div>
+        <div class="mc-gui">
+          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat0">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat1">64</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat2">48</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat3">32</span></div>
+            <div class="mc-slot" id="mat4"></div>
+            <div class="mc-slot" id="mat5"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="font-family:'Courier New',monospace;font-size:clamp(8px,.95vw,11px);color:rgba(255,255,255,.6);text-align:center;line-height:1.7">
+          按住<br><kbd style="font-size:.85em">Ctrl</kbd>+<kbd style="font-size:.85em">Alt</kbd>+<kbd style="font-size:.85em">C</kbd>
+        </div>
+        <div class="craft-arrow-anim" id="craft-arrow1">➜</div>
+      </div>
+
+      <!-- 合成台 -->
+      <div style="text-align:center;position:relative">
+        <div class="mc-gui-label">合成台</div>
+        <div class="mc-gui" id="craft-gui" style="position:relative">
+          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+            <div class="mc-slot"><div class="mc-item" id="ci0" data-item="log"></div></div>
+            <div class="mc-slot"><div class="mc-item" id="ci1" data-item="log"></div></div>
+            <div class="mc-slot"><div class="mc-item" id="ci2" data-item="log"></div></div>
+            <div class="mc-slot"><div class="mc-item" id="ci3" data-item="log"></div></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+            <div class="mc-slot"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="craft-arrow-anim" id="craft-arrow2">➜</div>
+
+      <!-- 成品输出 -->
+      <div style="text-align:center">
+        <div class="mc-gui-label">输出（木板）</div>
+        <div class="mc-gui">
+          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
+            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out0">0</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out1">0</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out2">0</span></div>
+            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out3">0</span></div>
+            <div class="mc-slot" id="out4slot"></div>
+            <div class="mc-slot" id="out5"></div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 箭头+键位 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-      <div style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,11px);color:rgba(255,255,255,.6);text-align:center;line-height:1.8">
-        按住<br><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd>
-      </div>
-      <div class="craft-arrow-anim" style="font-size:clamp(1.5rem,3vw,3rem);color:rgba(251,146,60,.9)">➜</div>
-      <canvas id="craft-sparks" width="60" height="60" style="position:relative;margin-top:-20px;pointer-events:none"></canvas>
-    </div>
-
-    <!-- 合成台 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">合成台</span>
-      <div class="mc-gui" id="craft-gui" style="animation:craft-pulse 0.9s ease-in-out infinite">
-        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-          <div class="mc-slot"><div class="mc-item" id="ci0">🪵</div></div>
-          <div class="mc-slot"><div class="mc-item" id="ci1">🪵</div></div>
-          <div class="mc-slot"><div class="mc-item" id="ci2">🪵</div></div>
-          <div class="mc-slot"><div class="mc-item" id="ci3">🪵</div></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-          <div class="mc-slot"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 第二箭头 -->
-    <div class="craft-arrow-anim" style="font-size:clamp(1.5rem,3vw,3rem);color:rgba(251,146,60,.9);animation-delay:.3s">➜</div>
-
-    <!-- 成品输出 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-      <span style="font-family:'Courier New',monospace;font-size:clamp(9px,1vw,12px);color:rgba(255,255,255,.5);letter-spacing:1px">输出（木板）</span>
-      <div class="mc-gui">
-        <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out0">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out1">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out2">64</span></div>
-          <div class="mc-slot"><div class="mc-item">🪵</div><span class="mc-count" id="out3">64</span></div>
-          <div class="mc-slot"><div class="mc-item" id="out4s">🪵</div><span class="mc-count" id="out4">48</span></div>
-          <div class="mc-slot" id="out5"></div>
-        </div>
-      </div>
-    </div>
+    <div class="mc-play-hint" id="hint-craft">👆 点击合成台，看原木自动量产成木板</div>
   </div>
 
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
@@ -1201,228 +1298,366 @@ document.addEventListener('touchend',e=>{
 updateDotColor();
 
 /* ═══════════════════════════════════════════════
-   MC 动画系统
+   MC 真实像素图标生成器 + 点击触发动画系统
    ═══════════════════════════════════════════════ */
 
-// ── 工具：随机范围 ──
 function rnd(a,b){return a+Math.random()*(b-a);}
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 
-// ══════════════════════════════════════
-// 动画 1：滚轮移物 —— 物品飞行 Canvas
-// ══════════════════════════════════════
-(function initScrollAnim(){
-  const canvas = document.getElementById('fly-canvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const ITEMS_FL = ['💎','💎','🪨','🪵'];
-  const particles = [];
+// ── 8x8 像素图标数据（对齐 MC 真实色值）──
+const ICON_PALETTES = {
+  cobble:{'.':null,a:'#9a9a9a',b:'#7d7d7d',c:'#6b6b6b',d:'#585858',e:'#4a4a4a'},
+  log:   {'.':null,a:'#8a6a3f',b:'#6f5335',c:'#5c4429',d:'#4a3620',e:'#3a2a18'},
+  plank: {'.':null,a:'#c9a066',b:'#b08c52',c:'#9c7943',d:'#83643a',e:'#6b4f2c'},
+  diamond:{'.':null,a:'#d4fbfb',b:'#8ff0ee',c:'#4bd6d6',d:'#26a8ab',e:'#157c80'},
+  wheat: {'.':null,a:'#e9d16a',b:'#cbaa3f',c:'#a6842a',d:'#7d611e',e:'#5c4715'}
+};
+const ICON_GRIDS = {
+  cobble:[
+    'bbaabbcc','abbccbba','bccddccb','caddeedc',
+    'cdeeeedc','bcdeedcb','abccbbba','baabbaab'
+  ],
+  log:[
+    'abcbabca','bcdcbcdc','abcbabca','bcdcbcdc',
+    'abcbabca','bcdcbcdc','abcbabca','bcdcbcdc'
+  ],
+  plank:[
+    'aaaaaaaa','bbbbbbbb','ccccdccc','aaaaaaaa',
+    'bbbbbbbb','ccccdccc','aaaaaaaa','bbbbbbbb'
+  ],
+  diamond:[
+    '........','...aa...','..abba..','.abccba.',
+    '.bcddcb.','..cdec..','...de...','........'
+  ],
+  wheat:[
+    '........','.a.b.a..','.ab.ba..','.bc.cb..',
+    '..bccb..','..cdc...','...d....','........'
+  ]
+};
 
-  function spawnFly(){
-    particles.push({
-      x:10, y:H/2+rnd(-15,15),
-      vx:rnd(2.5,4.5), vy:rnd(-1.2,1.2),
-      life:1, decay:rnd(.012,.022),
-      icon:ITEMS_FL[Math.floor(Math.random()*ITEMS_FL.length)],
-      size:rnd(16,22)
-    });
-  }
-
-  let spawnTimer=0;
-  const chestCount=document.getElementById('cs0c');
-  let countVal=64;
-
-  function tickFly(){
-    ctx.clearRect(0,0,W,H);
-    spawnTimer++;
-    if(spawnTimer%28===0){
-      spawnFly();
-      if(chestCount){
-        countVal=Math.max(0,countVal-8);
-        if(countVal===0) countVal=64;
-        chestCount.textContent=countVal;
-      }
-      const inv0=document.getElementById('inv0');
-      if(inv0){
-        inv0.innerHTML='<div class="mc-item" style="animation:item-land .4s cubic-bezier(.2,1.5,.4,1) both">💎</div>';
-        setTimeout(()=>{if(inv0)inv0.innerHTML='';},700);
-      }
+function buildIconDataURL(type){
+  const grid = ICON_GRIDS[type], pal = ICON_PALETTES[type];
+  const cell = 8, size = 8*cell;
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  for(let y=0;y<8;y++){
+    for(let x=0;x<8;x++){
+      const ch = grid[y][x];
+      const color = pal[ch];
+      if(!color) continue;
+      ctx.fillStyle = color;
+      ctx.fillRect(x*cell, y*cell, cell, cell);
     }
-    particles.forEach(p=>{
-      ctx.save();
-      ctx.globalAlpha=p.life*.9;
-      ctx.font=p.size+'px serif';
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(p.icon,p.x,p.y);
-      ctx.globalAlpha=p.life*.3;
-      ctx.beginPath(); ctx.arc(p.x-6,p.y,3,0,Math.PI*2);
-      ctx.fillStyle='rgba(96,165,250,0.8)'; ctx.fill();
-      ctx.restore();
-      p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
-    });
-    for(let i=particles.length-1;i>=0;i--) if(particles[i].life<=0) particles.splice(i,1);
-    const slots=document.querySelectorAll('#chest-slots .mc-slot');
-    slots.forEach((s,i)=>s.classList.toggle('hover-glow',i===Math.floor(spawnTimer/28)%5));
-    requestAnimationFrame(tickFly);
   }
-  tickFly();
+  return c.toDataURL();
+}
+
+const ICON_CACHE = {};
+function getIconURL(type){
+  if(!ICON_GRIDS[type]) return null;
+  if(!ICON_CACHE[type]) ICON_CACHE[type] = buildIconDataURL(type);
+  return ICON_CACHE[type];
+}
+(function applyIcons(){
+  document.querySelectorAll('[data-item]').forEach(el=>{
+    const url = getIconURL(el.dataset.item);
+    if(url) el.style.backgroundImage = `url(${url})`;
+  });
 })();
 
+// ── 通用：将手形光标移动到指定格子中心 ──
+function moveHandTo(hand, gui, slotEl){
+  const guiRect = gui.getBoundingClientRect();
+  const slotRect = slotEl.getBoundingClientRect();
+  const x = slotRect.left - guiRect.left + slotRect.width/2 - hand.offsetWidth/2;
+  const y = slotRect.top  - guiRect.top  + slotRect.height/2 - hand.offsetHeight/2;
+  hand.style.left = x+'px';
+  hand.style.top  = y+'px';
+}
+
 // ══════════════════════════════════════
-// 动画 2：拖拽扫描 —— 光标扫格消失
+// 演示 1：滚轮移物 —— 箱子开盖 + 逐个飞入背包
 // ══════════════════════════════════════
-(function initDragAnim(){
-  const gui=document.getElementById('drag-grid');
-  if(!gui) return;
-  const ITEMS_DRAG=['🪨','🪨','🪵','🌾','🪨','🪵','🌾','🪨','🪵'];
-  let phase=0, step=0, timer=0;
-  const SCAN_DELAY=16, RESET_DELAY=80;
+(function initScrollDemo(){
+  const demo = document.getElementById('demo-scroll');
+  if(!demo) return;
+  const chest = document.getElementById('scroll-chest');
+  const mouse = document.getElementById('scroll-mouse');
+  const hint = document.getElementById('hint-scroll');
+  const cs0 = document.getElementById('cs0');
+  const cs0c = document.getElementById('cs0c');
+  const inv0 = document.getElementById('inv0');
+  let playing = false;
+
+  async function play(){
+    if(playing) return;
+    playing = true;
+    demo.classList.add('playing');
+    hint.textContent = '▶ 播放中…';
+
+    // 1. 箱子开盖
+    chest.classList.add('open');
+    await wait(420);
+
+    // 2. 滚轮滚动 + 钻石逐个飞入背包
+    let count = 64;
+    mouse.classList.add('wheel-scrolling');
+    for(let i=0;i<4;i++){
+      cs0.classList.add('hover-glow');
+      await wait(180);
+      count -= 16;
+      cs0c.textContent = Math.max(count,0);
+      // 飞入目标格子
+      inv0.innerHTML = '<div class="mc-item item-landing" data-item="diamond"></div>';
+      applyIconsTo(inv0);
+      cs0.classList.remove('hover-glow');
+      await wait(320);
+      inv0.innerHTML = '';
+    }
+    mouse.classList.remove('wheel-scrolling');
+
+    // 3. 收尾：合起箱子，恢复初始状态
+    await wait(250);
+    chest.classList.remove('open');
+    cs0c.textContent = '64';
+    hint.textContent = '✅ 播放完毕 · 点击重新演示';
+    hint.classList.add('done');
+    await wait(20);
+    playing = false;
+    demo.classList.remove('playing');
+  }
+
+  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
+})();
+
+// 局部重新贴图（用于动态插入的 data-item 节点）
+function applyIconsTo(root){
+  root.querySelectorAll('[data-item]').forEach(el=>{
+    const url = getIconURL(el.dataset.item);
+    if(url) el.style.backgroundImage = `url(${url})`;
+  });
+}
+
+// ══════════════════════════════════════
+// 演示 2：拖拽扫描 —— 手形光标横扫 9 格
+// ══════════════════════════════════════
+(function initDragDemo(){
+  const demo = document.getElementById('demo-drag');
+  if(!demo) return;
+  const gui = demo.querySelector('.mc-gui');
+  const hand = document.getElementById('drag-hand');
+  const hint = document.getElementById('hint-drag');
+  const ITEMS = ['cobble','cobble','log','wheat','cobble','log','wheat','cobble','log'];
+
   function getSlots(){ return gui.querySelectorAll('.mc-slot'); }
-  function resetAll(){
+  function resetRow(){
     getSlots().forEach((s,i)=>{
-      s.innerHTML='<div class="mc-item">'+ITEMS_DRAG[i]+'</div><span class="mc-count">64</span>';
+      s.innerHTML = `<div class="mc-item" data-item="${ITEMS[i]}"></div><span class="mc-count">64</span>`;
       s.classList.remove('hover-glow');
     });
+    applyIconsTo(gui);
   }
-  function tickDrag(){
-    timer++;
-    if(phase===0){
-      if(timer%SCAN_DELAY===0){
-        const slots=getSlots();
-        slots.forEach(s=>s.classList.remove('hover-glow'));
-        if(step<slots.length){
-          slots[step].classList.add('hover-glow');
-          const snap=step;
-          setTimeout(()=>{
-            const ss=getSlots();
-            if(ss[snap]){ ss[snap].innerHTML=''; ss[snap].classList.remove('hover-glow'); }
-          },120);
-          step++;
-        } else { phase=1; timer=0; }
-      }
-    } else {
-      if(timer>RESET_DELAY){ resetAll(); step=0; phase=0; timer=0; }
+
+  let playing = false;
+  async function play(){
+    if(playing) return;
+    playing = true;
+    demo.classList.add('playing');
+    hint.textContent = '▶ 播放中…';
+    hand.classList.add('show');
+    const slots = getSlots();
+    moveHandTo(hand, gui, slots[0]);
+    await wait(160);
+
+    for(let i=0;i<slots.length;i++){
+      moveHandTo(hand, gui, slots[i]);
+      await wait(180);
+      slots[i].classList.add('hover-glow');
+      const item = slots[i].querySelector('.mc-item');
+      if(item){ item.classList.add('item-vanishing'); }
+      await wait(160);
+      slots[i].innerHTML = '';
     }
-    requestAnimationFrame(tickDrag);
+    hand.classList.remove('show');
+    await wait(400);
+    resetRow();
+    hint.textContent = '✅ 播放完毕 · 点击重新演示';
+    hint.classList.add('done');
+    playing = false;
+    demo.classList.remove('playing');
   }
-  tickDrag();
+
+  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
 })();
 
 // ══════════════════════════════════════
-// 动画 3：批量丢弃 —— 粒子爆射
+// 演示 3：批量丢弃 —— 手形光标横扫，物品抛出，钻石被保护
 // ══════════════════════════════════════
-(function initTossAnim(){
-  const canvas=document.getElementById('toss-canvas');
-  const grid=document.getElementById('toss-grid');
-  if(!canvas||!grid) return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  const ITEMS_TOSS=['🪨','🪨','🪵','🪨','💎','🪨','🪨','🪵','🪨'];
-  const sparks=[];
-  let scanStep=0, scanTimer=0, phase=0;
-  const SCAN_DELAY=20, RESET_DELAY=100;
-  function getSlots(){ return grid.querySelectorAll('.mc-slot'); }
-  function resetAll(){
+(function initTossDemo(){
+  const demo = document.getElementById('demo-toss');
+  if(!demo) return;
+  const gui = demo.querySelector('.mc-gui');
+  const hand = document.getElementById('toss-hand');
+  const hint = document.getElementById('hint-toss');
+  const ITEMS = ['cobble','cobble','log','cobble','diamond','cobble','cobble','log','cobble'];
+  const COUNTS = ['64','64','64','64','3','64','64','32','64'];
+
+  function getSlots(){ return gui.querySelectorAll('.mc-slot'); }
+  function resetRow(){
     getSlots().forEach((s,i)=>{
-      s.innerHTML=i===4
-        ?'<div class="mc-item">💎</div><span class="mc-count">3</span>'
-        :'<div class="mc-item">'+ITEMS_TOSS[i]+'</div><span class="mc-count">64</span>';
-      s.classList.remove('hover-glow');
+      s.innerHTML = `<div class="mc-item" data-item="${ITEMS[i]}"></div><span class="mc-count">${COUNTS[i]}</span>`;
+      s.classList.remove('hover-glow','slot-blocked');
     });
+    applyIconsTo(gui);
   }
-  function spawnSparks(x,y,icon){
-    for(let i=0;i<6;i++){
-      const angle=rnd(0,Math.PI*2), speed=rnd(2,6);
-      sparks.push({x,y,icon,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-rnd(1,3),
-        life:1,decay:rnd(.04,.08),size:rnd(12,18),gravity:.3});
-    }
+
+  function spawnToss(gui, slotEl, type){
+    const guiRect = gui.getBoundingClientRect();
+    const slotRect = slotEl.getBoundingClientRect();
+    const p = document.createElement('div');
+    p.className = 'toss-particle mc-item';
+    const url = getIconURL(type);
+    if(url) p.style.backgroundImage = `url(${url})`;
+    const x = slotRect.left - guiRect.left + slotRect.width/2 - 10;
+    const y = slotRect.top  - guiRect.top  + slotRect.height/2 - 10;
+    p.style.left = x+'px';
+    p.style.top  = y+'px';
+    const tx = rnd(-40,40), ty = rnd(50,90), tr = rnd(-120,120);
+    p.style.setProperty('--tx', tx+'px');
+    p.style.setProperty('--ty', ty+'px');
+    p.style.setProperty('--tr', tr+'deg');
+    p.style.animation = 'item-toss .6s ease-in forwards';
+    gui.appendChild(p);
+    setTimeout(()=>p.remove(), 650);
   }
-  function tickToss(){
-    ctx.clearRect(0,0,W,H);
-    scanTimer++;
-    if(phase===0){
-      if(scanTimer%SCAN_DELAY===0){
-        const slots=getSlots();
-        slots.forEach(s=>s.classList.remove('hover-glow'));
-        if(scanStep<slots.length){
-          if(scanStep!==4){
-            const s=slots[scanStep];
-            const rect=s.getBoundingClientRect();
-            const cr=canvas.getBoundingClientRect();
-            const cx=rect.left-cr.left+rect.width/2, cy=rect.top-cr.top+rect.height/2;
-            s.classList.add('hover-glow');
-            const snap=scanStep, icon=ITEMS_TOSS[scanStep];
-            setTimeout(()=>{
-              const ss=getSlots();
-              if(ss[snap]){ ss[snap].innerHTML=''; ss[snap].classList.remove('hover-glow'); }
-              spawnSparks(cx,cy,icon);
-            },80);
-          }
-          scanStep++;
-        } else { phase=1; scanTimer=0; }
+
+  let playing = false;
+  async function play(){
+    if(playing) return;
+    playing = true;
+    demo.classList.add('playing');
+    hint.textContent = '▶ 播放中…';
+    hand.classList.add('show');
+    const slots = getSlots();
+    moveHandTo(hand, gui, slots[0]);
+    await wait(160);
+
+    for(let i=0;i<slots.length;i++){
+      moveHandTo(hand, gui, slots[i]);
+      await wait(170);
+      if(ITEMS[i]==='diamond'){
+        slots[i].classList.add('slot-blocked');
+        const shield = document.createElement('div');
+        shield.className = 'shield-flash';
+        shield.textContent = '🛡️';
+        slots[i].appendChild(shield);
+        await wait(220);
+        setTimeout(()=>shield.remove(), 500);
+      } else {
+        slots[i].classList.add('hover-glow');
+        spawnToss(gui, slots[i], ITEMS[i]);
+        slots[i].innerHTML = '';
+        await wait(150);
       }
-    } else {
-      if(scanTimer>RESET_DELAY){ resetAll(); scanStep=0; phase=0; scanTimer=0; }
     }
-    sparks.forEach(p=>{
-      ctx.save(); ctx.globalAlpha=p.life;
-      ctx.font=p.size+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(p.icon,p.x,p.y); ctx.restore();
-      p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.life-=p.decay;
-    });
-    for(let i=sparks.length-1;i>=0;i--) if(sparks[i].life<=0) sparks.splice(i,1);
-    requestAnimationFrame(tickToss);
+    hand.classList.remove('show');
+    await wait(450);
+    resetRow();
+    hint.textContent = '✅ 播放完毕 · 点击重新演示';
+    hint.classList.add('done');
+    playing = false;
+    demo.classList.remove('playing');
   }
-  tickToss();
+
+  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
 })();
 
 // ══════════════════════════════════════
-// 动画 4：量产合成 —— 数字递减 + 火花
+// 演示 4：量产合成 —— 材料递减，木板产出，火花四溅
 // ══════════════════════════════════════
-(function initCraftAnim(){
-  const sparkCanvas=document.getElementById('craft-sparks');
-  if(!sparkCanvas) return;
-  const ctx=sparkCanvas.getContext('2d');
-  const W=sparkCanvas.width, H=sparkCanvas.height;
-  const sparks=[];
-  const matIds=['mat0','mat1','mat2','mat3'];
-  let matVals=[64,64,48,32];
-  let craftTimer=0;
-  const CRAFT_INTERVAL=50;
-  function spawnCraftSparks(){
-    for(let i=0;i<5;i++){
-      const angle=rnd(-Math.PI*.8,-Math.PI*.2);
-      sparks.push({x:W/2,y:H/2,vx:Math.cos(angle)*rnd(2,5),vy:Math.sin(angle)*rnd(2,5),
-        life:1,decay:rnd(.05,.09),color:`hsl(${rnd(20,50)},100%,65%)`,r:rnd(2,4)});
-    }
+(function initCraftDemo(){
+  const demo = document.getElementById('demo-craft');
+  if(!demo) return;
+  const craftGui = document.getElementById('craft-gui');
+  const arrow1 = document.getElementById('craft-arrow1');
+  const arrow2 = document.getElementById('craft-arrow2');
+  const hint = document.getElementById('hint-craft');
+  const matIds = ['mat0','mat1','mat2','mat3'];
+  const outIds = ['out0','out1','out2','out3'];
+  const INIT_MAT = [64,64,48,32];
+
+  function spawnSpark(){
+    const rect = craftGui.getBoundingClientRect();
+    const wrapRect = demo.getBoundingClientRect();
+    const s = document.createElement('div');
+    s.className = 'spark-particle';
+    const size = rnd(4,7);
+    s.style.width = s.style.height = size+'px';
+    s.style.background = `hsl(${rnd(24,46)},95%,62%)`;
+    s.style.left = (rect.left - wrapRect.left + rect.width/2) + 'px';
+    s.style.top  = (rect.top  - wrapRect.top  + rect.height/2) + 'px';
+    const angle = rnd(-Math.PI*0.85, -Math.PI*0.15);
+    const dist = rnd(30,60);
+    s.style.setProperty('--tx', (Math.cos(angle)*dist)+'px');
+    s.style.setProperty('--ty', (Math.sin(angle)*dist)+'px');
+    s.style.setProperty('--tr', '0deg');
+    s.style.animation = 'item-toss .5s ease-out forwards';
+    demo.appendChild(s);
+    setTimeout(()=>s.remove(), 550);
   }
-  function tickCraft(){
-    ctx.clearRect(0,0,W,H);
-    craftTimer++;
-    if(craftTimer%CRAFT_INTERVAL===0){
-      let allDone=true;
-      for(let i=0;i<matVals.length;i++){
-        if(matVals[i]>0){
-          matVals[i]=Math.max(0,matVals[i]-8); allDone=false;
-          const el=document.getElementById(matIds[i]);
-          if(el){ el.textContent=matVals[i]||'';
-            if(matVals[i]===0){ const sl=el.closest('.mc-slot'); if(sl) sl.innerHTML=''; }
+
+  let playing = false;
+  async function play(){
+    if(playing) return;
+    playing = true;
+    demo.classList.add('playing');
+    hint.textContent = '▶ 量产中…';
+    craftGui.classList.add('crafting');
+    arrow1.classList.add('pulse');
+    arrow2.classList.add('pulse');
+
+    let mat = [...INIT_MAT];
+    let out = [0,0,0,0];
+    while(mat.some(v=>v>0)){
+      for(let i=0;i<4;i++){
+        if(mat[i]>0){
+          mat[i] = Math.max(0, mat[i]-8);
+          out[i] = Math.min(64, out[i]+8);
+          const mEl = document.getElementById(matIds[i]);
+          const oEl = document.getElementById(outIds[i]);
+          if(mEl){
+            mEl.textContent = mat[i]||'';
+            if(mat[i]===0){ const sl=mEl.closest('.mc-slot'); const it=sl.querySelector('.mc-item'); if(it) it.style.opacity=0; }
           }
+          if(oEl) oEl.textContent = out[i];
         }
       }
-      if(allDone){ matVals=[64,64,48,32]; }
-      spawnCraftSparks();
+      spawnSpark();
+      await wait(260);
     }
-    sparks.forEach(p=>{
-      ctx.save(); ctx.globalAlpha=p.life;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.color; ctx.fill(); ctx.restore();
-      p.x+=p.vx; p.y+=p.vy; p.vy+=.15; p.life-=p.decay;
+
+    craftGui.classList.remove('crafting');
+    arrow1.classList.remove('pulse');
+    arrow2.classList.remove('pulse');
+    hint.textContent = '✅ 播放完毕 · 点击重新演示';
+    hint.classList.add('done');
+    await wait(600);
+
+    // 重置
+    matIds.forEach((id,i)=>{
+      const mEl=document.getElementById(id);
+      mEl.textContent = INIT_MAT[i];
+      const sl=mEl.closest('.mc-slot'); const it=sl.querySelector('.mc-item'); if(it) it.style.opacity=1;
     });
-    for(let i=sparks.length-1;i>=0;i--) if(sparks[i].life<=0) sparks.splice(i,1);
-    requestAnimationFrame(tickCraft);
+    outIds.forEach(id=>{ document.getElementById(id).textContent='0'; });
+
+    playing = false;
+    demo.classList.remove('playing');
   }
-  tickCraft();
+
+  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
 })();
 </script>
 </body>
