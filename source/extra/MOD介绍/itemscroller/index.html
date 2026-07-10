@@ -53,11 +53,10 @@ body{
 .s5{background:#0e0802;background-image:radial-gradient(ellipse 50% 55% at 70% 25%,rgba(251,146,60,.22) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 20% 75%,rgba(251,191,36,.1) 0%,transparent 70%)}
 .s6{background:#020d0e;background-image:radial-gradient(ellipse 55% 55% at 75% 25%,rgba(34,211,238,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(45,212,191,.1) 0%,transparent 70%)}
 .s7{background:#0c000f;background-image:radial-gradient(ellipse 55% 55% at 70% 25%,rgba(244,114,182,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(251,146,60,.1) 0%,transparent 70%)}
-.s8{background:#070d00;background-image:radial-gradient(ellipse 50% 55% at 70% 25%,rgba(163,230,53,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 20% 75%,rgba(74,222,128,.1) 0%,transparent 70%)}
-.s9{background:#020812;background-image:radial-gradient(ellipse 55% 55% at 75% 25%,rgba(56,189,248,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(96,165,250,.1) 0%,transparent 70%)}
-.s10{background:#09000e;background-image:radial-gradient(ellipse 50% 55% at 70% 25%,rgba(251,113,133,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 20% 75%,rgba(192,132,252,.1) 0%,transparent 70%)}
-.s11{background:#0c0b00;background-image:radial-gradient(ellipse 55% 55% at 75% 25%,rgba(251,191,36,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(251,146,60,.1) 0%,transparent 70%)}
-.s12{background:#010b0d;background-image:radial-gradient(ellipse 55% 55% at 70% 25%,rgba(45,212,191,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(96,165,250,.1) 0%,transparent 70%)}
+.s8{background:#09000e;background-image:radial-gradient(ellipse 50% 55% at 70% 25%,rgba(251,113,133,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 20% 75%,rgba(192,132,252,.1) 0%,transparent 70%)}
+.s9{background:#0c0b00;background-image:radial-gradient(ellipse 55% 55% at 75% 25%,rgba(251,191,36,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(251,146,60,.1) 0%,transparent 70%)}
+.s10{background:#010b0d;background-image:radial-gradient(ellipse 55% 55% at 70% 25%,rgba(45,212,191,.2) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 15% 75%,rgba(96,165,250,.1) 0%,transparent 70%)}
+.s11{background:#080412;background-image:radial-gradient(ellipse 55% 60% at 70% 25%,rgba(192,132,252,.22) 0%,transparent 70%),radial-gradient(ellipse 40% 45% at 20% 75%,rgba(96,165,250,.14) 0%,transparent 70%)}
 
 /* ── slide number ── */
 .snum{
@@ -149,122 +148,51 @@ body{
   line-height:1.55;
 }
 
-/* ── standalone animation file links ── */
-.animation-library-link{
-  display:inline-flex;
+/* ── OBS video placeholders ── */
+.video-slot{
+  --video-accent:#fff;
+  width:min(100%,1000px);
+  min-height:78px;
+  display:flex;
   align-items:center;
-  gap:10px;
-  margin-top:2.4vh;
-  padding:.7em 1.15em;
-  border:1px solid rgba(255,255,255,.42);
-  border-radius:6px;
-  background:#f4f5f6;
-  color:#15131c;
-  text-decoration:none;
-  font-size:clamp(.78rem,1.1vw,.98rem);
-  font-weight:900;
-  box-shadow:0 5px 0 rgba(0,0,0,.32);
-  transition:transform .18s ease,box-shadow .18s ease;
-}
-.animation-library-link:hover{
-  transform:translateY(-2px);
-  box-shadow:0 7px 0 rgba(0,0,0,.32);
-}
-.slide-demo-link{
-  --play-accent:#fff;
-  position:absolute;
-  top:3vh;
-  right:4vw;
-  z-index:4;
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:.48em .75em;
-  border:1px solid color-mix(in srgb,var(--play-accent) 55%,transparent);
-  border-radius:5px;
-  background:rgba(7,8,10,.84);
+  justify-content:center;
+  gap:clamp(12px,2vw,22px);
+  margin:0 auto 1vh;
+  padding:clamp(10px,1.3vw,16px);
+  border:1px dashed color-mix(in srgb,var(--video-accent) 65%,transparent);
+  border-radius:14px;
+  background:color-mix(in srgb,var(--video-accent) 8%,rgba(8,10,14,.72));
   color:#fff;
-  text-decoration:none;
   font-family:inherit;
-  font-size:clamp(10px,.9vw,13px);
-  font-weight:800;
-  backdrop-filter:blur(8px);
-  box-shadow:0 3px 0 rgba(0,0,0,.35);
+  text-align:left;
   cursor:pointer;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
 }
-.slide-demo-link::before{content:'▶';color:var(--play-accent);font-size:.9em}
-.slide-demo-link:hover{background:rgba(255,255,255,.14);color:#fff;transform:translateY(-1px)}
-.slide-demo-link:focus-visible{outline:2px solid var(--play-accent);outline-offset:3px}
-
-/* ── in-deck animation player ── */
-.animation-modal[hidden]{display:none}
-.animation-modal{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:clamp(10px,2vw,28px);
-  background:rgba(2,4,5,.9);
-  backdrop-filter:blur(12px);
+.video-slot:hover{transform:translateY(-2px);background:color-mix(in srgb,var(--video-accent) 14%,rgba(8,10,14,.72));border-style:solid}
+.video-slot:focus-visible{outline:2px solid var(--video-accent);outline-offset:3px}
+.video-play{
+  flex:0 0 auto;
+  width:48px;height:48px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--video-accent);
+  color:#111;
+  font-size:20px;
+  box-shadow:0 0 22px color-mix(in srgb,var(--video-accent) 30%,transparent);
 }
-.animation-player{
-  width:min(1220px,96vw);
-  height:min(920px,94vh);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  background:#0e1113;
-  border:1px solid rgba(255,255,255,.3);
-  border-radius:8px;
-  box-shadow:0 24px 80px rgba(0,0,0,.65);
-}
-.animation-player-head{
-  min-height:58px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding:9px 12px 9px 18px;
-  background:#171b1e;
-  border-bottom:1px solid rgba(255,255,255,.16);
-}
-.animation-player-name{min-width:0}
-.animation-player-name small{
-  display:block;
-  margin-bottom:2px;
-  color:#8e9aa2;
-  font:800 10px 'Courier New',monospace;
-  letter-spacing:1px;
-}
-.animation-player-name strong{
-  display:block;
-  overflow:hidden;
-  color:#f6f8fa;
-  font-size:clamp(14px,1.4vw,18px);
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.animation-player-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.animation-open,.animation-close{
-  height:36px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid rgba(255,255,255,.28);
-  border-radius:5px;
-  background:#242a2e;
-  color:#f5f7f8;
-  font-family:inherit;
-  font-weight:800;
-  cursor:pointer;
-}
-.animation-open{gap:7px;padding:0 11px;text-decoration:none;font-size:12px}
-.animation-close{width:36px;padding:0;font-size:22px;line-height:1}
-.animation-open:hover,.animation-close:hover{background:#343c41;border-color:rgba(255,255,255,.5)}
-.animation-open:focus-visible,.animation-close:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.animation-frame{width:100%;min-height:0;flex:1;border:0;background:#101315}
+.video-copy{min-width:0;flex:1}
+.video-copy small{display:block;color:var(--video-accent);font-size:.72em;font-weight:900;letter-spacing:.12em}
+.video-copy strong{display:block;margin:.2em 0;color:#fff;font-size:clamp(.95rem,1.4vw,1.25rem)}
+.video-copy span{display:block;color:rgba(255,255,255,.68);font-size:clamp(.72rem,1vw,.88rem)}
+.video-file{flex:0 0 auto;color:rgba(255,255,255,.64);font:800 clamp(.68rem,.9vw,.8rem) 'Courier New',monospace}
+.video-modal[hidden]{display:none}
+.video-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:clamp(12px,3vw,36px);background:rgba(2,4,7,.92);backdrop-filter:blur(12px)}
+.video-dialog{width:min(1100px,96vw);overflow:hidden;border:1px solid rgba(255,255,255,.28);border-radius:12px;background:#0d1014;box-shadow:0 24px 80px rgba(0,0,0,.7)}
+.video-head{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px 9px 16px;background:#171b20;border-bottom:1px solid rgba(255,255,255,.14)}
+.video-head strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.video-close{flex:0 0 auto;width:36px;height:36px;border:1px solid rgba(255,255,255,.26);border-radius:6px;background:#252b31;color:#fff;font-family:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer}
+.video-close:hover{background:#343c44}
+.video-player{display:block;width:100%;max-height:calc(100vh - 150px);background:#000}
 
 /* ── kbd ── */
 kbd{
@@ -296,7 +224,44 @@ kbd{
   font-weight:800;
   width:38%;
 }
+.scenario-table th{
+  padding:0 clamp(10px,1.5vw,20px) .55em;
+  color:rgba(255,255,255,.62);
+  font-size:.72em;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-align:left;
+}
+.scenario-table th:first-child,
+.scenario-table td:first-child{
+  width:56%;
+  white-space:normal;
+}
+.scenario-name{
+  color:#fff;
+  font-weight:900;
+}
+.scenario-detail{
+  display:block;
+  margin-top:.2em;
+  color:rgba(255,255,255,.68);
+  font-size:.82em;
+  font-weight:700;
+}
 .op-table tr:hover td{background:rgba(255,255,255,.05);border-radius:8px}
+.frequency-tag{
+  display:inline-block;
+  margin-left:.55em;
+  padding:.12em .48em;
+  border:1px solid rgba(251,191,36,.55);
+  border-radius:99px;
+  background:rgba(251,191,36,.14);
+  color:#fde68a;
+  font-size:.72em;
+  font-weight:900;
+  line-height:1.35;
+  vertical-align:middle;
+}
 
 /* ── compare ── */
 .cmp-row{
@@ -408,8 +373,6 @@ kbd{
 .ac-orange{color:#fb923c}
 .ac-cyan{color:#22d3ee}
 .ac-pink{color:#f472b6}
-.ac-lime{color:#a3e635}
-.ac-sky{color:#38bdf8}
 .ac-rose{color:#fb7185}
 .ac-yellow{color:#fbbf24}
 .ac-teal{color:#2dd4bf}
@@ -425,266 +388,6 @@ kbd{
 .slide.active .anim:nth-child(6){animation-delay:.40s}
 .slide.active .anim:nth-child(7){animation-delay:.47s}
 .slide.active .anim:nth-child(8){animation-delay:.54s}
-
-/* ═══════════════════════════════════
-   MC 真实像素风 GUI 动画演示
-   ═══════════════════════════════════ */
-
-/* 整个可点击演示区域 */
-.mc-demo-wrap{
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  margin: 1.2vh auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.mc-demo{
-  display: flex;
-  gap: clamp(14px,2.6vw,36px);
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 14px;
-  padding: 10px;
-  transition: background .2s ease;
-  position: relative;
-}
-.mc-demo:hover{ background: rgba(255,255,255,.03); }
-.mc-demo.playing{ cursor: default; }
-
-/* 播放提示胶囊 */
-.mc-play-hint{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: .45em 1.1em;
-  border-radius: 99px;
-  background: rgba(255,255,255,.12);
-  border: 1.5px solid rgba(255,255,255,.34);
-  font-size: clamp(11px,1.15vw,14px);
-  font-weight: 800;
-  color: #f7f9fb;
-  letter-spacing: .5px;
-  animation: hint-pulse 1.8s ease-in-out infinite;
-}
-.mc-play-hint.done{
-  background: rgba(74,222,128,.12);
-  border-color: rgba(74,222,128,.4);
-  color: #86efac;
-  animation: none;
-}
-@keyframes hint-pulse{
-  0%,100%{ transform: scale(1); opacity:.85; }
-  50%     { transform: scale(1.04); opacity:1; }
-}
-
-/* 库存 GUI 容器（真实 MC 面板配色） */
-.mc-gui{
-  background: #c6c6c6;
-  border: 3px solid;
-  border-color: #ffffff #545454 #545454 #ffffff;
-  padding: 6px;
-  position: relative;
-  flex-shrink: 0;
-  box-shadow: 2px 2px 0 rgba(0,0,0,.35);
-}
-.mc-gui-label{
-  font-family: 'Courier New', monospace;
-  font-size: clamp(9px,1vw,12px);
-  color: rgba(255,255,255,.82);
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 6px;
-  font-weight: 700;
-}
-.mc-slots{
-  display: grid;
-  gap: 2px;
-}
-.mc-gap{ height: 5px; }
-.mc-slot{
-  width: clamp(28px,3.4vw,42px);
-  height: clamp(28px,3.4vw,42px);
-  background: #8b8b8b;
-  border: 2px solid;
-  border-color: #373737 #ffffff #ffffff #373737;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-}
-.mc-slot.hotbar-first{ border-color:#ffffff; box-shadow:0 0 0 1px #fff inset; }
-.mc-slot.hover-glow{
-  box-shadow: 0 0 0 2px rgba(255,255,255,.95) inset;
-  background: #a3a3a3;
-}
-.mc-slot.slot-blocked{
-  box-shadow: 0 0 0 2px rgba(251,113,133,.9) inset;
-  background: rgba(251,113,133,.25);
-}
-
-/* 物品图标（真实像素方块贴图，Canvas 生成后作为背景图） */
-.mc-item{
-  width: 78%;
-  height: 78%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  image-rendering: pixelated;
-  pointer-events: none;
-  position: relative;
-}
-.mc-count{
-  position: absolute;
-  bottom: 0;
-  right: 2px;
-  font-family: 'Courier New', monospace;
-  font-size: clamp(8px,1vw,11px);
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
-  line-height: 1;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* 物品飞入目标格 */
-@keyframes item-land{
-  0%   { transform: scale(0) rotate(-20deg); opacity:0; }
-  55%  { transform: scale(1.3) rotate(6deg); opacity:1; }
-  100% { transform: scale(1) rotate(0); opacity:1; }
-}
-.item-landing{ animation: item-land .45s cubic-bezier(.2,1.5,.4,1) both; }
-@keyframes item-vanish{
-  0%   { transform: scale(1); opacity:1; }
-  100% { transform: scale(.15) rotate(25deg); opacity:0; }
-}
-.item-vanishing{ animation: item-vanish .28s ease-in forwards; }
-
-/* 拖拽用的小手光标 */
-.mc-hand{
-  position: absolute;
-  width: clamp(22px,2.6vw,32px);
-  height: clamp(22px,2.6vw,32px);
-  pointer-events: none;
-  z-index: 40;
-  opacity: 0;
-  transition: left .18s linear, top .18s linear;
-  filter: drop-shadow(1px 2px 1px rgba(0,0,0,.6));
-}
-.mc-hand.show{ opacity: 1; }
-.mc-hand svg{ width:100%; height:100%; }
-
-/* 鼠标滚轮 SVG 指示器 */
-.scroll-indicator{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  opacity: .9;
-}
-.scroll-indicator span{
-  font-size: clamp(9px,1vw,12px);
-  color: rgba(255,255,255,.7);
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-@keyframes wheel-scroll-up{
-  0%,100% { transform: translateY(0); opacity:.35; }
-  50%      { transform: translateY(-7px); opacity:1; }
-}
-.wheel-scrolling .mc-mouse-wheel{ animation: wheel-scroll-up .5s ease-in-out infinite; }
-
-/* 箭头 */
-.craft-arrow-anim{
-  font-size: clamp(1.3rem,2.6vw,2.4rem);
-  color: rgba(255,255,255,.78);
-}
-.craft-arrow-anim.pulse{ animation: arrow-march .7s ease-in-out infinite; }
-@keyframes arrow-march{
-  0%,100% { transform: translateX(0); opacity:.6; }
-  50%      { transform: translateX(6px); opacity:1; }
-}
-
-/* 合成台脉冲（合成中） */
-@keyframes craft-pulse{
-  0%,100% { box-shadow: 2px 2px 0 rgba(0,0,0,.35); }
-  50%      { box-shadow: 2px 2px 0 rgba(0,0,0,.35), 0 0 14px rgba(251,146,60,.65); }
-}
-.mc-gui.crafting{ animation: craft-pulse .5s ease-in-out infinite; }
-
-/* ── 箱子图标 + 开盖动画 ── */
-.mc-chest{
-  width: clamp(46px,5vw,64px);
-  height: clamp(40px,4.4vw,56px);
-  position: relative;
-  perspective: 160px;
-  margin: 0 auto 4px;
-}
-.chest-body{
-  position: absolute; left: 8%; bottom: 0; width: 84%; height: 62%;
-  background: linear-gradient(180deg,#a56b34,#7c4c1f);
-  border: 2px solid #3f2810;
-  border-radius: 2px;
-}
-.chest-body::after{
-  content:''; position:absolute; left:50%; top:8%; transform:translateX(-50%);
-  width:16%; height:34%;
-  background:#2a2a2a; border:1px solid #111;
-  border-radius: 1px;
-}
-.chest-lid{
-  position: absolute; left: 8%; top: 0; width: 84%; height: 42%;
-  background: linear-gradient(180deg,#c68a48,#93602c);
-  border: 2px solid #3f2810;
-  border-radius: 2px 2px 0 0;
-  transform-origin: 50% 100%;
-  transform-style: preserve-3d;
-  transition: transform .4s cubic-bezier(.34,1.1,.64,1);
-}
-.mc-chest.open .chest-lid{
-  transform: rotateX(-108deg) translateY(-3px);
-}
-
-/* 掉落/丢弃物品（重力抛出） */
-@keyframes item-toss{
-  0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity:1; }
-  100% { transform: translate(var(--tx),var(--ty)) rotate(var(--tr)) scale(.35); opacity:0; }
-}
-.toss-particle{
-  position: absolute;
-  width: 20px; height: 20px;
-  pointer-events: none;
-  z-index: 35;
-}
-
-/* 保护罩效果（钻石不丢） */
-@keyframes shield-flash{
-  0%,100%{ opacity:0; transform: scale(.7); }
-  40%     { opacity:1; transform: scale(1.15); }
-  70%     { opacity:1; transform: scale(1); }
-}
-.shield-flash{
-  position:absolute; inset:-4px;
-  display:flex;align-items:center;justify-content:center;
-  font-size: 14px;
-  pointer-events:none;
-  animation: shield-flash .6s ease-out forwards;
-}
-
-/* 火花粒子（合成量产） */
-.spark-particle{
-  position:absolute;
-  border-radius:50%;
-  pointer-events:none;
-  z-index: 35;
-}
 
 /* ── responsive tweaks ── */
 @media(min-width:901px){
@@ -704,15 +407,14 @@ kbd{
   .op-table td:first-child{width:50%}
 }
 @media(max-width:600px){
+  .slide{justify-content:flex-start;padding:8vh 5vw 14vh;overflow-y:auto}
   .card-grid-2,.card-grid-3,.card-grid-4{grid-template-columns:1fr}
   .stat-row{gap:12px}
   .stat-box{min-width:120px;padding:1em 1.2em}
-  .slide-demo-link{top:2.4vh;right:3vw;padding:.42em .55em}
-  .animation-modal{padding:0}
-  .animation-player{width:100%;height:100%;border:0;border-radius:0}
-  .animation-player-head{min-height:54px;padding-left:12px}
-  .animation-open span{display:none}
-  .animation-open{width:36px;padding:0;font-size:15px}
+  .video-slot{min-height:78px}
+  .video-file{display:none}
+  .video-modal{padding:0}
+  .video-dialog{width:100%;border:0;border-radius:0}
 }
 </style>
 </head>
@@ -721,7 +423,7 @@ kbd{
 <div id="deck">
 <!-- S1: COVER -->
 <div class="slide s1 active" id="s1">
-  <span class="snum">01 / 12</span>
+  <span class="snum">01 / 11</span>
   <div class="pill ac-violet anim" style="border-color:#c084fc33;color:#c084fc">Minecraft MOD 介绍</div>
   <div class="hero-title anim" style="background:linear-gradient(135deg,#fff 0%,#c084fc 50%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     Item<br>Scroller
@@ -730,24 +432,20 @@ kbd{
   <div class="badge-row anim">
     <span class="badge">📦 批量移动</span>
     <span class="badge">⚡ 一键量产</span>
-    <span class="badge">🏪 村民交易</span>
     <span class="badge">🖱️ 滚轮操控</span>
-    <span class="badge">Fabric 1.8-1.21</span>
+    <span class="badge">支持 Minecraft 最新版本</span>
   </div>
-  <a class="animation-library-link anim" href="animations/index.html" target="_blank">
-    <span aria-hidden="true">▶</span> 打开 7 个独立动画文件 <span aria-hidden="true">↗</span>
-  </a>
   <p class="anim" style="margin-top:4vh;font-size:clamp(.75rem,1vw,.9rem);color:rgba(255,255,255,.72);letter-spacing:2px">← → 翻页 &nbsp;·&nbsp; 空格下一页 &nbsp;·&nbsp; 点击圆点跳转</p>
 </div>
 
 <!-- S2: 什么是 Item Scroller -->
 <div class="slide s2" id="s2">
-  <span class="snum">02 / 12</span>
+  <span class="snum">02 / 11</span>
   <p class="pill ac-blue anim" style="border-color:#60a5fa33">什么是 Item Scroller？</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     让 1 分钟的操作<br>变成 1 秒
   </h2>
-  <div class="card-grid card-grid-2 anim" style="max-width:1000px">
+  <div class="card-grid card-grid-3 anim" style="max-width:1100px">
     <div class="card">
       <span class="card-icon">🖱️</span>
       <div class="card-title ac-blue">鼠标滚轮操控</div>
@@ -756,105 +454,81 @@ kbd{
     <div class="card">
       <span class="card-icon">✋</span>
       <div class="card-title ac-blue">拖拽扫描操作</div>
-      <div class="card-desc">按住快捷键拖动鼠标，经过的每一格都自动处理。一次拖拽 = 整排清空，效率提升数十倍。</div>
+      <div class="card-desc">按住快捷键拖动鼠标，经过的每一格都自动处理，适合连续处理整排物品。</div>
     </div>
     <div class="card">
       <span class="card-icon">📋</span>
       <div class="card-title ac-blue">配方存储量产</div>
       <div class="card-desc">存储 144 个合成配方，一键批量循环合成，直到材料耗尽。再也不用反复点击合成台。</div>
     </div>
-    <div class="card">
-      <span class="card-icon">🏪</span>
-      <div class="card-title ac-blue">村民交易升级</div>
-      <div class="card-desc">全新交易列表 UI，收藏常用交易，一个快捷键自动完成所有收藏交易。</div>
-    </div>
   </div>
 </div>
 
-<!-- S3: 滚轮操作 -->
-<div class="slide s3" id="s3">
-  <span class="snum">03 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#4ade80" type="button" data-animation="animations/scroll-transfer.html" data-title="滚轮逐个转移">播放对应动画</button>
+<!-- S3: 安装前后对比 -->
+<div class="slide s9" id="s3">
+  <span class="snum">03 / 11</span>
+  <p class="pill ac-yellow anim" style="border-color:#fbbf2433">实战效率对比</p>
+  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+    📊 安装前 vs 安装后
+  </h2>
+  <div class="cmp-row anim">
+    <div class="card cmp-bad">
+      <div class="card-title" style="color:#f87171;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">❌ 没有 Item Scroller</div>
+      <div class="cmp-item"><span class="cmp-icon">😩</span>手动点击移动，每次 1-2 个</div>
+      <div class="cmp-item"><span class="cmp-icon">🔁</span>合成台要反复一下一下点</div>
+      <div class="cmp-item"><span class="cmp-icon">⏳</span>搬运归拢物品需要反复点击</div>
+      <div class="cmp-item"><span class="cmp-icon">🤕</span>鼠标点到手酸，效率极低</div>
+    </div>
+    <div class="card cmp-good">
+      <div class="card-title" style="color:#4ade80;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">✅ 有 Item Scroller</div>
+      <div class="cmp-item"><span class="cmp-icon">⚡</span>滚轮一滚，瞬间批量移动</div>
+      <div class="cmp-item"><span class="cmp-icon">🤖</span>Ctrl+Alt+C 按住，自动量产</div>
+      <div class="cmp-item"><span class="cmp-icon">⏱️</span>批量归拢和搬运只需几次操作</div>
+      <div class="cmp-item"><span class="cmp-icon">🎮</span>减少重复点击，专注创造和探险</div>
+    </div>
+  </div>
+  <div class="anim" style="font-size:clamp(1.8rem,4vw,4rem);font-weight:900;margin-top:2vh;background:linear-gradient(135deg,#fbbf24,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+    从重复点击，变成一次批量操作 ⚡
+  </div>
+</div>
+
+<!-- S4: 滚轮操作 -->
+<div class="slide s3" id="s4">
+  <span class="snum">04 / 11</span>
   <p class="pill ac-green anim" style="border-color:#4ade8033">核心操作 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    🖱️ 滚轮移物
+    🖱️ 你想移多少？
   </h2>
-  <p class="sec-sub anim">悬停物品格 → 滚动鼠标滚轮 → 物品自动转移</p>
+  <p class="sec-sub anim">从 1 个、固定数量到所有物品，按当前需求选择操作</p>
 
-  <!-- ★ 滚轮移物动画（点击播放） ★ -->
-  <div class="mc-demo-wrap">
-    <div class="mc-demo" id="demo-scroll">
-      <!-- 箱子 -->
-      <div style="text-align:center">
-        <div class="mc-gui-label">箱子</div>
-        <div class="mc-chest" id="scroll-chest">
-          <div class="chest-lid"></div>
-          <div class="chest-body"></div>
-        </div>
-        <div class="mc-gui">
-          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="chest-slots">
-            <div class="mc-slot" id="cs0"><div class="mc-item" data-item="diamond"></div><span class="mc-count" id="cs0c">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="diamond"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">32</span></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 鼠标滚轮 -->
-      <div style="position:relative">
-        <div class="scroll-indicator" id="scroll-mouse">
-          <svg width="26" height="42" viewBox="0 0 26 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="22" height="38" rx="9" stroke="rgba(255,255,255,.6)" stroke-width="2.5"/>
-            <rect class="mc-mouse-wheel" x="10" y="8" width="6" height="9" rx="3" fill="rgba(255,255,255,.85)"/>
-          </svg>
-          <span>向上滚</span>
-        </div>
-      </div>
-
-      <!-- 背包 -->
-      <div style="text-align:center">
-        <div class="mc-gui-label">背包</div>
-        <div class="mc-gui">
-          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="scroll-inv">
-            <div class="mc-slot" id="inv0"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">32</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count">16</span></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mc-play-hint" id="hint-scroll">👆 点击箱子，看滚轮把钻石移进背包</div>
-  </div>
+  <button class="video-slot video-trigger anim" style="--video-accent:#4ade80" type="button" data-video="videos/mov01.mp4" data-title="物品挪动">
+    <span class="video-play" aria-hidden="true">▶</span>
+    <span class="video-copy"><small>OBS VIDEO 01</small><strong>物品挪动</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">mov01.mp4</span>
+  </button>
 
   <div class="anim" style="width:100%;max-width:880px">
-    <table class="op-table">
+    <table class="op-table scenario-table">
+      <thead><tr><th>我现在想移</th><th>这样操作</th></tr></thead>
       <tr>
-        <td><kbd>滚动</kbd></td>
-        <td style="color:rgba(255,255,255,.95)">每次移动 <strong style="color:#4ade80">1 个</strong>物品</td>
+        <td><span class="scenario-name">1 个物品</span><span class="scenario-detail">精准微调数量</span></td>
+        <td>悬停后 <kbd>滚动 1 次</kbd></td>
       </tr>
       <tr>
+        <td><span class="scenario-name">多个物品（固定数量）</span><span class="scenario-detail">例如拆出半组，或准确移动 8 个</span></td>
+        <td><kbd>右键</kbd> 拆半，或悬停后 <kbd>上/下滚 N 次</kbd></td>
+      </tr>
+      <tr>
+        <td><span class="scenario-name">1 组（整堆）</span><span class="scenario-detail">例如一堆 64 个圆石</span></td>
         <td><kbd>Shift</kbd> + <kbd>滚动</kbd></td>
-        <td style="color:rgba(255,255,255,.95)">移动 <strong style="color:#4ade80">整堆（64个）</strong></td>
       </tr>
       <tr>
+        <td><span class="scenario-name">同一种物品的全部</span><span class="scenario-detail">把容器里该种物品全部移走</span></td>
         <td><kbd>Alt</kbd> + <kbd>滚动</kbd></td>
-        <td style="color:rgba(255,255,255,.95)">移动背包里 <strong style="color:#4ade80">所有同类</strong>物品</td>
       </tr>
       <tr>
+        <td><span class="scenario-name">容器里的所有物品</span><span class="scenario-detail">一次清空当前容器</span></td>
         <td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>滚动</kbd></td>
-        <td style="color:rgba(255,255,255,.95)">移动 <strong style="color:#86efac">全部物品</strong>（一键清空！）</td>
       </tr>
     </table>
   </div>
@@ -863,130 +537,81 @@ kbd{
   </div>
 </div>
 
-<!-- S4: 拖拽操作 -->
-<div class="slide s4" id="s4">
-  <span class="snum">04 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#c084fc" type="button" data-animation="animations/drag-transfer.html" data-title="拖拽横扫整行">播放对应动画</button>
+<!-- S5: 拖拽操作 -->
+<div class="slide s4" id="s5">
+  <span class="snum">05 / 11</span>
   <p class="pill ac-purple anim" style="border-color:#a855f733">核心操作 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ✋ 拖拽批量操作
   </h2>
   <p class="sec-sub anim">按住快捷键 + 拖拽鼠标，路径上的每个格子都会被处理</p>
 
-  <!-- ★ 拖拽扫描动画（点击播放） ★ -->
-  <div class="mc-demo-wrap">
-    <div class="mc-demo" id="demo-drag" style="position:relative">
-      <div style="text-align:center">
-        <div class="mc-gui-label">容器 · 按住 Shift 左键拖拽</div>
-        <div class="mc-gui" style="position:relative">
-          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="drag-grid">
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="wheat"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="wheat"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
-          </div>
-          <div class="mc-hand" id="drag-hand">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 21V11.5a2 2 0 1 1 4 0V16m0-4.5V8a2 2 0 1 1 4 0v4m0-2a2 2 0 1 1 4 0v5c0 3-2 6-6 6h-1c-3 0-5-1.5-6-3.5L4.5 15c-.5-1 0-2 1-2 .7 0 1.2.4 1.5 1l1 2" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" fill="rgba(255,255,255,.15)"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mc-play-hint" id="hint-drag">👆 点击容器，看 Shift 拖拽横扫整行</div>
-  </div>
-
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
     <div class="card" style="border-color:#a855f733">
       <div class="card-title" style="font-size:clamp(1rem,1.5vw,1.2rem);margin-bottom:.6em;color:#c084fc">📥 移入操作</div>
-      <table class="op-table" style="font-size:clamp(.8rem,1.05vw,.95rem)">
-        <tr><td><kbd>Ctrl</kbd>+左键拖</td><td style="color:rgba(255,255,255,.92)">每格移走 1 个</td></tr>
-        <tr><td><kbd>Shift</kbd>+左键拖</td><td style="color:rgba(255,255,255,.92)">每格整堆移走</td></tr>
-        <tr><td><kbd>Alt</kbd>+左键拖</td><td style="color:rgba(255,255,255,.92)">每格所有同类</td></tr>
+      <table class="op-table scenario-table" style="font-size:clamp(.8rem,1.05vw,.95rem)">
+        <thead><tr><th>我现在想移</th><th>这样操作</th></tr></thead>
+        <tr><td><span class="scenario-name">扫过多格，每格移 1 组</span></td><td><kbd>Shift</kbd>+左键拖 <span class="frequency-tag">高频</span></td></tr>
+        <tr><td><span class="scenario-name">扫过多格，每格移走同类全部</span></td><td><kbd>Alt</kbd>+左键拖 <span class="frequency-tag">高频</span></td></tr>
       </table>
     </div>
     <div class="card" style="border-color:#f472b633">
       <div class="card-title" style="font-size:clamp(1rem,1.5vw,1.2rem);margin-bottom:.6em;color:#f472b6">🗑️ 丢弃操作</div>
-      <table class="op-table" style="font-size:clamp(.8rem,1.05vw,.95rem)">
-        <tr><td><kbd>Q</kbd>+左键拖</td><td style="color:rgba(255,255,255,.92)">每格丢 1 个</td></tr>
-        <tr><td><kbd>Shift</kbd>+<kbd>Q</kbd>+左键拖</td><td style="color:rgba(255,255,255,.92)">每格全部丢弃</td></tr>
-        <tr><td><kbd>Shift</kbd>+<kbd>Q</kbd>+右键拖</td><td style="color:rgba(255,255,255,.92)">每格丢弃、留 1 个</td></tr>
+      <table class="op-table scenario-table" style="font-size:clamp(.8rem,1.05vw,.95rem)">
+        <thead><tr><th>我现在想丢</th><th>这样操作</th></tr></thead>
+        <tr><td><span class="scenario-name">一格内逐个丢弃</span><span class="scenario-detail">持续丢，每次 1 个</span></td><td>按住 <kbd>Q</kbd></td></tr>
+        <tr><td><span class="scenario-name">扫过多格，每格全部丢弃</span></td><td><kbd>Shift</kbd>+<kbd>Q</kbd>+左键拖</td></tr>
       </table>
     </div>
   </div>
   <div class="anim card" style="max-width:1000px;width:100%;border-color:#a855f733;background:rgba(168,85,247,.06)">
-    🚀 <strong style="color:#c084fc">内部原理：</strong>鼠标路径用线性插值逐像素扫描，高速拖动也不会漏格！
+    💡 <strong style="color:#c084fc">适用场景：</strong>箱子或背包里有多格物品要连续处理时，按住快捷键一次拖过即可。
   </div>
 </div>
 
-<!-- S5: 丢弃场景 -->
-<div class="slide s5" id="s5">
-  <span class="snum">05 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#fb923c" type="button" data-animation="animations/bulk-discard.html" data-title="批量丢弃与保护">播放对应动画</button>
+<!-- S6: 丢弃场景 -->
+<div class="slide s5" id="s6">
+  <span class="snum">06 / 11</span>
   <p class="pill ac-orange anim" style="border-color:#fb923c33">实战场景</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    🗑️ 批量丢弃垃圾
+    🗑️ 按住 Q 连续丢弃
   </h2>
-  <p class="sec-sub anim">挖矿回来背包塞满圆石、泥土？一拖搞定！</p>
+  <p class="sec-sub anim">鼠标悬停物品格，按住 Q 后每次丢 1 个，松开即停</p>
 
-  <!-- ★ 批量丢弃动画（点击播放） ★ -->
-  <div class="mc-demo-wrap">
-    <div class="mc-demo" id="demo-toss" style="position:relative">
-      <div style="text-align:center">
-        <div class="mc-gui-label">背包 · 按住 Q 左键拖过</div>
-        <div class="mc-gui" style="position:relative">
-          <div class="mc-slots" style="grid-template-columns:repeat(9,1fr)" id="toss-grid">
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="diamond"></div><span class="mc-count">3</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count">32</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="cobble"></div><span class="mc-count">64</span></div>
-          </div>
-          <div class="mc-hand" id="toss-hand">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 21V11.5a2 2 0 1 1 4 0V16m0-4.5V8a2 2 0 1 1 4 0v4m0-2a2 2 0 1 1 4 0v5c0 3-2 6-6 6h-1c-3 0-5-1.5-6-3.5L4.5 15c-.5-1 0-2 1-2 .7 0 1.2.4 1.5 1l1 2" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" fill="rgba(255,255,255,.15)"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mc-play-hint" id="hint-toss">👆 点击背包，看垃圾一拖全飞出去（钻石会被保护）</div>
-  </div>
+  <button class="video-slot video-trigger anim" style="--video-accent:#fb923c" type="button" data-video="videos/mov02.mp4" data-title="物品丢弃">
+    <span class="video-play" aria-hidden="true">▶</span>
+    <span class="video-copy"><small>OBS VIDEO 02</small><strong>物品丢弃</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">mov02.mp4</span>
+  </button>
 
   <div class="stat-row anim">
     <div class="stat-box">
-      <span class="stat-num ac-orange">36</span>
-      <span class="stat-label">普通玩家 需要按多少次 Q</span>
+      <span class="stat-num ac-orange">1 个</span>
+      <span class="stat-label">每次丢弃数量</span>
     </div>
     <div class="stat-box">
-      <span class="stat-num" style="color:#4ade80">1</span>
-      <span class="stat-label">Item Scroller 拖一次搞定</span>
+      <span class="stat-num" style="color:#4ade80">按住</span>
+      <span class="stat-label">Q 保持按下即持续丢</span>
     </div>
     <div class="stat-box">
-      <span class="stat-num ac-orange">36×</span>
-      <span class="stat-label">效率提升倍数</span>
+      <span class="stat-num ac-orange">松开</span>
+      <span class="stat-label">立即停止丢弃</span>
     </div>
   </div>
   <div class="steps anim">
     <li>打开背包或容器 GUI</li>
-    <li>按住 <kbd>Q</kbd> 键不放</li>
-    <li>左键拖过所有想丢弃的格子</li>
-    <li>松手，垃圾全部落地 ✅</li>
+    <li>鼠标悬停在要丢弃的物品格上</li>
+    <li>按住 <kbd>Q</kbd>，物品每次 1 个持续丢出</li>
+    <li>松开 <kbd>Q</kbd>，立即停止 ✅</li>
   </div>
   <div class="anim card" style="max-width:850px;width:100%;margin-top:1.5vh;border-color:#fb923c44;background:rgba(251,146,60,.07);font-size:clamp(.8rem,1.1vw,1rem);color:rgba(255,200,150,1)">
     ⚠️ 丢弃的物品会落在玩家附近地面，注意附近有没有岩浆或悬崖！
   </div>
 </div>
 
-<!-- S6: 配方存储 -->
-<div class="slide s6" id="s6">
-  <span class="snum">06 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#22d3ee" type="button" data-animation="animations/recipe-save.html" data-title="配方捕获与保存">播放对应动画</button>
+<!-- S7: 配方存储 -->
+<div class="slide s6" id="s7">
+  <span class="snum">07 / 11</span>
   <p class="pill ac-cyan anim" style="border-color:#22d3ee33">配方系统 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     📋 存储 144 个配方
@@ -1023,78 +648,20 @@ kbd{
   </div>
 </div>
 
-<!-- S7: 批量合成 -->
-<div class="slide s7" id="s7">
-  <span class="snum">07 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#f472b6" type="button" data-animation="animations/bulk-craft.html" data-title="循环批量合成">播放对应动画</button>
+<!-- S8: 批量合成 -->
+<div class="slide s7" id="s8">
+  <span class="snum">08 / 11</span>
   <p class="pill ac-pink anim" style="border-color:#f472b633">配方系统 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⚡ 批量合成·量产神器
   </h2>
   <p class="sec-sub anim">材料充足？一个按键，自动量产到材料耗尽</p>
 
-  <!-- ★ 批量合成量产动画（点击播放） ★ -->
-  <div class="mc-demo-wrap">
-    <div class="mc-demo" id="demo-craft" style="gap:clamp(8px,2vw,28px)">
-      <!-- 背包材料 -->
-      <div style="text-align:center">
-        <div class="mc-gui-label">背包（原木）</div>
-        <div class="mc-gui">
-          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat0">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat1">64</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat2">48</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="log"></div><span class="mc-count" id="mat3">32</span></div>
-            <div class="mc-slot" id="mat4"></div>
-            <div class="mc-slot" id="mat5"></div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div style="font-family:'Courier New',monospace;font-size:clamp(8px,.95vw,11px);color:rgba(255,255,255,.82);text-align:center;line-height:1.7">
-          按住<br><kbd style="font-size:.85em">Ctrl</kbd>+<kbd style="font-size:.85em">Alt</kbd>+<kbd style="font-size:.85em">C</kbd>
-        </div>
-        <div class="craft-arrow-anim" id="craft-arrow1">➜</div>
-      </div>
-
-      <!-- 合成台 -->
-      <div style="text-align:center;position:relative">
-        <div class="mc-gui-label">合成台</div>
-        <div class="mc-gui" id="craft-gui" style="position:relative">
-          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-            <div class="mc-slot"><div class="mc-item" id="ci0" data-item="log"></div></div>
-            <div class="mc-slot"><div class="mc-item" id="ci1" data-item="log"></div></div>
-            <div class="mc-slot"><div class="mc-item" id="ci2" data-item="log"></div></div>
-            <div class="mc-slot"><div class="mc-item" id="ci3" data-item="log"></div></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-            <div class="mc-slot"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="craft-arrow-anim" id="craft-arrow2">➜</div>
-
-      <!-- 成品输出 -->
-      <div style="text-align:center">
-        <div class="mc-gui-label">输出（木板）</div>
-        <div class="mc-gui">
-          <div class="mc-slots" style="grid-template-columns:repeat(3,1fr)">
-            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out0">0</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out1">0</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out2">0</span></div>
-            <div class="mc-slot"><div class="mc-item" data-item="plank"></div><span class="mc-count" id="out3">0</span></div>
-            <div class="mc-slot" id="out4slot"></div>
-            <div class="mc-slot" id="out5"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mc-play-hint" id="hint-craft">👆 点击合成台，看原木自动量产成木板</div>
-  </div>
+  <button class="video-slot video-trigger anim" style="--video-accent:#f472b6" type="button" data-video="videos/mov03.mp4" data-title="批量合成">
+    <span class="video-play" aria-hidden="true">▶</span>
+    <span class="video-copy"><small>OBS VIDEO 03</small><strong>批量合成</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">mov03.mp4</span>
+  </button>
 
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
     <div class="card" style="border-color:#f472b633;padding:2em">
@@ -1105,7 +672,7 @@ kbd{
     <div class="card" style="border-color:#fb923c33;padding:2em">
       <kbd style="font-size:1.1em">Ctrl</kbd> + <kbd style="font-size:1.1em">Alt</kbd> + <kbd style="font-size:1.1em">C</kbd>
       <div class="card-title" style="margin-top:.8em;color:#fb923c">🔥 持续按住→无限循环</div>
-      <div class="card-desc">每 tick 自动循环合成，结果扔在地上，直到材料全部耗尽！</div>
+      <div class="card-desc">持续执行循环合成，直到材料耗尽或松开快捷键</div>
     </div>
   </div>
   <div class="anim" style="margin-top:2.5vh;width:100%;max-width:1000px">
@@ -1118,100 +685,30 @@ kbd{
   </div>
 </div>
 
-<!-- S8: 村民交易 -->
-<div class="slide s8" id="s8">
-  <span class="snum">08 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#a3e635" type="button" data-animation="animations/villager-trade.html" data-title="收藏村民交易">播放对应动画</button>
-  <p class="pill ac-lime anim" style="border-color:#a3e63533">村民交易系统</p>
-  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a3e635);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    🏪 村民交易全升级
-  </h2>
-  <p class="sec-sub anim">再也不用一条一条翻交易列表了！</p>
-  <div class="card-grid card-grid-3 anim" style="max-width:1100px">
-    <div class="card" style="border-color:#a3e63533">
-      <span class="card-icon">📋</span>
-      <div class="card-title ac-lime">全新交易列表</div>
-      <div class="card-desc">打开村民时右侧显示所有交易，一目了然，支持滚动浏览</div>
-    </div>
-    <div class="card" style="border-color:#a3e63533">
-      <span class="card-icon">⭐</span>
-      <div class="card-title ac-lime">收藏常用交易</div>
-      <div class="card-desc">中键点击交易条目切换收藏，收藏的交易始终排在最前面</div>
-    </div>
-    <div class="card" style="border-color:#a3e63533">
-      <span class="card-icon">🤖</span>
-      <div class="card-title ac-lime">一键完成所有</div>
-      <div class="card-desc">按一个快捷键，自动遍历所有收藏交易，填材料→收结果→下一个</div>
-    </div>
-  </div>
-  <div class="card-grid card-grid-2 anim" style="max-width:1100px;margin-top:1vh">
-    <div class="card" style="border-color:#a3e63522">
-      <span class="card-icon">🖱️</span>
-      <div class="card-title">滚轮操作交易</div>
-      <div class="card-desc">在交易输出格上滚动：下滚填入材料，上滚收取结果并清空购买格</div>
-    </div>
-    <div class="card" style="border-color:#a3e63522">
-      <span class="card-icon">💾</span>
-      <div class="card-title">按村民保存</div>
-      <div class="card-desc">根据村民 UUID 记住上次浏览位置和收藏，换存档也不丢失</div>
-    </div>
-  </div>
-</div>
-
-<!-- S9: 副手+其他功能 -->
-<div class="slide s9" id="s9">
-  <span class="snum">09 / 12</span>
-  <button class="slide-demo-link animation-trigger" style="--play-accent:#38bdf8" type="button" data-animation="animations/offhand-swap.html" data-title="副手快速交换">播放对应动画</button>
-  <p class="pill ac-sky anim" style="border-color:#38bdf833">更多实用功能</p>
-  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    🤚 副手 & 其他技巧
-  </h2>
-  <div class="card-grid card-grid-2 anim" style="max-width:1050px">
-    <div class="card" style="border-color:#38bdf833;grid-row:span 2">
-      <span class="card-icon">🤚</span>
-      <div class="card-title ac-sky" style="font-size:clamp(1rem,1.6vw,1.4rem)">副手快速切换</div>
-      <div class="card-desc" style="font-size:clamp(.85rem,1.2vw,1.1rem);line-height:1.7">
-        背包打开时，将鼠标悬停在任意物品上，按 <kbd>F</kbd> 键即可与副手格快速交换。<br><br>
-        火把、盾牌、地图、弓……瞬间换装，无需手动拖格子。
-      </div>
-    </div>
-    <div class="card" style="border-color:#38bdf822">
-      <span class="card-icon">🔄</span>
-      <div class="card-title">Shift 放置合并</div>
-      <div class="card-desc">持有物品时左键点空格 → 放入并将背包所有同类物品合并到此格</div>
-    </div>
-    <div class="card" style="border-color:#38bdf822">
-      <span class="card-icon">🗑️</span>
-      <div class="card-title">Shift 丢弃同类</div>
-      <div class="card-desc">持有物品时 Shift+左键点 GUI 外 → 丢弃手中物品并丢掉背包所有同类</div>
-    </div>
-  </div>
-</div>
-
-<!-- S10: 快捷键速查 -->
-<div class="slide s10" id="s10">
-  <span class="snum">10 / 12</span>
+<!-- S9: 快捷键速查 -->
+<div class="slide s8" id="s9">
+  <span class="snum">09 / 11</span>
   <p class="pill ac-rose anim" style="border-color:#fb718533">快捷键速查表</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⌨️ 一图速查所有操作
   </h2>
-  <div class="card-grid card-grid-4 anim" style="max-width:1200px">
+  <div class="card-grid card-grid-3 anim" style="max-width:1100px">
     <div class="card" style="border-color:#fb718533">
       <div class="card-title ac-rose" style="margin-bottom:.8em">🖱️ 滚轮</div>
       <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
         <tr><td><kbd>滚</kbd></td><td style="color:rgba(255,255,255,.9)">移 1 个</td></tr>
-        <tr><td><kbd>Shift</kbd>滚</td><td style="color:rgba(255,255,255,.9)">整堆</td></tr>
-        <tr><td><kbd>Alt</kbd>滚</td><td style="color:rgba(255,255,255,.9)">所有同类</td></tr>
-        <tr><td><kbd>A+S</kbd>滚</td><td style="color:rgba(255,255,255,.9)">全部</td></tr>
+        <tr><td><kbd>右键</kbd> / <kbd>滚 N 次</kbd></td><td style="color:rgba(255,255,255,.9)">拆半 / 移固定数量</td></tr>
+        <tr><td><kbd>Shift</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移 1 组</td></tr>
+        <tr><td><kbd>Alt</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移同类全部</td></tr>
+        <tr><td><kbd>Alt+Shift</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移所有物品</td></tr>
       </table>
     </div>
     <div class="card" style="border-color:#fb923c33">
       <div class="card-title ac-orange" style="margin-bottom:.8em">✋ 拖拽</div>
       <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
-        <tr><td><kbd>Ctrl</kbd>拖</td><td style="color:rgba(255,255,255,.9)">每格 1 个</td></tr>
-        <tr><td><kbd>Shift</kbd>拖</td><td style="color:rgba(255,255,255,.9)">整堆</td></tr>
-        <tr><td><kbd>Alt</kbd>拖</td><td style="color:rgba(255,255,255,.9)">所有同类</td></tr>
-        <tr><td><kbd>Q</kbd>拖</td><td style="color:rgba(255,255,255,.9)">丢弃</td></tr>
+        <tr><td><kbd>Shift</kbd>拖 <span class="frequency-tag">高频</span></td><td style="color:rgba(255,255,255,.9)">每格 1 组</td></tr>
+        <tr><td><kbd>Alt</kbd>拖 <span class="frequency-tag">高频</span></td><td style="color:rgba(255,255,255,.9)">每格同类全部</td></tr>
+        <tr><td>按住 <kbd>Q</kbd></td><td style="color:rgba(255,255,255,.9)">一格内逐个丢</td></tr>
       </table>
     </div>
     <div class="card" style="border-color:#f472b633">
@@ -1219,55 +716,18 @@ kbd{
       <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
         <tr><td><kbd>A</kbd></td><td style="color:rgba(255,255,255,.9)">配方面板</td></tr>
         <tr><td><kbd>Ctrl+C</kbd></td><td style="color:rgba(255,255,255,.9)">合成一轮</td></tr>
-        <tr><td><kbd>C+A+C</kbd></td><td style="color:rgba(255,255,255,.9)">循环合成</td></tr>
+        <tr><td><kbd>Ctrl+Alt+C</kbd></td><td style="color:rgba(255,255,255,.9)">循环合成</td></tr>
         <tr><td><kbd>1-9</kbd></td><td style="color:rgba(255,255,255,.9)">选配方</td></tr>
-      </table>
-    </div>
-    <div class="card" style="border-color:#22d3ee33">
-      <div class="card-title ac-cyan" style="margin-bottom:.8em">🤚 其他</div>
-      <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
-        <tr><td><kbd>F</kbd></td><td style="color:rgba(255,255,255,.9)">换副手</td></tr>
         <tr><td><kbd>Ctrl+M</kbd></td><td style="color:rgba(255,255,255,.9)">移结果到箱</td></tr>
         <tr><td><kbd>Ctrl+T</kbd></td><td style="color:rgba(255,255,255,.9)">丢弃结果</td></tr>
-        <tr><td>⭐中键</td><td style="color:rgba(255,255,255,.9)">收藏交易</td></tr>
       </table>
     </div>
   </div>
 </div>
 
-<!-- S11: 有无对比 -->
-<div class="slide s11" id="s11">
-  <span class="snum">11 / 12</span>
-  <p class="pill ac-yellow anim" style="border-color:#fbbf2433">实战效率对比</p>
-  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    📊 安装前 vs 安装后
-  </h2>
-  <div class="cmp-row anim">
-    <div class="card cmp-bad">
-      <div class="card-title" style="color:#f87171;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">❌ 没有 Item Scroller</div>
-      <div class="cmp-item"><span class="cmp-icon">😩</span>手动点击移动，每次 1-2 个</div>
-      <div class="cmp-item"><span class="cmp-icon">🔁</span>合成台要反复一下一下点</div>
-      <div class="cmp-item"><span class="cmp-icon">⏳</span>整理背包需要 5 分钟</div>
-      <div class="cmp-item"><span class="cmp-icon">😤</span>村民交易界面难找难操作</div>
-      <div class="cmp-item"><span class="cmp-icon">🤕</span>鼠标点到手酸，效率极低</div>
-    </div>
-    <div class="card cmp-good">
-      <div class="card-title" style="color:#4ade80;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">✅ 有 Item Scroller</div>
-      <div class="cmp-item"><span class="cmp-icon">⚡</span>滚轮一滚，瞬间批量移动</div>
-      <div class="cmp-item"><span class="cmp-icon">🤖</span>Ctrl+Alt+C 按住，自动量产</div>
-      <div class="cmp-item"><span class="cmp-icon">⏱️</span>整理背包只需 30 秒</div>
-      <div class="cmp-item"><span class="cmp-icon">🎯</span>村民交易一键完成所有收藏</div>
-      <div class="cmp-item"><span class="cmp-icon">🎮</span>解放双手，专注创造和探险</div>
-    </div>
-  </div>
-  <div class="anim" style="font-size:clamp(1.8rem,4vw,4rem);font-weight:900;margin-top:2vh;background:linear-gradient(135deg,#fbbf24,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    效率提升 500%+ ⚡
-  </div>
-</div>
-
-<!-- S12: 安装 & 结尾 -->
-<div class="slide s12" id="s12">
-  <span class="snum">12 / 12</span>
+<!-- S10: 安装 -->
+<div class="slide s10" id="s10">
+  <span class="snum">10 / 11</span>
   <p class="pill ac-teal anim" style="border-color:#2dd4bf33">快速上手</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🔧 安装指南
@@ -1286,69 +746,68 @@ kbd{
       <div class="card-title ac-teal" style="margin-bottom:1em">ℹ️ 项目信息</div>
       <div class="card-desc" style="font-size:clamp(.85rem,1.2vw,1.05rem);line-height:2">
         👨‍💻 <strong>作者：</strong>maruohon（马鲁欧洪）<br>
-        🎮 <strong>版本：</strong>Minecraft 1.8 ~ 1.21+<br>
+        🎮 <strong>版本：</strong>支持 Minecraft 最新版本<br>
         ⚙️ <strong>加载器：</strong>Fabric / Ornithe / Quilt<br>
-        🌍 <strong>语言：</strong>完整中文汉化支持<br>
         📦 <strong>依赖：</strong>MaLiLib（必须同时安装）<br>
         🔗 <strong>GitHub：</strong>maruohon/itemscroller
       </div>
     </div>
   </div>
-  <div class="anim" style="margin-top:3vh;text-align:center">
-    <div style="font-size:clamp(1.5rem,3.5vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#2dd4bf,#60a5fa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-      感谢观看！快去试试吧 🎮
-    </div>
-    <p style="margin-top:1em;color:rgba(255,255,255,.74);font-size:clamp(.75rem,1vw,.9rem);letter-spacing:2px">
-      Item Scroller · 让每一次物品操作都变得简单
-    </p>
+</div>
+
+<!-- S11: 结尾 -->
+<div class="slide s11" id="s11">
+  <span class="snum">11 / 11</span>
+  <p class="pill ac-violet anim" style="border-color:#c084fc33">感谢观看</p>
+  <h2 class="hero-title anim" style="background:linear-gradient(135deg,#fff,#60a5fa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+    一键三连
+  </h2>
+  <p class="hero-sub anim">点赞 · 投币 · 收藏</p>
+  <div class="badge-row anim">
+    <span class="badge">👍 点赞</span>
+    <span class="badge">🪙 投币</span>
+    <span class="badge">⭐ 收藏</span>
   </div>
+  <p class="anim" style="margin-top:4vh;color:rgba(255,255,255,.74);font-size:clamp(.85rem,1.2vw,1rem);letter-spacing:2px">
+    Item Scroller · 让批量物品操作更简单
+  </p>
 </div>
 
 </div><!-- #deck -->
+
+<div class="video-modal" id="video-modal" hidden>
+  <section class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-title">
+    <header class="video-head">
+      <strong id="video-title">OBS 录屏</strong>
+      <button class="video-close" id="video-close" type="button" aria-label="关闭视频">×</button>
+    </header>
+    <video class="video-player" id="video-player" controls playsinline preload="metadata"></video>
+  </section>
+</div>
 
 <!-- nav dots -->
 <div id="nav">
   <button class="dot on" data-n="1" title="封面"></button>
   <button class="dot" data-n="2" title="概览"></button>
-  <button class="dot" data-n="3" title="滚轮移物"></button>
-  <button class="dot" data-n="4" title="拖拽操作"></button>
-  <button class="dot" data-n="5" title="批量丢弃"></button>
-  <button class="dot" data-n="6" title="配方存储"></button>
-  <button class="dot" data-n="7" title="批量合成"></button>
-  <button class="dot" data-n="8" title="村民交易"></button>
-  <button class="dot" data-n="9" title="副手功能"></button>
-  <button class="dot" data-n="10" title="快捷键表"></button>
-  <button class="dot" data-n="11" title="效率对比"></button>
-  <button class="dot" data-n="12" title="安装指南"></button>
-</div>
-
-<!-- contextual animation player -->
-<div class="animation-modal" id="animation-modal" hidden>
-  <section class="animation-player" role="dialog" aria-modal="true" aria-labelledby="animation-player-title">
-    <header class="animation-player-head">
-      <div class="animation-player-name">
-        <small>ITEM SCROLLER ANIMATION</small>
-        <strong id="animation-player-title">动画演示</strong>
-      </div>
-      <div class="animation-player-actions">
-        <a class="animation-open" id="animation-open" href="animations/index.html" target="_blank" title="在新窗口单独打开">
-          <span aria-hidden="true">↗</span><span>单独打开</span>
-        </a>
-        <button class="animation-close" id="animation-close" type="button" title="关闭动画" aria-label="关闭动画">×</button>
-      </div>
-    </header>
-    <iframe class="animation-frame" id="animation-frame" src="about:blank" title="Item Scroller 动画演示"></iframe>
-  </section>
+  <button class="dot" data-n="3" title="安装前后对比"></button>
+  <button class="dot" data-n="4" title="滚轮移物"></button>
+  <button class="dot" data-n="5" title="拖拽操作"></button>
+  <button class="dot" data-n="6" title="物品丢弃"></button>
+  <button class="dot" data-n="7" title="配方存储"></button>
+  <button class="dot" data-n="8" title="批量合成"></button>
+  <button class="dot" data-n="9" title="快捷键表"></button>
+  <button class="dot" data-n="10" title="安装指南"></button>
+  <button class="dot" data-n="11" title="感谢观看"></button>
 </div>
 
 <script>
 // ── state ──
 let cur = 1;
-const TOTAL = 12;
+const TOTAL = 11;
 const COLORS = [
-  '#c084fc','#60a5fa','#4ade80','#a855f7',
-  '#fb923c','#22d3ee','#f472b6','#a3e635',
-  '#38bdf8','#fb7185','#fbbf24','#2dd4bf'
+  '#c084fc','#60a5fa','#fbbf24','#4ade80',
+  '#a855f7','#fb923c','#22d3ee','#f472b6',
+  '#fb7185','#2dd4bf','#c084fc'
 ];
 
 // ── canvas particles ──
@@ -1430,48 +889,45 @@ document.querySelectorAll('.dot').forEach(d=>{
   });
 });
 
-// ── contextual animation player ──
-const animationModal = document.getElementById('animation-modal');
-const animationFrame = document.getElementById('animation-frame');
-const animationTitle = document.getElementById('animation-player-title');
-const animationOpen = document.getElementById('animation-open');
-const animationClose = document.getElementById('animation-close');
-let animationModalOpen = false;
-let lastAnimationTrigger = null;
+// ── OBS video player ──
+const videoModal = document.getElementById('video-modal');
+const videoPlayer = document.getElementById('video-player');
+const videoTitle = document.getElementById('video-title');
+const videoClose = document.getElementById('video-close');
+let videoModalOpen = false;
+let lastVideoTrigger = null;
 
-function openAnimationPlayer(trigger){
-  const file = trigger.dataset.animation;
-  const title = trigger.dataset.title;
-  lastAnimationTrigger = trigger;
-  animationTitle.textContent = title;
-  animationOpen.href = file;
-  animationFrame.title = title + ' · Item Scroller 动画演示';
-  animationFrame.src = file + '?autoplay=1&embed=1';
-  animationModal.hidden = false;
-  animationModalOpen = true;
-  animationClose.focus();
+function openVideo(trigger){
+  lastVideoTrigger = trigger;
+  videoTitle.textContent = trigger.dataset.title;
+  videoPlayer.src = trigger.dataset.video;
+  videoModal.hidden = false;
+  videoModalOpen = true;
+  videoClose.focus();
 }
 
-function closeAnimationPlayer(){
-  if(!animationModalOpen) return;
-  animationFrame.src = 'about:blank';
-  animationModal.hidden = true;
-  animationModalOpen = false;
-  if(lastAnimationTrigger) lastAnimationTrigger.focus();
+function closeVideo(){
+  if(!videoModalOpen) return;
+  videoPlayer.pause();
+  videoPlayer.removeAttribute('src');
+  videoPlayer.load();
+  videoModal.hidden = true;
+  videoModalOpen = false;
+  if(lastVideoTrigger) lastVideoTrigger.focus();
 }
 
-document.querySelectorAll('.animation-trigger').forEach(trigger=>{
-  trigger.addEventListener('click',()=>openAnimationPlayer(trigger));
+document.querySelectorAll('.video-trigger').forEach(trigger=>{
+  trigger.addEventListener('click',()=>openVideo(trigger));
 });
-animationClose.addEventListener('click',closeAnimationPlayer);
-animationModal.addEventListener('click',e=>{
-  if(e.target===animationModal) closeAnimationPlayer();
+videoClose.addEventListener('click',closeVideo);
+videoModal.addEventListener('click',e=>{
+  if(e.target===videoModal) closeVideo();
 });
 
 // ── keyboard ──
 document.addEventListener('keydown',e=>{
-  if(animationModalOpen){
-    if(e.key==='Escape'){e.preventDefault();closeAnimationPlayer();}
+  if(videoModalOpen){
+    if(e.key==='Escape'){e.preventDefault();closeVideo();}
     return;
   }
   if(e.target.closest('a,button,input,textarea,select')) return;
@@ -1483,14 +939,14 @@ document.addEventListener('keydown',e=>{
 
 // ── click to advance ──
 document.getElementById('deck').addEventListener('click',e=>{
-  if(e.target.closest('a,button,.mc-demo')) return;
+  if(e.target.closest('a,button')) return;
   go(cur+1,1);
 });
 
 // ── mouse wheel ──
 let wt=0;
 document.addEventListener('wheel',e=>{
-  if(animationModalOpen) return;
+  if(videoModalOpen) return;
   const now=Date.now();
   if(now-wt<600) return;
   wt=now;
@@ -1500,9 +956,9 @@ document.addEventListener('wheel',e=>{
 
 // ── touch swipe ──
 let tx=0,ty=0;
-document.addEventListener('touchstart',e=>{if(animationModalOpen)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchstart',e=>{if(videoModalOpen)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
 document.addEventListener('touchend',e=>{
-  if(animationModalOpen) return;
+  if(videoModalOpen) return;
   const dx=e.changedTouches[0].clientX-tx;
   const dy=e.changedTouches[0].clientY-ty;
   if(Math.abs(dx)<30&&Math.abs(dy)<30) return;
@@ -1515,368 +971,7 @@ document.addEventListener('touchend',e=>{
 
 updateDotColor();
 
-/* ═══════════════════════════════════════════════
-   MC 真实像素图标生成器 + 点击触发动画系统
-   ═══════════════════════════════════════════════ */
 
-function rnd(a,b){return a+Math.random()*(b-a);}
-function wait(ms){return new Promise(r=>setTimeout(r,ms));}
-
-// ── 8x8 像素图标数据（对齐 MC 真实色值）──
-const ICON_PALETTES = {
-  cobble:{'.':null,a:'#9a9a9a',b:'#7d7d7d',c:'#6b6b6b',d:'#585858',e:'#4a4a4a'},
-  log:   {'.':null,a:'#8a6a3f',b:'#6f5335',c:'#5c4429',d:'#4a3620',e:'#3a2a18'},
-  plank: {'.':null,a:'#c9a066',b:'#b08c52',c:'#9c7943',d:'#83643a',e:'#6b4f2c'},
-  diamond:{'.':null,a:'#d4fbfb',b:'#8ff0ee',c:'#4bd6d6',d:'#26a8ab',e:'#157c80'},
-  wheat: {'.':null,a:'#e9d16a',b:'#cbaa3f',c:'#a6842a',d:'#7d611e',e:'#5c4715'}
-};
-const ICON_GRIDS = {
-  cobble:[
-    'bbaabbcc','abbccbba','bccddccb','caddeedc',
-    'cdeeeedc','bcdeedcb','abccbbba','baabbaab'
-  ],
-  log:[
-    'abcbabca','bcdcbcdc','abcbabca','bcdcbcdc',
-    'abcbabca','bcdcbcdc','abcbabca','bcdcbcdc'
-  ],
-  plank:[
-    'aaaaaaaa','bbbbbbbb','ccccdccc','aaaaaaaa',
-    'bbbbbbbb','ccccdccc','aaaaaaaa','bbbbbbbb'
-  ],
-  diamond:[
-    '........','...aa...','..abba..','.abccba.',
-    '.bcddcb.','..cdec..','...de...','........'
-  ],
-  wheat:[
-    '........','.a.b.a..','.ab.ba..','.bc.cb..',
-    '..bccb..','..cdc...','...d....','........'
-  ]
-};
-
-function buildIconDataURL(type){
-  const grid = ICON_GRIDS[type], pal = ICON_PALETTES[type];
-  const cell = 8, size = 8*cell;
-  const c = document.createElement('canvas');
-  c.width = c.height = size;
-  const ctx = c.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
-  for(let y=0;y<8;y++){
-    for(let x=0;x<8;x++){
-      const ch = grid[y][x];
-      const color = pal[ch];
-      if(!color) continue;
-      ctx.fillStyle = color;
-      ctx.fillRect(x*cell, y*cell, cell, cell);
-    }
-  }
-  return c.toDataURL();
-}
-
-const ICON_CACHE = {};
-function getIconURL(type){
-  if(!ICON_GRIDS[type]) return null;
-  if(!ICON_CACHE[type]) ICON_CACHE[type] = buildIconDataURL(type);
-  return ICON_CACHE[type];
-}
-(function applyIcons(){
-  document.querySelectorAll('[data-item]').forEach(el=>{
-    const url = getIconURL(el.dataset.item);
-    if(url) el.style.backgroundImage = `url(${url})`;
-  });
-})();
-
-// ── 通用：将手形光标移动到指定格子中心 ──
-function moveHandTo(hand, gui, slotEl){
-  const guiRect = gui.getBoundingClientRect();
-  const slotRect = slotEl.getBoundingClientRect();
-  const x = slotRect.left - guiRect.left + slotRect.width/2 - hand.offsetWidth/2;
-  const y = slotRect.top  - guiRect.top  + slotRect.height/2 - hand.offsetHeight/2;
-  hand.style.left = x+'px';
-  hand.style.top  = y+'px';
-}
-
-// ══════════════════════════════════════
-// 演示 1：滚轮移物 —— 箱子开盖 + 逐个飞入背包
-// ══════════════════════════════════════
-(function initScrollDemo(){
-  const demo = document.getElementById('demo-scroll');
-  if(!demo) return;
-  const chest = document.getElementById('scroll-chest');
-  const mouse = document.getElementById('scroll-mouse');
-  const hint = document.getElementById('hint-scroll');
-  const cs0 = document.getElementById('cs0');
-  const cs0c = document.getElementById('cs0c');
-  const inv0 = document.getElementById('inv0');
-  let playing = false;
-
-  async function play(){
-    if(playing) return;
-    playing = true;
-    demo.classList.add('playing');
-    hint.textContent = '▶ 播放中…';
-
-    // 1. 箱子开盖
-    chest.classList.add('open');
-    await wait(420);
-
-    // 2. 滚轮滚动 + 钻石逐个飞入背包
-    let count = 64;
-    mouse.classList.add('wheel-scrolling');
-    for(let i=0;i<4;i++){
-      cs0.classList.add('hover-glow');
-      await wait(180);
-      count -= 16;
-      cs0c.textContent = Math.max(count,0);
-      // 飞入目标格子
-      inv0.innerHTML = '<div class="mc-item item-landing" data-item="diamond"></div>';
-      applyIconsTo(inv0);
-      cs0.classList.remove('hover-glow');
-      await wait(320);
-      inv0.innerHTML = '';
-    }
-    mouse.classList.remove('wheel-scrolling');
-
-    // 3. 收尾：合起箱子，恢复初始状态
-    await wait(250);
-    chest.classList.remove('open');
-    cs0c.textContent = '64';
-    hint.textContent = '✅ 播放完毕 · 点击重新演示';
-    hint.classList.add('done');
-    await wait(20);
-    playing = false;
-    demo.classList.remove('playing');
-  }
-
-  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
-})();
-
-// 局部重新贴图（用于动态插入的 data-item 节点）
-function applyIconsTo(root){
-  root.querySelectorAll('[data-item]').forEach(el=>{
-    const url = getIconURL(el.dataset.item);
-    if(url) el.style.backgroundImage = `url(${url})`;
-  });
-}
-
-// ══════════════════════════════════════
-// 演示 2：拖拽扫描 —— 手形光标横扫 9 格
-// ══════════════════════════════════════
-(function initDragDemo(){
-  const demo = document.getElementById('demo-drag');
-  if(!demo) return;
-  const gui = demo.querySelector('.mc-gui');
-  const hand = document.getElementById('drag-hand');
-  const hint = document.getElementById('hint-drag');
-  const ITEMS = ['cobble','cobble','log','wheat','cobble','log','wheat','cobble','log'];
-
-  function getSlots(){ return gui.querySelectorAll('.mc-slot'); }
-  function resetRow(){
-    getSlots().forEach((s,i)=>{
-      s.innerHTML = `<div class="mc-item" data-item="${ITEMS[i]}"></div><span class="mc-count">64</span>`;
-      s.classList.remove('hover-glow');
-    });
-    applyIconsTo(gui);
-  }
-
-  let playing = false;
-  async function play(){
-    if(playing) return;
-    playing = true;
-    demo.classList.add('playing');
-    hint.textContent = '▶ 播放中…';
-    hand.classList.add('show');
-    const slots = getSlots();
-    moveHandTo(hand, gui, slots[0]);
-    await wait(160);
-
-    for(let i=0;i<slots.length;i++){
-      moveHandTo(hand, gui, slots[i]);
-      await wait(180);
-      slots[i].classList.add('hover-glow');
-      const item = slots[i].querySelector('.mc-item');
-      if(item){ item.classList.add('item-vanishing'); }
-      await wait(160);
-      slots[i].innerHTML = '';
-    }
-    hand.classList.remove('show');
-    await wait(400);
-    resetRow();
-    hint.textContent = '✅ 播放完毕 · 点击重新演示';
-    hint.classList.add('done');
-    playing = false;
-    demo.classList.remove('playing');
-  }
-
-  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
-})();
-
-// ══════════════════════════════════════
-// 演示 3：批量丢弃 —— 手形光标横扫，物品抛出，钻石被保护
-// ══════════════════════════════════════
-(function initTossDemo(){
-  const demo = document.getElementById('demo-toss');
-  if(!demo) return;
-  const gui = demo.querySelector('.mc-gui');
-  const hand = document.getElementById('toss-hand');
-  const hint = document.getElementById('hint-toss');
-  const ITEMS = ['cobble','cobble','log','cobble','diamond','cobble','cobble','log','cobble'];
-  const COUNTS = ['64','64','64','64','3','64','64','32','64'];
-
-  function getSlots(){ return gui.querySelectorAll('.mc-slot'); }
-  function resetRow(){
-    getSlots().forEach((s,i)=>{
-      s.innerHTML = `<div class="mc-item" data-item="${ITEMS[i]}"></div><span class="mc-count">${COUNTS[i]}</span>`;
-      s.classList.remove('hover-glow','slot-blocked');
-    });
-    applyIconsTo(gui);
-  }
-
-  function spawnToss(gui, slotEl, type){
-    const guiRect = gui.getBoundingClientRect();
-    const slotRect = slotEl.getBoundingClientRect();
-    const p = document.createElement('div');
-    p.className = 'toss-particle mc-item';
-    const url = getIconURL(type);
-    if(url) p.style.backgroundImage = `url(${url})`;
-    const x = slotRect.left - guiRect.left + slotRect.width/2 - 10;
-    const y = slotRect.top  - guiRect.top  + slotRect.height/2 - 10;
-    p.style.left = x+'px';
-    p.style.top  = y+'px';
-    const tx = rnd(-40,40), ty = rnd(50,90), tr = rnd(-120,120);
-    p.style.setProperty('--tx', tx+'px');
-    p.style.setProperty('--ty', ty+'px');
-    p.style.setProperty('--tr', tr+'deg');
-    p.style.animation = 'item-toss .6s ease-in forwards';
-    gui.appendChild(p);
-    setTimeout(()=>p.remove(), 650);
-  }
-
-  let playing = false;
-  async function play(){
-    if(playing) return;
-    playing = true;
-    demo.classList.add('playing');
-    hint.textContent = '▶ 播放中…';
-    hand.classList.add('show');
-    const slots = getSlots();
-    moveHandTo(hand, gui, slots[0]);
-    await wait(160);
-
-    for(let i=0;i<slots.length;i++){
-      moveHandTo(hand, gui, slots[i]);
-      await wait(170);
-      if(ITEMS[i]==='diamond'){
-        slots[i].classList.add('slot-blocked');
-        const shield = document.createElement('div');
-        shield.className = 'shield-flash';
-        shield.textContent = '🛡️';
-        slots[i].appendChild(shield);
-        await wait(220);
-        setTimeout(()=>shield.remove(), 500);
-      } else {
-        slots[i].classList.add('hover-glow');
-        spawnToss(gui, slots[i], ITEMS[i]);
-        slots[i].innerHTML = '';
-        await wait(150);
-      }
-    }
-    hand.classList.remove('show');
-    await wait(450);
-    resetRow();
-    hint.textContent = '✅ 播放完毕 · 点击重新演示';
-    hint.classList.add('done');
-    playing = false;
-    demo.classList.remove('playing');
-  }
-
-  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
-})();
-
-// ══════════════════════════════════════
-// 演示 4：量产合成 —— 材料递减，木板产出，火花四溅
-// ══════════════════════════════════════
-(function initCraftDemo(){
-  const demo = document.getElementById('demo-craft');
-  if(!demo) return;
-  const craftGui = document.getElementById('craft-gui');
-  const arrow1 = document.getElementById('craft-arrow1');
-  const arrow2 = document.getElementById('craft-arrow2');
-  const hint = document.getElementById('hint-craft');
-  const matIds = ['mat0','mat1','mat2','mat3'];
-  const outIds = ['out0','out1','out2','out3'];
-  const INIT_MAT = [64,64,48,32];
-
-  function spawnSpark(){
-    const rect = craftGui.getBoundingClientRect();
-    const wrapRect = demo.getBoundingClientRect();
-    const s = document.createElement('div');
-    s.className = 'spark-particle';
-    const size = rnd(4,7);
-    s.style.width = s.style.height = size+'px';
-    s.style.background = `hsl(${rnd(24,46)},95%,62%)`;
-    s.style.left = (rect.left - wrapRect.left + rect.width/2) + 'px';
-    s.style.top  = (rect.top  - wrapRect.top  + rect.height/2) + 'px';
-    const angle = rnd(-Math.PI*0.85, -Math.PI*0.15);
-    const dist = rnd(30,60);
-    s.style.setProperty('--tx', (Math.cos(angle)*dist)+'px');
-    s.style.setProperty('--ty', (Math.sin(angle)*dist)+'px');
-    s.style.setProperty('--tr', '0deg');
-    s.style.animation = 'item-toss .5s ease-out forwards';
-    demo.appendChild(s);
-    setTimeout(()=>s.remove(), 550);
-  }
-
-  let playing = false;
-  async function play(){
-    if(playing) return;
-    playing = true;
-    demo.classList.add('playing');
-    hint.textContent = '▶ 量产中…';
-    craftGui.classList.add('crafting');
-    arrow1.classList.add('pulse');
-    arrow2.classList.add('pulse');
-
-    let mat = [...INIT_MAT];
-    let out = [0,0,0,0];
-    while(mat.some(v=>v>0)){
-      for(let i=0;i<4;i++){
-        if(mat[i]>0){
-          mat[i] = Math.max(0, mat[i]-8);
-          out[i] = Math.min(64, out[i]+8);
-          const mEl = document.getElementById(matIds[i]);
-          const oEl = document.getElementById(outIds[i]);
-          if(mEl){
-            mEl.textContent = mat[i]||'';
-            if(mat[i]===0){ const sl=mEl.closest('.mc-slot'); const it=sl.querySelector('.mc-item'); if(it) it.style.opacity=0; }
-          }
-          if(oEl) oEl.textContent = out[i];
-        }
-      }
-      spawnSpark();
-      await wait(260);
-    }
-
-    craftGui.classList.remove('crafting');
-    arrow1.classList.remove('pulse');
-    arrow2.classList.remove('pulse');
-    hint.textContent = '✅ 播放完毕 · 点击重新演示';
-    hint.classList.add('done');
-    await wait(600);
-
-    // 重置
-    matIds.forEach((id,i)=>{
-      const mEl=document.getElementById(id);
-      mEl.textContent = INIT_MAT[i];
-      const sl=mEl.closest('.mc-slot'); const it=sl.querySelector('.mc-item'); if(it) it.style.opacity=1;
-    });
-    outIds.forEach(id=>{ document.getElementById(id).textContent='0'; });
-
-    playing = false;
-    demo.classList.remove('playing');
-  }
-
-  demo.addEventListener('click', ()=>{ hint.classList.remove('done'); play(); });
-})();
 </script>
 </body>
 </html>
