@@ -262,15 +262,25 @@ kbd{
   line-height:1.35;
   vertical-align:middle;
 }
+.quick-table{table-layout:fixed}
+.quick-table tr{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(88px,.85fr);align-items:center}
+.quick-table td{min-width:0;padding:.7em .35em!important;font-size:clamp(.68rem,.82vw,.82rem)!important}
+.quick-table td:first-child{width:auto;white-space:normal}
+.quick-table td:last-child{white-space:nowrap}
+.quick-table kbd{padding:.14em .38em;font-size:.88em}
 
 /* ── compare ── */
 .cmp-row{
-  display:grid;grid-template-columns:1fr 1fr;
+  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:stretch;
   gap:clamp(12px,2vw,24px);
-  width:100%;max-width:1100px;
+  width:100%;max-width:1180px;
 }
-.cmp-bad{border-color:rgba(255,80,80,.4)!important;background:rgba(255,50,50,.07)!important}
-.cmp-good{border-color:rgba(80,255,150,.4)!important;background:rgba(50,255,100,.07)!important}
+.cmp-bad{border-color:rgba(255,80,80,.4)!important;background:linear-gradient(145deg,rgba(255,50,50,.11),rgba(255,255,255,.04))!important}
+.cmp-good{border-color:rgba(80,255,150,.62)!important;background:linear-gradient(145deg,rgba(50,255,100,.16),rgba(255,255,255,.06))!important;box-shadow:0 0 50px rgba(74,222,128,.12)}
+.cmp-head{display:flex;align-items:center;justify-content:space-between;gap:1em;margin-bottom:.7em}
+.cmp-label{font-size:.72em;font-weight:900;letter-spacing:.16em;color:rgba(255,255,255,.62)}
+.cmp-arrow{align-self:center;display:grid;place-items:center;width:clamp(42px,5vw,68px);height:clamp(42px,5vw,68px);border-radius:50%;background:linear-gradient(135deg,#fbbf24,#4ade80);color:#071108;font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:900;box-shadow:0 0 34px rgba(251,191,36,.25)}
 .cmp-item{
   display:flex;align-items:flex-start;gap:.6em;
   font-size:clamp(.82rem,1.15vw,1.05rem);
@@ -280,6 +290,9 @@ kbd{
 }
 .cmp-item:last-child{border:none}
 .cmp-icon{flex-shrink:0;font-size:1.1em}
+.cmp-key{color:#fff;font-weight:900}
+.advantage-row{display:flex;justify-content:center;gap:clamp(8px,1.2vw,14px);flex-wrap:wrap;margin-top:2vh}
+.advantage-chip{padding:.55em 1em;border:1px solid rgba(251,191,36,.42);border-radius:99px;background:rgba(251,191,36,.1);color:#fde68a;font-size:clamp(.76rem,1vw,.92rem);font-weight:900}
 
 /* ── stat row ── */
 .stat-row{
@@ -404,6 +417,7 @@ kbd{
   .card-grid-3{grid-template-columns:1fr 1fr}
   .card-grid-4{grid-template-columns:1fr 1fr}
   .cmp-row{grid-template-columns:1fr}
+  .cmp-arrow{transform:rotate(90deg);justify-self:center}
   .op-table td:first-child{width:50%}
 }
 @media(max-width:600px){
@@ -416,6 +430,21 @@ kbd{
   .video-modal{padding:0}
   .video-dialog{width:100%;border:0;border-radius:0}
 }
+
+/* ── 16:9 video export mode (?video=1) ── */
+body.video-mode .slide{padding:3vh 4vw 4vh}
+body.video-mode .slide,
+body.video-mode .slide.active{transition:none}
+body.video-mode .slide.active .anim{animation:none!important;opacity:1;transform:none}
+body.video-mode .cmp-row{max-width:1500px}
+body.video-mode .card-grid{max-width:1450px!important}
+body.video-mode .video-slot{max-width:1450px}
+body.video-mode .scene-content{max-width:1400px!important}
+body.video-mode #nav,
+body.video-mode .presentation-hint{display:none}
+.video-export-only{display:none!important}
+body.video-mode .web-only{display:none!important}
+body.video-mode .video-export-only{display:block!important}
 </style>
 </head>
 <body>
@@ -423,7 +452,7 @@ kbd{
 <div id="deck">
 <!-- S1: COVER -->
 <div class="slide s1 active" id="s1">
-  <span class="snum">01 / 11</span>
+  <span class="snum">01 / 09</span>
   <div class="pill ac-violet anim" style="border-color:#c084fc33;color:#c084fc">Minecraft MOD 介绍</div>
   <div class="hero-title anim" style="background:linear-gradient(135deg,#fff 0%,#c084fc 50%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     Item<br>Scroller
@@ -433,164 +462,115 @@ kbd{
     <span class="badge">📦 移动物品</span>
     <span class="badge">🗑️ 丢弃物品</span>
     <span class="badge">⚡ 合成物品</span>
-    <span class="badge">支持 Minecraft 最新版本</span>
   </div>
-  <p class="anim" style="margin-top:4vh;font-size:clamp(.75rem,1vw,.9rem);color:rgba(255,255,255,.72);letter-spacing:2px">← → 翻页 &nbsp;·&nbsp; 空格下一页 &nbsp;·&nbsp; 点击圆点跳转</p>
+  <p class="anim presentation-hint" style="margin-top:4vh;font-size:clamp(.75rem,1vw,.9rem);color:rgba(255,255,255,.72);letter-spacing:2px">← → 翻页 &nbsp;·&nbsp; 空格下一页 &nbsp;·&nbsp; 点击圆点跳转</p>
 </div>
 
-<!-- S2: 什么是 Item Scroller -->
-<div class="slide s2" id="s2">
-  <span class="snum">02 / 11</span>
-  <p class="pill ac-blue anim" style="border-color:#60a5fa33">什么是 Item Scroller？</p>
-  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    让 1 分钟的操作<br>变成 1 秒
-  </h2>
-  <div class="card-grid card-grid-3 anim" style="max-width:1100px">
-    <div class="card">
-      <span class="card-icon">📦</span>
-      <div class="card-title ac-blue">移动物品</div>
-      <div class="card-desc">按需要移动 1 个、固定数量、1 组、同类全部或容器里的所有物品。</div>
-    </div>
-    <div class="card">
-      <span class="card-icon">🗑️</span>
-      <div class="card-title ac-blue">丢弃物品</div>
-      <div class="card-desc">想精准丢弃就逐个丢；挖矿回来要清理多格垃圾时，可连续批量丢弃。</div>
-    </div>
-    <div class="card">
-      <span class="card-icon">⚡</span>
-      <div class="card-title ac-blue">合成物品</div>
-      <div class="card-desc">保存常用配方，需要大量成品时批量或循环合成，减少反复摆放材料和点击。</div>
-    </div>
-  </div>
-</div>
-
-<!-- S3: 安装前后对比 -->
-<div class="slide s9" id="s3">
-  <span class="snum">03 / 11</span>
+<!-- S2: 安装前后对比 -->
+<div class="slide s9" id="s2">
+  <span class="snum">02 / 09</span>
   <p class="pill ac-yellow anim" style="border-color:#fbbf2433">实战效率对比</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    📊 安装前 vs 安装后
+    安装前 vs 安装后
   </h2>
+  <p class="sec-sub anim">同样整理一次背包，少做大量重复点击</p>
   <div class="cmp-row anim">
     <div class="card cmp-bad">
-      <div class="card-title" style="color:#f87171;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">❌ 没有 Item Scroller</div>
-      <div class="cmp-item"><span class="cmp-icon">😩</span>手动点击移动，每次 1-2 个</div>
-      <div class="cmp-item"><span class="cmp-icon">🔁</span>合成台要反复一下一下点</div>
-      <div class="cmp-item"><span class="cmp-icon">⏳</span>搬运归拢物品需要反复点击</div>
-      <div class="cmp-item"><span class="cmp-icon">🤕</span>鼠标点到手酸，效率极低</div>
+      <div class="cmp-head"><div class="card-title" style="color:#f87171;font-size:clamp(1rem,1.5vw,1.3rem);margin:0">没有 Item Scroller</div><span class="cmp-label">BEFORE</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🖱️</span><span><span class="cmp-key">移动：</span>逐格点击、反复拖放</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🗑️</span><span><span class="cmp-key">丢弃：</span>一个一个手动清理</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🔁</span><span><span class="cmp-key">合成：</span>反复摆材料、取成品</span></div>
+      <div class="cmp-item"><span class="cmp-icon">⏳</span><span>时间花在重复操作上</span></div>
     </div>
+    <div class="cmp-arrow" aria-hidden="true">→</div>
     <div class="card cmp-good">
-      <div class="card-title" style="color:#4ade80;font-size:clamp(1rem,1.5vw,1.3rem);margin-bottom:1em">✅ 有 Item Scroller</div>
-      <div class="cmp-item"><span class="cmp-icon">⚡</span>按需移动，从 1 个到整箱快速完成</div>
-      <div class="cmp-item"><span class="cmp-icon">🤖</span>Ctrl+Alt+C 按住，自动量产</div>
-      <div class="cmp-item"><span class="cmp-icon">⏱️</span>批量归拢和搬运只需几次操作</div>
-      <div class="cmp-item"><span class="cmp-icon">🎮</span>减少重复点击，专注创造和探险</div>
+      <div class="cmp-head"><div class="card-title" style="color:#4ade80;font-size:clamp(1rem,1.5vw,1.3rem);margin:0">使用 Item Scroller</div><span class="cmp-label" style="color:#86efac">AFTER</span></div>
+      <div class="cmp-item"><span class="cmp-icon">⚡</span><span><span class="cmp-key">移动：</span>按数量或按批次完成</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🧹</span><span><span class="cmp-key">丢弃：</span>按住连续丢，拖动批量清理</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🤖</span><span><span class="cmp-key">合成：</span>保存配方后快速量产</span></div>
+      <div class="cmp-item"><span class="cmp-icon">🎮</span><span>把时间留给创造与探险</span></div>
     </div>
   </div>
-  <div class="anim" style="font-size:clamp(1.8rem,4vw,4rem);font-weight:900;margin-top:2vh;background:linear-gradient(135deg,#fbbf24,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    从重复点击，变成一次批量操作 ⚡
+  <div class="advantage-row anim">
+    <span class="advantage-chip">更少重复点击</span>
+    <span class="advantage-chip">批量操作更高效</span>
+    <span class="advantage-chip">三大高频场景覆盖</span>
   </div>
 </div>
 
-<!-- S4: 移动物品—按数量 -->
-<div class="slide s3" id="s4">
-  <span class="snum">04 / 11</span>
-  <p class="pill ac-green anim" style="border-color:#4ade8033">移动物品 · 01</p>
+<!-- S3: 移动物品 -->
+<div class="slide s3" id="s3">
+  <span class="snum">03 / 09</span>
+  <p class="pill ac-green anim" style="border-color:#4ade8033">场景 1 · 移动物品</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    📦 按数量移动
+    📦 按需要快速移动
   </h2>
-  <p class="sec-sub anim">从 1 个、固定数量到所有物品，按当前需求选择操作</p>
+  <p class="sec-sub anim">移动同类全部、一个堆叠、一批物品或单个物品</p>
 
   <button class="video-slot video-trigger anim" style="--video-accent:#4ade80" type="button" data-video="videos/物品取用放置.mp4" data-title="物品取用放置">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>实机演示视频 01</small><strong>物品取用放置</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-copy"><small>实机演示视频 01</small><strong>物品取用放置</strong><span class="web-only">点击播放实际游戏操作录屏</span><span class="video-export-only">接下来播放完整实机操作</span></span>
     <span class="video-file">物品取用放置.mp4</span>
   </button>
 
-  <div class="anim" style="width:100%;max-width:880px">
+  <div class="anim scene-content" style="width:100%;max-width:880px">
     <table class="op-table scenario-table">
       <thead><tr><th>我现在想移</th><th>这样操作</th></tr></thead>
       <tr>
-        <td><span class="scenario-name">1 个物品</span><span class="scenario-detail">精准微调数量</span></td>
-        <td>悬停后 <kbd>滚动 1 次</kbd></td>
+        <td><span class="scenario-name">同一种物品的全部</span><span class="scenario-detail">一次移动当前容器里的同类物品</span></td>
+        <td><kbd>Alt</kbd> + <kbd>鼠标左键</kbd> <span class="frequency-tag">高频</span></td>
       </tr>
       <tr>
-        <td><span class="scenario-name">多个物品（固定数量）</span><span class="scenario-detail">例如拆出半组，或准确移动 8 个</span></td>
-        <td><kbd>右键</kbd> 拆半，或悬停后 <kbd>上/下滚 N 次</kbd></td>
+        <td><span class="scenario-name">一个堆叠</span><span class="scenario-detail">例如一堆 64 个圆石</span></td>
+        <td><kbd>Shift</kbd> + <kbd>鼠标左键</kbd></td>
       </tr>
       <tr>
-        <td><span class="scenario-name">1 组（整堆）</span><span class="scenario-detail">例如一堆 64 个圆石</span></td>
-        <td><kbd>Shift</kbd> + <kbd>滚动</kbd></td>
+        <td><span class="scenario-name">一批物品</span><span class="scenario-detail">扫过多个物品格，连续移动</span></td>
+        <td><kbd>Shift</kbd> + <kbd>鼠标左键</kbd> + <kbd>拖动</kbd> <span class="frequency-tag">高频</span></td>
       </tr>
       <tr>
-        <td><span class="scenario-name">同一种物品的全部</span><span class="scenario-detail">把容器里该种物品全部移走</span></td>
-        <td><kbd>Alt</kbd> + <kbd>滚动</kbd></td>
-      </tr>
-      <tr>
-        <td><span class="scenario-name">容器里的所有物品</span><span class="scenario-detail">一次清空当前容器</span></td>
-        <td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>滚动</kbd></td>
+        <td><span class="scenario-name">一个物品</span><span class="scenario-detail">逐个调整需要移动的数量</span></td>
+        <td>鼠标悬停后 <kbd>滚动 1 次</kbd></td>
       </tr>
     </table>
   </div>
-  <div class="anim card" style="max-width:880px;width:100%;margin-top:2vh;border-color:#4ade8033;background:rgba(74,222,128,.06)">
-    💡 <strong style="color:#4ade80">方向感知：</strong>向上滚 = 移进背包，向下滚 = 放进容器。位置感知模式可自动判断方向！
+  <div class="anim card scene-content" style="max-width:880px;width:100%;margin-top:2vh;border-color:#4ade8033;background:rgba(74,222,128,.06)">
+    💡 <strong style="color:#4ade80">固定数量：</strong>多个物品可用鼠标右键拆半，或在物品上滚动指定次数完成准确移动。
   </div>
 </div>
 
-<!-- S5: 移动物品—多格连续处理 -->
-<div class="slide s4" id="s5">
-  <span class="snum">05 / 11</span>
-  <p class="pill ac-purple anim" style="border-color:#a855f733">移动物品 · 02</p>
-  <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    ✋ 连续处理多个物品格
-  </h2>
-  <p class="sec-sub anim">箱子里有一排物品要搬？一次扫过多格连续处理</p>
-
-  <div class="anim" style="width:100%;max-width:1000px">
-    <div class="card" style="border-color:#a855f733">
-      <div class="card-title" style="font-size:clamp(1rem,1.5vw,1.2rem);margin-bottom:.6em;color:#c084fc">📥 连续移动场景</div>
-      <table class="op-table scenario-table" style="font-size:clamp(.8rem,1.05vw,.95rem)">
-        <thead><tr><th>我现在想移</th><th>这样操作</th></tr></thead>
-        <tr><td><span class="scenario-name">扫过多格，每格移 1 组</span></td><td><kbd>Shift</kbd>+左键拖 <span class="frequency-tag">高频</span></td></tr>
-        <tr><td><span class="scenario-name">扫过多格，每格移走同类全部</span></td><td><kbd>Alt</kbd>+左键拖 <span class="frequency-tag">高频</span></td></tr>
-      </table>
-    </div>
-  </div>
-  <div class="anim card" style="max-width:1000px;width:100%;border-color:#a855f733;background:rgba(168,85,247,.06)">
-    💡 <strong style="color:#c084fc">适用场景：</strong>箱子或背包里有多格物品要连续处理时，按住快捷键一次拖过即可。
-  </div>
-</div>
-
-<!-- S6: 丢弃物品 -->
-<div class="slide s5" id="s6">
-  <span class="snum">06 / 11</span>
-  <p class="pill ac-orange anim" style="border-color:#fb923c33">丢弃物品</p>
+<!-- S4: 丢弃物品 -->
+<div class="slide s5" id="s4">
+  <span class="snum">04 / 09</span>
+  <p class="pill ac-orange anim" style="border-color:#fb923c33">场景 2 · 丢弃物品</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-    🗑️ 按住 Q 连续丢弃
+    🗑️ 从一个到一批快速丢弃
   </h2>
-  <p class="sec-sub anim">鼠标悬停物品格，按住 Q 后每次丢 1 个，松开即停</p>
+  <p class="sec-sub anim">单次、连续、整组或批量清理，按当前场景选择操作</p>
 
   <button class="video-slot video-trigger anim" style="--video-accent:#fb923c" type="button" data-video="videos/物品丢弃.mp4" data-title="物品丢弃">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>实机演示视频 02</small><strong>物品丢弃</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-copy"><small>实机演示视频 02</small><strong>物品丢弃</strong><span class="web-only">点击播放实际游戏操作录屏</span><span class="video-export-only">接下来播放完整实机操作</span></span>
     <span class="video-file">物品丢弃.mp4</span>
   </button>
 
-  <div class="anim card" style="max-width:900px;width:100%;border-color:#fb923c33">
+  <div class="anim card scene-content" style="max-width:900px;width:100%;border-color:#fb923c33">
     <table class="op-table scenario-table">
       <thead><tr><th>我现在想丢</th><th>这样操作</th></tr></thead>
-      <tr><td><span class="scenario-name">一格内逐个丢弃</span><span class="scenario-detail">每次 1 个，松开即停</span></td><td>悬停后按住 <kbd>Q</kbd></td></tr>
-      <tr><td><span class="scenario-name">清理多格垃圾</span><span class="scenario-detail">扫过多格，每格全部丢弃</span></td><td><kbd>Shift</kbd>+<kbd>Q</kbd>+左键拖</td></tr>
+      <tr><td><span class="scenario-name">一个物品</span><span class="scenario-detail">按一次，丢一个</span></td><td>按一次 <kbd>Q</kbd></td></tr>
+      <tr><td><span class="scenario-name">连续逐个丢弃</span><span class="scenario-detail">一直按着就一直丢，松开即停</span></td><td>按住 <kbd>Q</kbd></td></tr>
+      <tr><td><span class="scenario-name">一个堆叠</span><span class="scenario-detail">一次丢弃当前物品格的整组物品</span></td><td><kbd>Shift</kbd> + <kbd>Q</kbd> + <kbd>鼠标左键</kbd></td></tr>
+      <tr><td><span class="scenario-name">一批物品</span><span class="scenario-detail">扫过多个物品格连续丢弃</span></td><td><kbd>Shift</kbd> + <kbd>Q</kbd> + <kbd>鼠标左键</kbd> + <kbd>拖动</kbd></td></tr>
     </table>
   </div>
-  <div class="anim card" style="max-width:850px;width:100%;margin-top:1.5vh;border-color:#fb923c44;background:rgba(251,146,60,.07);font-size:clamp(.8rem,1.1vw,1rem);color:rgba(255,200,150,1)">
+  <div class="anim card scene-content" style="max-width:850px;width:100%;margin-top:1.5vh;border-color:#fb923c44;background:rgba(251,146,60,.07);font-size:clamp(.8rem,1.1vw,1rem);color:rgba(255,200,150,1)">
     ⚠️ 丢弃的物品会落在玩家附近地面，注意附近有没有岩浆或悬崖！
   </div>
 </div>
 
-<!-- S7: 合成物品—保存配方 -->
-<div class="slide s6" id="s7">
-  <span class="snum">07 / 11</span>
+<!-- S5: 合成物品—保存配方 -->
+<div class="slide s6" id="s5">
+  <span class="snum">05 / 09</span>
   <p class="pill ac-cyan anim" style="border-color:#22d3ee33">合成物品 · 01</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     📋 保存常用配方
@@ -609,7 +589,7 @@ kbd{
     </div>
     <div class="card" style="border-color:#22d3ee33">
       <span class="card-icon">3️⃣</span>
-      <div class="card-title ac-cyan">中键点击保存</div>
+      <div class="card-title ac-cyan">鼠标中键点击保存</div>
       <div class="card-desc">配方自动保存，退出游戏也不会丢失</div>
     </div>
   </div>
@@ -627,9 +607,9 @@ kbd{
   </div>
 </div>
 
-<!-- S8: 合成物品—批量合成 -->
-<div class="slide s7" id="s8">
-  <span class="snum">08 / 11</span>
+<!-- S6: 合成物品—批量合成 -->
+<div class="slide s7" id="s6">
+  <span class="snum">06 / 09</span>
   <p class="pill ac-pink anim" style="border-color:#f472b633">合成物品 · 02</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⚡ 批量合成物品
@@ -638,7 +618,7 @@ kbd{
 
   <button class="video-slot video-trigger anim" style="--video-accent:#f472b6" type="button" data-video="videos/物品极速合成.mp4" data-title="物品极速合成">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>实机演示视频 03</small><strong>物品极速合成</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-copy"><small>实机演示视频 03</small><strong>物品极速合成</strong><span class="web-only">点击播放实际游戏操作录屏</span><span class="video-export-only">接下来播放完整实机操作</span></span>
     <span class="video-file">物品极速合成.mp4</span>
   </button>
 
@@ -664,9 +644,9 @@ kbd{
   </div>
 </div>
 
-<!-- S9: 快捷键速查 -->
-<div class="slide s8" id="s9">
-  <span class="snum">09 / 11</span>
+<!-- S7: 快捷键速查 -->
+<div class="slide s8" id="s7">
+  <span class="snum">07 / 09</span>
   <p class="pill ac-rose anim" style="border-color:#fb718533">快捷键速查表</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     ⌨️ 按场景速查核心操作
@@ -674,26 +654,26 @@ kbd{
   <div class="card-grid card-grid-3 anim" style="max-width:1100px">
     <div class="card" style="border-color:#fb718533">
       <div class="card-title ac-rose" style="margin-bottom:.8em">📦 移动物品</div>
-      <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
-        <tr><td><kbd>滚</kbd></td><td style="color:rgba(255,255,255,.9)">移 1 个</td></tr>
-        <tr><td><kbd>右键</kbd> / <kbd>滚 N 次</kbd></td><td style="color:rgba(255,255,255,.9)">拆半 / 移固定数量</td></tr>
-        <tr><td><kbd>Shift</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移 1 组</td></tr>
-        <tr><td><kbd>Alt</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移同类全部</td></tr>
-        <tr><td><kbd>Alt+Shift</kbd>滚</td><td style="color:rgba(255,255,255,.9)">移所有物品</td></tr>
-        <tr><td><kbd>Shift</kbd>左键拖</td><td style="color:rgba(255,255,255,.9)">多格各移 1 组</td></tr>
-        <tr><td><kbd>Alt</kbd>左键拖</td><td style="color:rgba(255,255,255,.9)">多格移同类全部</td></tr>
+      <table class="op-table quick-table">
+        <tr><td><kbd>Alt</kbd> + <kbd>鼠标左键</kbd></td><td style="color:rgba(255,255,255,.9)">移同类全部</td></tr>
+        <tr><td><kbd>Shift</kbd> + <kbd>鼠标左键</kbd></td><td style="color:rgba(255,255,255,.9)">移一个堆叠</td></tr>
+        <tr><td><kbd>Shift</kbd> + <kbd>鼠标左键</kbd> + 拖动</td><td style="color:rgba(255,255,255,.9)">移动一批</td></tr>
+        <tr><td><kbd>滚动 1 次</kbd></td><td style="color:rgba(255,255,255,.9)">移一个物品</td></tr>
+        <tr><td><kbd>鼠标右键</kbd> / 滚动 N 次</td><td style="color:rgba(255,255,255,.9)">拆半 / 固定数量</td></tr>
       </table>
     </div>
     <div class="card" style="border-color:#fb923c33">
       <div class="card-title ac-orange" style="margin-bottom:.8em">🗑️ 丢弃物品</div>
-      <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
-        <tr><td>悬停后按住 <kbd>Q</kbd></td><td style="color:rgba(255,255,255,.9)">一格内逐个丢</td></tr>
-        <tr><td><kbd>Shift+Q</kbd>左键拖</td><td style="color:rgba(255,255,255,.9)">多格各自全部丢弃</td></tr>
+      <table class="op-table quick-table">
+        <tr><td>按一次 <kbd>Q</kbd></td><td style="color:rgba(255,255,255,.9)">丢一个物品</td></tr>
+        <tr><td>按住 <kbd>Q</kbd></td><td style="color:rgba(255,255,255,.9)">连续逐个丢</td></tr>
+        <tr><td><kbd>Shift+Q</kbd> + <kbd>鼠标左键</kbd></td><td style="color:rgba(255,255,255,.9)">丢一个堆叠</td></tr>
+        <tr><td><kbd>Shift+Q</kbd> + <kbd>鼠标左键</kbd> + 拖动</td><td style="color:rgba(255,255,255,.9)">丢弃一批</td></tr>
       </table>
     </div>
     <div class="card" style="border-color:#f472b633">
       <div class="card-title ac-pink" style="margin-bottom:.8em">⚡ 合成物品</div>
-      <table class="op-table" style="font-size:clamp(.72rem,1vw,.88rem)">
+      <table class="op-table quick-table">
         <tr><td><kbd>A</kbd></td><td style="color:rgba(255,255,255,.9)">配方面板</td></tr>
         <tr><td><kbd>Ctrl+C</kbd></td><td style="color:rgba(255,255,255,.9)">合成一轮</td></tr>
         <tr><td><kbd>Ctrl+Alt+C</kbd></td><td style="color:rgba(255,255,255,.9)">循环合成</td></tr>
@@ -705,9 +685,9 @@ kbd{
   </div>
 </div>
 
-<!-- S10: 安装 -->
-<div class="slide s10" id="s10">
-  <span class="snum">10 / 11</span>
+<!-- S8: 安装 -->
+<div class="slide s10" id="s8">
+  <span class="snum">08 / 09</span>
   <p class="pill ac-teal anim" style="border-color:#2dd4bf33">快速上手</p>
   <h2 class="sec-title anim" style="background:linear-gradient(135deg,#fff,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     🔧 安装指南
@@ -735,9 +715,9 @@ kbd{
   </div>
 </div>
 
-<!-- S11: 结尾 -->
-<div class="slide s11" id="s11">
-  <span class="snum">11 / 11</span>
+<!-- S9: 结尾 -->
+<div class="slide s11" id="s9">
+  <span class="snum">09 / 09</span>
   <p class="pill ac-violet anim" style="border-color:#c084fc33">感谢观看</p>
   <h2 class="hero-title anim" style="background:linear-gradient(135deg,#fff,#60a5fa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
     一键三连
@@ -768,26 +748,23 @@ kbd{
 <!-- nav dots -->
 <div id="nav">
   <button class="dot on" data-n="1" title="封面"></button>
-  <button class="dot" data-n="2" title="概览"></button>
-  <button class="dot" data-n="3" title="安装前后对比"></button>
-  <button class="dot" data-n="4" title="移动物品：按数量"></button>
-  <button class="dot" data-n="5" title="移动物品：多格处理"></button>
-  <button class="dot" data-n="6" title="丢弃物品"></button>
-  <button class="dot" data-n="7" title="合成物品：保存配方"></button>
-  <button class="dot" data-n="8" title="合成物品：批量合成"></button>
-  <button class="dot" data-n="9" title="快捷键表"></button>
-  <button class="dot" data-n="10" title="安装指南"></button>
-  <button class="dot" data-n="11" title="感谢观看"></button>
+  <button class="dot" data-n="2" title="安装前后对比"></button>
+  <button class="dot" data-n="3" title="移动物品"></button>
+  <button class="dot" data-n="4" title="丢弃物品"></button>
+  <button class="dot" data-n="5" title="合成物品：保存配方"></button>
+  <button class="dot" data-n="6" title="合成物品：批量合成"></button>
+  <button class="dot" data-n="7" title="快捷键表"></button>
+  <button class="dot" data-n="8" title="安装指南"></button>
+  <button class="dot" data-n="9" title="感谢观看"></button>
 </div>
 
 <script>
 // ── state ──
 let cur = 1;
-const TOTAL = 11;
+const TOTAL = 9;
 const COLORS = [
-  '#c084fc','#60a5fa','#fbbf24','#4ade80',
-  '#a855f7','#fb923c','#22d3ee','#f472b6',
-  '#fb7185','#2dd4bf','#c084fc'
+  '#c084fc','#fbbf24','#4ade80','#fb923c',
+  '#22d3ee','#f472b6','#fb7185','#2dd4bf','#c084fc'
 ];
 
 // ── canvas particles ──
@@ -949,6 +926,13 @@ document.addEventListener('touchend',e=>{
   }
 },{passive:true});
 
+// Allow direct opening and a wider 16:9 layout for video production.
+const pageParams = new URLSearchParams(window.location.search);
+if(pageParams.get('video') === '1') document.body.classList.add('video-mode');
+const initialSlide = Number(pageParams.get('slide'));
+if(Number.isInteger(initialSlide) && initialSlide >= 1 && initialSlide <= TOTAL){
+  go(initialSlide, initialSlide >= cur ? 1 : -1);
+}
 updateDotColor();
 
 
