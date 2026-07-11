@@ -148,7 +148,7 @@ body{
   line-height:1.55;
 }
 
-/* ── OBS video placeholders ── */
+/* ── OBS demonstration videos ── */
 .video-slot{
   --video-accent:#fff;
   width:min(100%,1000px);
@@ -192,7 +192,7 @@ body{
 .video-head strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .video-close{flex:0 0 auto;width:36px;height:36px;border:1px solid rgba(255,255,255,.26);border-radius:6px;background:#252b31;color:#fff;font-family:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer}
 .video-close:hover{background:#343c44}
-.video-player{display:block;width:100%;max-height:calc(100vh - 150px);background:#000}
+.video-player{display:block;width:100%;max-height:calc(100vh - 150px);aspect-ratio:16/10;object-fit:contain;background:#000}
 
 /* ── kbd ── */
 kbd{
@@ -501,10 +501,10 @@ kbd{
   </h2>
   <p class="sec-sub anim">从 1 个、固定数量到所有物品，按当前需求选择操作</p>
 
-  <button class="video-slot video-trigger anim" style="--video-accent:#4ade80" type="button" data-video="videos/mov01.mp4" data-title="物品挪动">
+  <button class="video-slot video-trigger anim" style="--video-accent:#4ade80" type="button" data-video="videos/物品取用放置.mp4" data-title="物品取用放置">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>OBS VIDEO 01</small><strong>物品挪动</strong><span>点击播放实际游戏操作录屏</span></span>
-    <span class="video-file">mov01.mp4</span>
+    <span class="video-copy"><small>实机演示视频 01</small><strong>物品取用放置</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">物品取用放置.mp4</span>
   </button>
 
   <div class="anim" style="width:100%;max-width:880px">
@@ -570,10 +570,10 @@ kbd{
   </h2>
   <p class="sec-sub anim">鼠标悬停物品格，按住 Q 后每次丢 1 个，松开即停</p>
 
-  <button class="video-slot video-trigger anim" style="--video-accent:#fb923c" type="button" data-video="videos/mov02.mp4" data-title="物品丢弃">
+  <button class="video-slot video-trigger anim" style="--video-accent:#fb923c" type="button" data-video="videos/物品丢弃.mp4" data-title="物品丢弃">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>OBS VIDEO 02</small><strong>物品丢弃</strong><span>点击播放实际游戏操作录屏</span></span>
-    <span class="video-file">mov02.mp4</span>
+    <span class="video-copy"><small>实机演示视频 02</small><strong>物品丢弃</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">物品丢弃.mp4</span>
   </button>
 
   <div class="anim card" style="max-width:900px;width:100%;border-color:#fb923c33">
@@ -636,10 +636,10 @@ kbd{
   </h2>
   <p class="sec-sub anim">材料充足？一个按键，自动量产到材料耗尽</p>
 
-  <button class="video-slot video-trigger anim" style="--video-accent:#f472b6" type="button" data-video="videos/mov03.mp4" data-title="批量合成">
+  <button class="video-slot video-trigger anim" style="--video-accent:#f472b6" type="button" data-video="videos/物品极速合成.mp4" data-title="物品极速合成">
     <span class="video-play" aria-hidden="true">▶</span>
-    <span class="video-copy"><small>OBS VIDEO 03</small><strong>批量合成</strong><span>点击播放实际游戏操作录屏</span></span>
-    <span class="video-file">mov03.mp4</span>
+    <span class="video-copy"><small>实机演示视频 03</small><strong>物品极速合成</strong><span>点击播放实际游戏操作录屏</span></span>
+    <span class="video-file">物品极速合成.mp4</span>
   </button>
 
   <div class="card-grid card-grid-2 anim" style="max-width:1000px">
@@ -758,7 +758,7 @@ kbd{
 <div class="video-modal" id="video-modal" hidden>
   <section class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-title">
     <header class="video-head">
-      <strong id="video-title">OBS 录屏</strong>
+      <strong id="video-title">实机演示视频</strong>
       <button class="video-close" id="video-close" type="button" aria-label="关闭视频">×</button>
     </header>
     <video class="video-player" id="video-player" controls playsinline preload="metadata"></video>
