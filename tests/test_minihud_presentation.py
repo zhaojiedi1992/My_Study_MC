@@ -146,6 +146,17 @@ class MiniHudPresentationTest(unittest.TestCase):
         ):
             self.assertIn(phrase, self.rst)
 
+    def test_rst_follows_the_six_scenario_route(self):
+        scenarios = (
+            "日常游玩", "外出探索", "工程选址",
+            "机制规划", "开始施工", "完工排查",
+        )
+        positions = []
+        for scene in scenarios:
+            self.assertIn(scene, self.rst)
+            positions.append(self.rst.index(scene))
+        self.assertEqual(positions, sorted(positions))
+
 
 if __name__ == "__main__":
     unittest.main()
