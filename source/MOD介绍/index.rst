@@ -8,3 +8,4 @@ MOD介绍
    :caption: MOD列表
 
    itemscroller/itemscroller
+   minihud/minihud
