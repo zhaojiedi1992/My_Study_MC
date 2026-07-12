@@ -129,6 +129,31 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Scene switch failed: ${JSON.stringify(scene)}`);
   }
 
+  const structureControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-structure-view="on"]'))`);
+  if (!structureControlExists) throw new Error("Structure reveal control is missing");
+  await evaluate(sessionId, `go(3); document.querySelector('[data-structure-view="on"]').click()`);
+  const structure = await evaluate(sessionId, `({
+    cur,
+    selected: document.querySelector('[data-structure-view].selected').dataset.structureView,
+    revealed: document.getElementById('structure-stage').classList.contains('revealed'),
+  })`);
+  if (structure.cur !== 3 || structure.selected !== "on" || !structure.revealed) {
+    throw new Error(`Structure reveal failed: ${JSON.stringify(structure)}`);
+  }
+
+  const buildControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-build-view="elevation"]'))`);
+  if (!buildControlExists) throw new Error("Building elevation control is missing");
+  await evaluate(sessionId, `go(6); document.querySelector('[data-build-view="elevation"]').click()`);
+  const building = await evaluate(sessionId, `({
+    cur,
+    selected: document.querySelector('[data-build-view].selected').dataset.buildView,
+    mode: document.getElementById('build-stage').dataset.view,
+  })`);
+  if (building.cur !== 6 || building.selected !== "elevation" || building.mode !== "elevation") {
+    throw new Error(`Building view failed: ${JSON.stringify(building)}`);
+  }
+  await evaluate(sessionId, `go(2)`);
+
   const spaceOnButton = await evaluate(sessionId, `(() => {
     const button = document.querySelector('[data-scene="performance"]');
     button.focus();
@@ -223,7 +248,7 @@ async function evaluate(sessionId, expression) {
 
   const shot = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   fs.writeFileSync("/tmp/minihud-mobile.png", Buffer.from(shot.data, "base64"));
-  console.log(JSON.stringify({ initial, afterKey, scene, opened, mobile, errors }, null, 2));
+  console.log(JSON.stringify({ initial, afterKey, scene, structure, building, opened, mobile, errors }, null, 2));
   await send("Target.closeTarget", { targetId: target.targetId });
   chrome.kill("SIGKILL");
   setTimeout(() => process.exit(errors.length ? 1 : 0), 100);

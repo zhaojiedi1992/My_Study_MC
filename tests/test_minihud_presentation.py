@@ -69,6 +69,55 @@ class MiniHudPresentationTest(unittest.TestCase):
         missing = [phrase for phrase in required if phrase not in self.copy]
         self.assertEqual(missing, [])
 
+    def test_six_player_scenarios_drive_the_deck(self):
+        scenarios = (
+            "日常游玩", "外出探索", "工程选址",
+            "机制规划", "开始施工", "完工排查",
+        )
+        for scene in scenarios:
+            self.assertIn(scene, self.copy)
+        positions = [self.copy.index(scene) for scene in scenarios]
+        self.assertEqual(positions, sorted(positions))
+        for task in (
+            "随时掌握", "看清结构", "检查周围环境",
+            "确认影响范围", "把设计画进世界", "快速找到问题",
+        ):
+            self.assertIn(task, self.copy)
+
+    def test_examples_support_scenes_without_becoming_scene_titles(self):
+        for example in ("林地府邸", "信标", "潮涌核心", "圆形刷怪塔"):
+            self.assertIn(example, self.copy)
+        for slide_title in re.findall(
+            r'<h2[^>]*class="sec-title"[^>]*>(.*?)</h2>', self.html, re.S
+        ):
+            plain = re.sub(r"<[^>]+>", "", slide_title)
+            self.assertNotIn("林地府邸", plain)
+            self.assertNotIn("信标", plain)
+
+    def test_structure_scene_states_ability_boundary(self):
+        for phrase in ("不是远程搜索", "不使用 /locate", "结构主边界", "组成部分"):
+            self.assertIn(phrase, self.copy)
+
+    def test_exported_config_informs_visuals_not_student_copy(self):
+        for color in (
+            "#ff6500", "#e060ff", "#ffb040",
+            "#fff040", "#60ff40", "#30b0b0",
+        ):
+            self.assertIn(color, self.html.lower())
+        for raw_name in (
+            "overlayBeaconRange", "overlayStructureMainToggle",
+            "shapeRenderer", "StructureToggles", "InfoTypeToggles",
+        ):
+            self.assertNotIn(raw_name, self.html)
+        self.assertIn("H + C", self.copy)
+
+    def test_scenario_controls_are_present(self):
+        for attribute in (
+            "data-structure-view", "data-site-layer", "data-range",
+            "data-build-view", "data-check",
+        ):
+            self.assertIn(attribute, self.html)
+
     def test_interaction_contract_is_semantic(self):
         required_ids = {"deck", "nav", "detail-modal", "detail-title", "detail-body", "detail-close"}
         self.assertTrue(required_ids.issubset(self.parser.ids))
@@ -89,14 +138,6 @@ class MiniHudPresentationTest(unittest.TestCase):
         for forbidden in ("InfoToggle.java", "RendererToggle.java", "ShapeType.java", "src/main/java"):
             self.assertNotIn(forbidden, self.html)
         self.assertNotRegex(self.html, r"<button[^>]+disabled[^>]*class=[\"'][^\"']*video")
-
-    def test_range_tasks_have_actionable_data_labels(self):
-        for pattern in (
-            r"结构边界 <span class=\"data-badge server\">需要服务器数据</span>",
-            r"装置范围 <span class=\"data-badge local\">本地可用</span>",
-            r"村民交易 <span class=\"data-badge server\">需要服务器数据</span>",
-        ):
-            self.assertRegex(self.html, pattern)
 
     def test_rst_links_and_summarizes_the_deck(self):
         for phrase in (
