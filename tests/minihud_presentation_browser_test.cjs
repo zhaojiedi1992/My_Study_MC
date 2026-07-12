@@ -29,6 +29,9 @@ chrome.stdio[4].on("data", (chunk) => {
     if (message.method === "Runtime.exceptionThrown") {
       errors.push(message.params.exceptionDetails.text);
     }
+    if (message.method === "Runtime.consoleAPICalled" && ["error", "assert"].includes(message.params.type)) {
+      errors.push(message.params.args.map((arg) => arg.value || arg.description || "console error").join(" "));
+    }
     if (!message.id || !pending.has(message.id)) continue;
     const request = pending.get(message.id);
     pending.delete(message.id);
@@ -98,6 +101,14 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Bad initial state: ${JSON.stringify(initial)}`);
   }
 
+  const initialAccessibility = await evaluate(sessionId, `({
+    activeExposed: !slides[0].inert && slides[0].getAttribute('aria-hidden') === 'false',
+    inactiveHidden: slides.slice(1).every((slide) => slide.inert && slide.getAttribute('aria-hidden') === 'true'),
+  })`);
+  if (!initialAccessibility.activeExposed || !initialAccessibility.inactiveHidden) {
+    throw new Error(`Inactive slides remain focusable: ${JSON.stringify(initialAccessibility)}`);
+  }
+
   await evaluate(sessionId, `document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))`);
   await sleep(550);
   const afterKey = await evaluate(sessionId, `({
@@ -118,6 +129,16 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Scene switch failed: ${JSON.stringify(scene)}`);
   }
 
+  const spaceOnButton = await evaluate(sessionId, `(() => {
+    const button = document.querySelector('[data-scene="performance"]');
+    button.focus();
+    button.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
+    return { cur, activeId: document.activeElement.dataset.scene };
+  })()`);
+  if (spaceOnButton.cur !== 2 || spaceOnButton.activeId !== "performance") {
+    throw new Error(`Space on a button changed slides: ${JSON.stringify(spaceOnButton)}`);
+  }
+
   await evaluate(sessionId, `document.querySelector('[data-detail]').click()`);
   const opened = await evaluate(sessionId, `({
     hidden: detailModal.hidden,
@@ -126,6 +147,17 @@ async function evaluate(sessionId, expression) {
   })`);
   if (opened.hidden || !opened.title || opened.body.length < 40) {
     throw new Error(`Detail dialog failed: ${JSON.stringify(opened)}`);
+  }
+  const modalFocus = await evaluate(sessionId, `(() => {
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }));
+    return {
+      deckInert: document.getElementById('deck').inert,
+      navInert: document.getElementById('nav').inert,
+      activeId: document.activeElement.id,
+    };
+  })()`);
+  if (!modalFocus.deckInert || !modalFocus.navInert || modalFocus.activeId !== "detail-close") {
+    throw new Error(`Modal focus escaped: ${JSON.stringify(modalFocus)}`);
   }
   await evaluate(sessionId, `document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
   const closed = await evaluate(sessionId, `detailModal.hidden`);
@@ -139,14 +171,38 @@ async function evaluate(sessionId, expression) {
     screenWidth: 390,
     screenHeight: 844,
   }, sessionId);
-  await evaluate(sessionId, `go(7)`);
+  const verticalTouch = await evaluate(sessionId, `(() => {
+    go(6);
+    const start = new Event('touchstart', { bubbles: true, cancelable: true });
+    Object.defineProperty(start, 'touches', { value: [{ clientX: 200, clientY: 700 }] });
+    document.dispatchEvent(start);
+    const end = new Event('touchend', { bubbles: true, cancelable: true });
+    Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 204, clientY: 300 }] });
+    document.dispatchEvent(end);
+    return { cur, active: document.querySelector('.slide.active').id };
+  })()`);
+  if (verticalTouch.cur !== 6 || verticalTouch.active !== "s7") {
+    throw new Error(`Vertical touch blocked page scrolling: ${JSON.stringify(verticalTouch)}`);
+  }
+  const horizontalTouch = await evaluate(sessionId, `(() => {
+    const start = new Event('touchstart', { bubbles: true, cancelable: true });
+    Object.defineProperty(start, 'touches', { value: [{ clientX: 330, clientY: 500 }] });
+    document.dispatchEvent(start);
+    const end = new Event('touchend', { bubbles: true, cancelable: true });
+    Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 70, clientY: 505 }] });
+    document.dispatchEvent(end);
+    return { cur, active: document.querySelector('.slide.active').id };
+  })()`);
+  if (horizontalTouch.cur !== 7 || horizontalTouch.active !== "s8") {
+    throw new Error(`Horizontal touch did not change slides: ${JSON.stringify(horizontalTouch)}`);
+  }
   await sleep(250);
   const mobile = await evaluate(sessionId, `(() => {
     const slide = document.querySelector('.slide.active');
     return {
       width: document.documentElement.scrollWidth,
       viewport: innerWidth,
-      scrollable: slide.scrollHeight >= slide.clientHeight,
+      scrollable: slide.scrollHeight > slide.clientHeight,
     };
   })()`);
   if (mobile.width > mobile.viewport || !mobile.scrollable) {

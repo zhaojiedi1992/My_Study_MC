@@ -63,7 +63,8 @@ class MiniHudPresentationTest(unittest.TestCase):
             "探索", "性能排查", "光照", "群系边界", "信标", "潮涌核心",
             "随机刻", "史莱姆区块", "结构边界", "村民交易", "生成球",
             "方框", "圆柱", "方块线", "地图预览", "潜影盒", "物品栏预览",
-            "Servux", "Carpet", "MaLiLib", "TPS/MSPT", "Mob Cap",
+            "俯仰角", "方块实体", "已加载区块", "Servux", "Carpet",
+            "MaLiLib", "TPS/MSPT", "Mob Cap",
         )
         missing = [phrase for phrase in required if phrase not in self.copy]
         self.assertEqual(missing, [])
@@ -88,6 +89,14 @@ class MiniHudPresentationTest(unittest.TestCase):
         for forbidden in ("InfoToggle.java", "RendererToggle.java", "ShapeType.java", "src/main/java"):
             self.assertNotIn(forbidden, self.html)
         self.assertNotRegex(self.html, r"<button[^>]+disabled[^>]*class=[\"'][^\"']*video")
+
+    def test_range_tasks_have_actionable_data_labels(self):
+        for pattern in (
+            r"结构边界 <span class=\"data-badge server\">需要服务器数据</span>",
+            r"装置范围 <span class=\"data-badge local\">本地可用</span>",
+            r"村民交易 <span class=\"data-badge server\">需要服务器数据</span>",
+        ):
+            self.assertRegex(self.html, pattern)
 
     def test_rst_links_and_summarizes_the_deck(self):
         for phrase in (

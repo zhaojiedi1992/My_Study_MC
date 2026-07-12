@@ -88,6 +88,7 @@ kbd{display:inline-block;padding:.14em .48em;border:1px solid rgba(255,255,255,.
 .range-tag{position:absolute;padding:.34em .55em;border-radius:6px;background:#020617dd;font-size:.68rem;font-weight:950}.tag24{left:57%;top:41%;color:#99f6e4}.tag32{left:61%;top:33%;color:#fde68a}.tag128{right:6%;top:13%;color:#fda4af}
 .data-legend{position:absolute;left:16px;bottom:16px;display:flex;flex-wrap:wrap;gap:6px}.data-badge{padding:.34em .58em;border:1px solid currentColor;border-radius:99px;background:#020617c9;font-size:.64rem;font-weight:900}.local{color:#86efac}.seed{color:#fde68a}.server{color:#c4b5fd}
 .task-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}.task-card{padding:15px 17px}.task-card h3{display:flex;justify-content:space-between;gap:8px;align-items:center}.task-card h3 span{font-size:.62rem;white-space:nowrap}.task-card.wide{grid-column:1/-1}
+.task-grid>.detail-button{grid-column:1/-1;justify-content:center;margin-top:0}
 .split-layout{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:1200px;gap:clamp(12px,1.5vw,20px)}
 .split-panel{min-height:380px}.split-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.split-head h3{font-size:clamp(1.2rem,1.7vw,1.5rem)}.split-head span{color:var(--accent);font-size:.7rem;font-weight:950;letter-spacing:.12em}
 .shape-stage{position:relative;height:205px;border:1px solid rgba(94,234,212,.2);border-radius:14px;background-image:linear-gradient(rgba(94,234,212,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.08) 1px,transparent 1px);background-size:28px 28px;overflow:hidden}
@@ -212,8 +213,9 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
         <article class="card task-card"><h3>🟩 史莱姆农场 <span class="data-badge seed">需要种子</span></h3><p>先确认史莱姆区块，再决定挖掘和挂机位置。</p></article>
         <article class="card task-card"><h3>◎ 挂机点与生成球 <span class="data-badge local">本地可用</span></h3><p>用可调生成球、24 / 32 / 128 格范围检查距离。</p></article>
         <article class="card task-card"><h3>🌱 随机刻区域 <span class="data-badge local">本地可用</span></h3><p>判断作物、树苗和部分方块是否处在随机刻范围。</p></article>
-        <article class="card task-card"><h3>🏛️ 结构边界 <span class="data-badge server">数据相关</span></h3><p>村庄、要塞、堡垒、古城、试炼密室等结构农场的重要参考。</p></article>
-        <article class="card task-card wide"><h3>🔆 装置与实体 <span>信标 · 潮涌核心 · 村民交易</span></h3><p>检查信标和潮涌核心的作用范围；用村民交易信息筛选附魔书。具体生物规则仍要结合版本、维度和服务器设置。</p></article>
+        <article class="card task-card"><h3>🏛️ 结构边界 <span class="data-badge server">需要服务器数据</span></h3><p>村庄、要塞、堡垒、古城、试炼密室等结构农场的重要参考。</p></article>
+        <article class="card task-card"><h3>🔆 装置范围 <span class="data-badge local">本地可用</span></h3><p>检查信标和潮涌核心的作用范围，确认装置实际覆盖到哪里。</p></article>
+        <article class="card task-card"><h3>📖 村民交易 <span class="data-badge server">需要服务器数据</span></h3><p>查看附魔书交易与价格；能否获得数据取决于游戏模式和服务器权限。</p></article>
         <button class="detail-button" type="button" data-detail="range">为什么多人服可能不显示？ →</button>
       </div>
     </div>
@@ -268,7 +270,7 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
       <article class="card quick-card"><span class="card-icon">💡</span><h3>照明与建筑</h3><ul><li>光照等级</li><li>方块 / 区块网格</li><li>群系边界与形状</li></ul></article>
       <article class="card quick-card"><span class="card-icon">◎</span><h3>技术生存</h3><ul><li>史莱姆区块、随机刻</li><li>生成球与结构边界</li><li>Mob Cap</li></ul></article>
       <article class="card quick-card"><span class="card-icon">🎒</span><h3>交易和物品</h3><ul><li>村民交易、目标实体</li><li>地图预览、潜影盒</li><li>物品栏预览</li></ul></article>
-      <article class="card quick-card"><span class="card-icon">⚙️</span><h3>性能排查</h3><ul><li>FPS、内存、实体</li><li>区块更新与延迟</li><li>TPS/MSPT</li></ul></article>
+      <article class="card quick-card"><span class="card-icon">⚙️</span><h3>性能排查</h3><ul><li>FPS、内存</li><li>实体 / 方块实体</li><li>已加载区块 / 区块更新</li><li>延迟、TPS/MSPT</li></ul></article>
     </div>
     <div class="shortcut-bar"><b><kbd>H</kbd> 主渲染开关</b><span>·</span><b><kbd>H + C</kbd> 配置入口</b><span>·</span><span>快捷键均可修改</span><span>·</span><span>作者：maruohon（Masa）</span></div>
     <div class="official-links"><a href="https://github.com/maruohon/minihud/" target="_blank" rel="noopener">GitHub</a><a href="https://www.curseforge.com/minecraft/mc-mods/minihud" target="_blank" rel="noopener">CurseForge</a><a href="https://modrinth.com/mod/minihud" target="_blank" rel="noopener">Modrinth</a></div>
@@ -290,17 +292,19 @@ const nav=document.getElementById('nav');
 let cur=0,detailOpen=false,lastDetailTrigger=null,wheelAt=0,tx=0,ty=0;
 slides.forEach((slide,index)=>{const dot=document.createElement('button');dot.className='dot'+(index===0?' on':'');dot.type='button';dot.title=slide.querySelector('.pill')?.textContent||`第 ${index+1} 页`;dot.setAttribute('aria-label',`转到第 ${index+1} 页`);dot.addEventListener('click',e=>{e.stopPropagation();go(index)});nav.appendChild(dot)});
 const dots=[...document.querySelectorAll('.dot')];
-function go(index){if(index<0||index>=slides.length||index===cur)return;slides[cur].classList.remove('active');slides[index].classList.add('active');dots[cur].classList.remove('on');dots[index].classList.add('on');cur=index}
+function syncSlideAccessibility(){slides.forEach((slide,index)=>{const active=index===cur;slide.inert=!active;slide.setAttribute('aria-hidden',String(!active))})}
+syncSlideAccessibility();
+function go(index){if(index<0||index>=slides.length||index===cur)return;slides[cur].classList.remove('active');slides[index].classList.add('active');dots[cur].classList.remove('on');dots[index].classList.add('on');cur=index;syncSlideAccessibility()}
 
 const sceneCopy={
   explore:{label:'探索组合',title:'迷路前先留下参考点',description:'坐标、朝向、群系和时间负责导航；参考点距离适合回到基地、矿道入口或施工中心。',warning:'信息保持稳定、够用就停，不需要复制整张 F3。',hud:'坐标：128.4 / 64 / -320.8\n朝向：南（+Z）\n群系：平原\n世界时间：第 18 天 09:24\n参考点距离：186.3 格'},
   build:{label:'建筑组合',title:'同时看绝对位置和区块内位置',description:'方块坐标、区块坐标、区块内坐标和目标方块属性，适合对齐机器、边界与中心线。',warning:'先确定坐标口径，再开始批量施工，能减少整体偏移一格。',hud:'方块坐标：128 / 64 / -321\n区块坐标：8 / -21\n区块内坐标：0 / 64 / 15\n注视方块：比较器\n属性：朝南 · 已通电'},
-  performance:{label:'性能排查组合',title:'区分客户端卡顿和服务器卡顿',description:'FPS、内存、实体、区块更新、延迟与 TPS/MSPT 分别反映渲染、内存、网络和服务器负载。',warning:'多人服上的精确 TPS/MSPT 与 Mob Cap 通常需要服务器同步。',hud:'FPS：144\n内存：2048 / 4096 MB\n实体：238（可见 84）\n区块更新：12 / 秒\n延迟：46 ms\nTPS/MSPT：20.0 / 31.6'}
+  performance:{label:'性能排查组合',title:'区分客户端卡顿和服务器卡顿',description:'FPS、内存、实体与方块实体、已加载区块、区块更新、延迟与 TPS/MSPT 分别反映不同负载。',warning:'多人服上的精确 TPS/MSPT 与 Mob Cap 通常需要服务器同步。',hud:'FPS：144\n内存：2048 / 4096 MB\n实体 / 方块实体：238 / 86\n已加载区块：441\n区块更新：12 / 秒\n延迟：46 ms\nTPS/MSPT：20.0 / 31.6'}
 };
 document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{const copy=sceneCopy[button.dataset.scene];document.querySelectorAll('[data-scene]').forEach(item=>item.classList.toggle('selected',item===button));document.getElementById('hud-lines').textContent=copy.hud;document.getElementById('scene-label').textContent=copy.label;document.getElementById('scene-title').textContent=copy.title;document.getElementById('scene-description').textContent=copy.description;document.getElementById('scene-warning').innerHTML=`<strong>判断方法：</strong>${copy.warning}`}));
 
 const detailCopy={
-  info:{title:'信息 HUD：不是一张更小的 F3',body:'<h3>六组信息，按任务组合</h3><ul><li><strong>导航定位：</strong>坐标、缩放坐标、朝向、旋转角度、维度、区块与区块内坐标、参考点距离。</li><li><strong>行动状态：</strong>移动速度、分轴速度、水平/垂直速度、疾跑与方块破坏速度。</li><li><strong>世界环境：</strong>群系、天气、世界时间、现实时间、光照与难度。</li><li><strong>注视目标：</strong>方块坐标和属性，实体名称、生命值与状态效果。</li><li><strong>特殊细节：</strong>蜂巢蜜蜂数、蜂蜜等级、熔炉经验、僵尸村民转化、马匹属性与熊猫基因等。</li><li><strong>性能联机：</strong>FPS、内存、实体、粒子、区块更新、延迟、TPS/MSPT、Mob Cap 与 Servux 状态。</li></ul><h3>推荐原则</h3><p>先问“这次要判断什么”，再选 4–6 行。读完信息就能做决定，才是有效 HUD。</p>'},
+  info:{title:'信息 HUD：不是一张更小的 F3',body:'<h3>六组信息，按任务组合</h3><ul><li><strong>导航定位：</strong>坐标、缩放坐标、朝向、偏航角与俯仰角、维度、区块与区块内坐标、参考点距离。</li><li><strong>行动状态：</strong>移动速度、分轴速度、水平/垂直速度、疾跑与方块破坏速度。</li><li><strong>世界环境：</strong>群系、天气、世界时间、现实时间、光照与难度。</li><li><strong>注视目标：</strong>方块坐标和属性，实体名称、生命值与状态效果。</li><li><strong>特殊细节：</strong>蜂巢蜜蜂数、蜂蜜等级、熔炉经验、僵尸村民转化、马匹属性与熊猫基因等。</li><li><strong>性能联机：</strong>FPS、内存、实体与方块实体、粒子、已加载区块、区块更新、延迟、TPS/MSPT、Mob Cap 与 Servux 状态。</li></ul><h3>推荐原则</h3><p>先问“这次要判断什么”，再选 4–6 行。读完信息就能做决定，才是有效 HUD。</p>'},
   environment:{title:'环境与网格：颜色、数字和线框怎么选',body:'<h3>需要找暗区</h3><p>开启光照等级覆盖。数字适合精确判断，颜色标记适合快速扫视。不同 Minecraft 版本的刷怪光照阈值可能不同。</p><h3>需要对齐工程</h3><p>方块网格负责逐格对齐；区块边界负责 16×16 分区；群系边界负责生物群系交界；区域文件边界负责更大尺度的世界分区。</p><h3>高级诊断</h3><p>碰撞箱、固体面、水体、相邻更新和区块调试信息用于具体排错。看不懂时不必开启，它们不是日常必需品。</p>'},
   range:{title:'范围与边界：先分清“谁的规则”',body:'<h3>按任务选择</h3><ul><li><strong>生物农场：</strong>生成球、可消失范围、128 格消失范围与 Mob Cap。</li><li><strong>方块随机刻：</strong>随机刻区域，常用于作物、树苗和技术生存规划。</li><li><strong>结构农场：</strong>结构主边界和组成部分边界，例如村庄、要塞、堡垒、古城和试炼密室。</li><li><strong>特殊区域：</strong>史莱姆区块、出生区块和可生成列高度。</li><li><strong>装置范围：</strong>信标与潮涌核心作用范围。</li><li><strong>村民筛选：</strong>村民交易信息可帮助查看附魔书报价。</li></ul><h3>重要提醒</h3><p>24 / 32 / 128 格是常见参考，不是所有生物、维度和版本的唯一答案。</p>'},
   shape:{title:'建筑与形状：把坐标计算变成空间参考',body:'<h3>形状类型</h3><ul><li><strong>方框：</strong>两个角点定义建筑外框、挖掘区和装置占地。</li><li><strong>圆 / 圆柱：</strong>中心、半径、高度和主轴定义塔楼、竖井与环形结构。</li><li><strong>方块线：</strong>两个坐标定义路线、中心轴或测距线。</li><li><strong>方块球体：</strong>辅助球形建筑。</li><li><strong>生成球：</strong>可调半径，或使用生成、可消失、彻底消失等参考球。</li></ul><h3>形状管理</h3><p>可以启用、选择、移动到玩家位置，并调整颜色和显示方式。它们只负责显示，不会自动建造。</p>'},
@@ -308,14 +312,14 @@ const detailCopy={
   multiplayer:{title:'多人服数据判断表',body:'<h3>客户端自己就知道</h3><p>坐标、朝向、FPS、内存、当前画面中的部分方块和实体信息通常可直接获得。</p><h3>需要世界种子</h3><p>史莱姆区块等与种子计算有关的结果必须使用正确种子。种子错误时，线框也会跟着错误。</p><h3>需要服务器同步</h3><p>结构边界、Mob Cap、精确 TPS/MSPT 和部分实体数据可能需要 Servux、Carpet 或其他服务器支持。没有同步时，MiniHUD 可能不显示、显示不完整，或只能估算。</p><h3>排查顺序</h3><p>主开关 → 单项开关 → 数据来源 → 渲染距离与维度 → 快捷键冲突 → 服务器规则。</p>'}
 };
 const detailModal=document.getElementById('detail-modal'),detailTitle=document.getElementById('detail-title'),detailBody=document.getElementById('detail-body'),detailClose=document.getElementById('detail-close');
-function openDetail(key,trigger){const copy=detailCopy[key];if(!copy)return;lastDetailTrigger=trigger;detailTitle.textContent=copy.title;detailBody.innerHTML=copy.body;detailModal.hidden=false;detailOpen=true;detailClose.focus()}
-function closeDetail(){if(!detailOpen)return;detailModal.hidden=true;detailOpen=false;lastDetailTrigger?.focus()}
+function openDetail(key,trigger){const copy=detailCopy[key];if(!copy)return;lastDetailTrigger=trigger;detailTitle.textContent=copy.title;detailBody.innerHTML=copy.body;document.getElementById('deck').inert=true;nav.inert=true;detailModal.hidden=false;detailOpen=true;detailClose.focus()}
+function closeDetail(){if(!detailOpen)return;detailModal.hidden=true;detailOpen=false;document.getElementById('deck').inert=false;nav.inert=false;lastDetailTrigger?.focus()}
 document.querySelectorAll('[data-detail]').forEach(button=>button.addEventListener('click',()=>openDetail(button.dataset.detail,button)));
 detailClose.addEventListener('click',closeDetail);detailModal.addEventListener('click',e=>{if(e.target===detailModal)closeDetail()});
-document.addEventListener('keydown',e=>{if(detailOpen){if(e.key==='Escape')closeDetail();return}if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(cur-1)}else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1)});
+document.addEventListener('keydown',e=>{if(detailOpen){if(e.key==='Escape')closeDetail();else if(e.key==='Tab'){const focusable=[...detailModal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(element=>!element.disabled);if(focusable.length){const first=focusable[0],last=focusable[focusable.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}}return}if(e.target.closest?.('button,a,input,select,textarea,[contenteditable="true"]'))return;if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(cur-1)}else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1)});
 document.getElementById('deck').addEventListener('click',e=>{if(!e.target.closest('button,a'))go(cur+1)});
 document.addEventListener('wheel',e=>{if(detailOpen)return;const now=Date.now();if(now-wheelAt<550)return;wheelAt=now;go(cur+(e.deltaY>0?1:-1))},{passive:true});
-document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',e=>{if(detailOpen)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.max(Math.abs(dx),Math.abs(dy))<35)return;go(cur+((Math.abs(dx)>Math.abs(dy)?dx:dy)<0?1:-1))},{passive:true});
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',e=>{if(detailOpen)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)<35||Math.abs(dx)<=Math.abs(dy))return;go(cur+(dx<0?1:-1))},{passive:true});
 const params=new URLSearchParams(location.search);if(params.get('export')==='1')document.body.classList.add('export');const requested=Number(params.get('slide'));if(Number.isInteger(requested)&&requested>=1&&requested<=slides.length)go(requested-1);
 </script>
 </body>
