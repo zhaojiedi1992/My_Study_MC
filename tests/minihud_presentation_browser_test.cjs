@@ -139,6 +139,18 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Space on a button changed slides: ${JSON.stringify(spaceOnButton)}`);
   }
 
+  const arrowOnButton = await evaluate(sessionId, `(() => {
+    const button = document.querySelector('[data-scene="performance"]');
+    button.focus();
+    button.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
+    const result = { cur, active: document.querySelector('.slide.active').id };
+    go(2);
+    return result;
+  })()`);
+  if (arrowOnButton.cur !== 3 || arrowOnButton.active !== "s4") {
+    throw new Error(`Arrow key on a button did not change slides: ${JSON.stringify(arrowOnButton)}`);
+  }
+
   await evaluate(sessionId, `document.querySelector('[data-detail]').click()`);
   const opened = await evaluate(sessionId, `({
     hidden: detailModal.hidden,
