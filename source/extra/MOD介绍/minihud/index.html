@@ -8,7 +8,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cyan:#67e8f9;--blue:#60a5fa;--amber:#facc15;--rose:#fb7185;--violet:#c084fc;--green:#5eead4;
-  --ink:#030712;--panel:rgba(10,20,37,.84);--muted:rgba(255,255,255,.7);
+  --ink:#030712;--panel:rgba(10,20,37,.88);--muted:rgba(255,255,255,.7);
   --mansion:#ff6500;--beacon-1:#e060ff;--beacon-2:#ffb040;--beacon-3:#fff040;--beacon-4:#60ff40;
   --conduit:#30ffff;--shape:#30b0b0;--shape-box:#50a0a0;--spawn:#a04050
 }
@@ -17,42 +17,49 @@ body{font-family:"Microsoft YaHei","Noto Sans SC",system-ui,sans-serif}
 button,a{font:inherit}button{color:inherit}a{color:var(--cyan)}
 button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 #deck{position:fixed;inset:0;isolation:isolate}
-.slide{--accent:var(--cyan);--accent2:var(--blue);position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw 10vh;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(42px) scale(.985);transition:.46s cubic-bezier(.22,1,.36,1)}
-.slide::before{content:"";position:absolute;inset:0;z-index:-3;background:radial-gradient(circle at 80% 18%,color-mix(in srgb,var(--accent) 20%,transparent),transparent 35%),radial-gradient(circle at 12% 88%,color-mix(in srgb,var(--accent2) 13%,transparent),transparent 30%),#030712}
-.slide::after{content:"";position:absolute;inset:0;z-index:-2;opacity:.5;background-image:linear-gradient(color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(#000,transparent 96%)}
+.slide{--accent:var(--cyan);--accent2:var(--blue);position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4vh 4.5vw 9vh;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(38px) scale(.988);transition:.46s cubic-bezier(.22,1,.36,1)}
+.slide::before{content:"";position:absolute;inset:0;z-index:-3;background:radial-gradient(circle at 82% 16%,color-mix(in srgb,var(--accent) 20%,transparent),transparent 35%),radial-gradient(circle at 12% 88%,color-mix(in srgb,var(--accent2) 13%,transparent),transparent 30%),#030712}
+.slide::after{content:"";position:absolute;inset:0;z-index:-2;opacity:.42;background-image:linear-gradient(color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(#000,transparent 96%)}
 .slide.active{opacity:1;pointer-events:auto;transform:none}.slide>*{position:relative;z-index:1}
 .s2{--accent:#facc15;--accent2:#fb923c}.s3{--accent:#60a5fa;--accent2:#22d3ee}.s4{--accent:#ff6500;--accent2:#facc15}.s5{--accent:#facc15;--accent2:#5eead4}.s6{--accent:#c084fc;--accent2:#fb7185}.s7{--accent:#5eead4;--accent2:#60a5fa}.s8{--accent:#67e8f9;--accent2:#c084fc}
-.snum{position:absolute;top:3vh;left:4vw;color:rgba(255,255,255,.5);font-size:clamp(12px,1.1vw,17px);font-weight:950;letter-spacing:.18em}
-.chapter{position:absolute;top:3vh;right:4vw;color:color-mix(in srgb,var(--accent) 75%,white);font-size:clamp(10px,.9vw,13px);font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-.pill{display:inline-flex;align-items:center;gap:.55em;margin-bottom:1.5vh;padding:.42em 1.05em;border:1px solid color-mix(in srgb,var(--accent) 54%,transparent);border-radius:99px;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent);font-size:clamp(11px,.95vw,14px);font-weight:950;letter-spacing:.08em}
-.hero-title,.sec-title{font-weight:1000;line-height:.96;letter-spacing:-.05em;text-align:center;background:linear-gradient(135deg,#fff 12%,var(--accent) 60%,var(--accent2));background-clip:text;-webkit-background-clip:text;color:transparent}
-.hero-title{font-size:clamp(4.5rem,10vw,9.4rem)}.sec-title{max-width:18ch;font-size:clamp(2rem,4.5vw,4rem);line-height:1.02}
-.hero-sub{margin-top:1.7vh;max-width:980px;color:rgba(255,255,255,.82);font-size:clamp(1.05rem,2vw,1.75rem);font-weight:750;text-align:center}
-.scene-lead{max-width:54ch;margin:1.2vh auto 2.2vh;color:rgba(255,255,255,.72);font-size:clamp(.88rem,1.25vw,1.08rem);line-height:1.55;text-align:center}
+.snum{position:absolute;top:2.7vh;left:3.5vw;color:rgba(255,255,255,.5);font-size:clamp(12px,1.1vw,17px);font-weight:950;letter-spacing:.18em}
+.chapter{position:absolute;top:2.7vh;right:3.5vw;color:color-mix(in srgb,var(--accent) 75%,white);font-size:clamp(10px,.9vw,13px);font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.pill{display:inline-flex;align-items:center;gap:.55em;margin-bottom:1.1vh;padding:.42em 1.05em;border:1px solid color-mix(in srgb,var(--accent) 54%,transparent);border-radius:99px;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent);font-size:clamp(11px,.95vw,14px);font-weight:950;letter-spacing:.08em}
+.hero-title,.sec-title{font-weight:1000;line-height:.98;letter-spacing:-.05em;text-align:center;background:linear-gradient(135deg,#fff 12%,var(--accent) 60%,var(--accent2));background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero-title{font-size:clamp(4.5rem,10vw,9.4rem)}.sec-title{max-width:20ch;font-size:clamp(2rem,4.25vw,3.8rem)}
+.hero-sub{margin-top:1.7vh;max-width:980px;color:rgba(255,255,255,.84);font-size:clamp(1.05rem,2vw,1.75rem);font-weight:750;text-align:center}
+.scene-lead{max-width:60ch;margin:.9vh auto 1.7vh;color:rgba(255,255,255,.72);font-size:clamp(.82rem,1.15vw,1.02rem);line-height:1.5;text-align:center}
 .badge-row,.chip-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.badge-row{margin-top:3vh}
 .badge,.chip{padding:.48em .8em;border:1px solid rgba(255,255,255,.18);border-radius:99px;background:rgba(255,255,255,.07);font-size:clamp(.68rem,.85vw,.82rem);font-weight:850}
 .hero-hint{margin-top:2.5vh;color:rgba(255,255,255,.48);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-align:center}
-.hero-art{position:absolute!important;inset:0;z-index:-1!important;overflow:hidden;pointer-events:none}.hero-art .orb{position:absolute;right:8%;top:15%;width:min(34vw,460px);aspect-ratio:1;border:3px solid rgba(192,132,252,.5);border-radius:50%;box-shadow:0 0 70px #a855f733,inset 0 0 55px #22d3ee15}.hero-art .orb::before,.hero-art .orb::after{content:"";position:absolute;inset:12%;border:1px solid #67e8f955;border-radius:50%}.hero-art .orb::after{inset:0 48%}.hero-art .grid-cube{position:absolute;left:4%;bottom:10%;width:min(31vw,390px);height:min(27vh,250px);border:2px solid #67e8f944;transform:skewY(-7deg);background-image:linear-gradient(#67e8f918 1px,transparent 1px),linear-gradient(90deg,#67e8f918 1px,transparent 1px);background-size:32px 32px}
+.hero-art{position:absolute!important;inset:0;z-index:-1!important;overflow:hidden;pointer-events:none}.hero-art img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.8) contrast(1.15)}.hero-art::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(3,7,18,.18),#030712 76%)}
 .task-route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;max-width:1160px}
-.task-node{position:relative;min-height:122px;padding:18px;border:1px solid rgba(255,255,255,.16);border-radius:17px;background:rgba(255,255,255,.065);text-align:left;cursor:pointer;transition:.22s ease;overflow:hidden}.task-node::after{content:attr(data-number);position:absolute;right:10px;bottom:-17px;color:color-mix(in srgb,var(--accent) 13%,transparent);font-size:4.7rem;font-weight:1000}.task-node:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 58%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.task-node b{display:block;margin-bottom:.35em;color:#fff;font-size:clamp(.9rem,1.18vw,1.08rem)}.task-node span{display:block;max-width:27ch;color:rgba(255,255,255,.63);font-size:clamp(.72rem,.88vw,.84rem);line-height:1.45}.task-node em{display:block;margin-bottom:.5em;color:var(--accent);font-size:.68rem;font-style:normal;font-weight:950;letter-spacing:.1em}
+.task-node{position:relative;min-height:118px;padding:18px;border:1px solid rgba(255,255,255,.16);border-radius:17px;background:rgba(255,255,255,.065);text-align:left;cursor:pointer;transition:.22s ease;overflow:hidden}.task-node::after{content:attr(data-number);position:absolute;right:10px;bottom:-17px;color:color-mix(in srgb,var(--accent) 13%,transparent);font-size:4.7rem;font-weight:1000}.task-node:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 58%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.task-node b{display:block;margin-bottom:.35em;color:#fff;font-size:clamp(.9rem,1.18vw,1.08rem)}.task-node span{display:block;max-width:29ch;color:rgba(255,255,255,.63);font-size:clamp(.72rem,.88vw,.84rem);line-height:1.45}.task-node em{display:block;margin-bottom:.5em;color:var(--accent);font-size:.68rem;font-style:normal;font-weight:950;letter-spacing:.1em}
 .shortcut{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;color:rgba(255,255,255,.62);font-size:.78rem}.shortcut kbd{padding:.18em .48em;border:1px solid rgba(255,255,255,.28);border-bottom-width:3px;border-radius:6px;background:rgba(255,255,255,.1);color:#fff;font-weight:950}
-.scene-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:18px;width:100%;max-width:1200px;align-items:stretch}
-.visual-stage,.side-card{border:1px solid rgba(255,255,255,.16);border-radius:20px;background:rgba(5,13,27,.76);box-shadow:0 22px 60px rgba(0,0,0,.28);overflow:hidden}.visual-stage{position:relative;min-height:350px}.side-card{display:flex;flex-direction:column;padding:18px}.side-card h3{margin-bottom:.45em;color:color-mix(in srgb,var(--accent) 78%,white);font-size:clamp(1.05rem,1.4vw,1.28rem)}.side-card p,.side-card li{color:rgba(255,255,255,.7);font-size:clamp(.75rem,.92vw,.88rem);line-height:1.55}.side-card ul{padding-left:1.2em}.side-card li{margin:.35em 0}
-.mode-tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.mode-tabs button{padding:.58em .72em;border:1px solid rgba(255,255,255,.16);border-radius:9px;background:rgba(255,255,255,.06);font-size:clamp(.7rem,.85vw,.8rem);font-weight:900;cursor:pointer}.mode-tabs button.selected{border-color:color-mix(in srgb,var(--accent) 68%,white);background:color-mix(in srgb,var(--accent) 18%,transparent);color:#fff}
-.tip{margin-top:auto;padding:.75em .85em;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);color:rgba(255,255,255,.76);font-size:clamp(.72rem,.87vw,.84rem);line-height:1.5}.tip strong{color:#fff}
-.detail-button{align-self:flex-start;margin-top:11px;padding:.5em .75em;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:8px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:color-mix(in srgb,var(--accent) 80%,white);font-size:.76rem;font-weight:900;cursor:pointer}
-.game-stage{background:linear-gradient(180deg,#19345a 0 47%,#315d37 47%)}.game-stage::before,.game-stage::after{content:"";position:absolute;left:50%;top:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 1px #0008}.game-stage::before{width:20px;height:2px}.game-stage::after{width:2px;height:20px}.hud-panel{position:absolute;left:18px;top:18px;width:min(76%,500px);padding:14px 17px;border-left:4px solid var(--cyan);border-radius:4px 12px 12px 4px;background:rgba(2,8,23,.84);color:#dff9ff;font:800 clamp(.72rem,1vw,.91rem)/1.72 ui-monospace,"Microsoft YaHei",monospace;white-space:pre-line}.hud-goal{position:absolute;right:16px;bottom:15px;padding:.55em .72em;border-radius:9px;background:#020617c9;color:#e0f2fe;font-size:.7rem;font-weight:900}
-.structure-stage{background:linear-gradient(#132843 0 42%,#1d472e 42%)}.terrain{position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(168deg,transparent 0 12%,#234e35 13% 27%,#173d29 28% 42%,#28543b 43% 62%,#153522 63%)}.trees{position:absolute;inset:25% 0 0;background:radial-gradient(ellipse at 8% 40%,#21563a 0 6%,transparent 6.5%),radial-gradient(ellipse at 20% 24%,#18482e 0 7%,transparent 7.5%),radial-gradient(ellipse at 37% 37%,#245d3c 0 8%,transparent 8.5%),radial-gradient(ellipse at 68% 30%,#1c5235 0 9%,transparent 9.5%),radial-gradient(ellipse at 86% 43%,#215d3a 0 8%,transparent 8.5%)}.mansion{position:absolute;left:37%;bottom:20%;width:34%;height:37%;background:#49352c;clip-path:polygon(0 28%,18% 28%,18% 14%,38% 14%,50% 0,62% 14%,84% 14%,84% 28%,100% 28%,100% 100%,0 100%);filter:brightness(.55)}.structure-box,.component-box{position:absolute;opacity:0;transition:.35s ease;pointer-events:none}.structure-box{left:31%;bottom:13%;width:47%;height:53%;border:4px solid var(--mansion);box-shadow:0 0 25px #ff650066,inset 0 0 35px #ff650018}.component-box{border:2px solid #ff9a55}.c1{left:36%;bottom:20%;width:17%;height:28%}.c2{left:53%;bottom:20%;width:19%;height:38%}.structure-stage.revealed .structure-box,.structure-stage.revealed .component-box{opacity:1}.structure-status{position:absolute;left:15px;top:15px;padding:.5em .7em;border-radius:8px;background:#020617d9;color:#fed7aa;font-size:.7rem;font-weight:950}.structure-stage.revealed .structure-status::after{content:"：边界已显示"}.structure-stage:not(.revealed) .structure-status::after{content:"：普通视野"}
-.site-stage{background:linear-gradient(#203552 0 44%,#315334 44%)}.site-ground{position:absolute;left:5%;right:5%;bottom:-12%;height:68%;transform:perspective(540px) rotateX(58deg);transform-origin:center top;background:#345c37}.site-grid,.site-chunk,.site-biome,.site-lights{position:absolute;inset:0;opacity:0;transition:.28s}.site-stage[data-layer="grid"] .site-grid,.site-stage[data-layer="grid"] .site-chunk,.site-stage[data-layer="biome"] .site-biome,.site-stage[data-layer="light"] .site-lights{opacity:1}.site-grid{left:5%;right:5%;bottom:-12%;height:68%;transform:perspective(540px) rotateX(58deg);transform-origin:center top;background-image:linear-gradient(#67e8f955 2px,transparent 2px),linear-gradient(90deg,#67e8f955 2px,transparent 2px);background-size:12.5% 25%}.site-chunk{left:55%;top:49%;right:10%;bottom:8%;border:4px solid var(--rose)}.site-biome{left:7%;right:7%;top:48%;border-top:5px dashed var(--violet);transform:rotate(-5deg);filter:drop-shadow(0 0 9px #c084fc)}.site-lights i{position:absolute;width:20px;height:20px;border-radius:4px;background:#ef4444;box-shadow:0 0 18px #ef4444;animation:pulse 1.7s ease-in-out infinite}.site-lights i:nth-child(1){left:18%;top:65%}.site-lights i:nth-child(2){left:38%;top:56%;animation-delay:.3s}.site-lights i:nth-child(3){left:62%;top:68%;background:var(--amber);box-shadow:0 0 18px var(--amber);animation-delay:.7s}.site-lights i:nth-child(4){left:78%;top:53%;animation-delay:1s}@keyframes pulse{50%{opacity:.5;transform:scale(.7)}}.stage-caption{position:absolute;left:14px;bottom:14px;padding:.5em .7em;border-radius:8px;background:#020617d9;color:#fff;font-size:.7rem;font-weight:900}
-.range-stage{background:radial-gradient(circle at 50% 55%,#17213a,#07101f 68%)}.range-scene{position:absolute;inset:0;display:none}.range-stage[data-range="beacon"] .beacon-scene,.range-stage[data-range="conduit"] .conduit-scene,.range-stage[data-range="spawn"] .spawn-scene{display:block}.beacon-base{position:absolute;left:50%;bottom:12%;width:72px;height:32px;background:linear-gradient(135deg,#d1d5db,#64748b);transform:translateX(-50%) skewX(-18deg)}.beacon-beam{position:absolute;left:calc(50% - 8px);top:7%;bottom:20%;width:16px;background:linear-gradient(90deg,#fff4,var(--conduit),#fff4);box-shadow:0 0 20px var(--conduit)}.beacon-ring{position:absolute;left:50%;top:55%;border:3px solid;transform:translate(-50%,-50%) rotateX(62deg);border-radius:8px}.b1{width:34%;height:34%;border-color:var(--beacon-1)}.b2{width:49%;height:49%;border-color:var(--beacon-2)}.b3{width:65%;height:65%;border-color:var(--beacon-3)}.b4{width:82%;height:82%;border-color:var(--beacon-4)}.conduit-core{position:absolute;left:50%;top:52%;width:50px;height:50px;border:8px solid #8b5cf6;background:var(--conduit);transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 28px var(--conduit)}.conduit-cube{position:absolute;left:50%;top:52%;width:67%;height:67%;border:3px solid var(--conduit);transform:translate(-50%,-50%);box-shadow:inset 0 0 40px #30ffff18}.spawn-ring{position:absolute;left:50%;top:52%;border:3px solid;border-radius:50%;transform:translate(-50%,-50%)}.sp1{width:32%;aspect-ratio:1;border-color:var(--shape)}.sp2{width:46%;aspect-ratio:1;border-color:var(--beacon-3)}.sp3{width:83%;aspect-ratio:1;border-color:var(--spawn)}.player-dot{position:absolute;left:50%;top:52%;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:#111827;transform:translate(-50%,-50%);font-size:1.1rem}.range-labels{position:absolute;right:13px;bottom:13px;color:rgba(255,255,255,.68);font-size:.68rem;font-weight:900;line-height:1.6;text-align:right}
-.build-stage{background-image:linear-gradient(#30b0b016 1px,transparent 1px),linear-gradient(90deg,#30b0b016 1px,transparent 1px);background-size:28px 28px}.plan-view,.elevation-view{position:absolute;inset:0;display:none}.build-stage[data-view="plan"] .plan-view,.build-stage[data-view="elevation"] .elevation-view{display:block}.plan-circle{position:absolute;left:50%;top:50%;width:60%;aspect-ratio:1;border:4px solid var(--shape);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 26px #30b0b044}.plan-box{position:absolute;left:20%;right:20%;top:20%;bottom:20%;border:3px solid var(--shape-box)}.plan-axis{position:absolute;left:50%;top:13%;bottom:13%;width:3px;background:var(--beacon-3)}.plan-axis::after{content:"中心轴";position:absolute;left:8px;top:2px;color:#fef08a;font-size:.68rem;font-weight:900;white-space:nowrap}.tower{position:absolute;left:39%;bottom:13%;width:22%;height:66%;border:4px solid var(--shape-box);background:repeating-linear-gradient(to bottom,#30b0b018 0 15%,#30b0b066 15.5% 16.5%)}.tower-axis{position:absolute;left:50%;top:8%;bottom:8%;width:3px;background:var(--beacon-3);transform:translateX(-50%)}.afk{position:absolute;left:50%;top:16%;width:42px;height:42px;border-radius:50%;background:#fff;color:#111827;display:grid;place-items:center;transform:translate(-50%,-50%);font-size:1rem;z-index:2}.height-sphere{position:absolute;left:50%;top:45%;width:72%;aspect-ratio:1;border:3px solid var(--spawn);border-radius:50%;transform:translate(-50%,-50%);box-shadow:inset 0 0 35px #a040501a}.height-note{position:absolute;right:12px;bottom:12px;padding:.45em .62em;border-radius:7px;background:#020617d9;color:#fecdd3;font-size:.68rem;font-weight:900}
-.check-stage{padding:18px;background:linear-gradient(145deg,#0c1b2d,#111827)}.check-panel{display:none;height:100%}.check-stage[data-check="efficiency"] .efficiency-panel,.check-stage[data-check="preview"] .preview-panel,.check-stage[data-check="server"] .server-panel{display:grid}.efficiency-panel{grid-template-columns:repeat(3,1fr);gap:10px;align-content:center}.clue{padding:16px;border:1px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(255,255,255,.055)}.clue b{display:block;margin-bottom:.35em;color:#fff;font-size:.9rem}.clue span{color:rgba(255,255,255,.64);font-size:.73rem;line-height:1.45}.clue strong{display:inline-grid;place-items:center;width:28px;height:28px;margin-bottom:8px;border-radius:8px;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}.preview-panel{grid-template-columns:repeat(4,1fr);gap:10px;align-content:center}.preview-item{display:grid;place-items:center;min-height:125px;border:2px solid #6b7280;border-top-color:#1f2937;border-left-color:#1f2937;background:#4b5563;text-align:center}.preview-item i{font-size:2rem;font-style:normal}.preview-item b{margin-top:.4em;font-size:.72rem}.server-panel{grid-template-columns:repeat(3,1fr);gap:10px;align-content:center}.source{padding:18px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.055);text-align:center}.source i{display:block;margin-bottom:.5em;font-size:1.8rem;font-style:normal}.source b{display:block;color:#fff;font-size:.85rem}.source span{display:block;margin-top:.4em;color:rgba(255,255,255,.62);font-size:.7rem;line-height:1.4}
-.data-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}.data-badge{padding:.35em .58em;border:1px solid currentColor;border-radius:99px;background:#0206179c;font-size:.65rem;font-weight:900}.local{color:#86efac}.seed{color:#fde68a}.server{color:#c4b5fd}
-#nav{position:fixed;left:50%;bottom:22px;z-index:50;display:flex;gap:8px;padding:10px 14px;border:1px solid rgba(255,255,255,.15);border-radius:99px;background:rgba(3,7,18,.75);transform:translateX(-50%);backdrop-filter:blur(12px)}.dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.28);cursor:pointer;transition:.2s}.dot.on{width:28px;border-radius:9px;background:var(--cyan)}
-.detail-modal[hidden]{display:none}.detail-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:rgba(1,4,10,.92);backdrop-filter:blur(12px)}.detail-dialog{width:min(850px,96vw);max-height:min(82vh,720px);overflow:auto;border:1px solid rgba(255,255,255,.22);border-radius:18px;background:#08111f}.detail-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.12);background:#0d1828}.detail-head h2{font-size:clamp(1.1rem,1.7vw,1.45rem)}.detail-head button{width:38px;height:38px;border:1px solid rgba(255,255,255,.25);border-radius:8px;background:rgba(255,255,255,.08);font-size:1.3rem;cursor:pointer}#detail-body{padding:20px;color:rgba(255,255,255,.78);font-size:clamp(.8rem,1.05vw,.95rem);line-height:1.72}#detail-body h3{margin:1em 0 .35em;color:var(--cyan);font-size:1rem}#detail-body h3:first-child{margin-top:0}#detail-body ul{padding-left:1.25em}#detail-body li{margin:.35em 0}#detail-body strong{color:#fff}
+.scene-layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(260px,.58fr);gap:18px;width:100%;max-width:1240px;align-items:stretch}
+.visual-stage,.side-card{border:1px solid rgba(255,255,255,.16);border-radius:20px;background:rgba(5,13,27,.78);box-shadow:0 22px 60px rgba(0,0,0,.3);overflow:hidden}.visual-stage{position:relative;min-height:350px}.side-card{display:flex;flex-direction:column;padding:18px}.side-card h3{margin-bottom:.45em;color:color-mix(in srgb,var(--accent) 78%,white);font-size:clamp(1.02rem,1.35vw,1.25rem)}.side-card p,.side-card li{color:rgba(255,255,255,.7);font-size:clamp(.73rem,.88vw,.86rem);line-height:1.5}.side-card ul{padding-left:1.2em}.side-card li{margin:.32em 0}
+.mode-tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.mode-tabs button{padding:.55em .7em;border:1px solid rgba(255,255,255,.16);border-radius:9px;background:rgba(255,255,255,.06);font-size:clamp(.68rem,.8vw,.78rem);font-weight:900;cursor:pointer}.mode-tabs button.selected{border-color:color-mix(in srgb,var(--accent) 68%,white);background:color-mix(in srgb,var(--accent) 18%,transparent);color:#fff}
+.tip{margin-top:auto;padding:.72em .82em;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);color:rgba(255,255,255,.76);font-size:clamp(.7rem,.82vw,.81rem);line-height:1.45}.tip strong{color:#fff}
+.detail-button{align-self:flex-start;margin-top:10px;padding:.5em .75em;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:8px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:color-mix(in srgb,var(--accent) 80%,white);font-size:.74rem;font-weight:900;cursor:pointer}
+.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transform:scale(1.012);transition:opacity .28s ease,transform .45s ease;pointer-events:none}.shot.on{opacity:1;transform:scale(1)}
+.shot-shade{position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,rgba(2,6,23,.26)),linear-gradient(0deg,rgba(2,6,23,.76),transparent 38%);pointer-events:none}
+.shot-label{position:absolute;left:14px;bottom:14px;max-width:76%;padding:.52em .72em;border:1px solid rgba(255,255,255,.18);border-radius:9px;background:rgba(2,6,23,.82);color:#fff;font-size:.7rem;font-weight:900;backdrop-filter:blur(8px)}
+.shot-watermark{position:absolute;right:13px;top:13px;padding:.35em .58em;border-radius:99px;background:rgba(2,6,23,.72);color:var(--accent);font-size:.62rem;font-weight:950;letter-spacing:.08em}
+.hud-focus{position:absolute;left:15px;top:15px;width:min(48%,390px);height:43%;overflow:hidden;border:2px solid var(--cyan);border-radius:12px;background:#020617;box-shadow:0 12px 36px #0009}.hud-focus img{position:absolute;left:0;top:0;width:520%;height:auto;max-width:none}.hud-focus::after{content:"实际 HUD 局部放大";position:absolute;right:8px;bottom:7px;padding:.3em .52em;border-radius:6px;background:#020617d9;color:var(--cyan);font-size:.62rem;font-weight:900}
+.structure-stage[data-view="on"] [data-structure-shot="effect"],.structure-stage[data-view="off"] [data-structure-shot="config"]{opacity:1;transform:scale(1)}
+.site-stage[data-layer="biome"] [data-site-shot="biome"],.site-stage[data-layer="renderer"] [data-site-shot="renderer"]{opacity:1;transform:scale(1)}
+.guide-panel{position:absolute;inset:0;display:none;grid-template-columns:repeat(3,1fr);gap:12px;align-content:center;padding:22px;background:linear-gradient(145deg,#0c1b2d,#111827)}.site-stage[data-layer="guide"] .guide-panel{display:grid}.guide-card,.base-card{padding:16px;border:1px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(255,255,255,.055)}.guide-card strong,.base-card strong{display:block;margin-bottom:.4em;color:#fff}.guide-card span,.base-card span{color:rgba(255,255,255,.66);font-size:.73rem;line-height:1.45}
+.range-stage{background:radial-gradient(circle at 50% 55%,#17213a,#07101f 68%)}.range-scene{position:absolute;inset:0;display:none}.range-stage[data-range="beacon"] .beacon-scene,.range-stage[data-range="conduit"] .conduit-scene,.range-stage[data-range="spawn"] .spawn-scene{display:block}.beacon-scene .shot{opacity:1;transform:none}.beacon-scene .shot-shade{background:linear-gradient(0deg,rgba(2,6,23,.72),transparent 36%)}
+.conduit-core{position:absolute;left:50%;top:52%;width:50px;height:50px;border:8px solid #8b5cf6;background:var(--conduit);transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 28px var(--conduit)}.conduit-cube{position:absolute;left:50%;top:52%;width:67%;height:67%;border:3px solid var(--conduit);transform:translate(-50%,-50%);box-shadow:inset 0 0 40px #30ffff18}.spawn-ring{position:absolute;left:50%;top:52%;border:3px solid;border-radius:50%;transform:translate(-50%,-50%)}.sp1{width:32%;aspect-ratio:1;border-color:var(--shape)}.sp2{width:46%;aspect-ratio:1;border-color:var(--beacon-3)}.sp3{width:83%;aspect-ratio:1;border-color:var(--spawn)}.player-dot{position:absolute;left:50%;top:52%;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:#111827;transform:translate(-50%,-50%);font-size:1.1rem}.range-labels{position:absolute;right:13px;bottom:13px;padding:.45em .65em;border-radius:8px;background:#020617d9;color:rgba(255,255,255,.76);font-size:.68rem;font-weight:900;line-height:1.6;text-align:right}
+.build-stage{--shape-color:var(--shape)}.group-panel{position:absolute;inset:0;display:none;padding:18px;background:linear-gradient(0deg,rgba(3,7,18,.94),rgba(3,7,18,.04) 78%)}.group-panel.active{display:flex;flex-direction:column;justify-content:flex-end}.shape-list{display:flex;flex-wrap:wrap;gap:6px;max-width:94%;padding-right:70px}.shape-list span{padding:.42em .62em;border:1px solid color-mix(in srgb,var(--shape-color) 58%,transparent);border-radius:8px;background:rgba(2,6,23,.84);color:#f8fafc;font-size:clamp(.62rem,.76vw,.74rem);font-weight:850}.group-panel[data-shape-panel="spawn"]{--shape-color:var(--spawn)}.group-panel[data-shape-panel="pyramid"]{--shape-color:#ffaa00}
+.check-stage[data-view="shulker"] [data-base-shot="shulker"],.check-stage[data-view="bundle"] [data-base-shot="bundle"]{opacity:1;transform:scale(1)}
+.base-panel{position:absolute;inset:0;display:none;grid-template-columns:repeat(3,1fr);gap:12px;align-content:center;padding:22px;background:linear-gradient(145deg,#0c1b2d,#111827)}.check-stage[data-view="target"] [data-base-panel="target"],.check-stage[data-view="efficiency"] [data-base-panel="efficiency"]{display:grid}
+.data-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.data-badge{padding:.35em .58em;border:1px solid currentColor;border-radius:99px;background:#0206179c;font-size:.63rem;font-weight:900}.local{color:#86efac}.seed{color:#fde68a}.server{color:#c4b5fd}
+#nav{position:fixed;left:50%;bottom:18px;z-index:50;display:flex;gap:8px;padding:10px 14px;border:1px solid rgba(255,255,255,.15);border-radius:99px;background:rgba(3,7,18,.78);transform:translateX(-50%);backdrop-filter:blur(12px)}.dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.28);cursor:pointer;transition:.2s}.dot.on{width:28px;border-radius:9px;background:var(--cyan)}
+.detail-modal[hidden]{display:none}.detail-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:rgba(1,4,10,.92);backdrop-filter:blur(12px)}.detail-dialog{width:min(900px,96vw);max-height:min(86vh,760px);overflow:auto;border:1px solid rgba(255,255,255,.22);border-radius:18px;background:#08111f}.detail-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.12);background:#0d1828}.detail-head h2{font-size:clamp(1.1rem,1.7vw,1.45rem)}.detail-head button{width:38px;height:38px;border:1px solid rgba(255,255,255,.25);border-radius:8px;background:rgba(255,255,255,.08);font-size:1.3rem;cursor:pointer}#detail-body{padding:20px;color:rgba(255,255,255,.78);font-size:clamp(.8rem,1.02vw,.94rem);line-height:1.68}#detail-body h3{margin:1em 0 .35em;color:var(--cyan);font-size:1rem}#detail-body h3:first-child{margin-top:0}#detail-body ul{padding-left:1.25em}#detail-body li{margin:.35em 0}#detail-body strong{color:#fff}.detail-media{display:block;width:100%;max-height:420px;margin:.4em 0 1.2em;border:1px solid rgba(255,255,255,.18);border-radius:12px;object-fit:contain;background:#020617}
 body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.export .hero-hint{display:none}
-@media(max-width:900px){.slide{justify-content:flex-start;padding:7vh 5vw 13vh;overflow-y:auto}.task-route{grid-template-columns:repeat(2,minmax(0,1fr))}.scene-layout{grid-template-columns:1fr}.visual-stage{min-height:330px}.chapter{display:none}.hero-art{opacity:.6}}
-@media(max-width:600px){.slide{padding:8vh 5vw 14vh}.task-route{grid-template-columns:1fr}.task-node{min-height:0}.hero-title{font-size:clamp(3.8rem,20vw,6rem)}.sec-title{font-size:clamp(2rem,10.5vw,3.2rem)}.visual-stage{min-height:300px}.efficiency-panel,.preview-panel,.server-panel{grid-template-columns:1fr 1fr}.detail-modal{padding:0}.detail-dialog{width:100%;height:100%;max-height:100%;border:0;border-radius:0}}
+@media(max-width:900px){.slide{justify-content:flex-start;padding:7vh 5vw 13vh;overflow-y:auto}.task-route{grid-template-columns:repeat(2,minmax(0,1fr))}.scene-layout{grid-template-columns:1fr}.visual-stage{min-height:350px}.chapter{display:none}.hero-art{opacity:.7}.side-card{min-height:280px}}
+@media(max-width:600px){.slide{padding:8vh 5vw 14vh}.task-route{grid-template-columns:1fr}.task-node{min-height:0}.hero-title{font-size:clamp(3.8rem,20vw,6rem)}.sec-title{font-size:clamp(2rem,10.5vw,3.2rem)}.visual-stage{min-height:310px}.guide-panel,.base-panel{grid-template-columns:1fr;padding:14px}.hud-focus{width:72%;height:40%}.shape-list{max-width:100%;padding-right:0}.shape-list span{font-size:.66rem}.shot-label{max-width:88%}.detail-modal{padding:0}.detail-dialog{width:100%;height:100%;max-height:100%;border:0;border-radius:0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -60,47 +67,48 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
 <main id="deck">
   <section class="slide s1 active" id="s1" aria-labelledby="title-s1">
     <span class="snum">01 / 08</span><span class="chapter">MiniHUD · Overview</span>
+    <div class="hero-art"><img src="assets/screenshots/shape.webp" alt="游戏世界中的 MiniHUD 圆形辅助线"></div>
     <span class="pill">◫ MINECRAFT MOD 介绍</span>
     <h1 class="hero-title" id="title-s1">MiniHUD</h1>
     <p class="hero-sub">把看不见的信息、边界与范围画出来</p>
-    <div class="badge-row" aria-label="五类能力"><span class="badge">📊 信息 HUD</span><span class="badge">💡 环境与网格</span><span class="badge">◎ 范围与边界</span><span class="badge">📐 建筑与形状</span><span class="badge">🎒 预览与检查</span></div>
-    <p class="hero-hint">适合第一次接触 MiniHUD 的同学 · ← → 翻页 · 空格下一页</p>
-    <div class="hero-art" aria-hidden="true"><div class="orb"></div><div class="grid-cube"></div></div>
+    <div class="badge-row"><span class="badge">📊 信息 HUD</span><span class="badge">💡 环境与网格</span><span class="badge">◎ 范围与边界</span><span class="badge">📐 建筑与形状</span><span class="badge">🎒 预览与检查</span></div>
+    <p class="hero-hint">真实游戏场景讲解 · ← → 翻页 · 空格下一页</p>
   </section>
 
   <section class="slide s2" id="s2" aria-labelledby="title-s2">
     <span class="snum">02 / 08</span><span class="chapter">Your Mission</span>
     <span class="pill">先选任务，再选功能</span>
     <h2 class="sec-title" id="title-s2">今天，你准备完成什么任务？</h2>
-    <p class="scene-lead">MiniHUD 不需要背菜单。沿着一次冒险或工程的过程，找到此刻真正需要的能力。</p>
+    <p class="scene-lead">MiniHUD 不需要背菜单。沿着一次冒险、工程和基地维护的过程，找到此刻真正需要的能力。</p>
     <div class="task-route">
-      <button class="task-node" type="button" data-number="01" onclick="go(2)" aria-label="前往日常游玩场景"><em>日常游玩</em><b>我现在在哪里？</b><span>让坐标、方向和状态一直在眼前。</span></button>
-      <button class="task-node" type="button" data-number="02" onclick="go(3)" aria-label="前往外出探索场景"><em>外出探索</em><b>结构藏在哪里？</b><span>到达附近后，用边界看清结构。</span></button>
-      <button class="task-node" type="button" data-number="03" onclick="go(4)" aria-label="前往工程选址场景"><em>工程选址</em><b>这里适合开工吗？</b><span>先检查光照、网格、区块和群系。</span></button>
-      <button class="task-node" type="button" data-number="04" onclick="go(5)" aria-label="前往机制规划场景"><em>机制规划</em><b>规则影响到哪里？</b><span>把装置、随机刻和生成范围画出来。</span></button>
-      <button class="task-node" type="button" data-number="05" onclick="go(6)" aria-label="前往开始施工场景"><em>开始施工</em><b>圆心和高度怎么定？</b><span>用形状把设计放进世界。</span></button>
-      <button class="task-node" type="button" data-number="06" onclick="go(7)" aria-label="前往完工排查场景"><em>完工排查</em><b>为什么没有达到预期？</b><span>沿着数据线索快速找到问题。</span></button>
+      <button class="task-node" type="button" data-number="01" onclick="go(2)"><em>日常游玩</em><b>我现在在哪里？</b><span>让坐标、方向和运行状态一直在眼前。</span></button>
+      <button class="task-node" type="button" data-number="02" onclick="go(3)"><em>外出探索</em><b>怎样看清结构？</b><span>到达附近后，用线框看清隐藏结构。</span></button>
+      <button class="task-node" type="button" data-number="03" onclick="go(4)"><em>工程选址</em><b>这里适合开工吗？</b><span>检查光照、网格、区块和群系。</span></button>
+      <button class="task-node" type="button" data-number="04" onclick="go(5)"><em>机制规划</em><b>规则影响到哪里？</b><span>把装置、随机刻和生成范围画出来。</span></button>
+      <button class="task-node" type="button" data-number="05" onclick="go(6)"><em>开始施工</em><b>圆心和高度怎么定？</b><span>用形状把设计放进世界。</span></button>
+      <button class="task-node" type="button" data-number="06" onclick="go(7)"><em>基地管理</em><b>快速查看与维护</b><span>整理收纳、确认目标，并在效率异常时找到线索。</span></button>
     </div>
-    <div class="shortcut"><kbd>H</kbd> 主渲染开关 <span>·</span><kbd>H + C</kbd> 配置入口 <span>· 快捷键可以修改</span></div>
+    <div class="shortcut"><kbd>H</kbd> 主渲染开关 · <kbd>H + C</kbd> 配置入口 · 快捷键可以修改</div>
   </section>
 
   <section class="slide s3" id="s3" aria-labelledby="title-s3">
     <span class="snum">03 / 08</span><span class="chapter">Scenario 01 · Info</span>
     <span class="pill">场景 1 · 日常游玩</span>
     <h2 class="sec-title" id="title-s3">随时掌握真正有用的信息</h2>
-    <p class="scene-lead">把 MiniHUD 当成一张会随任务变化的便签：够用就好，不必把 F3 全搬过来。</p>
+    <p class="scene-lead">把 MiniHUD 当成一张会随任务变化的便签：真实时间、坐标、朝向、TPS/MSPT 与群系够用就好。</p>
     <div class="scene-layout">
-      <div class="visual-stage game-stage" aria-label="信息 HUD 游戏画面示意"><div class="hud-panel" id="hud-lines" aria-live="polite">现实时间：13:20
-坐标：x: 128.4 y: 64.0 z: -320.8
-朝向：南（+Z）
-群系：平原
-服务器 TPS：20.0</div><div class="hud-goal">现在的任务：安全回到基地</div></div>
+      <div class="visual-stage" aria-label="真实信息 HUD 游戏截图">
+        <img class="shot on" src="assets/screenshots/hud.webp" alt="游戏左上角显示时间、坐标、朝向、TPS/MSPT 与群系的信息 HUD">
+        <div class="shot-shade"></div>
+        <div class="hud-focus" aria-hidden="true"><img src="assets/screenshots/hud.webp" alt=""></div>
+        <div class="shot-label" id="hud-lines" aria-live="polite">现实时间 · 坐标 · 朝向 · TPS/MSPT · 群系</div><span class="shot-watermark">真实游戏效果</span>
+      </div>
       <aside class="side-card">
         <div class="mode-tabs"><button class="selected" type="button" data-scene="explore">出门探索</button><button type="button" data-scene="build">准备施工</button><button type="button" data-scene="performance">性能排查</button></div>
         <h3 id="scene-title">迷路前先留下线索</h3><p id="scene-description">坐标、朝向、群系和时间负责导航；参考点距离能帮助你回到基地或矿道入口。</p>
-        <div class="chip-row" style="justify-content:flex-start;margin-top:11px"><span class="chip">位置方向</span><span class="chip">世界环境</span><span class="chip">目标信息</span><span class="chip">运行状态</span></div>
+        <div class="chip-row"><span class="chip">位置方向</span><span class="chip">世界环境</span><span class="chip">目标信息</span><span class="chip">运行状态</span></div>
         <p class="tip" id="scene-warning"><strong>判断方法：</strong>一次保留 4–6 行，读完就能作决定。</p>
-        <button class="detail-button" type="button" data-detail="info">再深入一点 →</button>
+        <button class="detail-button" type="button" data-detail="info">更多信息行与配置 →</button>
       </aside>
     </div>
   </section>
@@ -109,14 +117,18 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
     <span class="snum">04 / 08</span><span class="chapter">Scenario 02 · Explore</span>
     <span class="pill">场景 2 · 外出探索</span>
     <h2 class="sec-title" id="title-s4">让藏在地形里的结构变清楚</h2>
-    <p class="scene-lead">探索到附近后，用结构边界中的主边界和组成部分确认范围；林地府邸只是其中一个例子。</p>
+    <p class="scene-lead">探索到附近后，用结构边界中的主边界和组成部分确认完整范围；图中的水下遗迹只是一个实际例子。</p>
     <div class="scene-layout">
-      <div class="visual-stage structure-stage" id="structure-stage" data-view="off" aria-label="林地府邸结构边界显隐示意"><div class="terrain"></div><div class="trees"></div><div class="mansion"></div><div class="structure-box"></div><div class="component-box c1"></div><div class="component-box c2"></div><div class="structure-status">探索视野</div></div>
+      <div class="visual-stage structure-stage revealed" id="structure-stage" data-view="on" aria-label="结构边界效果和配置切换">
+        <img class="shot" data-structure-shot="effect" src="assets/screenshots/structure.webp" alt="水下结构周围显示 MiniHUD 结构边界">
+        <img class="shot" data-structure-shot="config" src="assets/screenshots/structure-config.webp" alt="MiniHUD 结构显示配置页面">
+        <div class="shot-shade"></div><div class="shot-label">洋底结构：边界框把埋在水下的范围标出来</div><span class="shot-watermark">实际结构数据</span>
+      </div>
       <aside class="side-card">
-        <div class="mode-tabs"><button class="selected" type="button" data-structure-view="off">普通视野</button><button type="button" data-structure-view="on">显示边界</button></div>
-        <h3>从“看见建筑”到“看懂结构”</h3><ul><li>先探索到相应区域，让所需数据可用。</li><li>主边界看整体，组成部分看内部结构。</li><li>府邸、要塞、试炼密室、海底神殿都可作为应用例子。</li></ul>
+        <div class="mode-tabs"><button class="selected" type="button" data-structure-view="on">边界效果</button><button type="button" data-structure-view="off">结构配置</button></div>
+        <h3>从“看见建筑”到“看懂结构”</h3><ul><li>先探索到相应区域，让所需数据可用。</li><li>主边界看整体，组成部分看内部结构。</li><li>林地府邸、要塞、试炼密室、海底神殿都可作为应用例子。</li></ul>
         <p class="tip"><strong>能力边界：</strong>不是远程搜索，也不使用 /locate；多人服还可能需要 Servux 或服务器许可。</p>
-        <button class="detail-button" type="button" data-detail="structure">结构数据从哪里来？ →</button>
+        <button class="detail-button" type="button" data-detail="structure">结构类型与数据来源 →</button>
       </aside>
     </div>
   </section>
@@ -125,14 +137,19 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
     <span class="snum">05 / 08</span><span class="chapter">Scenario 03 · Site</span>
     <span class="pill">场景 3 · 工程选址</span>
     <h2 class="sec-title" id="title-s5">开工前，先检查周围环境</h2>
-    <p class="scene-lead">同一片地，从不同覆盖层看会得到不同答案：哪里暗、边界在哪、工程是否跨区块。</p>
+    <p class="scene-lead">同一片地，从不同覆盖层看会得到不同答案：哪里暗、边界在哪、工程是否跨过区块或群系。</p>
     <div class="scene-layout">
-      <div class="visual-stage site-stage" id="site-stage" data-layer="light" aria-label="环境覆盖层切换示意"><div class="site-ground"></div><div class="site-grid"></div><div class="site-chunk"></div><div class="site-biome"></div><div class="site-lights"><i></i><i></i><i></i><i></i></div><div class="stage-caption">覆盖层只显示规则，不会自动处理现场</div></div>
+      <div class="visual-stage site-stage" id="site-stage" data-layer="biome" aria-label="工程选址覆盖层切换">
+        <img class="shot" data-site-shot="biome" src="assets/screenshots/biome.webp" alt="游戏世界中以绿色覆盖层显示群系边界">
+        <img class="shot" data-site-shot="renderer" src="assets/screenshots/renderer-config.webp" alt="MiniHUD 光照、网格和范围渲染器配置页面">
+        <div class="guide-panel"><div class="guide-card"><strong>1 · 找风险</strong><span>用光照数字或颜色定位可能生成生物的位置。</span></div><div class="guide-card"><strong>2 · 对边界</strong><span>方块网格、区块与群系边界决定工程口径。</span></div><div class="guide-card"><strong>3 · 看机制</strong><span>史莱姆区块、随机刻和可生成列回答运行条件。</span></div></div>
+        <div class="shot-shade"></div><div class="shot-label">覆盖层只显示规则，不会替你处理现场</div><span class="shot-watermark">一次只开一层</span>
+      </div>
       <aside class="side-card">
-        <div class="mode-tabs"><button class="selected" type="button" data-site-layer="light">光照风险</button><button type="button" data-site-layer="grid">网格 / 区块</button><button type="button" data-site-layer="biome">群系边界</button></div>
-        <h3>选址时问三个问题</h3><ul><li>光照是否安全，哪里可能生成生物？</li><li>建筑是否跨过方块、区块或区域边界？</li><li>群系、史莱姆区块和可生成列是否符合需求？</li></ul>
+        <div class="mode-tabs"><button class="selected" type="button" data-site-layer="biome">群系边界</button><button type="button" data-site-layer="renderer">渲染器配置</button><button type="button" data-site-layer="guide">选址清单</button></div>
+        <h3>选基地、农场或大型工程</h3><ul><li>光照是否安全，哪里可能生成生物？</li><li>建筑是否跨过方块、区块或区域边界？</li><li>群系、史莱姆区块和可生成列是否符合需求？</li></ul>
         <p class="tip"><strong>推荐动作：</strong>发现问题 → 打开一层 → 现场处理 → 关闭复查。</p>
-        <button class="detail-button" type="button" data-detail="environment">覆盖层怎么选？ →</button>
+        <button class="detail-button" type="button" data-detail="environment">还能检查哪些环境规则？ →</button>
       </aside>
     </div>
   </section>
@@ -143,10 +160,10 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
     <h2 class="sec-title" id="title-s6">把看不见的影响范围画出来</h2>
     <p class="scene-lead">装置用立体边界，方块更新看区块，生物机制常用球形距离——先分清是谁的规则。</p>
     <div class="scene-layout">
-      <div class="visual-stage range-stage" id="range-stage" data-range="beacon" aria-label="机制范围切换示意">
-        <div class="range-scene beacon-scene"><div class="beacon-beam"></div><div class="beacon-ring b4"></div><div class="beacon-ring b3"></div><div class="beacon-ring b2"></div><div class="beacon-ring b1"></div><div class="beacon-base"></div><div class="stage-caption">信标：不同等级，对应不同作用边界</div></div>
-        <div class="range-scene conduit-scene"><div class="conduit-cube"></div><div class="conduit-core"></div><div class="stage-caption">潮涌核心：确认水下工程是否被覆盖</div></div>
-        <div class="range-scene spawn-scene"><div class="spawn-ring sp3"></div><div class="spawn-ring sp2"></div><div class="spawn-ring sp1"></div><div class="player-dot">👤</div><div class="range-labels">24 格 · 32 格 · 128 格<br>常见参考，不是所有规则的唯一答案</div></div>
+      <div class="visual-stage range-stage" id="range-stage" data-range="beacon" aria-label="机制范围切换展示">
+        <div class="range-scene beacon-scene"><img class="shot" src="assets/screenshots/beacon.webp" alt="森林中的信标与 MiniHUD 信标范围覆盖层"><div class="shot-shade"></div><div class="shot-label">信标：用真实范围覆盖层确认作用边界</div><span class="shot-watermark">真实游戏效果</span></div>
+        <div class="range-scene conduit-scene"><div class="conduit-core"></div><div class="conduit-cube"></div><div class="shot-label">潮涌核心：确认水下工程是否完整覆盖</div></div>
+        <div class="range-scene spawn-scene"><div class="spawn-ring sp1"></div><div class="spawn-ring sp2"></div><div class="spawn-ring sp3"></div><div class="player-dot">👤</div><div class="range-labels">24 格 · 32 格 · 128 格<br>常见参考，不是所有规则的唯一答案</div></div>
       </div>
       <aside class="side-card">
         <div class="mode-tabs"><button class="selected" type="button" data-range="beacon">装置范围</button><button type="button" data-range="conduit">水下范围</button><button type="button" data-range="spawn">生成球</button></div>
@@ -161,34 +178,43 @@ body.export .slide{padding:3vh 4vw 4vh;transition:none}body.export #nav,body.exp
     <span class="snum">07 / 08</span><span class="chapter">Scenario 05 · Build</span>
     <span class="pill">场景 5 · 开始施工</span>
     <h2 class="sec-title" id="title-s7">先把设计画进世界，再动手</h2>
-    <p class="scene-lead">以圆形刷怪塔为例：俯视图定占地和半径，侧视图检查层高、挂机点与整体高度。</p>
+    <p class="scene-lead">以圆形刷怪塔为例：先用真实形状确定圆心、占地和半径，再扩展到高度、生成空间和锥体设计。</p>
     <div class="scene-layout">
-      <div class="visual-stage build-stage" id="build-stage" data-view="plan" aria-label="建筑平面与侧视切换示意"><div class="plan-view"><div class="plan-box"></div><div class="plan-circle"></div><div class="plan-axis"></div><div class="stage-caption">平面：方框定占地，圆 / 圆柱定塔身</div></div><div class="elevation-view"><div class="height-sphere"></div><div class="tower"></div><div class="tower-axis"></div><div class="afk">👤</div><div class="height-note">侧面：用球形参考判断挂机位置与高度</div></div></div>
+      <div class="visual-stage build-stage" id="build-stage" data-group="basic" aria-label="建筑与生成范围形状切换展示">
+        <img class="shot on" src="assets/screenshots/shape.webp" alt="游戏世界中使用 MiniHUD 圆形和圆柱体规划建筑">
+        <div class="shot-shade"></div>
+        <div class="group-panel active" data-shape-panel="basic"><div class="shape-list"><span>立方体</span><span>中心立方体</span><span>圆形 / 圆柱体</span><span>直线（方块化）</span><span>球体（方块化）</span></div></div>
+        <div class="group-panel" data-shape-panel="spawn"><div class="shape-list"><span>可调整生成球体</span><span>可生成球体（&gt;24）</span><span>可消失球体（&gt;32）</span><span>立即消失球体（&gt;128）</span><span>可生成球体（Y 轴裁剪）</span><span>椭球体可生成球体</span></div></div>
+        <div class="group-panel" data-shape-panel="pyramid"><div class="shape-list"><span>圆锥</span><span>四棱锥</span><span>方形四棱锥</span><span>八边形棱锥</span></div></div>
+        <span class="shot-watermark">真实游戏效果</span>
+      </div>
       <aside class="side-card">
-        <div class="mode-tabs"><button class="selected" type="button" data-build-view="plan">俯视规划</button><button type="button" data-build-view="elevation">侧面高度</button></div>
-        <h3>每种形状负责一个问题</h3><ul><li><strong>方框：</strong>占地、挖掘区和建筑外框。</li><li><strong>圆柱：</strong>中心、半径、塔身与楼层。</li><li><strong>方块线 / 球体：</strong>中心轴、路线与空间高度。</li></ul>
+        <div class="mode-tabs"><button class="selected" type="button" data-shape-group="basic">基础形状</button><button type="button" data-shape-group="spawn">生成空间</button><button type="button" data-shape-group="pyramid">锥体 / 棱锥</button></div>
+        <h3>形状回答不同施工问题</h3><ul><li><strong>占地：</strong>立方体、方框式边界、圆形和圆柱体。</li><li><strong>路线：</strong>直线（方块化）就是可见的方块线。</li><li><strong>空间：</strong>球体、生成球和 Y 轴裁剪帮助判断高度。</li></ul>
         <p class="tip"><strong>重要：</strong>形状是施工参考，不会自动放置或拆除方块。</p>
-        <button class="detail-button" type="button" data-detail="shape">还可以画哪些形状？ →</button>
+        <button class="detail-button" type="button" data-detail="shape">15 种图形完整说明 →</button>
       </aside>
     </div>
   </section>
 
   <section class="slide s8" id="s8" aria-labelledby="title-s8">
-    <span class="snum">08 / 08</span><span class="chapter">Scenario 06 · Check</span>
-    <span class="pill">场景 6 · 完工排查</span>
-    <h2 class="sec-title" id="title-s8">沿着线索，快速找到问题</h2>
-    <p class="scene-lead">不要一口气打开全部功能。先判断问题属于环境、实体、性能还是数据来源，再查看对应信息。</p>
+    <span class="snum">08 / 08</span><span class="chapter">Scenario 06 · Base</span>
+    <span class="pill">场景 6 · 基地管理</span>
+    <h2 class="sec-title" id="title-s8">少开界面，快速查看与维护</h2>
+    <p class="scene-lead">回到基地后，用预览整理物资、确认目标状态；机器效率异常时，再沿着实体、距离与服务器数据继续检查。</p>
     <div class="scene-layout">
-      <div class="visual-stage check-stage" id="check-stage" data-check="efficiency" aria-label="完工排查内容切换">
-        <div class="check-panel efficiency-panel"><div class="clue"><strong>1</strong><b>先看现场</b><span>光照、随机刻、生成距离和目标方块是否正确？</span></div><div class="clue"><strong>2</strong><b>再看负载</b><span>实体 / 方块实体、Mob Cap、FPS 与已加载区块。</span></div><div class="clue"><strong>3</strong><b>最后看服务器</b><span>延迟、TPS/MSPT 与同步数据是否可用。</span></div></div>
-        <div class="check-panel preview-panel"><div class="preview-item"><i>🗺️</i><b>地图预览</b></div><div class="preview-item"><i>📦</i><b>潜影盒</b></div><div class="preview-item"><i>🎒</i><b>物品栏预览</b></div><div class="preview-item"><i>📘</i><b>村民交易</b></div></div>
-        <div class="check-panel server-panel"><div class="source"><i>💻</i><b>客户端本地</b><span>坐标、方向、FPS 等通常直接可用。</span></div><div class="source"><i>🌱</i><b>正确世界种子</b><span>史莱姆区块等计算才可信。</span></div><div class="source"><i>🔌</i><b>Servux / Carpet</b><span>多人服上的结构、Mob Cap 或精确性能数据可能需要服务器配合。</span></div></div>
+      <div class="visual-stage check-stage" id="check-stage" data-view="shulker" aria-label="基地管理内容切换">
+        <img class="shot" data-base-shot="shulker" src="assets/screenshots/shulker.webp" alt="潜影盒悬停时显示 MiniHUD 潜影盒内容预览">
+        <img class="shot" data-base-shot="bundle" src="assets/screenshots/bundle.webp" alt="收纳袋悬停时显示 MiniHUD 收纳袋容量预览">
+        <div class="base-panel" data-base-panel="target"><div class="base-card"><strong>村民交易</strong><span>快速确认附魔、价格与交易内容。</span></div><div class="base-card"><strong>目标实体</strong><span>生命、状态、品种与特殊属性。</span></div><div class="base-card"><strong>目标方块</strong><span>蜂巢数量、熔炉经验与方块属性。</span></div></div>
+        <div class="base-panel" data-base-panel="efficiency"><div class="base-card"><strong>现场条件</strong><span>光照、随机刻、生成距离与 Mob Cap。</span></div><div class="base-card"><strong>客户端负载</strong><span>FPS、内存、实体、方块实体与已加载区块。</span></div><div class="base-card"><strong>服务器状态</strong><span>延迟、TPS/MSPT 与同步数据是否可用。</span></div></div>
+        <div class="shot-shade"></div><div class="shot-label">悬停即可预览，不必把容器逐个打开</div><span class="shot-watermark">MiniHUD 预览</span>
       </div>
       <aside class="side-card">
-        <div class="mode-tabs"><button class="selected" type="button" data-check="efficiency">效率线索</button><button type="button" data-check="preview">快速查看</button><button type="button" data-check="server">数据来源</button></div>
-        <h3>用完就关，画面保持清楚</h3><ul><li>总开关 → 当前任务功能 → 数据来源。</li><li>再检查距离、维度与快捷键冲突。</li><li>MiniHUD 负责显示，不替你修改世界。</li></ul>
-        <p class="tip"><strong>安装提醒：</strong>选择匹配游戏版本的 MiniHUD + MaLiLib，并遵守服务器规则。</p>
-        <button class="detail-button" type="button" data-detail="preview">完整排查清单 →</button>
+        <div class="mode-tabs"><button class="selected" type="button" data-base-view="shulker">潜影盒</button><button type="button" data-base-view="bundle">收纳袋</button><button type="button" data-base-view="target">目标检查</button><button type="button" data-base-view="efficiency">效率维护</button></div>
+        <h3>基地里的三类日常任务</h3><ul><li><strong>收纳整理：</strong>潜影盒、收纳袋、地图预览与物品栏预览。</li><li><strong>目标检查：</strong>村民交易、目标实体和目标方块。</li><li><strong>效率维护：</strong>Mob Cap、实体、区块、延迟与 TPS/MSPT。</li></ul>
+        <p class="tip"><strong>多人提醒：</strong>结构、精确性能或部分实体数据可能需要 Servux、Carpet 与服务器许可；安装 MiniHUD 时也需要匹配版本的 MaLiLib。</p>
+        <button class="detail-button" type="button" data-detail="preview">基地管理完整清单 →</button>
       </aside>
     </div>
   </section>
@@ -210,28 +236,30 @@ syncSlideAccessibility();
 function go(index){if(index<0||index>=slides.length||index===cur)return;slides[cur].classList.remove('active');slides[index].classList.add('active');dots[cur].classList.remove('on');dots[index].classList.add('on');cur=index;syncSlideAccessibility()}
 
 const sceneCopy={
-  explore:{title:'迷路前先留下线索',description:'坐标、朝向、群系和时间负责导航；参考点距离能帮助你回到基地或矿道入口。',warning:'一次保留 4–6 行，读完就能作决定。',hud:'现实时间：13:20\n坐标：x: 128.4 y: 64.0 z: -320.8\n朝向：南（+Z）\n群系：平原\n服务器 TPS：20.0'},
-  build:{title:'先把位置口径对齐',description:'方块坐标、区块坐标、区块内坐标和目标方块属性，适合施工前确认中心与边界。',warning:'先确认绝对坐标和区块内坐标，再开始批量施工。',hud:'方块坐标：128 / 64 / -321\n区块坐标：8 / -21\n区块内坐标：0 / 64 / 15\n注视方块：比较器\n属性：朝南 · 已通电'},
-  performance:{title:'区分客户端卡顿与服务器卡顿',description:'FPS、内存、实体、区块更新、延迟与 TPS/MSPT 分别反映不同负载。',warning:'精确 TPS/MSPT 与 Mob Cap 在多人服上可能需要服务器同步。',hud:'FPS：144\n内存：2048 / 4096 MB\n实体 / 方块实体：238 / 86\n已加载区块：441\n区块更新：12 / 秒\n延迟：46 ms\nTPS/MSPT：20.0 / 31.6'}
+  explore:{title:'迷路前先留下线索',description:'坐标、朝向、群系和时间负责导航；参考点距离能帮助你回到基地或矿道入口。',warning:'一次保留 4–6 行，读完就能作决定。',hud:'现实时间 · 坐标 · 朝向 · 群系 · 服务器 TPS/MSPT'},
+  build:{title:'先把位置口径对齐',description:'方块坐标、区块坐标、区块内坐标和目标方块属性，适合施工前确认中心与边界。',warning:'先确认绝对坐标和区块内坐标，再开始批量施工。',hud:'方块坐标 · 区块坐标 · 区块内坐标 · 目标方块属性'},
+  performance:{title:'区分客户端卡顿与服务器卡顿',description:'FPS、内存、实体、区块更新、延迟与 TPS/MSPT 分别反映不同负载。',warning:'精确 TPS/MSPT 与 Mob Cap 在多人服上可能需要服务器同步。',hud:'FPS · 内存 · 实体 / 方块实体 · 已加载区块 · 延迟 · TPS/MSPT'}
 };
-document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{const copy=sceneCopy[button.dataset.scene];document.querySelectorAll('[data-scene]').forEach(item=>item.classList.toggle('selected',item===button));document.getElementById('hud-lines').textContent=copy.hud;document.getElementById('scene-title').textContent=copy.title;document.getElementById('scene-description').textContent=copy.description;document.getElementById('scene-warning').innerHTML=`<strong>判断方法：</strong>${copy.warning}`}));
+document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{const copy=sceneCopy[button.dataset.scene];button.parentElement.querySelectorAll('[data-scene]').forEach(item=>item.classList.toggle('selected',item===button));document.getElementById('hud-lines').textContent=copy.hud;document.getElementById('scene-title').textContent=copy.title;document.getElementById('scene-description').textContent=copy.description;document.getElementById('scene-warning').innerHTML=`<strong>判断方法：</strong>${copy.warning}`}));
 
 const stageBindings=[
   ['data-structure-view','structureView','structure-stage','view'],
   ['data-site-layer','siteLayer','site-stage','layer'],
-  ['data-range','range','range-stage','range'],
-  ['data-build-view','buildView','build-stage','view'],
-  ['data-check','check','check-stage','check']
+  ['data-range','range','range-stage','range']
 ];
 stageBindings.forEach(([attribute,datasetKey,stageId,stateKey])=>{document.querySelectorAll(`[${attribute}]`).forEach(button=>{button.addEventListener('click',()=>{button.parentElement.querySelectorAll(`[${attribute}]`).forEach(item=>item.classList.toggle('selected',item===button));const stage=document.getElementById(stageId);const value=button.dataset[datasetKey];stage.dataset[stateKey]=value;if(stageId==='structure-stage')stage.classList.toggle('revealed',value==='on')})})});
 
+document.querySelectorAll('[data-shape-group]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.shapeGroup;button.parentElement.querySelectorAll('[data-shape-group]').forEach(item=>item.classList.toggle('selected',item===button));document.getElementById('build-stage').dataset.group=value;document.querySelectorAll('[data-shape-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.shapePanel===value))}));
+
+document.querySelectorAll('[data-base-view]').forEach(button=>button.addEventListener('click',()=>{const value=button.dataset.baseView;button.parentElement.querySelectorAll('[data-base-view]').forEach(item=>item.classList.toggle('selected',item===button));document.getElementById('check-stage').dataset.view=value}));
+
 const detailCopy={
-  info:{title:'信息 HUD：按任务组合',body:'<h3>导航与行动</h3><p>坐标、缩放坐标、朝向、偏航角和俯仰角、维度、区块坐标、参考点距离，以及移动速度、疾跑和破坏速度。</p><h3>环境与目标</h3><p>群系、天气、时间、光照、难度、目标方块属性、目标实体生命值和状态效果。</p><h3>特殊与性能</h3><p>蜂巢蜜蜂数、熔炉经验、马匹、熊猫基因，以及 FPS、内存、实体、方块实体、粒子、已加载区块、延迟、TPS/MSPT 与 Mob Cap。</p>'},
-  structure:{title:'结构显示：数据先到，边界才会出现',body:'<h3>它能做什么</h3><p>把已经获得数据的结构主边界和组成部分画在世界中，帮助你从地形和建筑中看清完整范围。</p><h3>它不能做什么</h3><p>MiniHUD 不是远程结构搜索器，也不调用 /locate。单人世界通常能读取本地数据；多人服可能需要 Servux、Carpet 或服务器许可。</p><h3>常见例子</h3><p>林地府邸、要塞、试炼密室、海底神殿、村庄、堡垒、古城等。</p>'},
-  environment:{title:'工程选址：一次只开一层',body:'<h3>找安全问题</h3><p>光照数字或颜色适合检查暗区；刷怪光照规则要结合当前游戏版本。</p><h3>找空间边界</h3><p>方块网格用于逐格对齐，区块边界用于 16×16 分区，群系边界用于有群系要求的工程。</p><h3>技术生存</h3><p>史莱姆区块、区域文件、出生区块和可生成列高度适合更深入的选址判断。</p>'},
-  range:{title:'机制范围：先认规则，再看数字',body:'<h3>装置范围</h3><p>信标、潮涌核心与避雷针的边界回答“效果能覆盖哪里”。</p><h3>方块与区块</h3><p>随机刻区域、出生区块回答“哪些位置会继续运行”。</p><h3>生物空间</h3><p>生成球、可消失与彻底消失距离回答“挂机点和刷怪层是否合适”。24、32、128 格是常见参考，不是所有生物、维度与版本的唯一答案。</p>'},
-  shape:{title:'建筑形状：把计算变成空间参考',body:'<h3>平面规划</h3><p>方框标占地和挖掘区；圆 / 圆柱标中心、半径和塔身；方块线连接坐标并确定中心轴。</p><h3>立体规划</h3><p>方块球体适合球形建筑，可调生成球适合观察刷怪塔挂机点与高度关系。</p><h3>记住</h3><p>形状可以移动、改色和切换显示，但它们不会自动建造。</p>'},
-  preview:{title:'完工排查：从现象走到数据',body:'<h3>效率不对</h3><p>依次检查光照、随机刻、生成距离、Mob Cap、实体数量、FPS、延迟与 TPS/MSPT。</p><h3>少开界面</h3><p>地图预览、潜影盒和物品栏预览可以快速确认内容；村民交易和目标实体信息适合筛选与检查。</p><h3>数据来源</h3><p>本地信息通常直接可用；史莱姆区块等需要正确种子；结构、精确性能和部分实体数据在多人服上可能需要 Servux 或 Carpet。</p>'}
+  info:{title:'信息 HUD：按任务组合',body:`<img class="detail-media" src="assets/screenshots/hud-config.webp" alt="MiniHUD HUD 信息行配置页面"><h3>导航与行动</h3><p>坐标、缩放坐标、朝向、偏航角和俯仰角、维度、区块坐标、参考点距离，以及移动速度、疾跑和破坏速度。</p><h3>环境与目标</h3><p>群系、天气、时间、光照、难度、目标方块属性、目标实体生命值和状态效果。</p><h3>特殊与性能</h3><p>蜂巢蜜蜂数、熔炉经验、马匹、熊猫基因，以及 FPS、内存、实体、方块实体、粒子、已加载区块、延迟、TPS/MSPT 与 Mob Cap。</p><h3>操作习惯</h3><p>默认 H 控制总渲染，H + C 打开配置。按场景保留少量信息行，往往比把完整 F3 搬上屏幕更实用。</p>`},
+  structure:{title:'结构显示：数据先到，边界才会出现',body:`<img class="detail-media" src="assets/screenshots/structure-config.webp" alt="MiniHUD 结构显示配置页面"><h3>它能做什么</h3><p>把已经获得数据的结构主边界和组成部分画在世界中，帮助你从地形和建筑中看清完整范围。</p><h3>它不能做什么</h3><p>MiniHUD 不是远程结构搜索器，也不调用 /locate。单人世界通常能读取本地数据；多人服可能需要 Servux、Carpet 或服务器许可。</p><h3>常见结构</h3><p>古城、堡垒遗迹、埋藏的宝藏、沙漠神殿、末地城、林地府邸、废弃矿井、下界要塞、海底神殿、沉船、要塞、试炼密室、村庄和女巫小屋等。</p>`},
+  environment:{title:'工程选址：一次只开一层',body:`<img class="detail-media" src="assets/screenshots/renderer-config.webp" alt="MiniHUD 渲染器覆盖层配置页面"><h3>找安全问题</h3><p>光照数字或颜色适合检查暗区；刷怪光照规则要结合当前游戏版本。</p><h3>找空间边界</h3><p>方块网格用于逐格对齐，区块边界用于 16×16 分区，群系边界用于有群系要求的工程。</p><h3>深入选址</h3><p>史莱姆区块、区域文件、出生区块、随机刻、可生成列高度和避雷针范围，适合技术生存中的进一步判断。</p>`},
+  range:{title:'机制范围：先认规则，再看数字',body:`<h3>装置范围</h3><p>信标、潮涌核心与避雷针的边界回答“效果能覆盖哪里”。</p><h3>方块与区块</h3><p>随机刻区域、出生区块回答“哪些位置会继续运行”。</p><h3>生物空间</h3><p>生成球、可消失球体与立即消失球体回答“挂机点和刷怪层是否合适”。24、32、128 格是常见参考，不是所有生物、维度与版本的唯一答案。</p>`},
+  shape:{title:'建筑与形状：15 种空间参考',body:`<img class="detail-media" src="assets/screenshots/shape-config.webp" alt="MiniHUD 形状管理配置页面"><h3>基础形状</h3><p>立方体、中心立方体、圆形 / 圆柱体、直线（方块化）、球体（方块化）。它们适合标占地、挖掘区、中心、半径、塔身、方块线和球形建筑。</p><h3>生成空间</h3><p>可调整生成球体、可生成球体（&gt;24）、可消失球体（&gt;32）、立即消失球体（&gt;128）、可生成球体（Y 轴裁剪）、椭球体可生成球体。</p><h3>锥体与棱锥</h3><p>圆锥、四棱锥、方形四棱锥、八边形棱锥。</p><h3>记住</h3><p>形状可以移动、改色和切换显示，但不会自动建造、放置或拆除方块。</p>`},
+  preview:{title:'基地管理：少开界面，快速确认',body:`<h3>收纳整理</h3><p>潜影盒、收纳袋、地图预览和物品栏预览让内容在需要时直接出现，减少逐个打开界面的操作。</p><h3>目标检查</h3><p>村民交易、目标实体、目标方块、蜂巢数量、熔炉经验、马匹和熊猫基因适合筛选与确认。</p><h3>效率维护</h3><p>当农场或机器效率异常时，依次检查光照、随机刻、生成距离、Mob Cap、实体数量、已加载区块、FPS、延迟与 TPS/MSPT。</p><h3>数据来源</h3><p>本地信息通常直接可用；史莱姆区块等需要正确种子；结构、精确性能和部分实体数据在多人服上可能需要 Servux、Carpet 或服务器许可。</p>`}
 };
 const detailModal=document.getElementById('detail-modal'),detailTitle=document.getElementById('detail-title'),detailBody=document.getElementById('detail-body'),detailClose=document.getElementById('detail-close');
 function openDetail(key,trigger){const copy=detailCopy[key];if(!copy)return;lastDetailTrigger=trigger;detailTitle.textContent=copy.title;detailBody.innerHTML=copy.body;document.getElementById('deck').inert=true;nav.inert=true;detailModal.hidden=false;detailOpen=true;detailClose.focus()}
