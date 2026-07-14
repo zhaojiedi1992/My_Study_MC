@@ -99,7 +99,7 @@ async function evaluate(sessionId, expression) {
           img.addEventListener('error', () => resolve({ src: img.getAttribute('src'), width: 0 }), { once: true });
         })
   ))`);
-  if (images.length < 7 || images.some((item) => item.width === 0)) {
+  if (images.length < 7 || images.some((item) => item.width < 2800)) {
     throw new Error(`Screenshot loading failed: ${JSON.stringify(images)}`);
   }
 

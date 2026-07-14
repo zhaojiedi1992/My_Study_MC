@@ -14,6 +14,7 @@
 - Use the final scenario order: 日常游玩、外出探索、工程选址、机制规划、开始施工、基地管理.
 - Include all 15 user-specified shape names verbatim in the HTML.
 - Use only local assets; add no network dependency, third-party JavaScript, or video.
+- Keep every screenshot at its source pixel dimensions; effect shots use high-quality WebP and configuration shots use lossless WebP.
 - Keep `source/MOD介绍/minihud/minihud.rst` linking to `index.html`.
 - Do not expose `/mnt/c/Users/.../minihud.json` or raw configuration identifiers in audience-facing copy.
 - Preserve the user's untracked source PNG files and `source/extra/MOD介绍/minihud/videos/`; do not delete or overwrite them.
@@ -194,7 +195,7 @@ git commit -m "test: define MiniHUD screenshot deck contract"
 
 **Interfaces:**
 - Consumes: user PNGs in `source/MOD介绍/minihud/`.
-- Produces: local 1600-pixel-wide WebP assets addressed as `assets/screenshots/<name>.webp` from `index.html`.
+- Produces: native-resolution WebP assets addressed as `assets/screenshots/<name>.webp` from `index.html`.
 
 - [ ] **Step 1: Create the asset directory**
 
@@ -211,29 +212,29 @@ Expected: directory exists without modifying source PNGs.
 Run these commands individually:
 
 ```bash
-ffmpeg -y -i source/MOD介绍/minihud/左上角展示基础信息.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/hud.webp
-ffmpeg -y -i source/MOD介绍/minihud/结构效果展示图.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/structure.webp
-ffmpeg -y -i source/MOD介绍/minihud/群系边界展示效果图.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/biome.webp
-ffmpeg -y -i source/MOD介绍/minihud/信标范围展示.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/beacon.webp
-ffmpeg -y -i source/MOD介绍/minihud/形状效果图.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shape.webp
-ffmpeg -y -i source/MOD介绍/minihud/潜影盒预览效果图.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shulker.webp
-ffmpeg -y -i source/MOD介绍/minihud/收纳预览.png -vf "scale=1600:-2:flags=lanczos" -c:v libwebp -quality 82 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/bundle.webp
+ffmpeg -y -i source/MOD介绍/minihud/左上角展示基础信息.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/hud.webp
+ffmpeg -y -i source/MOD介绍/minihud/结构效果展示图.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/structure.webp
+ffmpeg -y -i source/MOD介绍/minihud/群系边界展示效果图.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/biome.webp
+ffmpeg -y -i source/MOD介绍/minihud/信标范围展示.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/beacon.webp
+ffmpeg -y -i source/MOD介绍/minihud/形状效果图.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shape.webp
+ffmpeg -y -i source/MOD介绍/minihud/潜影盒预览效果图.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shulker.webp
+ffmpeg -y -i source/MOD介绍/minihud/收纳预览.png -c:v libwebp -quality 95 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/bundle.webp
 ```
 
-Expected: each output is 1600 pixels wide, preserves its aspect ratio, and is materially smaller than its PNG source.
+Expected: each output preserves the source pixel dimensions (2867px or 2880px wide) and is materially smaller than its PNG source.
 
 - [ ] **Step 3: Encode the four configuration screenshots**
 
 Run:
 
 ```bash
-ffmpeg -y -i source/MOD介绍/minihud/hud信息行设置页面.png -vf "scale=1400:-2:flags=lanczos" -c:v libwebp -quality 80 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/hud-config.webp
-ffmpeg -y -i source/MOD介绍/minihud/结构配置.png -vf "scale=1400:-2:flags=lanczos" -c:v libwebp -quality 80 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/structure-config.webp
-ffmpeg -y -i source/MOD介绍/minihud/渲染器.png -vf "scale=1400:-2:flags=lanczos" -c:v libwebp -quality 80 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/renderer-config.webp
-ffmpeg -y -i source/MOD介绍/minihud/形状配置.png -vf "scale=1400:-2:flags=lanczos" -c:v libwebp -quality 80 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shape-config.webp
+ffmpeg -y -i source/MOD介绍/minihud/hud信息行设置页面.png -c:v libwebp -lossless 1 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/hud-config.webp
+ffmpeg -y -i source/MOD介绍/minihud/结构配置.png -c:v libwebp -lossless 1 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/structure-config.webp
+ffmpeg -y -i source/MOD介绍/minihud/渲染器.png -c:v libwebp -lossless 1 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/renderer-config.webp
+ffmpeg -y -i source/MOD介绍/minihud/形状配置.png -c:v libwebp -lossless 1 -compression_level 6 source/extra/MOD介绍/minihud/assets/screenshots/shape-config.webp
 ```
 
-Expected: four configuration images exist and remain readable when opened directly.
+Expected: four configuration images preserve their native widths (2850–2880px), use lossless WebP, and remain readable when opened directly.
 
 - [ ] **Step 4: Verify asset dimensions and total weight**
 
@@ -244,7 +245,7 @@ file source/extra/MOD介绍/minihud/assets/screenshots/*.webp
 du -ch source/extra/MOD介绍/minihud/assets/screenshots/*.webp
 ```
 
-Expected: all files report WebP; effect images are 1600 pixels wide, config images are 1400 pixels wide, and total size is below 8 MiB.
+Expected: all files report WebP, every width is at least 2800px, and the total remains practical for an offline deck.
 
 - [ ] **Step 5: Commit the derivatives only**
 
@@ -372,7 +373,7 @@ python3 -m unittest tests/test_minihud_presentation.py -v
 node tests/minihud_presentation_browser_test.cjs
 ```
 
-Expected: all static tests pass; browser output reports 8 slides, all screenshot widths above zero, successful structure/range/shape/base switches, no console errors, and a scrollable 390×844 layout.
+Expected: all static tests pass; browser output reports 8 slides, all screenshot widths at least 2800px, successful structure/range/shape/base switches, no console errors, and a scrollable 390×844 layout.
 
 - [ ] **Step 8: Commit the rebuilt deck**
 
@@ -451,4 +452,3 @@ python3 -m http.server 8765 --directory build/html
 ```
 
 Expected: the server remains running and the preview is available at `http://127.0.0.1:8765/MOD介绍/minihud/index.html`.
-

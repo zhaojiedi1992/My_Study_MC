@@ -140,6 +140,28 @@ class MiniHudPresentationTest(unittest.TestCase):
         ):
             self.assertTrue(any(phrase in alt for alt in self.parser.image_alts), phrase)
 
+    def test_screenshot_assets_keep_native_resolution(self):
+        assets = (HTML_PATH.parent / "assets/screenshots").glob("*.webp")
+        dimensions = {}
+        for asset in assets:
+            data = asset.read_bytes()
+            codec = data[12:16]
+            if codec == b"VP8 ":
+                width = int.from_bytes(data[26:28], "little") & 0x3FFF
+                height = int.from_bytes(data[28:30], "little") & 0x3FFF
+            elif codec == b"VP8L":
+                bits = int.from_bytes(data[21:25], "little")
+                width = (bits & 0x3FFF) + 1
+                height = ((bits >> 14) & 0x3FFF) + 1
+            else:
+                self.fail(f"Unsupported WebP codec in {asset.name}: {codec!r}")
+            dimensions[asset.name] = (width, height)
+        self.assertGreaterEqual(len(dimensions), 11)
+        self.assertEqual(
+            {name: size for name, size in dimensions.items() if size[0] < 2800},
+            {},
+        )
+
     def test_all_fifteen_shape_types_are_present(self):
         shapes = (
             "立方体", "中心立方体", "圆形 / 圆柱体", "直线（方块化）",
