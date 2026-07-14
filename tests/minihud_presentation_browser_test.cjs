@@ -91,6 +91,18 @@ async function evaluate(sessionId, expression) {
   await send("Page.navigate", { url }, sessionId);
   await sleep(700);
 
+  const images = await evaluate(sessionId, `Promise.all([...document.images].map((img) =>
+    img.complete && img.naturalWidth > 0
+      ? Promise.resolve({ src: img.getAttribute('src'), width: img.naturalWidth })
+      : new Promise((resolve) => {
+          img.addEventListener('load', () => resolve({ src: img.getAttribute('src'), width: img.naturalWidth }), { once: true });
+          img.addEventListener('error', () => resolve({ src: img.getAttribute('src'), width: 0 }), { once: true });
+        })
+  ))`);
+  if (images.length < 7 || images.some((item) => item.width === 0)) {
+    throw new Error(`Screenshot loading failed: ${JSON.stringify(images)}`);
+  }
+
   const initial = await evaluate(sessionId, `({
     slides: slides.length,
     cur,
@@ -141,16 +153,25 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Structure reveal failed: ${JSON.stringify(structure)}`);
   }
 
-  const buildControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-build-view="elevation"]'))`);
-  if (!buildControlExists) throw new Error("Building elevation control is missing");
-  await evaluate(sessionId, `go(6); document.querySelector('[data-build-view="elevation"]').click()`);
+  const shapeControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-shape-group="spawn"]'))`);
+  if (!shapeControlExists) throw new Error("Shape group control is missing");
+  await evaluate(sessionId, `go(6); document.querySelector('[data-shape-group="spawn"]').click()`);
   const building = await evaluate(sessionId, `({
     cur,
-    selected: document.querySelector('[data-build-view].selected').dataset.buildView,
-    mode: document.getElementById('build-stage').dataset.view,
+    selected: document.querySelector('[data-shape-group].selected').dataset.shapeGroup,
+    group: document.getElementById('build-stage').dataset.group,
   })`);
-  if (building.cur !== 6 || building.selected !== "elevation" || building.mode !== "elevation") {
-    throw new Error(`Building view failed: ${JSON.stringify(building)}`);
+  if (building.cur !== 6 || building.selected !== "spawn" || building.group !== "spawn") {
+    throw new Error(`Shape group switch failed: ${JSON.stringify(building)}`);
+  }
+
+  await evaluate(sessionId, `go(7); document.querySelector('[data-base-view="bundle"]').click()`);
+  const base = await evaluate(sessionId, `({
+    selected: document.querySelector('[data-base-view].selected').dataset.baseView,
+    view: document.getElementById('check-stage').dataset.view,
+  })`);
+  if (base.selected !== "bundle" || base.view !== "bundle") {
+    throw new Error(`Base preview switch failed: ${JSON.stringify(base)}`);
   }
   await evaluate(sessionId, `go(2)`);
 
@@ -248,7 +269,7 @@ async function evaluate(sessionId, expression) {
 
   const shot = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   fs.writeFileSync("/tmp/minihud-mobile.png", Buffer.from(shot.data, "base64"));
-  console.log(JSON.stringify({ initial, afterKey, scene, structure, building, opened, mobile, errors }, null, 2));
+  console.log(JSON.stringify({ images, initial, afterKey, scene, structure, building, base, opened, mobile, errors }, null, 2));
   await send("Target.closeTarget", { targetId: target.targetId });
   chrome.kill("SIGKILL");
   setTimeout(() => process.exit(errors.length ? 1 : 0), 100);

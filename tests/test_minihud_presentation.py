@@ -18,6 +18,7 @@ class DeckParser(HTMLParser):
         self.scene_keys = []
         self.ids = set()
         self.text = []
+        self.image_alts = []
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
@@ -31,6 +32,8 @@ class DeckParser(HTMLParser):
             target = values.get("src") or values.get("href")
             if target:
                 self.assets.append(target)
+        if tag == "img":
+            self.image_alts.append(values.get("alt", ""))
         if "data-detail" in values:
             self.detail_keys.append(values["data-detail"])
         if "data-scene" in values:
@@ -72,7 +75,7 @@ class MiniHudPresentationTest(unittest.TestCase):
     def test_six_player_scenarios_drive_the_deck(self):
         scenarios = (
             "日常游玩", "外出探索", "工程选址",
-            "机制规划", "开始施工", "完工排查",
+            "机制规划", "开始施工", "基地管理",
         )
         for scene in scenarios:
             self.assertIn(scene, self.copy)
@@ -80,7 +83,7 @@ class MiniHudPresentationTest(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
         for task in (
             "随时掌握", "看清结构", "检查周围环境",
-            "确认影响范围", "把设计画进世界", "快速找到问题",
+            "确认影响范围", "把设计画进世界", "快速查看与维护",
         ):
             self.assertIn(task, self.copy)
 
@@ -114,9 +117,45 @@ class MiniHudPresentationTest(unittest.TestCase):
     def test_scenario_controls_are_present(self):
         for attribute in (
             "data-structure-view", "data-site-layer", "data-range",
-            "data-build-view", "data-check",
+            "data-shape-group", "data-base-view",
         ):
             self.assertIn(attribute, self.html)
+
+    def test_real_screenshots_are_local_accessible_and_present(self):
+        required_assets = {
+            "assets/screenshots/hud.webp",
+            "assets/screenshots/structure.webp",
+            "assets/screenshots/biome.webp",
+            "assets/screenshots/beacon.webp",
+            "assets/screenshots/shape.webp",
+            "assets/screenshots/shulker.webp",
+            "assets/screenshots/bundle.webp",
+        }
+        self.assertTrue(required_assets.issubset(set(self.parser.assets)))
+        for relative_path in required_assets:
+            self.assertTrue((HTML_PATH.parent / relative_path).is_file(), relative_path)
+        for phrase in (
+            "信息 HUD", "结构边界", "群系边界", "信标范围",
+            "圆形", "潜影盒", "收纳袋",
+        ):
+            self.assertTrue(any(phrase in alt for alt in self.parser.image_alts), phrase)
+
+    def test_all_fifteen_shape_types_are_present(self):
+        shapes = (
+            "立方体", "中心立方体", "圆形 / 圆柱体", "直线（方块化）",
+            "球体（方块化）", "可调整生成球体", "可生成球体（>24）",
+            "可消失球体（>32）", "立即消失球体（>128）",
+            "可生成球体（Y 轴裁剪）", "椭球体可生成球体", "圆锥",
+            "四棱锥", "方形四棱锥", "八边形棱锥",
+        )
+        self.assertEqual([shape for shape in shapes if shape not in self.copy], [])
+
+    def test_private_config_path_and_raw_keys_are_absent(self):
+        for forbidden in (
+            "/mnt/c/Users/", "AppData/Roaming/PrismLauncher", "minihud.json",
+            "bundleTooltips", "shulkerBoxPreview", "shapeDiamondPyramid",
+        ):
+            self.assertNotIn(forbidden, self.html)
 
     def test_interaction_contract_is_semantic(self):
         required_ids = {"deck", "nav", "detail-modal", "detail-title", "detail-body", "detail-close"}
@@ -149,7 +188,7 @@ class MiniHudPresentationTest(unittest.TestCase):
     def test_rst_follows_the_six_scenario_route(self):
         scenarios = (
             "日常游玩", "外出探索", "工程选址",
-            "机制规划", "开始施工", "完工排查",
+            "机制规划", "开始施工", "基地管理",
         )
         positions = []
         for scene in scenarios:
