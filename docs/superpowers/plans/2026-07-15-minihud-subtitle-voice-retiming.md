@@ -482,14 +482,20 @@ path = Path("build/minihud-video/subtitles/minihud-bilibili.zh-CN.srt")
 source = path.read_text(encoding="utf-8")
 cues = parse_srt(source, "production SRT")
 assert all(left.end <= right.start for left, right in zip(cues, cues[1:]))
-assert all(len(cue.text.splitlines()) <= 2 for cue in cues)
-assert all(len(line) <= 18 for cue in cues for line in cue.text.splitlines())
+# parse_srt() intentionally normalizes cue lines for semantic parsing; inspect
+# the raw blocks for the display-layout contract instead.
+for block in re.split(r"\n\s*\n", source.strip()):
+    lines = block.splitlines()
+    timing_index = next(i for i, line in enumerate(lines) if "-->" in line)
+    caption_lines = lines[timing_index + 1 :]
+    assert 1 <= len(caption_lines) <= 2
+    assert all(len(line) <= 18 for line in caption_lines)
 assert "按住 Shift" in source
 print(f"cues={len(cues)} max_end={cues[-1].end:.3f}s")
 PY
 ```
 
-Expected: integrated loudness within one LU of `-16 LUFS`, true peak no higher than `-1 dBFS`, and every SRT assertion passes.
+Expected: integrated loudness within one LU of `-16 LUFS`, true peak no higher than `-1 dBFS`, parsed cues are chronological/non-overlapping, and every raw SRT block is at most two lines of 18 characters.
 
 - [ ] **Step 4: Inspect compact subtitles on representative full-resolution frames**
 
