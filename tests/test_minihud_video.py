@@ -584,10 +584,12 @@ class VideoFilterTest(unittest.TestCase):
         style_source = subtitle_filter.split("force_style='", 1)[1].rsplit("'", 1)[0]
         style = dict(item.split("=", 1) for item in style_source.split(","))
         self.assertEqual(style["FontName"], "Noto Sans CJK SC")
-        self.assertEqual(style["FontSize"], "30")
-        self.assertEqual(style["Outline"], "1.5")
+        self.assertEqual(style["FontSize"], "20")
+        self.assertEqual(style["BorderStyle"], "1")
+        self.assertEqual(style["Outline"], "1.2")
+        self.assertEqual(style["Shadow"], "0")
         self.assertEqual(style["Alignment"], "2")
-        self.assertEqual(style["MarginV"], "44")
+        self.assertEqual(style["MarginV"], "26")
         self.assertEqual(command[command.index("-c:a") + 1], "copy")
         self.assertEqual(run.call_args.kwargs, {"check": True})
 
