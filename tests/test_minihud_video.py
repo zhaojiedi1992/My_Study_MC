@@ -116,7 +116,20 @@ class StoryboardTest(unittest.TestCase):
 
     def test_narration_matches_approved_scope(self):
         copy = "".join(segment.narration for segment in SEGMENTS)
-        self.assertEqual(len(copy), 840)
+        timing_sensitive_copy = {
+            segment.id: segment.narration
+            for segment in SEGMENTS
+            if segment.id in {"hook-structure", "hook-shape", "range-spawn"}
+        }
+        self.assertEqual(
+            timing_sensitive_copy,
+            {
+                "hook-structure": "结构被挡，看不清范围？",
+                "hook-shape": "圆心半径，还靠目测？",
+                "range-spawn": "刷怪距离看球，挂机点更直观。",
+            },
+        )
+        self.assertEqual(len(copy), 819)
         for phrase in (
             "问题",
             "Servux",

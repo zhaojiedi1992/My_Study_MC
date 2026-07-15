@@ -23,8 +23,8 @@ class TimelineItem:
 
 
 SEGMENTS = (
-    Segment("hook-structure", "冷开场", 3.3, 4, "structure:on", "push", "结构藏进地形里，看不清完整范围？"),
-    Segment("hook-shape", "冷开场", 3.3, 7, "shape:basic", "pull", "圆心、半径和高度，还在靠目测？"),
+    Segment("hook-structure", "冷开场", 3.3, 4, "structure:on", "push", "结构被挡，看不清范围？"),
+    Segment("hook-shape", "冷开场", 3.3, 7, "shape:basic", "pull", "圆心半径，还靠目测？"),
     Segment("hook-preview", "冷开场", 3.4, 8, "base:shulker", "push", "潜影盒，也要一个个打开确认？"),
     Segment(
         "intro",
@@ -105,7 +105,7 @@ SEGMENTS = (
         6,
         "range:spawn",
         "pull",
-        "刷怪和消失距离看球形参考，挂机点是否合适会更直观。",
+        "刷怪距离看球，挂机点更直观。",
     ),
     Segment(
         "range-chunk",
