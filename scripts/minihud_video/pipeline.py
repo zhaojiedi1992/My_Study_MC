@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 from urllib.parse import urlencode
 
+from scripts.minihud_video.audio import generate_voice
 from scripts.minihud_video.storyboard import render_requests
 
 
@@ -12,6 +13,7 @@ DECK_PATH = ROOT / "source/extra/MOD介绍/minihud/index.html"
 BUILD_DIR = ROOT / "build/minihud-video"
 CHROME = "/usr/bin/google-chrome"
 FFPROBE = "/usr/bin/ffprobe"
+EDGE_TTS = BUILD_DIR / ".venv/bin/edge-tts"
 
 
 def build_slide_url(slide: int, state: str) -> str:
@@ -77,13 +79,25 @@ def render_slides() -> tuple[Path, ...]:
     return tuple(outputs)
 
 
+def render_voice() -> tuple[Path, ...]:
+    if not EDGE_TTS.is_file():
+        raise RuntimeError(
+            "Missing edge-tts environment. Create build/minihud-video/.venv "
+            "and install edge-tts==7.2.8"
+        )
+    return generate_voice(BUILD_DIR, EDGE_TTS)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=("slides",))
+    parser.add_argument("command", choices=("slides", "voice"))
     args = parser.parse_args()
     if args.command == "slides":
-        for path in render_slides():
-            print(path)
+        outputs = render_slides()
+    else:
+        outputs = render_voice()
+    for path in outputs:
+        print(path)
 
 
 if __name__ == "__main__":
