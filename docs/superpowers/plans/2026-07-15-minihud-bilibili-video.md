@@ -340,7 +340,7 @@ In the range section, add “Mob Cap 是数量上限，不是空间范围.” Re
 ~~~bash
 python3 -m unittest tests.test_minihud_presentation -v
 node tests/minihud_presentation_browser_test.cjs
-.venv/bin/sphinx-build -b html source build/html
+python3 -m sphinx -b html source build/html
 ~~~
 
 Expected: at least 19 static tests pass, browser diagnostics show no mobile clipping, and Sphinx exits 0.
@@ -1337,7 +1337,7 @@ git commit -m "feat: add MiniHUD cover and publishing package"
 ~~~bash
 python3 -m unittest tests.test_minihud_presentation tests.test_minihud_video -v
 node tests/minihud_presentation_browser_test.cjs
-.venv/bin/sphinx-build -b html source build/html
+python3 -m sphinx -b html source build/html
 ~~~
 
 Expected: all Python tests PASS, browser output contains errors: [], and Sphinx exits 0.
