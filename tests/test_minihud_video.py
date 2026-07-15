@@ -65,6 +65,26 @@ class PublishingTest(unittest.TestCase):
         self.assertNotIn("下一期", copy)
         self.assertNotIn("15 种", copy)
 
+    def test_pinned_comment_includes_scene_index_and_chapter_clocks(self):
+        pinned_comment = build_publish_markdown().split(
+            "## 置顶评论建议\n\n",
+            maxsplit=1,
+        )[1]
+
+        for scene_label in (
+            "迷路看信息 HUD",
+            "遮挡看结构边界",
+            "选址看环境覆盖",
+            "估算看范围参考",
+            "施工看形状参考",
+            "整理和排查看预览与性能信息",
+        ):
+            self.assertIn(scene_label, pinned_comment)
+
+        chapters = chapter_lines()
+        self.assertIn(chapters[0], pinned_comment)
+        self.assertIn(chapters[-1], pinned_comment)
+
     def test_chapters_are_monotonic(self):
         lines = chapter_lines()
         self.assertEqual(lines[0], "00:00 冷开场")
@@ -434,7 +454,11 @@ class VideoFilterTest(unittest.TestCase):
         self.assertIsNotNone(render_segments, "render_segments() must exist")
         with TemporaryDirectory() as directory:
             build_dir = Path(directory)
-            segments = SEGMENTS[:2]
+            segments = (
+                SEGMENTS[0],
+                SEGMENTS[1],
+                next(segment for segment in SEGMENTS if segment.id == "intro"),
+            )
             with (
                 patch.object(video, "SEGMENTS", segments),
                 patch("subprocess.run") as run,
@@ -448,7 +472,8 @@ class VideoFilterTest(unittest.TestCase):
                 for segment in segments
             ),
         )
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, len(segments))
+        graphs = []
         for invocation, segment in zip(
             run.call_args_list,
             segments,
@@ -456,16 +481,14 @@ class VideoFilterTest(unittest.TestCase):
         ):
             command = invocation.args[0]
             graph = command[command.index("-filter_complex") + 1]
+            graphs.append(graph)
             self.assertEqual(command[command.index("-t") + 1], str(segment.seconds))
             self.assertIn(f"apad=pad_dur={segment.seconds}", graph)
             self.assertIn(f"atrim=0:{segment.seconds}", graph)
             self.assertEqual(invocation.kwargs, {"check": True})
-        first_graph = run.call_args_list[0].args[0]
-        first_graph = first_graph[first_graph.index("-filter_complex") + 1]
-        second_graph = run.call_args_list[1].args[0]
-        second_graph = second_graph[second_graph.index("-filter_complex") + 1]
-        self.assertIn("sine=frequency=760", first_graph)
-        self.assertNotIn("sine=frequency=760", second_graph)
+        self.assertIn("sine=frequency=760", graphs[0])
+        self.assertNotIn("sine=frequency=760", graphs[1])
+        self.assertIn("sine=frequency=760", graphs[2])
 
     def test_master_crossfades_then_creates_loudness_normalized_clean_copy(self):
         compose_master = getattr(video, "compose_master", None)

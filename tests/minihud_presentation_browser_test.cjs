@@ -165,6 +165,56 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Range export state failed: ${JSON.stringify(rangeExportState)}`);
   }
 
+  const queryExportStates = {};
+  await send("Page.navigate", {
+    url: `${url}?export=1&slide=2&state=video:install`,
+  }, sessionId);
+  await sleep(700);
+  queryExportStates.install = await evaluate(sessionId, `({
+    cur,
+    active: document.querySelector('.slide.active').id,
+    marker: document.body.classList.contains('video-install'),
+    cardVisible: getComputedStyle(document.querySelector('[data-video-card="install"]')).display === 'block',
+  })`);
+  if (queryExportStates.install.cur !== 1 || queryExportStates.install.active !== "s2"
+      || !queryExportStates.install.marker || !queryExportStates.install.cardVisible) {
+    throw new Error(`Install query state failed: ${JSON.stringify(queryExportStates.install)}`);
+  }
+
+  await send("Page.navigate", {
+    url: `${url}?export=1&slide=8&state=video:outro`,
+  }, sessionId);
+  await sleep(700);
+  queryExportStates.outro = await evaluate(sessionId, `({
+    cur,
+    active: document.querySelector('.slide.active').id,
+    marker: document.body.classList.contains('video-outro'),
+    cardVisible: getComputedStyle(document.querySelector('[data-video-card="outro"]')).display === 'block',
+  })`);
+  if (queryExportStates.outro.cur !== 7 || queryExportStates.outro.active !== "s8"
+      || !queryExportStates.outro.marker || !queryExportStates.outro.cardVisible) {
+    throw new Error(`Outro query state failed: ${JSON.stringify(queryExportStates.outro)}`);
+  }
+
+  await send("Page.navigate", {
+    url: `${url}?export=1&slide=6&state=range:chunk`,
+  }, sessionId);
+  await sleep(700);
+  queryExportStates.rangeChunk = await evaluate(sessionId, `({
+    cur,
+    active: document.querySelector('.slide.active').id,
+    selected: document.querySelector('[data-range].selected').dataset.range,
+    marker: document.getElementById('range-stage').dataset.range,
+  })`);
+  if (queryExportStates.rangeChunk.cur !== 5 || queryExportStates.rangeChunk.active !== "s6"
+      || queryExportStates.rangeChunk.selected !== "chunk"
+      || queryExportStates.rangeChunk.marker !== "chunk") {
+    throw new Error(`Range chunk query state failed: ${JSON.stringify(queryExportStates.rangeChunk)}`);
+  }
+
+  await send("Page.navigate", { url }, sessionId);
+  await sleep(700);
+
   const shapeControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-shape-group="spawn"]'))`);
   if (!shapeControlExists) throw new Error("Shape group control is missing");
   await evaluate(sessionId, `go(6); document.querySelector('[data-shape-group="spawn"]').click()`);
@@ -302,7 +352,7 @@ async function evaluate(sessionId, expression) {
 
   const shot = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   fs.writeFileSync("/tmp/minihud-mobile.png", Buffer.from(shot.data, "base64"));
-  console.log(JSON.stringify({ images, initial, afterKey, scene, structure, rangeExportState, building, base, opened, mobile, mobileBounds, errors }, null, 2));
+  console.log(JSON.stringify({ images, initial, afterKey, scene, structure, rangeExportState, queryExportStates, building, base, opened, mobile, mobileBounds, errors }, null, 2));
   await send("Target.closeTarget", { targetId: target.targetId });
   chrome.kill("SIGKILL");
   setTimeout(() => process.exit(errors.length ? 1 : 0), 100);
