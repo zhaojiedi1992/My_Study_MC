@@ -153,6 +153,18 @@ async function evaluate(sessionId, expression) {
     throw new Error(`Structure reveal failed: ${JSON.stringify(structure)}`);
   }
 
+  await evaluate(sessionId, `go(5); applyRequestedState("range:beacon")`);
+  const rangeExportState = await evaluate(sessionId, `({
+    cur,
+    active: document.querySelector('.slide.active').id,
+    selected: document.querySelector('[data-range].selected').dataset.range,
+    range: document.getElementById('range-stage').dataset.range,
+  })`);
+  if (rangeExportState.cur !== 5 || rangeExportState.active !== "s6"
+      || rangeExportState.selected !== "beacon" || rangeExportState.range !== "beacon") {
+    throw new Error(`Range export state failed: ${JSON.stringify(rangeExportState)}`);
+  }
+
   const shapeControlExists = await evaluate(sessionId, `Boolean(document.querySelector('[data-shape-group="spawn"]'))`);
   if (!shapeControlExists) throw new Error("Shape group control is missing");
   await evaluate(sessionId, `go(6); document.querySelector('[data-shape-group="spawn"]').click()`);
@@ -229,6 +241,27 @@ async function evaluate(sessionId, expression) {
     screenWidth: 390,
     screenHeight: 844,
   }, sessionId);
+  const mobileBounds = [];
+  for (let index = 0; index < 8; index += 1) {
+    await evaluate(sessionId, "go(" + index + ")");
+    await sleep(80);
+    const expression = [
+      "(() => {",
+      "const slide=document.querySelector('.slide.active');",
+      "const selectors=['.hero-title','.sec-title','.hero-sub','.scene-lead','.badge-row','.task-route','.scene-layout'];",
+      "const failures=selectors.flatMap((selector)=>[...slide.querySelectorAll(selector)].flatMap((element)=>{",
+      "const rect=element.getBoundingClientRect();",
+      "if(rect.width===0||rect.height===0)return [];",
+      "return rect.left < -1 || rect.right > innerWidth + 1 ? [{selector,left:rect.left,right:rect.right,viewport:innerWidth}] : [];",
+      "}));",
+      "return {id:slide.id,ownOverflow:slide.scrollWidth > slide.clientWidth + 1,failures};",
+      "})()",
+    ].join("");
+    mobileBounds.push(await evaluate(sessionId, expression));
+  }
+  if (mobileBounds.some((item) => item.ownOverflow || item.failures.length)) {
+    throw new Error("Mobile content clipped: " + JSON.stringify(mobileBounds));
+  }
   const verticalTouch = await evaluate(sessionId, `(() => {
     go(6);
     const start = new Event('touchstart', { bubbles: true, cancelable: true });
@@ -269,7 +302,7 @@ async function evaluate(sessionId, expression) {
 
   const shot = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   fs.writeFileSync("/tmp/minihud-mobile.png", Buffer.from(shot.data, "base64"));
-  console.log(JSON.stringify({ images, initial, afterKey, scene, structure, building, base, opened, mobile, errors }, null, 2));
+  console.log(JSON.stringify({ images, initial, afterKey, scene, structure, rangeExportState, building, base, opened, mobile, mobileBounds, errors }, null, 2));
   await send("Target.closeTarget", { targetId: target.targetId });
   chrome.kill("SIGKILL");
   setTimeout(() => process.exit(errors.length ? 1 : 0), 100);

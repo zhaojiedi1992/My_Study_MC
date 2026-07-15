@@ -82,13 +82,13 @@ class MiniHudPresentationTest(unittest.TestCase):
         positions = [self.copy.index(scene) for scene in scenarios]
         self.assertEqual(positions, sorted(positions))
         for task in (
-            "随时掌握", "看清结构", "检查周围环境",
-            "确认影响范围", "把设计画进世界", "快速查看与维护",
+            "总在按 F3", "结构藏进地形", "选址怕踩坑",
+            "范围全靠估", "圆心半径难确定", "整理和排查太慢",
         ):
             self.assertIn(task, self.copy)
 
     def test_examples_support_scenes_without_becoming_scene_titles(self):
-        for example in ("林地府邸", "信标", "潮涌核心", "圆形刷怪塔"):
+        for example in ("林地府邸", "信标", "潮涌核心", "圆形 / 圆柱体"):
             self.assertIn(example, self.copy)
         for slide_title in re.findall(
             r'<h2[^>]*class="sec-title"[^>]*>(.*?)</h2>', self.html, re.S
@@ -171,6 +171,40 @@ class MiniHudPresentationTest(unittest.TestCase):
             "四棱锥", "方形四棱锥", "八边形棱锥",
         )
         self.assertEqual([shape for shape in shapes if shape not in self.copy], [])
+
+    def test_video_copy_is_problem_driven_and_versioned(self):
+        required = (
+            "一个 MOD", "看清隐藏规则", "遇到什么问题，就开什么功能",
+            "Minecraft Java 版 26.2", "Fabric Loader", "按住 Shift",
+            "收藏这份问题清单", "实用 Minecraft 模组和生存技巧",
+        )
+        for phrase in required:
+            self.assertIn(phrase, self.copy + " " + self.rst)
+
+    def test_multiplayer_data_copy_is_precise(self):
+        for phrase in (
+            "多人服需要服务器端 Servux 提供结构数据",
+            "精确 TPS/MSPT",
+            "Mob Cap 是数量上限，不是空间范围",
+        ):
+            self.assertIn(phrase, self.copy + " " + self.rst)
+        for misleading in (
+            "Carpet 或服务器许可",
+            "Mob Cap：看玩家周围空间",
+            "悬停即可预览",
+        ):
+            self.assertNotIn(misleading, self.copy + " " + self.rst)
+
+    def test_video_export_states_exist_without_adding_slides(self):
+        for token in (
+            'data-video-card="install"',
+            'data-video-card="outro"',
+            'data-range="chunk"',
+            "applyRequestedState",
+            "video-install",
+            "video-outro",
+        ):
+            self.assertIn(token, self.html)
 
     def test_private_config_path_and_raw_keys_are_absent(self):
         for forbidden in (

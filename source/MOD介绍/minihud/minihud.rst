@@ -33,6 +33,8 @@ MiniHUD 是 maruohon（Masa）开发的客户端信息与覆盖层 MOD。它把�
    * - 基地管理：快速查看与维护
      - 用潜影盒、收纳袋、地图和物品栏 **预览与检查** 整理物资；结合目标信息、Mob Cap 与 TPS/MSPT 维护基地和机器
 
+范围参考回答“规则延伸到哪里”；**Mob Cap 是数量上限，不是空间范围。**
+
 推荐使用方法
 ------------------------
 
@@ -48,14 +50,24 @@ MiniHUD 是客户端 MOD，但客户端并不总能得到世界的全部数据�
 
 - 单人世界通常可以直接读取本地数据。
 - 史莱姆区块等种子相关功能需要正确的世界种子。
-- 结构边界、Mob Cap、精确 TPS/MSPT 或部分实体数据在多人服上可能需要 **Servux**、**Carpet** 或服务器许可。
+- 多人服的结构边界需要服务器端 **Servux** 提供结构数据；Carpet 或普通服务器权限不能替代结构数据同步。
+- 精确 TPS/MSPT 可由 **Servux**、**Carpet** 等服务器支持提供；Mob Cap 与部分实体数据也取决于服务器同步。
 - 服务器没有提供数据时，功能可能不显示、不完整或只能估算；应遵守服务器规则。
 
-安装与官方项目
+版本与安装
 ------------------------
 
-- 安装与当前 Minecraft 版本匹配的 **MiniHUD** 和 **MaLiLib**。
-- 默认 ``H`` 控制主渲染，``H + C`` 打开配置；快捷键可以修改。
+本文和演示以 **Minecraft Java 版 26.2** 及其匹配的最新 MiniHUD、MaLiLib 为功能基线。核心使用思路在多个版本中相通，但具体菜单、功能数量和游戏规则可能不同，请以对应版本的下载页为准。
+
+- 使用与游戏版本匹配的 **Fabric Loader、MiniHUD 和 MaLiLib**；不要把 Fabric API 写成 MiniHUD 的固定硬依赖。
+- MiniHUD 与 MaLiLib 安装在客户端。
+- 单人世界通常直接读取本地数据；多人服的真实结构边界需要服务器端 **Servux** 提供结构数据。
+- 精确 TPS/MSPT 可由 Servux、Carpet 等服务器支持提供；没有同步时可能只能估算或不可用。
+- 潜影盒、收纳袋等预览默认按住 **Shift** 悬停触发，按键和触发方式可以在配置中修改。
+
+官方项目
+------------------------
+
 - 作者：maruohon（Masa）
 - GitHub：https://github.com/maruohon/minihud/
 - CurseForge：https://www.curseforge.com/minecraft/mc-mods/minihud
