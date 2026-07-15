@@ -6,6 +6,12 @@ from urllib.parse import urlencode
 
 from scripts.minihud_video.audio import generate_voice
 from scripts.minihud_video.storyboard import render_requests
+from scripts.minihud_video.video import (
+    burn_subtitles,
+    compose_master,
+    create_contact_sheet,
+    render_segments,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -88,14 +94,24 @@ def render_voice() -> tuple[Path, ...]:
     return generate_voice(BUILD_DIR, EDGE_TTS)
 
 
+def render_video() -> tuple[Path, Path, Path]:
+    render_segments(BUILD_DIR)
+    clean = compose_master(BUILD_DIR)
+    captioned = burn_subtitles(BUILD_DIR, clean)
+    contact = create_contact_sheet(BUILD_DIR)
+    return clean, captioned, contact
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=("slides", "voice"))
+    parser.add_argument("command", choices=("slides", "voice", "video"))
     args = parser.parse_args()
     if args.command == "slides":
         outputs = render_slides()
-    else:
+    elif args.command == "voice":
         outputs = render_voice()
+    else:
+        outputs = render_video()
     for path in outputs:
         print(path)
 

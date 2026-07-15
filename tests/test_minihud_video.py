@@ -2,9 +2,9 @@ from pathlib import Path
 import re
 from tempfile import TemporaryDirectory
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
-from scripts.minihud_video import audio, pipeline
+from scripts.minihud_video import audio, pipeline, video
 from scripts.minihud_video.pipeline import (
     BUILD_DIR,
     DECK_PATH,
@@ -27,6 +27,7 @@ from scripts.minihud_video.storyboard import (
     timeline,
     total_base_seconds,
 )
+from scripts.minihud_video.video import build_transition_filter, motion_filter
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -358,7 +359,215 @@ class AudioTest(unittest.TestCase):
                 self.assertIn("--pitch=-4Hz", command)
 
 
+class VideoFilterTest(unittest.TestCase):
+    def test_motion_filters_are_deterministic(self):
+        self.assertIn("zoompan", motion_filter("push"))
+        self.assertIn("zoompan", motion_filter("pull"))
+        self.assertIn("scale=1920:1080", motion_filter("still"))
+        with self.assertRaises(ValueError):
+            motion_filter("spin")
+
+    def test_transition_offsets_account_for_crossfades(self):
+        graph, video_label, audio_label = build_transition_filter(
+            [3.3, 3.3, 3.4],
+            0.25,
+        )
+
+        self.assertIn("offset=3.050", graph)
+        self.assertIn("offset=6.100", graph)
+        self.assertEqual(video_label, "[v2]")
+        self.assertEqual(audio_label, "[a2]")
+
+    def test_segments_use_fixed_duration_and_click_only_at_chapter_start(self):
+        render_segments = getattr(video, "render_segments", None)
+        self.assertIsNotNone(render_segments, "render_segments() must exist")
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            segments = SEGMENTS[:2]
+            with (
+                patch.object(video, "SEGMENTS", segments),
+                patch("subprocess.run") as run,
+            ):
+                outputs = render_segments(build_dir)
+
+        self.assertEqual(
+            outputs,
+            tuple(
+                build_dir / "segments" / f"{segment.id}.mp4"
+                for segment in segments
+            ),
+        )
+        self.assertEqual(run.call_count, 2)
+        for invocation, segment in zip(
+            run.call_args_list,
+            segments,
+            strict=True,
+        ):
+            command = invocation.args[0]
+            graph = command[command.index("-filter_complex") + 1]
+            self.assertEqual(command[command.index("-t") + 1], str(segment.seconds))
+            self.assertIn(f"apad=pad_dur={segment.seconds}", graph)
+            self.assertIn(f"atrim=0:{segment.seconds}", graph)
+            self.assertEqual(invocation.kwargs, {"check": True})
+        first_graph = run.call_args_list[0].args[0]
+        first_graph = first_graph[first_graph.index("-filter_complex") + 1]
+        second_graph = run.call_args_list[1].args[0]
+        second_graph = second_graph[second_graph.index("-filter_complex") + 1]
+        self.assertIn("sine=frequency=760", first_graph)
+        self.assertNotIn("sine=frequency=760", second_graph)
+
+    def test_master_crossfades_then_creates_loudness_normalized_clean_copy(self):
+        compose_master = getattr(video, "compose_master", None)
+        self.assertIsNotNone(compose_master, "compose_master() must exist")
+        analysis = Mock()
+        analysis.stderr = (
+            "FFmpeg diagnostics\n"
+            '{"input_i":"-25.86","input_tp":"-4.77",'
+            '"input_lra":"6.70","input_thresh":"-36.31",'
+            '"target_offset":"1.35"}\n'
+        )
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            segments = SEGMENTS[:3]
+            with (
+                patch.object(video, "SEGMENTS", segments),
+                patch(
+                    "subprocess.run",
+                    side_effect=(Mock(), analysis, Mock()),
+                ) as run,
+            ):
+                clean = compose_master(build_dir)
+
+        master = build_dir / "minihud-bilibili-master.mp4"
+        self.assertEqual(clean, build_dir / "minihud-bilibili-clean.mp4")
+        self.assertEqual(run.call_count, 3)
+        master_command = run.call_args_list[0].args[0]
+        master_graph = master_command[master_command.index("-filter_complex") + 1]
+        self.assertEqual(master_command.count("-i"), len(segments))
+        self.assertIn("xfade=transition=fade:duration=0.250", master_graph)
+        self.assertIn("acrossfade=d=0.250", master_graph)
+        self.assertEqual(Path(master_command[-1]), master)
+        analysis_command = run.call_args_list[1].args[0]
+        analysis_filter = analysis_command[analysis_command.index("-af") + 1]
+        self.assertEqual(
+            analysis_filter,
+            "loudnorm=I=-16:TP=-2:LRA=11:print_format=json",
+        )
+        self.assertEqual(
+            run.call_args_list[1].kwargs,
+            {"check": True, "capture_output": True, "text": True},
+        )
+        clean_command = run.call_args_list[2].args[0]
+        self.assertEqual(clean_command[clean_command.index("-c:v") + 1], "copy")
+        clean_filter = clean_command[clean_command.index("-af") + 1]
+        self.assertIn("loudnorm=I=-16:TP=-2:LRA=11", clean_filter)
+        self.assertIn("measured_I=-25.86", clean_filter)
+        self.assertIn("measured_TP=-4.77", clean_filter)
+        self.assertIn("measured_LRA=6.70", clean_filter)
+        self.assertIn("measured_thresh=-36.31", clean_filter)
+        self.assertIn("offset=1.35", clean_filter)
+        self.assertIn("linear=true", clean_filter)
+        self.assertEqual(Path(clean_command[-1]), clean)
+        self.assertEqual(run.call_args_list[0].kwargs, {"check": True})
+        self.assertEqual(run.call_args_list[2].kwargs, {"check": True})
+
+    def test_subtitle_release_uses_readable_style_and_clean_audio(self):
+        burn_subtitles = getattr(video, "burn_subtitles", None)
+        self.assertIsNotNone(burn_subtitles, "burn_subtitles() must exist")
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            clean = build_dir / "minihud-bilibili-clean.mp4"
+            with patch("subprocess.run") as run:
+                output = burn_subtitles(build_dir, clean)
+
+        self.assertEqual(output, build_dir / "minihud-bilibili.mp4")
+        command = run.call_args.args[0]
+        subtitle_filter = command[command.index("-vf") + 1]
+        self.assertIn("subtitles=", subtitle_filter)
+        self.assertIn("FontName=Noto Sans CJK SC", subtitle_filter)
+        self.assertIn("FontSize=42", subtitle_filter)
+        self.assertIn("Alignment=2", subtitle_filter)
+        self.assertIn("MarginV=72", subtitle_filter)
+        self.assertEqual(command[command.index("-c:a") + 1], "copy")
+        self.assertEqual(run.call_args.kwargs, {"check": True})
+
+    def test_contact_sheet_samples_release_into_twelve_tiles(self):
+        create_contact_sheet = getattr(video, "create_contact_sheet", None)
+        self.assertIsNotNone(
+            create_contact_sheet,
+            "create_contact_sheet() must exist",
+        )
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            with patch("subprocess.run") as run:
+                output = create_contact_sheet(build_dir)
+
+        self.assertEqual(output, build_dir / "final-contact.png")
+        command = run.call_args.args[0]
+        self.assertEqual(
+            command[command.index("-vf") + 1],
+            "fps=1/18,scale=480:270,tile=4x3",
+        )
+        self.assertEqual(Path(command[-1]), output)
+        self.assertEqual(run.call_args.kwargs, {"check": True})
+
+
 class SlidePipelineTest(unittest.TestCase):
+    def test_render_video_builds_clean_captioned_and_contact_outputs(self):
+        self.assertTrue(
+            all(
+                hasattr(pipeline, name)
+                for name in (
+                    "render_segments",
+                    "compose_master",
+                    "burn_subtitles",
+                    "create_contact_sheet",
+                    "render_video",
+                )
+            ),
+            "pipeline video functions must be wired",
+        )
+        clean = Path("clean.mp4")
+        captioned = Path("captioned.mp4")
+        contact = Path("contact.png")
+        with (
+            patch.object(pipeline, "render_segments") as render_segments,
+            patch.object(pipeline, "compose_master", return_value=clean) as compose,
+            patch.object(
+                pipeline,
+                "burn_subtitles",
+                return_value=captioned,
+            ) as burn,
+            patch.object(
+                pipeline,
+                "create_contact_sheet",
+                return_value=contact,
+            ) as create_contact,
+        ):
+            outputs = pipeline.render_video()
+
+        self.assertEqual(outputs, (clean, captioned, contact))
+        render_segments.assert_called_once_with(BUILD_DIR)
+        compose.assert_called_once_with(BUILD_DIR)
+        burn.assert_called_once_with(BUILD_DIR, clean)
+        create_contact.assert_called_once_with(BUILD_DIR)
+
+    def test_video_command_dispatches_and_prints_outputs(self):
+        self.assertTrue(
+            hasattr(pipeline, "render_video"),
+            "render_video() must exist",
+        )
+        outputs = (Path("clean.mp4"), Path("captioned.mp4"), Path("contact.png"))
+        with (
+            patch("sys.argv", ["pipeline", "video"]),
+            patch.object(pipeline, "render_video", return_value=outputs) as render_video,
+            patch("builtins.print") as print_output,
+        ):
+            pipeline.main()
+
+        render_video.assert_called_once_with()
+        self.assertEqual(print_output.call_args_list, [call(path) for path in outputs])
+
     def test_voice_command_dispatches_and_prints_outputs(self):
         output = Path("narration.mp3")
         with (
