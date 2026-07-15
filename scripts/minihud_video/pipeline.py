@@ -109,26 +109,59 @@ def render_cover() -> tuple[Path, Path]:
 
     png = BUILD_DIR / "minihud-cover-1600x1000.png"
     jpg = BUILD_DIR / "minihud-cover-1600x1000.jpg"
+    raw_png = BUILD_DIR / "minihud-cover-raw-1600x1087.png"
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
-        [
-            CHROME,
-            "--headless",
-            "--no-sandbox",
-            "--disable-gpu",
-            "--hide-scrollbars",
-            "--run-all-compositor-stages-before-draw",
-            "--virtual-time-budget=1000",
-            "--window-size=1600,1000",
-            f"--screenshot={png}",
-            COVER_PATH.resolve().as_uri(),
-        ],
-        check=True,
-    )
-    subprocess.run(
-        ["/usr/bin/ffmpeg", "-y", "-i", str(png), "-q:v", "2", str(jpg)],
-        check=True,
-    )
+    try:
+        subprocess.run(
+            [
+                CHROME,
+                "--headless",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--hide-scrollbars",
+                "--run-all-compositor-stages-before-draw",
+                "--virtual-time-budget=1000",
+                # This Chrome build reserves 87 px below the content viewport.
+                "--window-size=1600,1087",
+                f"--screenshot={raw_png}",
+                COVER_PATH.resolve().as_uri(),
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "/usr/bin/ffmpeg",
+                "-y",
+                "-i",
+                str(raw_png),
+                "-vf",
+                "crop=1600:1000:0:0",
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                str(png),
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "/usr/bin/ffmpeg",
+                "-y",
+                "-i",
+                str(png),
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                "-q:v",
+                "2",
+                str(jpg),
+            ],
+            check=True,
+        )
+    finally:
+        raw_png.unlink(missing_ok=True)
     return png, jpg
 
 

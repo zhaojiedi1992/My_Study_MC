@@ -71,6 +71,18 @@ class PublishingTest(unittest.TestCase):
         self.assertTrue(any("结构边界" in line for line in lines))
         self.assertTrue(lines[-1].endswith("收藏与关注"))
 
+        timestamps = []
+        for line in lines:
+            match = re.fullmatch(r"(\d{2}):(\d{2}) .+", line)
+            self.assertIsNotNone(match, f"invalid chapter line: {line}")
+            minutes, seconds = map(int, match.groups())
+            self.assertLess(seconds, 60, f"invalid chapter clock: {line}")
+            timestamps.append(minutes * 60 + seconds)
+        self.assertTrue(
+            all(first < second for first, second in zip(timestamps, timestamps[1:])),
+            f"chapter clocks must be strictly increasing: {timestamps}",
+        )
+
 
 class AudioTest(unittest.TestCase):
     def test_srt_parser_and_formatter(self):
@@ -566,19 +578,52 @@ class SlidePipelineTest(unittest.TestCase):
 
         png = build_dir / "minihud-cover-1600x1000.png"
         jpg = build_dir / "minihud-cover-1600x1000.jpg"
+        raw_png = build_dir / "minihud-cover-raw-1600x1087.png"
         self.assertEqual(outputs, (png, jpg))
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 3)
         chrome_command = run.call_args_list[0].args[0]
-        self.assertIn("--window-size=1600,1000", chrome_command)
-        self.assertIn(f"--screenshot={png}", chrome_command)
+        self.assertIn("--window-size=1600,1087", chrome_command)
+        self.assertIn(f"--screenshot={raw_png}", chrome_command)
         self.assertEqual(chrome_command[-1], cover.resolve().as_uri())
         self.assertEqual(run.call_args_list[0].kwargs, {"check": True})
-        ffmpeg_command = run.call_args_list[1].args[0]
+
+        crop_command = run.call_args_list[1].args[0]
         self.assertEqual(
-            ffmpeg_command,
-            ["/usr/bin/ffmpeg", "-y", "-i", str(png), "-q:v", "2", str(jpg)],
+            crop_command,
+            [
+                "/usr/bin/ffmpeg",
+                "-y",
+                "-i",
+                str(raw_png),
+                "-vf",
+                "crop=1600:1000:0:0",
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                str(png),
+            ],
         )
         self.assertEqual(run.call_args_list[1].kwargs, {"check": True})
+
+        jpeg_command = run.call_args_list[2].args[0]
+        self.assertEqual(
+            jpeg_command,
+            [
+                "/usr/bin/ffmpeg",
+                "-y",
+                "-i",
+                str(png),
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                "-q:v",
+                "2",
+                str(jpg),
+            ],
+        )
+        self.assertEqual(run.call_args_list[2].kwargs, {"check": True})
 
     def test_write_publish_guide_uses_build_directory(self):
         with TemporaryDirectory() as directory:
