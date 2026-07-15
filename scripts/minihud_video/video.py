@@ -270,9 +270,9 @@ def burn_subtitles(build_dir: Path, clean: Path) -> Path:
     srt = build_dir / "subtitles/minihud-bilibili.zh-CN.srt"
     output = build_dir / "minihud-bilibili.mp4"
     style = (
-        "FontName=Noto Sans CJK SC,FontSize=42,"
+        "FontName=Noto Sans CJK SC,FontSize=30,"
         "PrimaryColour=&H00FFFFFF,OutlineColour=&H0010182A,"
-        "BorderStyle=1,Outline=2,Shadow=0,Alignment=2,MarginV=72"
+        "BorderStyle=1,Outline=1.5,Shadow=0,Alignment=2,MarginV=44"
     )
     subprocess.run(
         [
