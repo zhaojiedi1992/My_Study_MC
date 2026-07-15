@@ -1,6 +1,12 @@
 from pathlib import Path
 import unittest
 
+from scripts.minihud_video.pipeline import (
+    BUILD_DIR,
+    DECK_PATH,
+    build_slide_url,
+    slide_path,
+)
 from scripts.minihud_video.storyboard import (
     SEGMENTS,
     TRANSITION_SECONDS,
@@ -12,6 +18,22 @@ from scripts.minihud_video.storyboard import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class SlidePipelineTest(unittest.TestCase):
+    def test_slide_url_is_local_and_encodes_export_state(self):
+        url = build_slide_url(6, "range:chunk")
+        self.assertTrue(url.startswith("file:"))
+        self.assertIn("export=1", url)
+        self.assertIn("slide=6", url)
+        self.assertIn("state=range%3Achunk", url)
+
+    def test_slide_path_is_stable(self):
+        self.assertEqual(
+            slide_path("range-chunk"),
+            BUILD_DIR / "slides/range-chunk.png",
+        )
+        self.assertTrue(DECK_PATH.is_file())
 
 
 class StoryboardTest(unittest.TestCase):
