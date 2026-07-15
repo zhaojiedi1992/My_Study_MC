@@ -388,7 +388,7 @@ class StoryboardTest(unittest.TestCase):
 
     def test_narration_matches_approved_scope(self):
         copy = "".join(segment.narration for segment in SEGMENTS)
-        self.assertEqual(len(copy), 840)
+        self.assertEqual(len(copy), 819)
         for phrase in (
             "问题", "Servux", "按住 Shift", "Mob Cap 是数量上限",
             "先收藏", "实用的 Minecraft 模组和生存技巧",
@@ -445,8 +445,8 @@ class TimelineItem:
     end: float
 
 SEGMENTS = (
-    Segment("hook-structure", "冷开场", 3.3, 4, "structure:on", "push", "结构藏进地形里，看不清完整范围？"),
-    Segment("hook-shape", "冷开场", 3.3, 7, "shape:basic", "pull", "圆心、半径和高度，还在靠目测？"),
+    Segment("hook-structure", "冷开场", 3.3, 4, "structure:on", "push", "结构被挡，看不清范围？"),
+    Segment("hook-shape", "冷开场", 3.3, 7, "shape:basic", "pull", "圆心半径，还靠目测？"),
     Segment("hook-preview", "冷开场", 3.4, 8, "base:shulker", "push", "潜影盒，也要一个个打开确认？"),
     Segment("intro", "MiniHUD 是什么", 13, 1, "default", "push", "这就是 MiniHUD。它不会替你建造或找结构，只把原本看不见的信息、边界和范围，直接画进游戏画面。"),
     Segment("problem-map", "使用方法", 13, 2, "default", "still", "不用背菜单。遇到什么问题，就开对应功能。默认 H 控制总渲染，H 加 C 进入配置，快捷键可以修改。"),
@@ -456,7 +456,7 @@ SEGMENTS = (
     Segment("site-biome", "工程选址", 8, 5, "site:biome", "pull", "准备建基地或农场，先看群系和区块边界，确认工程有没有跨过关键区域。"),
     Segment("site-guide", "工程选址", 14, 5, "site:guide", "push", "担心刷怪，再按需要检查光照。一次只开一层，看见问题、现场处理、关闭复查。低光照只是条件之一，不代表一定刷怪。"),
     Segment("range-device", "机制范围", 6, 6, "range:beacon", "push", "信标、潮涌核心这类装置，适合看盒状覆盖边界。"),
-    Segment("range-spawn", "机制范围", 6, 6, "range:spawn", "pull", "刷怪和消失距离看球形参考，挂机点是否合适会更直观。"),
+    Segment("range-spawn", "机制范围", 6, 6, "range:spawn", "pull", "刷怪距离看球，挂机点更直观。"),
     Segment("range-chunk", "机制范围", 12, 6, "range:chunk", "still", "随机刻和出生区块看网格。二十四、三十二、一百二十八格只是常见参考，具体规则仍要看版本和生物。"),
     Segment("build-basic", "施工规划", 9, 7, "shape:basic", "push", "圆心、半径和占地不好确定，就用圆形、圆柱或方框，先把施工参考线画进世界。"),
     Segment("build-spawn", "施工规划", 11, 7, "shape:spawn", "pull", "需要判断高度或生成空间，再切换球体和生成球。它们只帮助检查，不会自动放置或拆除方块。"),
