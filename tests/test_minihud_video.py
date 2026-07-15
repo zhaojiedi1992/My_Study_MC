@@ -258,14 +258,14 @@ class AudioTest(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, message):
                     parse_srt(source)
 
-    def test_choose_voice_prefers_yunyang_then_falls_back_to_yunjian(self):
+    def test_choose_voice_prefers_yunjian_then_falls_back_to_yunxi(self):
         edge_tts = Path("edge-tts")
         cases = (
             (
-                "zh-CN-YunjianNeural Male\nzh-CN-YunyangNeural Male\n",
-                "zh-CN-YunyangNeural",
+                "zh-CN-YunxiNeural Male\nzh-CN-YunjianNeural Male\n",
+                "zh-CN-YunjianNeural",
             ),
-            ("zh-CN-YunjianNeural Male\n", "zh-CN-YunjianNeural"),
+            ("zh-CN-YunxiNeural Male\n", "zh-CN-YunxiNeural"),
         )
 
         for voices, expected in cases:
@@ -276,6 +276,20 @@ class AudioTest(unittest.TestCase):
                     return_value=Mock(stdout=voices),
                 ):
                     self.assertEqual(audio.choose_voice(edge_tts), expected)
+
+    def test_generate_voice_rejects_more_than_one_second_of_tail_silence(self):
+        with TemporaryDirectory() as directory:
+            with (
+                patch.object(audio, "SEGMENTS", SEGMENTS[:1]),
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=3.1),
+                patch.object(audio.subprocess, "run", return_value=Mock()),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    r"hook-structure.*1\.20s.*1\.00s",
+                ):
+                    audio.generate_voice(Path(directory), Path("edge-tts"))
 
     def test_generate_voice_rejects_empty_segment_srt(self):
         with TemporaryDirectory() as directory:
@@ -291,7 +305,7 @@ class AudioTest(unittest.TestCase):
             with (
                 patch.object(audio, "SEGMENTS", SEGMENTS[:1]),
                 patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
-                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio, "probe_duration", return_value=3.5),
                 patch.object(audio.subprocess, "run", side_effect=write_empty_srt),
             ):
                 with self.assertRaisesRegex(
@@ -309,7 +323,7 @@ class AudioTest(unittest.TestCase):
                 srt = Path(command[command.index("--write-subtitles") + 1])
                 media.write_bytes(b"mp3")
                 srt.write_text(
-                    "1\n00:00:00,100 --> 00:00:03,100\n越界字幕\n",
+                    "1\n00:00:00,100 --> 00:00:04,100\n越界字幕\n",
                     encoding="utf-8",
                 )
                 return Mock(returncode=0)
@@ -317,12 +331,12 @@ class AudioTest(unittest.TestCase):
             with (
                 patch.object(audio, "SEGMENTS", SEGMENTS[:2]),
                 patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
-                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio, "probe_duration", return_value=3.5),
                 patch.object(audio.subprocess, "run", side_effect=write_late_srt),
             ):
                 with self.assertRaisesRegex(
                     RuntimeError,
-                    r"hook-structure.*3\.05",
+                    r"hook-structure.*4\.05",
                 ):
                     audio.generate_voice(build_dir, Path("edge-tts"))
 
@@ -331,12 +345,12 @@ class AudioTest(unittest.TestCase):
             with (
                 patch.object(audio, "SEGMENTS", SEGMENTS[:2]),
                 patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
-                patch.object(audio, "probe_duration", return_value=3.06),
+                patch.object(audio, "probe_duration", return_value=4.06),
                 patch.object(audio.subprocess, "run", return_value=Mock()),
             ):
                 with self.assertRaisesRegex(
                     RuntimeError,
-                    r"hook-structure.*3\.06s.*3\.05s",
+                    r"hook-structure.*4\.06s.*4\.05s",
                 ):
                     audio.generate_voice(Path(directory), Path("edge-tts"))
 
@@ -357,13 +371,13 @@ class AudioTest(unittest.TestCase):
             with (
                 patch.object(audio, "SEGMENTS", SEGMENTS[-1:]),
                 patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
-                patch.object(audio, "probe_duration", return_value=0.2),
-                patch.object(audio, "timeline", return_value=(Mock(start=205.4),)),
+                patch.object(audio, "probe_duration", return_value=12.5),
+                patch.object(audio, "timeline", return_value=(Mock(start=192.8),)),
                 patch.object(audio.subprocess, "run", side_effect=write_valid_srt),
             ):
                 with self.assertRaisesRegex(
                     RuntimeError,
-                    r"Merged subtitles.*205\.50",
+                    r"Merged subtitles.*193\.00",
                 ):
                     audio.generate_voice(build_dir, Path("edge-tts"))
 
@@ -389,7 +403,16 @@ class AudioTest(unittest.TestCase):
 
             with (
                 patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
-                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(
+                    audio,
+                    "probe_duration",
+                    side_effect=[
+                        segment.seconds
+                        - (TRANSITION_SECONDS if index < len(SEGMENTS) - 1 else 0)
+                        - 0.5
+                        for index, segment in enumerate(SEGMENTS)
+                    ],
+                ),
                 patch.object(audio.subprocess, "run", side_effect=write_outputs),
             ):
                 outputs = audio.generate_voice(build_dir, Path("edge-tts"))
@@ -426,8 +449,8 @@ class AudioTest(unittest.TestCase):
             for command in commands:
                 self.assertIn("--voice", command)
                 self.assertIn(audio.VOICES[0], command)
-                self.assertIn("--rate=-4%", command)
-                self.assertIn("--pitch=-4Hz", command)
+                self.assertIn("--rate=-2%", command)
+                self.assertIn("--pitch=-2Hz", command)
 
 
 class VideoFilterTest(unittest.TestCase):
@@ -809,8 +832,16 @@ class StoryboardTest(unittest.TestCase):
     def test_storyboard_has_exact_timing_and_unique_ids(self):
         self.assertEqual(len(SEGMENTS), 19)
         self.assertEqual(len({segment.id for segment in SEGMENTS}), 19)
-        self.assertAlmostEqual(total_base_seconds(), 210.0, places=3)
-        self.assertAlmostEqual(encoded_seconds(), 205.5, places=3)
+        self.assertEqual(
+            tuple(segment.seconds for segment in SEGMENTS),
+            (
+                4.3, 4.1, 4.5, 11.6, 12.4, 10.5, 13.9, 20.0, 8.3,
+                13.7, 6.3, 5.6, 11.4, 9.3, 10.6, 12.9, 11.8, 13.2, 13.0,
+            ),
+        )
+        self.assertAlmostEqual(total_base_seconds(), 197.4, places=3)
+        self.assertAlmostEqual(encoded_seconds(), 192.9, places=3)
+        self.assertTrue(180 <= encoded_seconds() <= 195)
         self.assertEqual(TRANSITION_SECONDS, 0.25)
 
     def test_narration_matches_approved_scope(self):
@@ -825,10 +856,10 @@ class StoryboardTest(unittest.TestCase):
             {
                 "hook-structure": "结构被挡，看不清范围？",
                 "hook-shape": "圆心半径，还靠目测？",
-                "range-spawn": "刷怪距离看球，挂机点更直观。",
+                "range-spawn": "刷怪距离看球形范围，挂机点会直观很多。",
             },
         )
-        self.assertEqual(len(copy), 819)
+        self.assertEqual(len(copy), 847)
         for phrase in (
             "问题",
             "Servux",
@@ -844,8 +875,8 @@ class StoryboardTest(unittest.TestCase):
     def test_timeline_accounts_for_crossfades(self):
         items = timeline()
         self.assertEqual(items[0].start, 0)
-        self.assertAlmostEqual(items[1].start, 3.05, places=3)
-        self.assertAlmostEqual(items[-1].end, 205.5, places=3)
+        self.assertAlmostEqual(items[1].start, 4.05, places=3)
+        self.assertAlmostEqual(items[-1].end, 192.9, places=3)
 
     def test_every_render_request_has_a_supported_slide(self):
         requests = render_requests()

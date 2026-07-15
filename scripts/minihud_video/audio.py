@@ -11,11 +11,12 @@ from scripts.minihud_video.storyboard import (
 )
 
 
-VOICES = ("zh-CN-YunyangNeural", "zh-CN-YunjianNeural")
-RATE = "-4%"
-PITCH = "-4Hz"
+VOICES = ("zh-CN-YunjianNeural", "zh-CN-YunxiNeural")
+RATE = "-2%"
+PITCH = "-2Hz"
 CAPTION_WIDTH = 18
 MAX_CAPTION_LINES = 2
+MAX_TAIL_SILENCE_SECONDS = 1.0
 
 _BOUNDARY_PUNCTUATION = frozenset("，。！？；：、,.!?;:")
 _SRT_TIME_PATTERN = re.compile(
@@ -416,6 +417,12 @@ def generate_voice(build_dir: Path, edge_tts: Path) -> tuple[Path, ...]:
             raise RuntimeError(
                 f"Narration {segment.id} is {duration:.2f}s, "
                 f"longer than {allowed:.2f}s"
+            )
+        tail_silence = allowed - duration
+        if tail_silence > MAX_TAIL_SILENCE_SECONDS + 1e-9:
+            raise RuntimeError(
+                f"Narration {segment.id} leaves {tail_silence:.2f}s of tail "
+                f"silence; maximum is {MAX_TAIL_SILENCE_SECONDS:.2f}s"
             )
         try:
             source = srt.read_text(encoding="utf-8")
