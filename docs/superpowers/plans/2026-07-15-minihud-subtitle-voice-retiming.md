@@ -14,7 +14,7 @@
 - Use a single `zh-CN-YunjianNeural` male voice at `rate=-2%` and `pitch=-2Hz`; use `zh-CN-YunxiNeural` only as an unavailable-voice fallback, never mixed into the same release.
 - Keep every segment's audible tail silence between 0 and 1.0 seconds after accounting for the 0.25-second crossfade.
 - Final encoded duration must be 180–195 seconds.
-- Embedded subtitle style is exactly `FontName=Noto Sans CJK SC`, `FontSize=30`, `Outline=1.5`, `Alignment=2`, and `MarginV=44`.
+- Embedded subtitle style is exactly `FontName=Noto Sans CJK SC`, `FontSize=20`, `Outline=1.2`, `Alignment=2`, and `MarginV=26`.
 - SRT cues remain non-overlapping, at most two lines, and at most 18 characters per line.
 - Do not add background music, tease 15 shapes, change the cover, or introduce new screenshots.
 - Generated voice, SRT, segment, MP4, contact-sheet, and publishing artifacts remain under ignored `build/minihud-video/`.
@@ -284,10 +284,10 @@ self.assertIn("subtitles=", subtitle_filter)
 style_source = subtitle_filter.split("force_style='", 1)[1].rsplit("'", 1)[0]
 style = dict(item.split("=", 1) for item in style_source.split(","))
 self.assertEqual(style["FontName"], "Noto Sans CJK SC")
-self.assertEqual(style["FontSize"], "30")
-self.assertEqual(style["Outline"], "1.5")
+self.assertEqual(style["FontSize"], "20")
+self.assertEqual(style["Outline"], "1.2")
 self.assertEqual(style["Alignment"], "2")
-self.assertEqual(style["MarginV"], "44")
+self.assertEqual(style["MarginV"], "26")
 self.assertEqual(command[command.index("-c:a") + 1], "copy")
 ```
 
@@ -299,7 +299,7 @@ Run:
 python3 -m unittest tests.test_minihud_video.VideoFilterTest.test_subtitle_release_uses_readable_style_and_clean_audio -v
 ```
 
-Expected: FAIL because the current style is `FontSize=42`, `Outline=2`, and `MarginV=72`.
+Expected: FAIL because the current style is still `FontSize=30`, `Outline=1.5`, and `MarginV=44` after the first insufficient reduction.
 
 - [ ] **Step 3: Implement the compact style**
 
@@ -307,9 +307,9 @@ In `burn_subtitles()`, set:
 
 ```python
 style = (
-    "FontName=Noto Sans CJK SC,FontSize=30,"
+    "FontName=Noto Sans CJK SC,FontSize=20,"
     "PrimaryColour=&H00FFFFFF,OutlineColour=&H0010182A,"
-    "BorderStyle=1,Outline=1.5,Shadow=0,Alignment=2,MarginV=44"
+    "BorderStyle=1,Outline=1.2,Shadow=0,Alignment=2,MarginV=26"
 )
 ```
 
