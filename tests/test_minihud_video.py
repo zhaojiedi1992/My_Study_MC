@@ -19,6 +19,7 @@ from scripts.minihud_video.audio import (
     split_cue,
     wrap_caption,
 )
+from scripts.minihud_video.publishing import build_publish_markdown, chapter_lines
 from scripts.minihud_video.storyboard import (
     SEGMENTS,
     TRANSITION_SECONDS,
@@ -31,6 +32,44 @@ from scripts.minihud_video.video import build_transition_filter, motion_filter
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class PublishingTest(unittest.TestCase):
+    def test_cover_source_has_approved_copy_and_dimensions(self):
+        source = (ROOT / "scripts/minihud_video/cover.html").read_text(
+            encoding="utf-8"
+        )
+        for phrase in (
+            "width:1600px",
+            "height:1000px",
+            "一个 MOD",
+            "看清隐藏规则",
+            "6 个实用场景",
+        ):
+            self.assertIn(phrase, source)
+        self.assertLessEqual(source.count("<img"), 2)
+
+    def test_publish_copy_is_complete_and_honest(self):
+        copy = build_publish_markdown()
+        for phrase in (
+            "MiniHUD",
+            "Minecraft Java 版 26.2",
+            "Fabric Loader",
+            "MaLiLib",
+            "Servux",
+            "不同版本",
+            "收藏",
+            "置顶评论",
+        ):
+            self.assertIn(phrase, copy)
+        self.assertNotIn("下一期", copy)
+        self.assertNotIn("15 种", copy)
+
+    def test_chapters_are_monotonic(self):
+        lines = chapter_lines()
+        self.assertEqual(lines[0], "00:00 冷开场")
+        self.assertTrue(any("结构边界" in line for line in lines))
+        self.assertTrue(lines[-1].endswith("收藏与关注"))
 
 
 class AudioTest(unittest.TestCase):
@@ -513,6 +552,99 @@ class VideoFilterTest(unittest.TestCase):
 
 
 class SlidePipelineTest(unittest.TestCase):
+    def test_render_cover_runs_chrome_and_jpeg_conversion(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            cover = build_dir / "cover.html"
+            cover.write_text("<!doctype html>", encoding="utf-8")
+            with (
+                patch.object(pipeline, "BUILD_DIR", build_dir),
+                patch.object(pipeline, "COVER_PATH", cover),
+                patch.object(pipeline.subprocess, "run") as run,
+            ):
+                outputs = pipeline.render_cover()
+
+        png = build_dir / "minihud-cover-1600x1000.png"
+        jpg = build_dir / "minihud-cover-1600x1000.jpg"
+        self.assertEqual(outputs, (png, jpg))
+        self.assertEqual(run.call_count, 2)
+        chrome_command = run.call_args_list[0].args[0]
+        self.assertIn("--window-size=1600,1000", chrome_command)
+        self.assertIn(f"--screenshot={png}", chrome_command)
+        self.assertEqual(chrome_command[-1], cover.resolve().as_uri())
+        self.assertEqual(run.call_args_list[0].kwargs, {"check": True})
+        ffmpeg_command = run.call_args_list[1].args[0]
+        self.assertEqual(
+            ffmpeg_command,
+            ["/usr/bin/ffmpeg", "-y", "-i", str(png), "-q:v", "2", str(jpg)],
+        )
+        self.assertEqual(run.call_args_list[1].kwargs, {"check": True})
+
+    def test_write_publish_guide_uses_build_directory(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            with patch.object(pipeline, "BUILD_DIR", build_dir):
+                output = pipeline.write_publish_guide()
+
+            self.assertEqual(output, build_dir / "bilibili-publish.md")
+            self.assertEqual(output.read_text(encoding="utf-8"), build_publish_markdown())
+
+    def test_cover_and_publish_commands_dispatch_and_print(self):
+        cover_outputs = (Path("cover.png"), Path("cover.jpg"))
+        publish_output = Path("publish.md")
+        with (
+            patch("sys.argv", ["pipeline", "cover"]),
+            patch.object(pipeline, "render_cover", return_value=cover_outputs) as cover,
+            patch("builtins.print") as print_output,
+        ):
+            pipeline.main()
+        cover.assert_called_once_with()
+        self.assertEqual(print_output.call_args_list, [call(path) for path in cover_outputs])
+
+        with (
+            patch("sys.argv", ["pipeline", "publish"]),
+            patch.object(pipeline, "write_publish_guide", return_value=publish_output) as publish,
+            patch("builtins.print") as print_output,
+        ):
+            pipeline.main()
+        publish.assert_called_once_with()
+        print_output.assert_called_once_with(publish_output)
+
+    def test_all_command_runs_actions_in_delivery_order(self):
+        actions = {
+            "render_slides": (Path("slide.png"),),
+            "render_voice": (Path("voice.mp3"),),
+            "render_video": (Path("video.mp4"),),
+            "render_cover": (Path("cover.png"), Path("cover.jpg")),
+            "write_publish_guide": Path("publish.md"),
+        }
+        with (
+            patch("sys.argv", ["pipeline", "all"]),
+            patch.object(pipeline, "render_slides", return_value=actions["render_slides"]) as slides,
+            patch.object(pipeline, "render_voice", return_value=actions["render_voice"]) as voice,
+            patch.object(pipeline, "render_video", return_value=actions["render_video"]) as video,
+            patch.object(pipeline, "render_cover", return_value=actions["render_cover"]) as cover,
+            patch.object(pipeline, "write_publish_guide", return_value=actions["write_publish_guide"]) as publish,
+            patch("builtins.print") as print_output,
+        ):
+            pipeline.main()
+
+        slides.assert_called_once_with()
+        voice.assert_called_once_with()
+        video.assert_called_once_with()
+        cover.assert_called_once_with()
+        publish.assert_called_once_with()
+        self.assertEqual(
+            print_output.call_args_list,
+            [
+                call("slides", actions["render_slides"]),
+                call("voice", actions["render_voice"]),
+                call("video", actions["render_video"]),
+                call("cover", actions["render_cover"]),
+                call("publish", actions["write_publish_guide"]),
+            ],
+        )
+
     def test_render_video_builds_clean_captioned_and_contact_outputs(self):
         self.assertTrue(
             all(

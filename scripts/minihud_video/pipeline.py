@@ -5,6 +5,7 @@ import subprocess
 from urllib.parse import urlencode
 
 from scripts.minihud_video.audio import generate_voice
+from scripts.minihud_video.publishing import build_publish_markdown
 from scripts.minihud_video.storyboard import render_requests
 from scripts.minihud_video.video import (
     burn_subtitles,
@@ -16,6 +17,7 @@ from scripts.minihud_video.video import (
 
 ROOT = Path(__file__).resolve().parents[2]
 DECK_PATH = ROOT / "source/extra/MOD介绍/minihud/index.html"
+COVER_PATH = ROOT / "scripts/minihud_video/cover.html"
 BUILD_DIR = ROOT / "build/minihud-video"
 CHROME = "/usr/bin/google-chrome"
 FFPROBE = "/usr/bin/ffprobe"
@@ -102,18 +104,69 @@ def render_video() -> tuple[Path, Path, Path]:
     return clean, captioned, contact
 
 
+def render_cover() -> tuple[Path, Path]:
+    """Render the HTML cover to the PNG and JPG delivery assets."""
+
+    png = BUILD_DIR / "minihud-cover-1600x1000.png"
+    jpg = BUILD_DIR / "minihud-cover-1600x1000.jpg"
+    BUILD_DIR.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            CHROME,
+            "--headless",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--hide-scrollbars",
+            "--run-all-compositor-stages-before-draw",
+            "--virtual-time-budget=1000",
+            "--window-size=1600,1000",
+            f"--screenshot={png}",
+            COVER_PATH.resolve().as_uri(),
+        ],
+        check=True,
+    )
+    subprocess.run(
+        ["/usr/bin/ffmpeg", "-y", "-i", str(png), "-q:v", "2", str(jpg)],
+        check=True,
+    )
+    return png, jpg
+
+
+def write_publish_guide() -> Path:
+    """Write the generated Bilibili metadata beside the rendered media."""
+
+    output = BUILD_DIR / "bilibili-publish.md"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(build_publish_markdown(), encoding="utf-8")
+    return output
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=("slides", "voice", "video"))
+    parser.add_argument(
+        "command",
+        choices=("slides", "voice", "video", "cover", "publish", "all"),
+    )
     args = parser.parse_args()
-    if args.command == "slides":
-        outputs = render_slides()
-    elif args.command == "voice":
-        outputs = render_voice()
+    actions = {
+        "slides": render_slides,
+        "voice": render_voice,
+        "video": render_video,
+        "cover": render_cover,
+        "publish": write_publish_guide,
+    }
+    if args.command == "all":
+        for name in ("slides", "voice", "video", "cover", "publish"):
+            result = actions[name]()
+            print(name, result)
+        return
+
+    result = actions[args.command]()
+    if isinstance(result, tuple):
+        for path in result:
+            print(path)
     else:
-        outputs = render_video()
-    for path in outputs:
-        print(path)
+        print(result)
 
 
 if __name__ == "__main__":
