@@ -1,9 +1,10 @@
 from pathlib import Path
+import re
 from tempfile import TemporaryDirectory
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from scripts.minihud_video import pipeline
+from scripts.minihud_video import audio, pipeline
 from scripts.minihud_video.pipeline import (
     BUILD_DIR,
     DECK_PATH,
@@ -66,6 +67,295 @@ class AudioTest(unittest.TestCase):
         self.assertTrue(
             all(max(map(len, part.text.splitlines())) <= 10 for part in parts)
         )
+
+    def test_long_cue_prefers_semantic_boundaries_and_proportional_timing(self):
+        source = Cue(
+            1.0,
+            5.6,
+            "第一句稍微长一些，需要在这里停顿，服务器支持。",
+        )
+
+        parts = split_cue(source, width=9)
+
+        self.assertEqual(
+            [part.text.replace("\n", "") for part in parts],
+            ["第一句稍微长一些，需要在这里停顿，", "服务器支持。"],
+        )
+        self.assertAlmostEqual(parts[0].end, 4.4, places=6)
+        self.assertAlmostEqual(parts[1].start, 4.4, places=6)
+        self.assertEqual(parts[-1].end, source.end)
+
+    def test_caption_splitting_keeps_nearby_latin_and_chinese_tokens(self):
+        source = Cue(
+            0.0,
+            8.2,
+            "FPS 看客户端，延迟和 TPS、MSPT 看联机状态；"
+            "精确数据还要看服务器支持。",
+        )
+
+        flattened = [
+            part.text.replace("\n", "") for part in split_cue(source)
+        ]
+
+        self.assertTrue(any("TPS" in part for part in flattened))
+        self.assertTrue(any("服务器" in part for part in flattened))
+        self.assertFalse(any(part.endswith("服") for part in flattened))
+        self.assertFalse(any(part in {"T", "PS。"} for part in flattened))
+
+    def test_caption_wrapping_keeps_latin_tokens_at_nearby_boundaries(self):
+        source = Cue(
+            0.0,
+            6.0,
+            "安装只要记住：Fabric Loader，加上版本匹配的 MiniHUD "
+            "和 MaLiLib。",
+        )
+
+        lines = [line for part in split_cue(source) for line in part.text.splitlines()]
+
+        for token in ("Fabric", "Loader", "MiniHUD", "MaLiLib"):
+            with self.subTest(token=token):
+                self.assertTrue(any(token in line for line in lines))
+
+    def test_production_captions_enforce_two_lines_of_eighteen_characters(self):
+        sources = (
+            Cue(
+                0.0,
+                8.0,
+                "结构被海水或山体挡住时，打开结构主边界和组成部分，"
+                "就能看清整体与内部。",
+            ),
+            Cue(
+                0.0,
+                8.0,
+                "机器效率不对，再查看光照、生成距离、Mob Cap、"
+                "实体数量、延迟和 TPS。",
+            ),
+        )
+
+        captions = [part.text for cue in sources for part in split_cue(cue)]
+
+        self.assertTrue(all(len(caption.splitlines()) <= 2 for caption in captions))
+        self.assertTrue(
+            all(
+                len(line) <= 18
+                for caption in captions
+                for line in caption.splitlines()
+            )
+        )
+
+    def test_merge_cues_trims_upstream_overlap_without_zero_length_cues(self):
+        merged = merge_cues(
+            [[Cue(0.1, 4.0, "第一句"), Cue(3.95, 5.0, "第二句")]],
+            starts=[10.0],
+        )
+
+        self.assertEqual(merged[0], Cue(10.1, 13.95, "第一句"))
+        self.assertEqual(merged[1], Cue(13.95, 15.0, "第二句"))
+        self.assertTrue(all(cue.end > cue.start for cue in merged))
+        self.assertTrue(
+            all(left.end <= right.start for left, right in zip(merged, merged[1:]))
+        )
+
+    def test_srt_parser_rejects_empty_malformed_and_textless_input(self):
+        invalid_sources = (
+            ("", "empty"),
+            ("1\nnot a timing line\n字幕\n", "timing"),
+            ("1\n00:00:00,100 --> 00:00:00,200\n", "text"),
+        )
+
+        for source, message in invalid_sources:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(RuntimeError, message):
+                    parse_srt(source)
+
+    def test_srt_parser_rejects_nonpositive_and_unordered_cues(self):
+        invalid_sources = (
+            (
+                "1\n00:00:01,000 --> 00:00:01,000\n零时长\n",
+                "positive",
+            ),
+            (
+                "1\n00:00:02,000 --> 00:00:03,000\n第二句\n\n"
+                "2\n00:00:01,000 --> 00:00:04,000\n第一句\n",
+                "ordered",
+            ),
+        )
+
+        for source, message in invalid_sources:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(RuntimeError, message):
+                    parse_srt(source)
+
+    def test_choose_voice_prefers_yunyang_then_falls_back_to_yunjian(self):
+        edge_tts = Path("edge-tts")
+        cases = (
+            (
+                "zh-CN-YunjianNeural Male\nzh-CN-YunyangNeural Male\n",
+                "zh-CN-YunyangNeural",
+            ),
+            ("zh-CN-YunjianNeural Male\n", "zh-CN-YunjianNeural"),
+        )
+
+        for voices, expected in cases:
+            with self.subTest(expected=expected):
+                with patch.object(
+                    audio.subprocess,
+                    "run",
+                    return_value=Mock(stdout=voices),
+                ):
+                    self.assertEqual(audio.choose_voice(edge_tts), expected)
+
+    def test_generate_voice_rejects_empty_segment_srt(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def write_empty_srt(command, **_kwargs):
+                media = Path(command[command.index("--write-media") + 1])
+                srt = Path(command[command.index("--write-subtitles") + 1])
+                media.write_bytes(b"mp3")
+                srt.write_text("", encoding="utf-8")
+                return Mock(returncode=0)
+
+            with (
+                patch.object(audio, "SEGMENTS", SEGMENTS[:1]),
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio.subprocess, "run", side_effect=write_empty_srt),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    r"hook-structure.*empty",
+                ):
+                    audio.generate_voice(build_dir, Path("edge-tts"))
+
+    def test_generate_voice_rejects_segment_srt_past_crossfade_budget(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def write_late_srt(command, **_kwargs):
+                media = Path(command[command.index("--write-media") + 1])
+                srt = Path(command[command.index("--write-subtitles") + 1])
+                media.write_bytes(b"mp3")
+                srt.write_text(
+                    "1\n00:00:00,100 --> 00:00:03,100\n越界字幕\n",
+                    encoding="utf-8",
+                )
+                return Mock(returncode=0)
+
+            with (
+                patch.object(audio, "SEGMENTS", SEGMENTS[:2]),
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio.subprocess, "run", side_effect=write_late_srt),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    r"hook-structure.*3\.05",
+                ):
+                    audio.generate_voice(build_dir, Path("edge-tts"))
+
+    def test_generate_voice_rejects_narration_past_crossfade_budget(self):
+        with TemporaryDirectory() as directory:
+            with (
+                patch.object(audio, "SEGMENTS", SEGMENTS[:2]),
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=3.06),
+                patch.object(audio.subprocess, "run", return_value=Mock()),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    r"hook-structure.*3\.06s.*3\.05s",
+                ):
+                    audio.generate_voice(Path(directory), Path("edge-tts"))
+
+    def test_generate_voice_rejects_merged_srt_past_encoded_timeline(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def write_valid_srt(command, **_kwargs):
+                media = Path(command[command.index("--write-media") + 1])
+                srt = Path(command[command.index("--write-subtitles") + 1])
+                media.write_bytes(b"mp3")
+                srt.write_text(
+                    "1\n00:00:00,100 --> 00:00:00,200\n片尾字幕\n",
+                    encoding="utf-8",
+                )
+                return Mock(returncode=0)
+
+            with (
+                patch.object(audio, "SEGMENTS", SEGMENTS[-1:]),
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio, "timeline", return_value=(Mock(start=205.4),)),
+                patch.object(audio.subprocess, "run", side_effect=write_valid_srt),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    r"Merged subtitles.*205\.50",
+                ):
+                    audio.generate_voice(build_dir, Path("edge-tts"))
+
+    def test_generate_voice_creates_all_artifacts_with_fixed_prosody(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            narration_by_id = {
+                segment.id: segment.narration for segment in SEGMENTS
+            }
+            commands = []
+
+            def write_outputs(command, **_kwargs):
+                commands.append(command)
+                media = Path(command[command.index("--write-media") + 1])
+                srt = Path(command[command.index("--write-subtitles") + 1])
+                media.write_bytes(b"mp3")
+                srt.write_text(
+                    "1\n00:00:00,100 --> 00:00:00,200\n"
+                    f"{narration_by_id[media.stem]}\n",
+                    encoding="utf-8",
+                )
+                return Mock(returncode=0)
+
+            with (
+                patch.object(audio, "choose_voice", return_value=audio.VOICES[0]),
+                patch.object(audio, "probe_duration", return_value=0.2),
+                patch.object(audio.subprocess, "run", side_effect=write_outputs),
+            ):
+                outputs = audio.generate_voice(build_dir, Path("edge-tts"))
+
+            merged_path = (
+                build_dir / "subtitles/minihud-bilibili.zh-CN.srt"
+            )
+            merged_source = merged_path.read_text(encoding="utf-8")
+            merged = parse_srt(merged_source)
+            merged_text = re.sub(r"\s+", "", "".join(cue.text for cue in merged))
+            source_text = re.sub(
+                r"\s+",
+                "",
+                "".join(segment.narration for segment in SEGMENTS),
+            )
+
+            self.assertEqual(len(outputs), 19)
+            self.assertTrue(all(path.is_file() for path in outputs))
+            self.assertEqual(len(list((build_dir / "narration").glob("*.srt"))), 19)
+            self.assertTrue(merged_path.is_file())
+            self.assertEqual(merged_text, source_text)
+            self.assertTrue(
+                all(left.end <= right.start for left, right in zip(merged, merged[1:]))
+            )
+            for block in re.split(r"\n\s*\n", merged_source.strip()):
+                lines = block.splitlines()
+                timing_index = next(
+                    index for index, line in enumerate(lines) if "-->" in line
+                )
+                caption_lines = lines[timing_index + 1 :]
+                self.assertLessEqual(len(caption_lines), 2)
+                self.assertTrue(all(len(line) <= 18 for line in caption_lines))
+            self.assertEqual(len(commands), 19)
+            for command in commands:
+                self.assertIn("--voice", command)
+                self.assertIn(audio.VOICES[0], command)
+                self.assertIn("--rate=-4%", command)
+                self.assertIn("--pitch=-4Hz", command)
 
 
 class SlidePipelineTest(unittest.TestCase):
