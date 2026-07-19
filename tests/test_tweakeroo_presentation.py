@@ -77,6 +77,67 @@ class TweakerooPresentationTest(unittest.TestCase):
         self.assertNotIn("@media(max-width", self.html.replace(" ", ""))
         self.assertTrue({"deck", "nav"}.issubset(self.parser.ids))
 
+    def test_interaction_and_video_contract(self):
+        for token in (
+            "function go(", "function setFeatureState(", "function resetFocus(",
+            "function applyQuery(", "history.replaceState", "ArrowRight",
+            "PageDown", "data-state", "data-focus", "body.export",
+        ):
+            self.assertIn(token, self.html)
+
+        state_contract = {
+            2: ("effect", "config"),
+            3: ("auto", "chestplate"),
+            4: ("config", "threshold", "done"),
+            5: ("left", "right"),
+            6: ("off", "on", "config"),
+        }
+        for slide_number, expected_states in state_contract.items():
+            match = re.search(
+                rf'<section[^>]+id="s{slide_number}".*?</section>',
+                self.html,
+                re.S,
+            )
+            self.assertIsNotNone(match)
+            section = match.group(0)
+            self.assertIn(f'data-view="{expected_states[0]}"', section)
+            self.assertEqual(
+                tuple(re.findall(r'<button[^>]+data-state="([^"]+)"', section)),
+                expected_states,
+            )
+
+            if slide_number in (3, 5):
+                self.assertEqual(section.count('<img class="media-layer'), 1)
+                self.assertEqual(section.count("data-focus-x="), len(expected_states))
+                self.assertEqual(section.count("data-focus-y="), len(expected_states))
+            else:
+                self.assertEqual(
+                    tuple(re.findall(r'<img[^>]+data-media-state="([^"]+)"', section)),
+                    expected_states,
+                )
+
+        for token in (
+            "layer.dataset.mediaState===state",
+            "dataset.focusX",
+            "defaultStateBySlide.get(slideNumber)",
+            "Math.trunc(Number(index))",
+            'Math.trunc(Number(params.get("slide")))',
+        ):
+            self.assertIn(token, self.html)
+
+    def test_feature_pages_are_screenshot_first(self):
+        for slide_id in ("s2", "s3", "s4", "s5", "s6"):
+            match = re.search(
+                rf'<section[^>]+id="{slide_id}".*?</section>',
+                self.html,
+                re.S,
+            )
+            self.assertIsNotNone(match)
+            self.assertIn("media-stage", match.group(0))
+            self.assertIn("feature-copy", match.group(0))
+        self.assertIn("grid-template-columns:minmax(0,2.25fr) minmax(300px,.9fr)", self.html)
+        self.assertIn("transform:scale(", self.html)
+
 
 if __name__ == "__main__":
     unittest.main()
