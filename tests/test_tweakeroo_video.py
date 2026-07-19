@@ -1,6 +1,17 @@
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import Mock, patch
 
+from scripts.tweakeroo_video import audio
+from scripts.tweakeroo_video.audio import (
+    Cue,
+    choose_voice,
+    format_srt_time,
+    merge_cues,
+    parse_srt,
+    split_cue,
+)
 from scripts.tweakeroo_video.storyboard import (
     PREVIEW_SEGMENT_IDS,
     SEGMENTS,
@@ -83,6 +94,97 @@ class StoryboardTest(unittest.TestCase):
                 {(item["slide"], item["state"]) for item in requests}
             )
         )
+
+
+class AudioTest(unittest.TestCase):
+    def test_voice_selection_prefers_conversational_male_voice(self):
+        voices = (
+            "zh-CN-YunyangNeural Male News\n"
+            "zh-CN-YunxiNeural Male Novel\n"
+            "zh-CN-YunjianNeural Male Sports\n"
+        )
+        with patch.object(
+            audio.subprocess,
+            "run",
+            return_value=Mock(stdout=voices),
+        ):
+            self.assertEqual(
+                choose_voice(Path("edge-tts")),
+                "zh-CN-YunxiNeural",
+            )
+
+    def test_srt_parser_and_time_formatter(self):
+        cue = parse_srt(
+            "1\n00:00:00,500 --> 00:00:02,000\n第一句字幕\n"
+        )[0]
+        self.assertEqual(cue, Cue(0.5, 2.0, "第一句字幕"))
+        self.assertEqual(format_srt_time(62.345), "00:01:02,345")
+
+    def test_caption_is_at_most_two_lines_of_eighteen_characters(self):
+        cue = Cue(
+            0.0,
+            8.0,
+            "安装时让游戏Tweakeroo和MaLiLib版本对应服务器规则优先",
+        )
+        captions = split_cue(cue)
+        for caption in captions:
+            lines = caption.text.splitlines()
+            self.assertLessEqual(len(lines), 2)
+            self.assertTrue(all(len(line) <= 18 for line in lines))
+            flattened = caption.text.replace("\n", "")
+            self.assertNotIn("Tweake", flattened[-6:])
+
+    def test_merged_cues_follow_crossfade_timeline(self):
+        merged = merge_cues(
+            [
+                [Cue(0.0, 1.0, "第一段")],
+                [Cue(0.0, 1.0, "第二段")],
+            ],
+            [0.0, 2.75],
+        )
+        self.assertEqual(merged[1], Cue(2.75, 3.75, "第二段"))
+
+    def test_generate_voice_uses_approved_prosody(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def fake_run(command, **_kwargs):
+                if "--list-voices" in command:
+                    return Mock(stdout="zh-CN-YunxiNeural Male Novel\n")
+                if "--write-media" in command:
+                    media = Path(command[command.index("--write-media") + 1])
+                    srt = Path(
+                        command[command.index("--write-subtitles") + 1]
+                    )
+                    media.write_bytes(b"mp3")
+                    srt.write_text(
+                        "1\n00:00:00,100 --> 00:00:01,000\n试听字幕\n",
+                        encoding="utf-8",
+                    )
+                return Mock(stdout="")
+
+            with (
+                patch.object(audio, "probe_duration", return_value=2.4),
+                patch.object(
+                    audio.subprocess,
+                    "run",
+                    side_effect=fake_run,
+                ) as run,
+            ):
+                audio.generate_segment_voice(
+                    build_dir,
+                    Path("edge-tts"),
+                    SEGMENTS[:1],
+                )
+
+            command = next(
+                call.args[0]
+                for call in run.call_args_list
+                if "--write-media" in call.args[0]
+            )
+            self.assertIn("--rate=-2%", command)
+            self.assertIn("--pitch=+0Hz", command)
+            self.assertIn("zh-CN-YunxiNeural", command)
 
 
 if __name__ == "__main__":
