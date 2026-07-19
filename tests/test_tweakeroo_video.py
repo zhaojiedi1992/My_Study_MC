@@ -234,6 +234,42 @@ class PipelineTest(unittest.TestCase):
             BUILD_DIR / "slides/restock-done.png",
         )
 
+    def test_slide_capture_retries_one_transient_chrome_timeout(self):
+        request = {"id": "hook-soul", "slide": 2, "state": "effect"}
+        with TemporaryDirectory() as directory:
+            with (
+                patch.object(pipeline, "BUILD_DIR", Path(directory)),
+                patch.object(
+                    pipeline,
+                    "render_requests",
+                    return_value=[request],
+                ),
+                patch.object(
+                    pipeline.subprocess,
+                    "run",
+                    side_effect=(
+                        __import__("subprocess").TimeoutExpired(
+                            cmd="chrome",
+                            timeout=30,
+                        ),
+                        Mock(),
+                    ),
+                ) as run,
+                patch.object(
+                    pipeline,
+                    "probe_media",
+                    return_value={
+                        "streams": [{"width": 1920, "height": 1080}]
+                    },
+                ),
+            ):
+                outputs = pipeline.render_slides()
+        self.assertEqual(len(outputs), 1)
+        self.assertEqual(run.call_count, 2)
+        self.assertTrue(
+            all(call.kwargs["timeout"] == 30 for call in run.call_args_list)
+        )
+
     def test_publish_guide_is_written_inside_build_directory(self):
         with TemporaryDirectory() as directory:
             with patch.object(pipeline, "BUILD_DIR", Path(directory)):
@@ -381,6 +417,27 @@ class VideoTest(unittest.TestCase):
             "loudnorm=I=-16:TP=-1",
         ):
             self.assertIn(phrase, source)
+
+
+class CliContractTest(unittest.TestCase):
+    def test_pipeline_exposes_all_production_actions_and_voice_gate(self):
+        source = (
+            ROOT / "scripts/tweakeroo_video/pipeline.py"
+        ).read_text(encoding="utf-8")
+        for action in (
+            '"slides"',
+            '"voice-preview"',
+            '"voice"',
+            '"video"',
+            '"cover"',
+            '"publish"',
+            '"verify"',
+            '"all"',
+        ):
+            self.assertIn(action, source)
+        self.assertIn("--voice-approved", source)
+        self.assertIn("approve voice-preview.mp3", source)
+        self.assertIn('if __name__ == "__main__"', source)
 
 
 if __name__ == "__main__":

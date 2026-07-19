@@ -1,11 +1,16 @@
 """CLI orchestration for the Tweakeroo Bilibili build."""
 
+import argparse
 import json
 from pathlib import Path
 import shutil
 import subprocess
 from urllib.parse import urlencode
 
+from scripts.tweakeroo_video.audio import (
+    generate_voice,
+    generate_voice_preview,
+)
 from scripts.tweakeroo_video.publishing import build_publish_markdown
 from scripts.tweakeroo_video.storyboard import render_requests
 from scripts.tweakeroo_video.video import (
@@ -75,25 +80,31 @@ def render_slides() -> tuple[Path, ...]:
     outputs = []
     for request in render_requests():
         output = slide_path(str(request["id"]))
-        subprocess.run(
-            [
-                CHROME,
-                "--headless",
-                "--no-sandbox",
-                "--disable-gpu",
-                "--disable-dev-shm-usage",
-                "--hide-scrollbars",
-                "--run-all-compositor-stages-before-draw",
-                "--virtual-time-budget=1200",
-                "--window-size=1920,1080",
-                f"--screenshot={output}",
-                build_slide_url(
-                    int(request["slide"]),
-                    str(request["state"]),
-                ),
-            ],
-            check=True,
-        )
+        command = [
+            CHROME,
+            "--headless",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--hide-scrollbars",
+            "--run-all-compositor-stages-before-draw",
+            "--virtual-time-budget=1200",
+            "--window-size=1920,1080",
+            f"--screenshot={output}",
+            build_slide_url(
+                int(request["slide"]),
+                str(request["state"]),
+            ),
+        ]
+        for attempt in range(2):
+            try:
+                subprocess.run(command, check=True, timeout=30)
+                break
+            except subprocess.TimeoutExpired as error:
+                if attempt == 1:
+                    raise RuntimeError(
+                        f"Chrome timed out twice while rendering {output}"
+                    ) from error
         media = probe_media(output)
         stream = media["streams"][0]
         if (stream["width"], stream["height"]) != (1920, 1080):
@@ -279,3 +290,73 @@ def verify_delivery() -> dict[str, object]:
     }
     results["source_images"] = len(source_images)
     return results
+
+
+def render_voice_preview() -> Path:
+    return generate_voice_preview(BUILD_DIR, locate_edge_tts())
+
+
+def render_voice() -> tuple[Path, ...]:
+    return generate_voice(BUILD_DIR, locate_edge_tts())
+
+
+def _print_result(result: object) -> None:
+    if isinstance(result, tuple):
+        for path in result:
+            print(path)
+    elif isinstance(result, dict):
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        print(result)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "command",
+        choices=(
+            "slides",
+            "voice-preview",
+            "voice",
+            "video",
+            "cover",
+            "publish",
+            "verify",
+            "all",
+        ),
+    )
+    parser.add_argument(
+        "--voice-approved",
+        action="store_true",
+        help="confirm that voice-preview.mp3 passed human listening review",
+    )
+    args = parser.parse_args()
+    if args.command in {"voice", "all"} and not args.voice_approved:
+        parser.error("approve voice-preview.mp3 before full narration")
+
+    actions = {
+        "slides": render_slides,
+        "voice-preview": render_voice_preview,
+        "voice": render_voice,
+        "video": render_video,
+        "cover": render_cover,
+        "publish": write_publish_guide,
+        "verify": verify_delivery,
+    }
+    if args.command == "all":
+        for name in (
+            "slides",
+            "voice",
+            "video",
+            "cover",
+            "publish",
+            "verify",
+        ):
+            print(f"[{name}]")
+            _print_result(actions[name]())
+        return
+    _print_result(actions[args.command]())
+
+
+if __name__ == "__main__":
+    main()
