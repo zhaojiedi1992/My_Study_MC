@@ -1,4 +1,5 @@
 const assert = require("assert");
+const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const { spawn } = require("child_process");
@@ -16,6 +17,7 @@ const chrome = spawn("google-chrome", [
 let nextId = 0;
 let input = "";
 const pending = new Map();
+const eventWaiters = new Map();
 const browserErrors = [];
 
 chrome.stdio[4].on("data", (chunk) => {
@@ -34,6 +36,14 @@ chrome.stdio[4].on("data", (chunk) => {
       browserErrors.push(
         message.params.args.map((arg) => arg.value || arg.description || "console error").join(" "),
       );
+    }
+    const eventKey = `${message.sessionId || ""}:${message.method || ""}`;
+    const waiters = eventWaiters.get(eventKey);
+    if (waiters && waiters.length) {
+      const waiter = waiters.shift();
+      clearTimeout(waiter.timer);
+      waiter.resolve(message.params || {});
+      if (!waiters.length) eventWaiters.delete(eventKey);
     }
     if (!message.id || !pending.has(message.id)) continue;
     const request = pending.get(message.id);
@@ -58,7 +68,25 @@ function send(method, params = {}, sessionId) {
   });
 }
 
-const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+function waitForEvent(method, sessionId) {
+  return new Promise((resolve, reject) => {
+    const eventKey = `${sessionId || ""}:${method}`;
+    const waiters = eventWaiters.get(eventKey) || [];
+    const waiter = {
+      resolve,
+      reject,
+      timer: setTimeout(() => {
+        const current = eventWaiters.get(eventKey) || [];
+        const index = current.indexOf(waiter);
+        if (index >= 0) current.splice(index, 1);
+        if (!current.length) eventWaiters.delete(eventKey);
+        reject(new Error(`CDP event timeout: ${method}`));
+      }, 10000),
+    };
+    waiters.push(waiter);
+    eventWaiters.set(eventKey, waiters);
+  });
+}
 
 async function evaluate(sessionId, expression) {
   const result = await send("Runtime.evaluate", {
@@ -70,9 +98,52 @@ async function evaluate(sessionId, expression) {
   return result.result.value;
 }
 
+async function waitForAnimations(sessionId) {
+  await evaluate(sessionId, `Promise.all(
+    document.getAnimations().map(animation=>animation.finished.catch(()=>undefined))
+  ).then(()=>true)`);
+}
+
 async function navigate(sessionId, url) {
-  await send("Page.navigate", { url }, sessionId);
-  await sleep(500);
+  const loaded = waitForEvent("Page.loadEventFired", sessionId);
+  const result = await send("Page.navigate", { url }, sessionId);
+  if (result.errorText) throw new Error(`Navigation failed: ${result.errorText}`);
+  await loaded;
+}
+
+async function reload(sessionId) {
+  const loaded = waitForEvent("Page.loadEventFired", sessionId);
+  await send("Page.reload", {}, sessionId);
+  await loaded;
+}
+
+async function setViewport(sessionId, width, height) {
+  await send("Emulation.setDeviceMetricsOverride", {
+    width,
+    height,
+    deviceScaleFactor: 1,
+    mobile: false,
+  }, sessionId);
+}
+
+async function pressKey(sessionId, key, code, virtualKeyCode) {
+  const params = {
+    key,
+    code,
+    windowsVirtualKeyCode: virtualKeyCode,
+    nativeVirtualKeyCode: virtualKeyCode,
+  };
+  await send("Input.dispatchKeyEvent", { type: "rawKeyDown", ...params }, sessionId);
+  await send("Input.dispatchKeyEvent", { type: "keyUp", ...params }, sessionId);
+}
+
+async function capture(sessionId, outputPath) {
+  const shot = await send("Page.captureScreenshot", {
+    format: "png",
+    fromSurface: true,
+    captureBeyondViewport: false,
+  }, sessionId);
+  fs.writeFileSync(outputPath, Buffer.from(shot.data, "base64"));
 }
 
 (async () => {
@@ -113,8 +184,7 @@ async function navigate(sessionId, url) {
     urlState: "config",
   });
 
-  await send("Page.reload", {}, sessionId);
-  await sleep(500);
+  await reload(sessionId);
   const refreshedMultiImage = await evaluate(sessionId, `(() => {
     const slide=document.getElementById('s2');
     return {
@@ -163,7 +233,7 @@ async function navigate(sessionId, url) {
     const params=new URLSearchParams(location.search);
     return {
       view:slide.dataset.view,
-      focus:slide.dataset.focus,
+      focus:slide.dataset.focus || null,
       focusX:stage.style.getPropertyValue('--focus-x'),
       focusY:stage.style.getPropertyValue('--focus-y'),
       selected:slide.querySelector('[data-state].selected').dataset.state,
@@ -172,9 +242,9 @@ async function navigate(sessionId, url) {
   })()`);
   assert.deepStrictEqual(reset, {
     view: "auto",
-    focus: "auto",
-    focusX: "46%",
-    focusY: "38%",
+    focus: null,
+    focusX: "",
+    focusY: "",
     selected: "auto",
     urlState: "auto",
   });
@@ -204,6 +274,258 @@ async function navigate(sessionId, url) {
   })`);
   assert.deepStrictEqual(fractionalSlide, { cur: 1, active: "s2", view: "config" });
 
+  await navigate(sessionId, `${url}?slide=1`);
+  const keySequence = [];
+  for (const [key, code, virtualKeyCode] of [
+    ["ArrowRight", "ArrowRight", 39],
+    ["PageDown", "PageDown", 34],
+    ["ArrowLeft", "ArrowLeft", 37],
+    ["PageUp", "PageUp", 33],
+  ]) {
+    await pressKey(sessionId, key, code, virtualKeyCode);
+    keySequence.push(await evaluate(sessionId, `({
+      cur,
+      active:document.querySelector('.slide.active').id,
+      urlSlide:new URLSearchParams(location.search).get('slide'),
+    })`));
+  }
+  assert.deepStrictEqual(keySequence, [
+    { cur: 1, active: "s2", urlSlide: "2" },
+    { cur: 2, active: "s3", urlSlide: "3" },
+    { cur: 1, active: "s2", urlSlide: "2" },
+    { cur: 0, active: "s1", urlSlide: "1" },
+  ]);
+
+  const requiredStates = [
+    { slide: 2, state: "config" },
+    { slide: 3, state: "chestplate" },
+    { slide: 4, state: "done" },
+    { slide: 5, state: "right" },
+    { slide: 6, state: "on" },
+  ];
+  const restoredStates = [];
+  for (const { slide, state } of requiredStates) {
+    await navigate(sessionId, `${url}?slide=${slide}&state=${state}`);
+    const restored = await evaluate(sessionId, `(() => {
+      const slide=document.getElementById('s${slide}');
+      const images=[...document.images];
+      const uniqueImages=[...new Map(images.map(image=>[image.src,image])).values()];
+      return {
+        cur,
+        active:document.querySelector('.slide.active').id,
+        view:slide.dataset.view,
+        focus:slide.dataset.focus || null,
+        selected:slide.querySelector('[data-state].selected').dataset.state,
+        activeMedia:[...slide.querySelectorAll('[data-media-state].active')]
+          .map(layer=>layer.dataset.mediaState),
+        imageCount:images.length,
+        uniqueImageCount:uniqueImages.length,
+        naturalWidths:images.map(image=>image.naturalWidth),
+      };
+    })()`);
+    assert.strictEqual(restored.cur, slide - 1);
+    assert.strictEqual(restored.active, `s${slide}`);
+    assert.strictEqual(restored.view, state);
+    assert.strictEqual(restored.selected, state);
+    if ([3, 5].includes(slide)) assert.strictEqual(restored.focus, state);
+    else assert.deepStrictEqual(restored.activeMedia, [state]);
+    assert.strictEqual(restored.imageCount, 11);
+    assert.strictEqual(restored.uniqueImageCount, 10);
+    assert.strictEqual(restored.naturalWidths.length, 11);
+    assert(restored.naturalWidths.every((width) => width === 2880));
+    restoredStates.push({ slide, state, uniqueImageCount: restored.uniqueImageCount });
+  }
+
+  const focusInteractions = [];
+  for (const [slideNumber, states, defaultState] of [
+    [3, ["auto", "chestplate"], "auto"],
+    [5, ["left", "right"], "left"],
+  ]) {
+    await navigate(sessionId, `${url}?slide=${slideNumber}`);
+    const initialFocus = await evaluate(sessionId, `(() => {
+      const slide=document.getElementById('s${slideNumber}');
+      return {
+        focused:slide.querySelector('.media-stage').classList.contains('focused'),
+        focus:slide.dataset.focus || null,
+      };
+    })()`);
+    assert.deepStrictEqual(initialFocus, { focused: false, focus: null });
+    for (const state of states) {
+      await evaluate(sessionId,
+        `document.querySelector('#s${slideNumber} [data-state="${state}"]').click()`);
+      const clickedFocus = await evaluate(sessionId, `(() => {
+        const slide=document.getElementById('s${slideNumber}');
+        return {
+          view:slide.dataset.view,
+          focused:slide.querySelector('.media-stage').classList.contains('focused'),
+          focus:slide.dataset.focus || null,
+        };
+      })()`);
+      assert.deepStrictEqual(clickedFocus, { view: state, focused: true, focus: state });
+    }
+    await pressKey(sessionId, "Escape", "Escape", 27);
+    const escapedFocus = await evaluate(sessionId, `(() => {
+      const slide=document.getElementById('s${slideNumber}');
+      return {
+        view:slide.dataset.view,
+        focused:slide.querySelector('.media-stage').classList.contains('focused'),
+        focus:slide.dataset.focus || null,
+      };
+    })()`);
+    assert.deepStrictEqual(escapedFocus, {
+      view: defaultState,
+      focused: false,
+      focus: null,
+    });
+    focusInteractions.push({ slide: slideNumber, states, escapedFocus });
+  }
+
+  await setViewport(sessionId, 1920, 1080);
+  const completeImageResults = [];
+  for (let slideNumber = 1; slideNumber <= 6; slideNumber += 1) {
+    await navigate(sessionId, `${url}?slide=${slideNumber}`);
+    await waitForAnimations(sessionId);
+    const imageLayout = await evaluate(sessionId, `(() => {
+      const slide=document.querySelector('.slide.active');
+      const stage=slide.querySelector('.media-stage');
+      const image=slide.querySelector(slide.id==='s1' ? '.cover-media' : '.media-layer.active');
+      const frame=stage ? stage.getBoundingClientRect() :
+        {left:0,top:0,right:innerWidth,bottom:innerHeight};
+      const imageRect=image.getBoundingClientRect();
+      const style=getComputedStyle(image);
+      const boxWidth=image.clientWidth;
+      const boxHeight=image.clientHeight;
+      const scaleX=imageRect.width / boxWidth;
+      const scaleY=imageRect.height / boxHeight;
+      const fitScale=style.objectFit==='cover'
+        ? Math.max(boxWidth/image.naturalWidth,boxHeight/image.naturalHeight)
+        : Math.min(boxWidth/image.naturalWidth,boxHeight/image.naturalHeight);
+      const paintedWidth=image.naturalWidth * fitScale * scaleX;
+      const paintedHeight=image.naturalHeight * fitScale * scaleY;
+      const painted={
+        left:imageRect.left+(imageRect.width-paintedWidth)/2,
+        top:imageRect.top+(imageRect.height-paintedHeight)/2,
+        right:imageRect.right-(imageRect.width-paintedWidth)/2,
+        bottom:imageRect.bottom-(imageRect.height-paintedHeight)/2,
+      };
+      return {
+        slide:slide.id,
+        objectFit:style.objectFit,
+        focused:stage ? stage.classList.contains('focused') : false,
+        painted,
+        frame:{left:frame.left,top:frame.top,right:frame.right,bottom:frame.bottom},
+        complete:painted.left >= frame.left-.5 && painted.top >= frame.top-.5 &&
+          painted.right <= frame.right+.5 && painted.bottom <= frame.bottom+.5,
+      };
+    })()`);
+    assert.strictEqual(imageLayout.objectFit, "contain", JSON.stringify(imageLayout));
+    assert.strictEqual(imageLayout.focused, false, JSON.stringify(imageLayout));
+    assert.strictEqual(imageLayout.complete, true, JSON.stringify(imageLayout));
+    completeImageResults.push(imageLayout);
+  }
+
+  const viewportResults = [];
+  for (const [width, height] of [[1920, 1080], [1280, 720]]) {
+    await setViewport(sessionId, width, height);
+    for (let slideNumber = 1; slideNumber <= 8; slideNumber += 1) {
+      await navigate(sessionId, `${url}?slide=${slideNumber}`);
+      const layout = await evaluate(sessionId, `(() => {
+        const active=document.querySelector('.slide.active');
+        const critical=[...active.querySelectorAll([
+          '.feature-layout','.summary-layout','.cover-copy','.media-stage',
+          '.feature-copy','.summary-card','h1','h2','.lead','.feature-list',
+          '.state-controls','.hint','.steps','.boundary p'
+        ].join(','))];
+        const criticalOverflow=critical.flatMap(element=>{
+          const rect=element.getBoundingClientRect();
+          const outside=rect.left < -.5 || rect.top < -.5 ||
+            rect.right > innerWidth + .5 || rect.bottom > innerHeight + .5;
+          const internal=!element.matches('.media-stage') &&
+            (element.scrollWidth > element.clientWidth + 1 ||
+            (element.matches('.feature-layout,.summary-layout,.cover-copy,'+
+              '.feature-copy,.summary-card,.state-controls') &&
+              element.scrollHeight > element.clientHeight + 1));
+          return outside || internal ? [{
+            selector:element.className || element.tagName,
+            rect:{left:rect.left,top:rect.top,right:rect.right,bottom:rect.bottom},
+            client:[element.clientWidth,element.clientHeight],
+            scroll:[element.scrollWidth,element.scrollHeight],
+          }] : [];
+        });
+        return {
+          viewport:[innerWidth,innerHeight],
+          active:active.id,
+          documentOverflow:document.documentElement.scrollWidth > innerWidth ||
+            document.documentElement.scrollHeight > innerHeight,
+          slideOverflow:active.scrollWidth > innerWidth || active.scrollHeight > innerHeight,
+          criticalOverflow,
+        };
+      })()`);
+      assert.deepStrictEqual(layout.viewport, [width, height]);
+      assert.strictEqual(layout.active, `s${slideNumber}`);
+      assert.strictEqual(layout.documentOverflow, false, JSON.stringify(layout));
+      assert.strictEqual(layout.slideOverflow, false, JSON.stringify(layout));
+      assert.deepStrictEqual(layout.criticalOverflow, [], JSON.stringify(layout));
+      viewportResults.push({ width, height, slide: slideNumber });
+    }
+  }
+
+  await setViewport(sessionId, 1920, 1080);
+  await navigate(sessionId, `${url}?slide=6&state=on`);
+  await waitForAnimations(sessionId);
+  const groupedTitle = await evaluate(sessionId, `(() => {
+    const unit=document.querySelector('#s6 h2 .keep-together');
+    if(!unit)return {present:false,oneLine:false};
+    const style=getComputedStyle(unit);
+    return {
+      present:true,
+      oneLine:unit.getBoundingClientRect().height <= parseFloat(style.lineHeight)+1,
+    };
+  })()`);
+  assert.deepStrictEqual(groupedTitle, { present: true, oneLine: true });
+  const regularGeometry = await evaluate(sessionId, `(() => {
+    const active=document.querySelector('.slide.active').getBoundingClientRect();
+    const main=document.querySelector('.slide.active .feature-layout').getBoundingClientRect();
+    return {
+      active:{x:active.x,y:active.y,width:active.width,height:active.height},
+      main:{x:main.x,y:main.y,width:main.width,height:main.height},
+    };
+  })()`);
+  await navigate(sessionId, `${url}?export=1&slide=6&state=on`);
+  const exportMode = await evaluate(sessionId, `(() => {
+    const active=document.querySelector('.slide.active');
+    const activeRect=active.getBoundingClientRect();
+    const mainRect=active.querySelector('.feature-layout').getBoundingClientRect();
+    const layer=active.querySelector('.media-layer');
+    return {
+      bodyExport:document.body.classList.contains('export'),
+      navVisibility:getComputedStyle(document.getElementById('nav')).visibility,
+      animationName:getComputedStyle(active).animationName,
+      transitionDuration:getComputedStyle(layer).transitionDuration,
+      active:{x:activeRect.x,y:activeRect.y,width:activeRect.width,height:activeRect.height},
+      main:{x:mainRect.x,y:mainRect.y,width:mainRect.width,height:mainRect.height},
+    };
+  })()`);
+  assert.strictEqual(exportMode.bodyExport, true);
+  assert.strictEqual(exportMode.navVisibility, "hidden");
+  assert.strictEqual(exportMode.animationName, "none");
+  assert(exportMode.transitionDuration.split(", ").every((duration) => duration === "0s"));
+  assert.deepStrictEqual(exportMode.active, regularGeometry.active);
+  assert.deepStrictEqual(exportMode.main, regularGeometry.main);
+
+  const screenshots = [
+    { slide: 1, state: "", output: "/tmp/tweakeroo-slide-1-cover.png" },
+    { slide: 2, state: "effect", output: "/tmp/tweakeroo-slide-2-effect.png" },
+    { slide: 3, state: "chestplate", output: "/tmp/tweakeroo-slide-3-chestplate.png" },
+    { slide: 4, state: "done", output: "/tmp/tweakeroo-slide-4-done.png" },
+    { slide: 6, state: "on", output: "/tmp/tweakeroo-slide-6-on.png" },
+  ];
+  for (const { slide, state, output } of screenshots) {
+    await navigate(sessionId, `${url}?export=1&slide=${slide}&state=${state}`);
+    await capture(sessionId, output);
+    assert(fs.statSync(output).size > 0, output);
+  }
+
   assert.deepStrictEqual(browserErrors, []);
   console.log(JSON.stringify({
     multiImage,
@@ -212,6 +534,14 @@ async function navigate(sessionId, url) {
     reset,
     queryRestore,
     fractionalSlide,
+    keySequence,
+    restoredStates,
+    completeImageResults,
+    focusInteractions,
+    viewportResults,
+    exportMode,
+    groupedTitle,
+    screenshots: screenshots.map(({ output }) => output),
   }, null, 2));
   await send("Target.closeTarget", { targetId: target.targetId });
   chrome.kill("SIGKILL");

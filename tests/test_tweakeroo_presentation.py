@@ -138,6 +138,21 @@ class TweakerooPresentationTest(unittest.TestCase):
         self.assertIn("grid-template-columns:minmax(0,2.25fr) minmax(300px,.9fr)", self.html)
         self.assertIn("transform:scale(", self.html)
 
+    def test_images_start_complete_and_focus_is_opt_in(self):
+        self.assertRegex(self.html, r"\.media-layer\{[^}]*object-fit:contain")
+        self.assertRegex(self.html, r"\.cover-media\{[^}]*object-fit:contain")
+        for slide_id in ("s3", "s5"):
+            start_tag = re.search(rf'<section[^>]+id="{slide_id}"[^>]*>', self.html)
+            self.assertIsNotNone(start_tag)
+            self.assertNotIn("data-focus=", start_tag.group(0))
+            section = re.search(
+                rf'<section[^>]+id="{slide_id}".*?</section>',
+                self.html,
+                re.S,
+            )
+            self.assertIsNotNone(section)
+            self.assertNotIn('class="media-stage focused"', section.group(0))
+
 
 if __name__ == "__main__":
     unittest.main()
