@@ -33,7 +33,7 @@ SEGMENTS = (
         2,
         "effect",
         "push",
-        "灵魂出窍，视角先出去探路。",
+        "灵魂出窍。",
     ),
     Segment(
         "hook-restock",
@@ -42,7 +42,7 @@ SEGMENTS = (
         4,
         "done",
         "pull",
-        "方块见底？背包自动接班。",
+        "方块补上。",
     ),
     Segment(
         "hook-gamma",
@@ -51,7 +51,7 @@ SEGMENTS = (
         6,
         "on",
         "push",
-        "矿洞太黑？一键看清。",
+        "矿洞看清。",
     ),
     Segment(
         "intro",
@@ -81,7 +81,7 @@ SEGMENTS = (
         "effect",
         "push",
         "按下之后，人留在原地，视角出去转一圈。"
-        "看建筑，查路线，都不用本人跑过去加班。",
+        "看建筑，查路线，都不用本人跑过去加班。看完，切回来。",
     ),
     Segment(
         "elytra-auto",

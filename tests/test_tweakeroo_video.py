@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import Mock, patch
@@ -70,6 +71,12 @@ class StoryboardTest(unittest.TestCase):
         positions = [chapters.index(name) for name in feature_order]
         self.assertEqual(positions, sorted(positions))
 
+    def test_hook_voice_lines_fit_one_short_breath(self):
+        self.assertEqual(
+            [segment.narration for segment in SEGMENTS[:3]],
+            ["灵魂出窍。", "方块补上。", "矿洞看清。"],
+        )
+
     def test_copy_contains_conversion_and_safety_contract(self):
         copy = "".join(segment.narration for segment in SEGMENTS)
         for phrase in (
@@ -83,6 +90,10 @@ class StoryboardTest(unittest.TestCase):
             self.assertIn(phrase, copy)
         self.assertNotIn("三连", copy)
         self.assertNotIn("必装", copy)
+        soul_effect = next(
+            segment for segment in SEGMENTS if segment.id == "soul-effect"
+        )
+        self.assertIn("看完，切回来", soul_effect.narration)
 
     def test_preview_exercises_hook_explanation_and_joke(self):
         self.assertEqual(
@@ -204,6 +215,43 @@ class AudioTest(unittest.TestCase):
             self.assertIn("--pitch=+0Hz", command)
             self.assertIn("zh-CN-YunxiNeural", command)
 
+    def test_segment_voice_retries_one_transient_tts_failure(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            tts_attempts = 0
+
+            def flaky_run(command, **_kwargs):
+                nonlocal tts_attempts
+                if "--list-voices" in command:
+                    return Mock(stdout="zh-CN-YunxiNeural Male Novel\n")
+                if "--write-media" in command:
+                    tts_attempts += 1
+                    if tts_attempts == 1:
+                        raise subprocess.CalledProcessError(1, command)
+                    media = Path(command[command.index("--write-media") + 1])
+                    srt = Path(
+                        command[command.index("--write-subtitles") + 1]
+                    )
+                    media.write_bytes(b"mp3")
+                    srt.write_text(
+                        "1\n00:00:00,100 --> 00:00:01,000\n灵魂出窍\n",
+                        encoding="utf-8",
+                    )
+                return Mock(stdout="")
+
+            with (
+                patch.object(audio, "probe_duration", return_value=2.1),
+                patch.object(audio.subprocess, "run", side_effect=flaky_run),
+                patch.object(audio.time, "sleep") as sleep,
+            ):
+                audio.generate_segment_voice(
+                    build_dir,
+                    Path("edge-tts"),
+                    SEGMENTS[:1],
+                )
+        self.assertEqual(tts_attempts, 2)
+        sleep.assert_called_once_with(1)
+
 
 class PipelineTest(unittest.TestCase):
     def test_deck_and_build_paths_are_isolated(self):
@@ -248,7 +296,7 @@ class PipelineTest(unittest.TestCase):
                     pipeline.subprocess,
                     "run",
                     side_effect=(
-                        __import__("subprocess").TimeoutExpired(
+                        subprocess.TimeoutExpired(
                             cmd="chrome",
                             timeout=30,
                         ),

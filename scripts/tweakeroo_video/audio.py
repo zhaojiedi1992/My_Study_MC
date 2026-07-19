@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import re
 import subprocess
+import time
 
 from scripts.tweakeroo_video.storyboard import (
     PREVIEW_SEGMENT_IDS,
@@ -382,22 +383,27 @@ def generate_segment_voice(
     for segment in segments:
         media = narration_dir / f"{segment.id}.mp3"
         srt = narration_dir / f"{segment.id}.srt"
-        subprocess.run(
-            [
-                str(edge_tts),
-                "--voice",
-                voice,
-                f"--rate={RATE}",
-                f"--pitch={PITCH}",
-                "--text",
-                segment.narration,
-                "--write-media",
-                str(media),
-                "--write-subtitles",
-                str(srt),
-            ],
-            check=True,
-        )
+        command = [
+            str(edge_tts),
+            "--voice",
+            voice,
+            f"--rate={RATE}",
+            f"--pitch={PITCH}",
+            "--text",
+            segment.narration,
+            "--write-media",
+            str(media),
+            "--write-subtitles",
+            str(srt),
+        ]
+        for attempt in range(3):
+            try:
+                subprocess.run(command, check=True)
+                break
+            except subprocess.CalledProcessError:
+                if attempt == 2:
+                    raise
+                time.sleep(1)
         duration = probe_duration(media)
         allowed = _allowed_voice_seconds(segment)
         if duration <= 0 or duration > allowed + 1e-9:
