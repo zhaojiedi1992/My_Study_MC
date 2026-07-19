@@ -12,6 +12,12 @@ from scripts.tweakeroo_video.audio import (
     parse_srt,
     split_cue,
 )
+from scripts.tweakeroo_video.pipeline import (
+    BUILD_DIR,
+    DECK_PATH,
+    build_slide_url,
+    slide_path,
+)
 from scripts.tweakeroo_video.storyboard import (
     PREVIEW_SEGMENT_IDS,
     SEGMENTS,
@@ -185,6 +191,36 @@ class AudioTest(unittest.TestCase):
             self.assertIn("--rate=-2%", command)
             self.assertIn("--pitch=+0Hz", command)
             self.assertIn("zh-CN-YunxiNeural", command)
+
+
+class PipelineTest(unittest.TestCase):
+    def test_deck_and_build_paths_are_isolated(self):
+        self.assertEqual(
+            DECK_PATH,
+            ROOT / "source/MOD介绍/tweakeroo/index.html",
+        )
+        self.assertEqual(BUILD_DIR, ROOT / "build/tweakeroo-video")
+        self.assertNotIn("minihud", str(BUILD_DIR).lower())
+
+    def test_slide_url_is_deterministic_and_exported(self):
+        from urllib.parse import parse_qs, urlparse
+
+        parsed = urlparse(build_slide_url(4, "done"))
+        query = parse_qs(parsed.query)
+        self.assertEqual(
+            query,
+            {
+                "export": ["1"],
+                "slide": ["4"],
+                "state": ["done"],
+            },
+        )
+
+    def test_slide_output_uses_segment_id(self):
+        self.assertEqual(
+            slide_path("restock-done"),
+            BUILD_DIR / "slides/restock-done.png",
+        )
 
 
 if __name__ == "__main__":
