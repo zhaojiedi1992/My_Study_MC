@@ -17,7 +17,9 @@ from scripts.tweakeroo_video.pipeline import (
     DECK_PATH,
     build_slide_url,
     render_cover,
+    render_video,
     slide_path,
+    verify_delivery,
     write_publish_guide,
 )
 from scripts.tweakeroo_video.publishing import (
@@ -31,6 +33,10 @@ from scripts.tweakeroo_video.storyboard import (
     render_requests,
     timeline,
     total_base_seconds,
+)
+from scripts.tweakeroo_video.video import (
+    build_transition_filter,
+    motion_filter,
 )
 
 
@@ -255,6 +261,41 @@ class PipelineTest(unittest.TestCase):
             any("--window-size=1600,1287" in command for command in commands)
         )
 
+    def test_render_video_returns_clean_release_and_contact_sheet(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+            clean = build_dir / "tweakeroo-bilibili-clean.mp4"
+            release = build_dir / "tweakeroo-bilibili.mp4"
+            contact = build_dir / "final-contact.png"
+            with (
+                patch.object(pipeline, "BUILD_DIR", build_dir),
+                patch.object(pipeline, "render_segments") as segments,
+                patch.object(
+                    pipeline,
+                    "compose_master",
+                    return_value=clean,
+                ),
+                patch.object(
+                    pipeline,
+                    "burn_subtitles",
+                    return_value=release,
+                ),
+                patch.object(
+                    pipeline,
+                    "create_contact_sheet",
+                    return_value=contact,
+                ),
+            ):
+                outputs = render_video()
+        segments.assert_called_once_with(build_dir)
+        self.assertEqual(outputs, (clean, release, contact))
+
+    def test_delivery_verification_rejects_missing_outputs(self):
+        with TemporaryDirectory() as directory:
+            with patch.object(pipeline, "BUILD_DIR", Path(directory)):
+                with self.assertRaisesRegex(RuntimeError, "Missing delivery"):
+                    verify_delivery()
+
 
 class PublishingTest(unittest.TestCase):
     def test_cover_sources_have_click_contract_and_exact_dimensions(self):
@@ -304,6 +345,42 @@ class PublishingTest(unittest.TestCase):
             self.assertLess(seconds, 60)
             clocks.append(minutes * 60 + seconds)
         self.assertTrue(all(a < b for a, b in zip(clocks, clocks[1:])))
+
+
+class VideoTest(unittest.TestCase):
+    def test_motion_filters_preserve_1080p_and_thirty_fps(self):
+        for name in ("still", "push", "pull"):
+            source = motion_filter(name)
+            self.assertIn("1920", source)
+            self.assertIn("1080", source)
+            self.assertIn("fps=30", source)
+        with self.assertRaises(ValueError):
+            motion_filter("spin")
+
+    def test_transition_graph_has_video_and_audio_crossfades(self):
+        graph, video_label, audio_label = build_transition_filter(
+            [3.0, 3.0, 3.0],
+            0.25,
+        )
+        self.assertEqual(
+            graph.count("xfade=transition=fade:duration=0.25"),
+            2,
+        )
+        self.assertEqual(graph.count("acrossfade=d=0.25"), 2)
+        self.assertTrue(video_label.startswith("[v"))
+        self.assertTrue(audio_label.startswith("[a"))
+
+    def test_subtitle_style_is_pc_video_readable(self):
+        source = (
+            ROOT / "scripts/tweakeroo_video/video.py"
+        ).read_text(encoding="utf-8")
+        for phrase in (
+            "Noto Sans CJK SC",
+            "FontSize=20",
+            "MarginV=30",
+            "loudnorm=I=-16:TP=-1",
+        ):
+            self.assertIn(phrase, source)
 
 
 if __name__ == "__main__":

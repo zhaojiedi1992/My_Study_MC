@@ -8,6 +8,13 @@ from urllib.parse import urlencode
 
 from scripts.tweakeroo_video.publishing import build_publish_markdown
 from scripts.tweakeroo_video.storyboard import render_requests
+from scripts.tweakeroo_video.video import (
+    burn_subtitles,
+    compose_master,
+    create_contact_sheet,
+    measure_loudness,
+    render_segments,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -181,3 +188,94 @@ def write_publish_guide() -> Path:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(build_publish_markdown(), encoding="utf-8")
     return output
+
+
+def render_video() -> tuple[Path, Path, Path]:
+    render_segments(BUILD_DIR)
+    clean = compose_master(BUILD_DIR)
+    release = burn_subtitles(BUILD_DIR, clean)
+    contact = create_contact_sheet(BUILD_DIR)
+    return clean, release, contact
+
+
+def _stream(media: dict, codec_type: str) -> dict:
+    try:
+        return next(
+            stream
+            for stream in media["streams"]
+            if stream.get("codec_type") == codec_type
+        )
+    except (KeyError, StopIteration) as error:
+        raise RuntimeError(f"Missing {codec_type} stream") from error
+
+
+def verify_delivery() -> dict[str, object]:
+    required = (
+        BUILD_DIR / "tweakeroo-bilibili-clean.mp4",
+        BUILD_DIR / "tweakeroo-bilibili.mp4",
+        BUILD_DIR / "voice-preview.mp3",
+        BUILD_DIR / "tweakeroo-narration.mp3",
+        BUILD_DIR / "subtitles/tweakeroo.zh-CN.srt",
+        BUILD_DIR / "tweakeroo-cover-1600x1000.png",
+        BUILD_DIR / "tweakeroo-cover-1600x1000.jpg",
+        BUILD_DIR / "tweakeroo-cover-1600x1200.png",
+        BUILD_DIR / "tweakeroo-cover-1600x1200.jpg",
+        BUILD_DIR / "bilibili-publish.md",
+        BUILD_DIR / "final-contact.png",
+    )
+    missing = [path for path in required if not path.is_file() or path.stat().st_size == 0]
+    if missing:
+        joined = ", ".join(str(path) for path in missing)
+        raise RuntimeError(f"Missing delivery artifacts: {joined}")
+
+    results = {}
+    for label, path in (
+        ("clean", BUILD_DIR / "tweakeroo-bilibili-clean.mp4"),
+        ("release", BUILD_DIR / "tweakeroo-bilibili.mp4"),
+    ):
+        media = probe_media(path)
+        video = _stream(media, "video")
+        audio = _stream(media, "audio")
+        duration = float(media["format"]["duration"])
+        if (
+            video.get("codec_name") != "h264"
+            or (video.get("width"), video.get("height")) != (1920, 1080)
+            or video.get("r_frame_rate") != "30/1"
+            or audio.get("codec_name") != "aac"
+            or not 196 <= duration <= 205
+        ):
+            raise RuntimeError(
+                f"Invalid {label} media contract: "
+                f"video={video}, audio={audio}, duration={duration}"
+            )
+        results[label] = {
+            "duration": duration,
+            "video": video.get("codec_name"),
+            "audio": audio.get("codec_name"),
+        }
+
+    source_images = sorted(DECK_PATH.parent.glob("*.png"))
+    if len(source_images) != 10:
+        raise RuntimeError(
+            f"Expected 10 source screenshots, found {len(source_images)}"
+        )
+    for image in source_images:
+        stream = probe_media(image)["streams"][0]
+        if (stream.get("width"), stream.get("height")) != (2880, 1800):
+            raise RuntimeError(
+                f"Source screenshot changed size: {image}: {stream}"
+            )
+
+    loudness = measure_loudness(BUILD_DIR / "tweakeroo-bilibili.mp4")
+    integrated = float(loudness["input_i"])
+    true_peak = float(loudness["input_tp"])
+    if not -17 <= integrated <= -15 or true_peak > -1:
+        raise RuntimeError(
+            f"Loudness outside contract: I={integrated}, TP={true_peak}"
+        )
+    results["loudness"] = {
+        "integrated_lufs": integrated,
+        "true_peak_dbtp": true_peak,
+    }
+    results["source_images"] = len(source_images)
+    return results
