@@ -6,6 +6,7 @@ import shutil
 import subprocess
 from urllib.parse import urlencode
 
+from scripts.tweakeroo_video.publishing import build_publish_markdown
 from scripts.tweakeroo_video.storyboard import render_requests
 
 
@@ -14,6 +15,9 @@ DECK_PATH = ROOT / "source/MOD介绍/tweakeroo/index.html"
 BUILD_DIR = ROOT / "build/tweakeroo-video"
 CHROME = "/usr/bin/google-chrome"
 FFPROBE = "/usr/bin/ffprobe"
+FFMPEG = "/usr/bin/ffmpeg"
+COVER_PATH = ROOT / "scripts/tweakeroo_video/cover.html"
+COVER_4X3_PATH = ROOT / "scripts/tweakeroo_video/cover-4x3.html"
 
 
 def build_slide_url(slide: int, state: str) -> str:
@@ -91,3 +95,89 @@ def render_slides() -> tuple[Path, ...]:
             )
         outputs.append(output)
     return tuple(outputs)
+
+
+def render_cover_source(
+    source: Path,
+    width: int,
+    height: int,
+    stem: str,
+) -> tuple[Path, Path]:
+    BUILD_DIR.mkdir(parents=True, exist_ok=True)
+    raw = BUILD_DIR / f"{stem}-raw.png"
+    png = BUILD_DIR / f"{stem}.png"
+    jpg = BUILD_DIR / f"{stem}.jpg"
+    try:
+        subprocess.run(
+            [
+                CHROME,
+                "--headless",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--hide-scrollbars",
+                "--run-all-compositor-stages-before-draw",
+                "--virtual-time-budget=1000",
+                f"--window-size={width},{height + 87}",
+                f"--screenshot={raw}",
+                source.resolve().as_uri(),
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                FFMPEG,
+                "-y",
+                "-i",
+                str(raw),
+                "-vf",
+                f"crop={width}:{height}:0:0",
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                str(png),
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                FFMPEG,
+                "-y",
+                "-i",
+                str(png),
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                "-q:v",
+                "2",
+                str(jpg),
+            ],
+            check=True,
+        )
+    finally:
+        raw.unlink(missing_ok=True)
+    return png, jpg
+
+
+def render_cover() -> tuple[Path, ...]:
+    wide = render_cover_source(
+        COVER_PATH,
+        1600,
+        1000,
+        "tweakeroo-cover-1600x1000",
+    )
+    standard = render_cover_source(
+        COVER_4X3_PATH,
+        1600,
+        1200,
+        "tweakeroo-cover-1600x1200",
+    )
+    return (*wide, *standard)
+
+
+def write_publish_guide() -> Path:
+    output = BUILD_DIR / "bilibili-publish.md"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(build_publish_markdown(), encoding="utf-8")
+    return output

@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import Mock, patch
 
-from scripts.tweakeroo_video import audio
+from scripts.tweakeroo_video import audio, pipeline
 from scripts.tweakeroo_video.audio import (
     Cue,
     choose_voice,
@@ -16,7 +16,13 @@ from scripts.tweakeroo_video.pipeline import (
     BUILD_DIR,
     DECK_PATH,
     build_slide_url,
+    render_cover,
     slide_path,
+    write_publish_guide,
+)
+from scripts.tweakeroo_video.publishing import (
+    build_publish_markdown,
+    chapter_lines,
 )
 from scripts.tweakeroo_video.storyboard import (
     PREVIEW_SEGMENT_IDS,
@@ -221,6 +227,83 @@ class PipelineTest(unittest.TestCase):
             slide_path("restock-done"),
             BUILD_DIR / "slides/restock-done.png",
         )
+
+    def test_publish_guide_is_written_inside_build_directory(self):
+        with TemporaryDirectory() as directory:
+            with patch.object(pipeline, "BUILD_DIR", Path(directory)):
+                output = write_publish_guide()
+            self.assertEqual(output, Path(directory) / "bilibili-publish.md")
+            self.assertIn(
+                "Tweakeroo 不只会灵魂出窍",
+                output.read_text(encoding="utf-8"),
+            )
+
+    def test_render_cover_dispatches_both_ratios(self):
+        with TemporaryDirectory() as directory:
+            with (
+                patch.object(pipeline, "BUILD_DIR", Path(directory)),
+                patch.object(pipeline.subprocess, "run") as run,
+            ):
+                outputs = render_cover()
+        self.assertEqual(len(outputs), 4)
+        self.assertEqual(run.call_count, 6)
+        commands = [call.args[0] for call in run.call_args_list]
+        self.assertTrue(
+            any("--window-size=1600,1087" in command for command in commands)
+        )
+        self.assertTrue(
+            any("--window-size=1600,1287" in command for command in commands)
+        )
+
+
+class PublishingTest(unittest.TestCase):
+    def test_cover_sources_have_click_contract_and_exact_dimensions(self):
+        cases = (
+            ("cover.html", "width:1600px", "height:1000px"),
+            ("cover-4x3.html", "width:1600px", "height:1200px"),
+        )
+        for filename, width, height in cases:
+            source = (
+                ROOT / "scripts/tweakeroo_video" / filename
+            ).read_text(encoding="utf-8")
+            for phrase in (
+                width,
+                height,
+                "别再",
+                "手动了",
+                "Tweakeroo · 5 个高频功能",
+                "自动补货",
+                "快速换甲",
+                "矿洞提亮",
+            ):
+                self.assertIn(phrase, source)
+            self.assertLessEqual(source.count("<img"), 2)
+
+    def test_publish_copy_is_searchable_specific_and_conversion_focused(self):
+        copy = build_publish_markdown()
+        for phrase in (
+            "Tweakeroo 不只会灵魂出窍！自动补货、换胸甲这 5 个功能真省事",
+            "Minecraft Java 版 26.2",
+            "Tweakeroo 26.2-0.29.2",
+            "MaLiLib 0.29.2",
+            "不同版本",
+            "服务器规则",
+            "收藏",
+            "关注",
+            "你原来完全没用过的是哪一个",
+        ):
+            self.assertIn(phrase, copy)
+        self.assertNotIn("必装", copy)
+        self.assertNotIn("无敌", copy)
+
+    def test_chapters_are_strictly_increasing(self):
+        clocks = []
+        for line in chapter_lines():
+            clock, _ = line.split(" ", 1)
+            minutes, seconds = map(int, clock.split(":"))
+            self.assertLess(seconds, 60)
+            clocks.append(minutes * 60 + seconds)
+        self.assertTrue(all(a < b for a, b in zip(clocks, clocks[1:])))
 
 
 if __name__ == "__main__":
