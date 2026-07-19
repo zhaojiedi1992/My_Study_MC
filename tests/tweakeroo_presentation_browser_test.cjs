@@ -381,13 +381,103 @@ async function capture(sessionId, outputPath) {
   }
 
   await setViewport(sessionId, 1920, 1080);
+  await navigate(sessionId, `${url}?slide=1`);
+  await waitForAnimations(sessionId);
+  const coverIntro = await evaluate(sessionId, `(() => {
+    const cover=document.getElementById('s1');
+    const layout=cover.querySelector('.cover-layout');
+    const copy=cover.querySelector('.cover-copy');
+    const frame=cover.querySelector('.cover-frame');
+    const image=cover.querySelector('.cover-media');
+    const title=cover.querySelector('.cover-title');
+    const titleUnit=cover.querySelector('.cover-title .keep-together');
+    const brand=cover.querySelector('.cover-brand');
+    if(!layout||!copy||!frame||!image||!title||!brand){
+      return {present:false};
+    }
+    const rgbBrightness=value=>{
+      const channels=value.match(/[0-9.]+/g)?.slice(0,3).map(Number) || [0,0,0];
+      return channels.reduce((sum,channel)=>sum+channel,0)/3;
+    };
+    const coverStyle=getComputedStyle(cover);
+    const layoutRect=layout.getBoundingClientRect();
+    const copyRect=copy.getBoundingClientRect();
+    const frameRect=frame.getBoundingClientRect();
+    const imageRect=image.getBoundingClientRect();
+    return {
+      present:true,
+      display:getComputedStyle(layout).display,
+      backgroundBrightness:rgbBrightness(coverStyle.backgroundColor),
+      backgroundColor:coverStyle.backgroundColor,
+      backgroundImage:coverStyle.backgroundImage,
+      textBrightness:rgbBrightness(getComputedStyle(copy).color),
+      titleBrightness:rgbBrightness(getComputedStyle(title).color),
+      titleColor:getComputedStyle(title).color,
+      brandColor:getComputedStyle(brand).color,
+      tagBackground:getComputedStyle(cover.querySelector('.cover-tag')).backgroundColor,
+      lastTagColor:getComputedStyle(cover.querySelector('.cover-tag:last-child')).color,
+      frameBackground:getComputedStyle(frame).backgroundColor,
+      overlayContent:getComputedStyle(cover,'::after').content,
+      split:copyRect.right < frameRect.left,
+      layout:{x:layoutRect.x,y:layoutRect.y,width:layoutRect.width,height:layoutRect.height},
+      frame:{x:frameRect.x,y:frameRect.y,width:frameRect.width,height:frameRect.height},
+      imageInsideFrame:imageRect.left>=frameRect.left && imageRect.top>=frameRect.top &&
+        imageRect.right<=frameRect.right && imageRect.bottom<=frameRect.bottom,
+      objectFit:getComputedStyle(image).objectFit,
+      imageFilter:getComputedStyle(image).filter,
+      imageOpacity:getComputedStyle(image).opacity,
+      titleFontSize:parseFloat(getComputedStyle(title).fontSize),
+      titleUnitPresent:Boolean(titleUnit),
+      titleUnitOneLine:titleUnit ? titleUnit.getBoundingClientRect().height <=
+        parseFloat(getComputedStyle(titleUnit).lineHeight)+1 : false,
+      brandFontSize:parseFloat(getComputedStyle(brand).fontSize),
+      tags:[...cover.querySelectorAll('.cover-tag')].map(tag=>tag.textContent.trim()),
+    };
+  })()`);
+  assert.strictEqual(coverIntro.present, true);
+  assert.strictEqual(coverIntro.display, "grid");
+  assert.strictEqual(coverIntro.backgroundColor, "rgb(2, 7, 17)");
+  assert(coverIntro.backgroundBrightness < 20, JSON.stringify(coverIntro));
+  assert(coverIntro.backgroundImage.includes("rgb(18, 51, 81)"), coverIntro.backgroundImage);
+  assert(coverIntro.backgroundImage.includes("rgb(13, 74, 75)"), coverIntro.backgroundImage);
+  assert.strictEqual(coverIntro.titleColor, "rgb(255, 255, 255)");
+  assert(coverIntro.titleBrightness-coverIntro.backgroundBrightness > 230,
+    JSON.stringify(coverIntro));
+  assert.strictEqual(coverIntro.brandColor, "rgb(86, 224, 196)");
+  assert.strictEqual(coverIntro.lastTagColor, "rgb(249, 199, 79)");
+  assert(coverIntro.tagBackground.startsWith("rgba(8, 19, 33,"), coverIntro.tagBackground);
+  assert(coverIntro.frameBackground.startsWith("rgba(8, 19, 33,"), coverIntro.frameBackground);
+  assert.strictEqual(coverIntro.overlayContent, "none");
+  assert.strictEqual(coverIntro.split, true);
+  assert.strictEqual(coverIntro.imageInsideFrame, true);
+  assert.strictEqual(coverIntro.objectFit, "contain");
+  assert.strictEqual(coverIntro.imageFilter, "none");
+  assert.strictEqual(coverIntro.imageOpacity, "1");
+  assert(coverIntro.titleFontSize <= 58, JSON.stringify(coverIntro));
+  assert.strictEqual(coverIntro.titleUnitPresent, true);
+  assert.strictEqual(coverIntro.titleUnitOneLine, true);
+  assert(coverIntro.brandFontSize <= 32, JSON.stringify(coverIntro));
+  assert.deepStrictEqual(coverIntro.tags, [
+    "灵魂出窍", "自动鞘翅", "自动补货", "快速点击", "Gamma 亮度",
+  ]);
+  await navigate(sessionId, `${url}?export=1&slide=1`);
+  const coverExport = await evaluate(sessionId, `(() => {
+    const layout=document.querySelector('#s1 .cover-layout').getBoundingClientRect();
+    const frame=document.querySelector('#s1 .cover-frame').getBoundingClientRect();
+    return {
+      layout:{x:layout.x,y:layout.y,width:layout.width,height:layout.height},
+      frame:{x:frame.x,y:frame.y,width:frame.width,height:frame.height},
+    };
+  })()`);
+  assert.deepStrictEqual(coverExport, { layout: coverIntro.layout, frame: coverIntro.frame });
+
   const completeImageResults = [];
   for (let slideNumber = 1; slideNumber <= 6; slideNumber += 1) {
     await navigate(sessionId, `${url}?slide=${slideNumber}`);
     await waitForAnimations(sessionId);
     const imageLayout = await evaluate(sessionId, `(() => {
       const slide=document.querySelector('.slide.active');
-      const stage=slide.querySelector('.media-stage');
+      const stage=slide.querySelector('.media-stage,.cover-frame');
       const image=slide.querySelector(slide.id==='s1' ? '.cover-media' : '.media-layer.active');
       const frame=stage ? stage.getBoundingClientRect() :
         {left:0,top:0,right:innerWidth,bottom:innerHeight};
@@ -432,7 +522,8 @@ async function capture(sessionId, outputPath) {
       const layout = await evaluate(sessionId, `(() => {
         const active=document.querySelector('.slide.active');
         const critical=[...active.querySelectorAll([
-          '.feature-layout','.summary-layout','.cover-copy','.media-stage',
+          '.feature-layout','.summary-layout','.cover-layout','.cover-copy','.cover-frame',
+          '.cover-title','.cover-intro','.cover-tags','.media-stage',
           '.feature-copy','.summary-card','h1','h2','.lead','.feature-list',
           '.state-controls','.hint','.steps','.boundary p'
         ].join(','))];
@@ -442,7 +533,8 @@ async function capture(sessionId, outputPath) {
             rect.right > innerWidth + .5 || rect.bottom > innerHeight + .5;
           const internal=!element.matches('.media-stage') &&
             (element.scrollWidth > element.clientWidth + 1 ||
-            (element.matches('.feature-layout,.summary-layout,.cover-copy,'+
+            (element.matches('.feature-layout,.summary-layout,.cover-layout,.cover-copy,'+
+              '.cover-frame,.cover-tags,'+
               '.feature-copy,.summary-card,.state-controls') &&
               element.scrollHeight > element.clientHeight + 1));
           return outside || internal ? [{
@@ -538,6 +630,8 @@ async function capture(sessionId, outputPath) {
     restoredStates,
     completeImageResults,
     focusInteractions,
+    coverIntro,
+    coverExport,
     viewportResults,
     exportMode,
     groupedTitle,

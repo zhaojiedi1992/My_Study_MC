@@ -55,8 +55,14 @@ class TweakerooPresentationTest(unittest.TestCase):
 
     def test_feature_order_and_required_copy(self):
         phrases = ("灵魂出窍", "自动切换鞘翅", "自动补货", "快速点击", "Gamma 亮度")
-        positions = [self.copy.index(phrase) for phrase in phrases]
-        self.assertEqual(positions, sorted(positions))
+        for slide_number, phrase in enumerate(phrases, start=2):
+            section = re.search(
+                rf'<section[^>]+id="s{slide_number}".*?</section>',
+                self.html,
+                re.S,
+            )
+            self.assertIsNotNone(section)
+            self.assertIn(phrase, section.group(0))
         for phrase in ("Left Alt + C", "Left Alt + W", "阈值 6", "点击次数 10", "不会改变真实光照"):
             self.assertIn(phrase, self.copy)
 
@@ -152,6 +158,28 @@ class TweakerooPresentationTest(unittest.TestCase):
             )
             self.assertIsNotNone(section)
             self.assertNotIn('class="media-stage focused"', section.group(0))
+
+    def test_cover_is_a_dark_intro_first_split(self):
+        section = re.search(r'<section[^>]+id="s1".*?</section>', self.html, re.S)
+        self.assertIsNotNone(section)
+        cover = section.group(0)
+        cover_copy = re.sub(r"<[^>]+>", " ", cover)
+        cover_copy = re.sub(r"\s+", " ", cover_copy)
+        for class_name in ("cover-layout", "cover-copy", "cover-frame", "cover-tags"):
+            self.assertIn(class_name, cover)
+        for phrase in (
+            "Tweakeroo",
+            "五个真正实用的客户端小改动",
+            "把观察、飞行、补货、连点和亮度，调成自己的习惯",
+            "真实游戏画面",
+        ):
+            self.assertIn(phrase.replace(" ", ""), cover_copy.replace(" ", ""))
+        self.assertEqual(
+            re.findall(r'<li class="cover-tag">([^<]+)</li>', cover),
+            ["灵魂出窍", "自动鞘翅", "自动补货", "快速点击", "Gamma 亮度"],
+        )
+        self.assertNotIn(".cover::after", self.html)
+        self.assertRegex(self.html, r"\.cover\{[^}]*background-color:var\(--bg\)")
 
 
 if __name__ == "__main__":
