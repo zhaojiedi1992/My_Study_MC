@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import Mock, patch
 
-from scripts.tweakeroo_video import audio, pipeline
+from scripts.tweakeroo_video import audio, pipeline, video
 from scripts.tweakeroo_video.audio import (
     PITCH,
     RATE,
@@ -53,12 +53,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class StoryboardTest(unittest.TestCase):
-    def test_timeline_is_exactly_two_hundred_seconds(self):
+    def test_timeline_is_tight_and_inside_upload_window(self):
         self.assertEqual(len(SEGMENTS), 20)
-        self.assertAlmostEqual(total_base_seconds(), 204.75)
-        self.assertAlmostEqual(encoded_seconds(), 200.0)
+        durations = {segment.id: segment.seconds for segment in SEGMENTS}
+        self.assertEqual(durations["soul-config"], 11.25)
+        self.assertEqual(durations["elytra-auto"], 9.5)
+        self.assertEqual(durations["recap"], 8.25)
+        self.assertAlmostEqual(total_base_seconds(), 201.75)
+        self.assertAlmostEqual(encoded_seconds(), 197.0)
+        self.assertTrue(196 <= encoded_seconds() <= 205)
         self.assertAlmostEqual(timeline()[0].start, 0.0)
-        self.assertAlmostEqual(timeline()[-1].end, 200.0)
+        self.assertAlmostEqual(timeline()[-1].end, 197.0)
 
     def test_hook_and_feature_order_are_fixed(self):
         self.assertEqual(
@@ -218,6 +223,17 @@ class AudioTest(unittest.TestCase):
             {"+1Hz", "+0Hz", "-1Hz", "-2Hz"} <= pitches
         )
         self.assertGreaterEqual(len(pauses), 6)
+
+    def test_short_hooks_have_tuned_visual_holds(self):
+        expected_pauses = {
+            "hook-restock": 350,
+            "hook-gamma": 280,
+        }
+        for segment_id, pause_ms in expected_pauses.items():
+            segment = next(
+                item for item in SEGMENTS if item.id == segment_id
+            )
+            self.assertEqual(voice_parts(segment)[0].pause_ms, pause_ms)
 
     def test_part_starts_include_unequal_inserted_pauses(self):
         parts = (
@@ -433,6 +449,49 @@ class AudioTest(unittest.TestCase):
         self.assertIn("--rate=+6%", command)
         self.assertIn("--pitch=+2Hz", command)
         self.assertIn("zh-CN-YunxiNeural", command)
+
+    def test_segment_voice_allows_a_two_second_visual_hold(self):
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def fake_run(command, **_kwargs):
+                if "--list-voices" in command:
+                    return Mock(stdout="zh-CN-YunxiNeural Male Novel\n")
+                if "--write-media" in command:
+                    media = Path(command[command.index("--write-media") + 1])
+                    srt = Path(
+                        command[command.index("--write-subtitles") + 1]
+                    )
+                    media.parent.mkdir(parents=True, exist_ok=True)
+                    media.write_bytes(b"mp3")
+                    srt.write_text(
+                        "1\n00:00:00,100 --> 00:00:00,500\n灵魂出窍。\n",
+                        encoding="utf-8",
+                    )
+                return Mock(stdout="")
+
+            def fake_duration(path):
+                return 0.6 if path.parent.name == "parts" else 0.85
+
+            with (
+                patch.object(
+                    audio,
+                    "probe_duration",
+                    side_effect=fake_duration,
+                ),
+                patch.object(
+                    audio.subprocess,
+                    "run",
+                    side_effect=fake_run,
+                ),
+            ):
+                outputs = audio.generate_segment_voice(
+                    build_dir,
+                    Path("edge-tts"),
+                    SEGMENTS[:1],
+                )
+
+        self.assertEqual(outputs[0].name, "hook-soul.mp3")
 
     def test_long_preview_segment_synthesizes_and_merges_three_parts(self):
         soul_effect = next(
@@ -728,6 +787,24 @@ class PublishingTest(unittest.TestCase):
 
 
 class VideoTest(unittest.TestCase):
+    def test_loudnorm_reserves_true_peak_headroom_for_aac(self):
+        measurements = {
+            "input_i": "-24.66",
+            "input_tp": "-6.28",
+            "input_lra": "7.10",
+            "input_thresh": "-35.37",
+            "target_offset": "0.44",
+        }
+        self.assertEqual(
+            video.LOUDNESS_ANALYSIS_FILTER,
+            "loudnorm=I=-16:TP=-2:LRA=11:print_format=json",
+        )
+        self.assertTrue(
+            video.measured_loudnorm_filter(measurements).startswith(
+                "loudnorm=I=-16:TP=-2:LRA=11:"
+            )
+        )
+
     def test_motion_filters_preserve_1080p_and_thirty_fps(self):
         for name in ("still", "push", "pull"):
             source = motion_filter(name)
@@ -758,7 +835,7 @@ class VideoTest(unittest.TestCase):
             "Noto Sans CJK SC",
             "FontSize=20",
             "MarginV=30",
-            "loudnorm=I=-16:TP=-1",
+            "loudnorm=I=-16:TP=-2",
         ):
             self.assertIn(phrase, source)
 

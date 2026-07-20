@@ -25,7 +25,7 @@ RATE = "-2%"
 PITCH = "+0Hz"
 CAPTION_WIDTH = 18
 MAX_CAPTION_LINES = 2
-MAX_TAIL_SILENCE_SECONDS = 1.5
+MAX_TAIL_SILENCE_SECONDS = 2.0
 FFMPEG = "/usr/bin/ffmpeg"
 FFPROBE = "/usr/bin/ffprobe"
 
@@ -57,10 +57,10 @@ _DYNAMIC_VOICE_PARTS = {
         VoicePart("灵魂出窍。", "+6%", "+2Hz", 180),
     ),
     "hook-restock": (
-        VoicePart("方块补上。", "+6%", "+2Hz", 180),
+        VoicePart("方块补上。", "+6%", "+2Hz", 350),
     ),
     "hook-gamma": (
-        VoicePart("矿洞看清。", "+6%", "+2Hz", 180),
+        VoicePart("矿洞看清。", "+6%", "+2Hz", 280),
     ),
     "intro": (
         VoicePart("这就是 Tweakeroo。", "+2%", "+1Hz", 160),

@@ -66,7 +66,7 @@ SEGMENTS = (
     Segment(
         "soul-config",
         "灵魂出窍",
-        14.0,
+        11.25,
         2,
         "config",
         "still",
@@ -86,7 +86,7 @@ SEGMENTS = (
     Segment(
         "elytra-auto",
         "鞘翅与胸甲",
-        11.0,
+        9.5,
         3,
         "auto",
         "still",
@@ -208,7 +208,7 @@ SEGMENTS = (
     Segment(
         "recap",
         "收藏与关注",
-        7.0,
+        8.25,
         1,
         "default",
         "pull",

@@ -9,7 +9,7 @@ from scripts.tweakeroo_video.storyboard import SEGMENTS, TRANSITION_SECONDS
 
 FFMPEG = "/usr/bin/ffmpeg"
 LOUDNESS_ANALYSIS_FILTER = (
-    "loudnorm=I=-16:TP=-1:LRA=11:print_format=json"
+    "loudnorm=I=-16:TP=-2:LRA=11:print_format=json"
 )
 _LOUDNESS_FIELDS = (
     ("input_i", "measured_I"),
@@ -112,7 +112,7 @@ def measure_loudness(path: Path) -> dict[str, str]:
 
 
 def measured_loudnorm_filter(measurements: dict[str, str]) -> str:
-    options = ["loudnorm=I=-16", "TP=-1", "LRA=11"]
+    options = ["loudnorm=I=-16", "TP=-2", "LRA=11"]
     options.extend(
         f"{option}={measurements[field]}"
         for field, option in _LOUDNESS_FIELDS
