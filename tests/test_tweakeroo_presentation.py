@@ -159,6 +159,18 @@ class TweakerooPresentationTest(unittest.TestCase):
             self.assertIsNotNone(section)
             self.assertNotIn('class="media-stage focused"', section.group(0))
 
+    def test_single_screenshot_states_describe_complete_images(self):
+        for slide_id in ("s3", "s5"):
+            section = re.search(
+                rf'<section[^>]+id="{slide_id}".*?</section>',
+                self.html,
+                re.S,
+            )
+            self.assertIsNotNone(section)
+            self.assertIn("完整截图", section.group(0))
+            self.assertNotIn("局部放大", section.group(0))
+            self.assertNotIn("聚焦", section.group(0))
+
     def test_cover_is_a_dark_intro_first_split(self):
         section = re.search(r'<section[^>]+id="s1".*?</section>', self.html, re.S)
         self.assertIsNotNone(section)

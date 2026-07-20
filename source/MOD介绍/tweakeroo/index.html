@@ -19,7 +19,7 @@ button{font:inherit}
 .media-stage::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px #ffffff12,inset 0 -100px 110px #02071132}
 .media-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(1.045);transition:opacity .34s ease,transform .8s cubic-bezier(.22,1,.36,1)}
 .media-layer.active{opacity:1;transform:scale(1)}
-.media-stage.focused .media-layer.active{transform:scale(1.6);transform-origin:var(--focus-x,50%) var(--focus-y,50%)}
+.media-stage.focused .media-layer.active{transform:scale(1)}
 .media-label{position:absolute;z-index:2;left:18px;bottom:18px;padding:8px 12px;border:1px solid #ffffff2b;border-radius:999px;background:#020711c7;color:#dce7f4;font-size:13px;letter-spacing:.08em}
 .feature-copy{display:flex;flex-direction:column;min-width:300px;padding:26px;border:1px solid #ffffff24;border-radius:22px;background:#081321e8;box-shadow:0 30px 80px #0006}
 .eyebrow{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
@@ -113,7 +113,7 @@ body.export #nav,body.export .interaction-hint,body.export .hint{visibility:hidd
     <div class="feature-layout">
       <div class="media-stage">
         <img class="media-layer active" src="自动鞘翅配置.png" alt="自动切换鞘翅与胸甲快捷键配置">
-        <span class="media-label">同一配置页 · 两处聚焦</span>
+        <span class="media-label">完整截图 · 两项配置</span>
       </div>
       <article class="feature-copy">
         <p class="eyebrow">02 · Elytra swap</p>
@@ -123,11 +123,11 @@ body.export #nav,body.export .interaction-hint,body.export .hint{visibility:hidd
           <li>先确认“自动切换鞘翅”已开启</li>
           <li>胸甲交换示例 Left Alt + W</li>
         </ul>
-        <div class="state-controls" aria-label="鞘翅配置聚焦位置">
+        <div class="state-controls" aria-label="鞘翅配置切换">
           <button type="button" class="selected" data-state="auto" data-focus-x="46%" data-focus-y="38%" aria-pressed="true">自动切换</button>
           <button type="button" data-state="chestplate" data-focus-x="50%" data-focus-y="61%" aria-pressed="false">胸甲按键</button>
         </div>
-        <p class="hint">两个按钮聚焦同一张原始截图</p>
+        <p class="hint">切换按钮时始终保留完整截图</p>
       </article>
     </div>
   </section>
@@ -162,7 +162,7 @@ body.export #nav,body.export .interaction-hint,body.export .hint{visibility:hidd
     <div class="feature-layout">
       <div class="media-stage">
         <img class="media-layer active" src="连点配置.png" alt="快速左右键连点配置">
-        <span class="media-label">左键 / 右键独立配置</span>
+        <span class="media-label">完整截图 · 左右键独立配置</span>
       </div>
       <article class="feature-copy">
         <p class="eyebrow">04 · Fast click</p>
@@ -172,11 +172,11 @@ body.export #nav,body.export .interaction-hint,body.export .hint{visibility:hidd
           <li>当前点击次数 10</li>
           <li>多人服先确认规则</li>
         </ul>
-        <div class="state-controls" aria-label="快速点击配置聚焦位置">
+        <div class="state-controls" aria-label="快速点击配置切换">
           <button type="button" class="selected" data-state="left" data-focus-x="45%" data-focus-y="31%" aria-pressed="true">快速左键</button>
           <button type="button" data-state="right" data-focus-x="45%" data-focus-y="41%" aria-pressed="false">快速右键</button>
         </div>
-        <p class="hint">同一张截图内切换局部放大</p>
+        <p class="hint">切换按钮时始终保留完整截图</p>
       </article>
     </div>
   </section>

@@ -353,15 +353,44 @@ async function capture(sessionId, outputPath) {
     for (const state of states) {
       await evaluate(sessionId,
         `document.querySelector('#s${slideNumber} [data-state="${state}"]').click()`);
+      await waitForAnimations(sessionId);
       const clickedFocus = await evaluate(sessionId, `(() => {
         const slide=document.getElementById('s${slideNumber}');
+        const stage=slide.querySelector('.media-stage');
+        const image=slide.querySelector('.media-layer.active');
+        const frame=stage.getBoundingClientRect();
+        const imageRect=image.getBoundingClientRect();
+        const style=getComputedStyle(image);
+        const scaleX=imageRect.width/image.clientWidth;
+        const scaleY=imageRect.height/image.clientHeight;
+        const fitScale=Math.min(
+          image.clientWidth/image.naturalWidth,
+          image.clientHeight/image.naturalHeight
+        );
+        const paintedWidth=image.naturalWidth*fitScale*scaleX;
+        const paintedHeight=image.naturalHeight*fitScale*scaleY;
+        const painted={
+          left:imageRect.left+(imageRect.width-paintedWidth)/2,
+          top:imageRect.top+(imageRect.height-paintedHeight)/2,
+          right:imageRect.right-(imageRect.width-paintedWidth)/2,
+          bottom:imageRect.bottom-(imageRect.height-paintedHeight)/2,
+        };
         return {
           view:slide.dataset.view,
-          focused:slide.querySelector('.media-stage').classList.contains('focused'),
+          focused:stage.classList.contains('focused'),
           focus:slide.dataset.focus || null,
+          objectFit:style.objectFit,
+          complete:painted.left>=frame.left-.5 && painted.top>=frame.top-.5 &&
+            painted.right<=frame.right+.5 && painted.bottom<=frame.bottom+.5,
         };
       })()`);
-      assert.deepStrictEqual(clickedFocus, { view: state, focused: true, focus: state });
+      assert.deepStrictEqual(clickedFocus, {
+        view: state,
+        focused: true,
+        focus: state,
+        objectFit: "contain",
+        complete: true,
+      });
     }
     await pressKey(sessionId, "Escape", "Escape", 27);
     const escapedFocus = await evaluate(sessionId, `(() => {
