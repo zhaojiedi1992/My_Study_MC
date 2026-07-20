@@ -254,6 +254,30 @@ class AudioTest(unittest.TestCase):
         self.assertIn("concat=n=2:v=0:a=1", graph)
         self.assertEqual(command[-1], str(output))
 
+    def test_voice_part_trim_removes_only_trailing_silence(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "raw.mp3"
+            output = root / "trimmed.mp3"
+            with patch.object(audio.subprocess, "run") as run:
+                audio.trim_voice_part(source, output)
+
+        command = run.call_args.args[0]
+        audio_filter = command[command.index("-af") + 1]
+        self.assertTrue(audio_filter.startswith("areverse,"))
+        self.assertTrue(audio_filter.endswith(",areverse"))
+        self.assertIn("start_silence=0.08", audio_filter)
+        self.assertEqual(command[-1], str(output))
+
+    def test_trimmed_part_cues_end_with_trimmed_audio(self):
+        cues = [
+            Cue(0.1, 1.0, "第一句。"),
+            Cue(0.95, 3.1, "第二句。"),
+        ]
+        fitted = audio.fit_part_cues(cues, 2.2)
+        self.assertEqual(fitted[0], cues[0])
+        self.assertEqual(fitted[1], Cue(0.95, 2.2, "第二句。"))
+
     def test_voice_selection_prefers_conversational_male_voice(self):
         voices = (
             "zh-CN-YunyangNeural Male News\n"
@@ -402,11 +426,20 @@ class AudioTest(unittest.TestCase):
                 for call in run.call_args_list
                 if "--write-media" in call.args[0]
             ]
+            trim_commands = [
+                call.args[0]
+                for call in run.call_args_list
+                if "-af" in call.args[0]
+                and "silenceremove" in call.args[0][
+                    call.args[0].index("-af") + 1
+                ]
+            ]
             merged = (
                 build_dir / "narration/soul-effect.srt"
             ).read_text(encoding="utf-8")
 
         self.assertEqual(len(tts_commands), 3)
+        self.assertEqual(len(trim_commands), 3)
         compact = merged.replace("\n", "")
         for text in (
             "按下之后，人留在原地。",

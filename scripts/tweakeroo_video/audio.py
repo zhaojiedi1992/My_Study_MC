@@ -107,6 +107,19 @@ def part_starts(
     return starts
 
 
+def fit_part_cues(cues: list[Cue], duration: float) -> list[Cue]:
+    if duration <= 0:
+        raise ValueError("Trimmed voice-part duration must be positive")
+    validate_cues(cues, "Voice part", allow_overlaps=True)
+    fitted = []
+    for cue in cues:
+        end = min(cue.end, duration)
+        if end <= cue.start:
+            raise RuntimeError("Trimmed voice part removed a subtitle cue")
+        fitted.append(Cue(cue.start, end, cue.text))
+    return fitted
+
+
 def parse_srt_time(value: str) -> float:
     match = _SRT_TIME_PATTERN.fullmatch(value.strip())
     if match is None:
@@ -458,6 +471,31 @@ def _generate_tts_part(
             time.sleep(1)
 
 
+def trim_voice_part(source: Path, output: Path) -> None:
+    trailing_silence_filter = (
+        "areverse,"
+        "silenceremove=start_periods=1:start_duration=0.08:"
+        "start_threshold=-45dB:start_silence=0.08,"
+        "areverse"
+    )
+    subprocess.run(
+        [
+            FFMPEG,
+            "-y",
+            "-i",
+            str(source),
+            "-af",
+            trailing_silence_filter,
+            "-c:a",
+            "libmp3lame",
+            "-b:a",
+            "192k",
+            str(output),
+        ],
+        check=True,
+    )
+
+
 def compose_voice_parts(
     media_paths: list[Path],
     durations: list[float],
@@ -517,7 +555,8 @@ def generate_segment_voice(
 ) -> tuple[Path, ...]:
     narration_dir = build_dir / "narration"
     parts_dir = narration_dir / "parts"
-    parts_dir.mkdir(parents=True, exist_ok=True)
+    raw_parts_dir = parts_dir / "raw"
+    raw_parts_dir.mkdir(parents=True, exist_ok=True)
     voice = choose_voice(edge_tts)
     outputs = []
     for segment in segments:
@@ -526,15 +565,27 @@ def generate_segment_voice(
         part_cues = []
         durations = []
         for index, part in enumerate(parts, 1):
+            raw_media = raw_parts_dir / f"{segment.id}-{index:02d}.mp3"
+            raw_srt = raw_parts_dir / f"{segment.id}-{index:02d}.srt"
             media = parts_dir / f"{segment.id}-{index:02d}.mp3"
-            srt = parts_dir / f"{segment.id}-{index:02d}.srt"
-            _generate_tts_part(edge_tts, voice, part, media, srt)
+            _generate_tts_part(
+                edge_tts,
+                voice,
+                part,
+                raw_media,
+                raw_srt,
+            )
+            trim_voice_part(raw_media, media)
             part_media.append(media)
-            durations.append(probe_duration(media))
+            part_duration = probe_duration(media)
+            durations.append(part_duration)
             part_cues.append(
-                parse_srt(
-                    srt.read_text(encoding="utf-8"),
-                    f"{segment.id} part {index}",
+                fit_part_cues(
+                    parse_srt(
+                        raw_srt.read_text(encoding="utf-8"),
+                        f"{segment.id} part {index}",
+                    ),
+                    part_duration,
                 )
             )
 
