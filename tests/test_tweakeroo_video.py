@@ -6,12 +6,16 @@ from unittest.mock import Mock, patch
 
 from scripts.tweakeroo_video import audio, pipeline
 from scripts.tweakeroo_video.audio import (
+    PITCH,
+    RATE,
     Cue,
+    VoicePart,
     choose_voice,
     format_srt_time,
     merge_cues,
     parse_srt,
     split_cue,
+    voice_parts,
 )
 from scripts.tweakeroo_video.pipeline import (
     BUILD_DIR,
@@ -126,6 +130,35 @@ class StoryboardTest(unittest.TestCase):
 
 
 class AudioTest(unittest.TestCase):
+    def test_preview_profiles_use_restrained_dynamic_prosody(self):
+        preview = {
+            segment.id: voice_parts(segment)
+            for segment in SEGMENTS
+            if segment.id in PREVIEW_SEGMENT_IDS
+        }
+        self.assertEqual(
+            preview["hook-soul"],
+            (VoicePart("灵魂出窍。", "+6%", "+2Hz", 180),),
+        )
+        all_parts = tuple(
+            part for parts in preview.values() for part in parts
+        )
+        self.assertIn("-4%", {part.rate for part in all_parts})
+        self.assertIn("-2Hz", {part.pitch for part in all_parts})
+        self.assertGreater(len({part.pause_ms for part in all_parts}), 3)
+        self.assertTrue(
+            all(120 <= part.pause_ms <= 360 for part in all_parts)
+        )
+
+    def test_non_preview_segment_keeps_neutral_fallback(self):
+        intro = next(
+            segment for segment in SEGMENTS if segment.id == "intro"
+        )
+        self.assertEqual(
+            voice_parts(intro),
+            (VoicePart(intro.narration, RATE, PITCH, 0),),
+        )
+
     def test_voice_selection_prefers_conversational_male_voice(self):
         voices = (
             "zh-CN-YunyangNeural Male News\n"

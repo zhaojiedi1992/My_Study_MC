@@ -44,6 +44,53 @@ class Cue:
     text: str
 
 
+@dataclass(frozen=True)
+class VoicePart:
+    text: str
+    rate: str
+    pitch: str
+    pause_ms: int
+
+
+_DYNAMIC_VOICE_PARTS = {
+    "hook-soul": (
+        VoicePart("灵魂出窍。", "+6%", "+2Hz", 180),
+    ),
+    "soul-effect": (
+        VoicePart("按下之后，人留在原地。", "+1%", "+1Hz", 140),
+        VoicePart(
+            "视角出去转一圈。看建筑，查路线，都不用本人跑过去加班。",
+            "-1%",
+            "+0Hz",
+            280,
+        ),
+        VoicePart("看完，切回来。", "-3%", "-1Hz", 180),
+    ),
+    "gamma-on": (
+        VoicePart(
+            "开启后，方块和道路立刻清楚很多。",
+            "+1%",
+            "+1Hz",
+            320,
+        ),
+        VoicePart("不过，矿洞是亮了。", "-2%", "+0Hz", 220),
+        VoicePart(
+            "刷怪规则并没有被你说服。该插的火把，还是得插。",
+            "-4%",
+            "-2Hz",
+            160,
+        ),
+    ),
+}
+
+
+def voice_parts(segment: Segment) -> tuple[VoicePart, ...]:
+    return _DYNAMIC_VOICE_PARTS.get(
+        segment.id,
+        (VoicePart(segment.narration, RATE, PITCH, 0),),
+    )
+
+
 def parse_srt_time(value: str) -> float:
     match = _SRT_TIME_PATTERN.fullmatch(value.strip())
     if match is None:
