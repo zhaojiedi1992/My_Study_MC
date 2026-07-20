@@ -301,7 +301,7 @@ class AudioTest(unittest.TestCase):
         )
         self.assertEqual(merged[1], Cue(2.75, 3.75, "第二段"))
 
-    def test_generate_voice_uses_approved_prosody(self):
+    def test_generate_voice_uses_dynamic_hook_prosody(self):
         with TemporaryDirectory() as directory:
             build_dir = Path(directory)
 
@@ -313,15 +313,24 @@ class AudioTest(unittest.TestCase):
                     srt = Path(
                         command[command.index("--write-subtitles") + 1]
                     )
+                    text = command[command.index("--text") + 1]
+                    media.parent.mkdir(parents=True, exist_ok=True)
                     media.write_bytes(b"mp3")
                     srt.write_text(
-                        "1\n00:00:00,100 --> 00:00:01,000\n试听字幕\n",
+                        f"1\n00:00:00,100 --> 00:00:01,000\n{text}\n",
                         encoding="utf-8",
                     )
                 return Mock(stdout="")
 
+            def fake_duration(path):
+                return 2.4 if path.parent.name == "parts" else 2.58
+
             with (
-                patch.object(audio, "probe_duration", return_value=2.4),
+                patch.object(
+                    audio,
+                    "probe_duration",
+                    side_effect=fake_duration,
+                ),
                 patch.object(
                     audio.subprocess,
                     "run",
@@ -339,9 +348,77 @@ class AudioTest(unittest.TestCase):
                 for call in run.call_args_list
                 if "--write-media" in call.args[0]
             )
-            self.assertIn("--rate=-2%", command)
-            self.assertIn("--pitch=+0Hz", command)
-            self.assertIn("zh-CN-YunxiNeural", command)
+        self.assertIn("--rate=+6%", command)
+        self.assertIn("--pitch=+2Hz", command)
+        self.assertIn("zh-CN-YunxiNeural", command)
+
+    def test_long_preview_segment_synthesizes_and_merges_three_parts(self):
+        soul_effect = next(
+            segment for segment in SEGMENTS if segment.id == "soul-effect"
+        )
+        with TemporaryDirectory() as directory:
+            build_dir = Path(directory)
+
+            def fake_run(command, **_kwargs):
+                if "--list-voices" in command:
+                    return Mock(stdout="zh-CN-YunxiNeural Male Novel\n")
+                if "--write-media" in command:
+                    media = Path(command[command.index("--write-media") + 1])
+                    srt = Path(
+                        command[command.index("--write-subtitles") + 1]
+                    )
+                    text = command[command.index("--text") + 1]
+                    media.parent.mkdir(parents=True, exist_ok=True)
+                    media.write_bytes(b"mp3")
+                    srt.write_text(
+                        f"1\n00:00:00,100 --> 00:00:00,900\n{text}\n",
+                        encoding="utf-8",
+                    )
+                return Mock(stdout="")
+
+            def fake_duration(path):
+                return 3.0 if path.parent.name == "parts" else 9.6
+
+            with (
+                patch.object(
+                    audio,
+                    "probe_duration",
+                    side_effect=fake_duration,
+                ),
+                patch.object(
+                    audio.subprocess,
+                    "run",
+                    side_effect=fake_run,
+                ) as run,
+            ):
+                audio.generate_segment_voice(
+                    build_dir,
+                    Path("edge-tts"),
+                    (soul_effect,),
+                )
+
+            tts_commands = [
+                call.args[0]
+                for call in run.call_args_list
+                if "--write-media" in call.args[0]
+            ]
+            merged = (
+                build_dir / "narration/soul-effect.srt"
+            ).read_text(encoding="utf-8")
+
+        self.assertEqual(len(tts_commands), 3)
+        compact = merged.replace("\n", "")
+        for text in (
+            "按下之后，人留在原地。",
+            "视角出去转一圈。看建筑，查路线，都不用本人跑过去加班。",
+            "看完，切回来。",
+        ):
+            self.assertIn(text, compact)
+        self.assertLess(
+            merged.index("按下之后"),
+            merged.index("视角出去"),
+        )
+        self.assertLess(merged.index("视角出去"), merged.index("看完"))
 
     def test_segment_voice_retries_one_transient_tts_failure(self):
         with TemporaryDirectory() as directory:

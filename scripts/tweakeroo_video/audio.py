@@ -516,34 +516,36 @@ def generate_segment_voice(
     segments: tuple[Segment, ...],
 ) -> tuple[Path, ...]:
     narration_dir = build_dir / "narration"
-    narration_dir.mkdir(parents=True, exist_ok=True)
+    parts_dir = narration_dir / "parts"
+    parts_dir.mkdir(parents=True, exist_ok=True)
     voice = choose_voice(edge_tts)
     outputs = []
     for segment in segments:
-        media = narration_dir / f"{segment.id}.mp3"
-        srt = narration_dir / f"{segment.id}.srt"
-        command = [
-            str(edge_tts),
-            "--voice",
-            voice,
-            f"--rate={RATE}",
-            f"--pitch={PITCH}",
-            "--text",
-            segment.narration,
-            "--write-media",
-            str(media),
-            "--write-subtitles",
-            str(srt),
-        ]
-        for attempt in range(3):
-            try:
-                subprocess.run(command, check=True)
-                break
-            except subprocess.CalledProcessError:
-                if attempt == 2:
-                    raise
-                time.sleep(1)
-        duration = probe_duration(media)
+        parts = voice_parts(segment)
+        part_media = []
+        part_cues = []
+        durations = []
+        for index, part in enumerate(parts, 1):
+            media = parts_dir / f"{segment.id}-{index:02d}.mp3"
+            srt = parts_dir / f"{segment.id}-{index:02d}.srt"
+            _generate_tts_part(edge_tts, voice, part, media, srt)
+            part_media.append(media)
+            durations.append(probe_duration(media))
+            part_cues.append(
+                parse_srt(
+                    srt.read_text(encoding="utf-8"),
+                    f"{segment.id} part {index}",
+                )
+            )
+
+        output_media = narration_dir / f"{segment.id}.mp3"
+        output_srt = narration_dir / f"{segment.id}.srt"
+        starts = part_starts(durations, parts)
+        compose_voice_parts(part_media, durations, parts, output_media)
+        cues = merge_cues(part_cues, starts)
+        output_srt.write_text(cues_to_srt(cues), encoding="utf-8")
+
+        duration = probe_duration(output_media)
         allowed = _allowed_voice_seconds(segment)
         if duration <= 0 or duration > allowed + 1e-9:
             raise RuntimeError(
@@ -556,9 +558,17 @@ def generate_segment_voice(
                 f"Narration {segment.id} leaves {tail:.2f}s tail; "
                 f"maximum is {MAX_TAIL_SILENCE_SECONDS:.2f}s"
             )
-        cues = parse_srt(srt.read_text(encoding="utf-8"), segment.id)
-        validate_cues(cues, segment.id, max_end=allowed, allow_overlaps=True)
-        outputs.append(media)
+        final_cues = parse_srt(
+            output_srt.read_text(encoding="utf-8"),
+            segment.id,
+        )
+        validate_cues(
+            final_cues,
+            segment.id,
+            max_end=allowed,
+            allow_overlaps=True,
+        )
+        outputs.append(output_media)
     return tuple(outputs)
 
 
