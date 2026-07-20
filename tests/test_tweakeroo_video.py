@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import subprocess
 from tempfile import TemporaryDirectory
 import unittest
@@ -36,6 +37,7 @@ from scripts.tweakeroo_video.publishing import (
 from scripts.tweakeroo_video.storyboard import (
     PREVIEW_SEGMENT_IDS,
     SEGMENTS,
+    Segment,
     encoded_seconds,
     render_requests,
     timeline,
@@ -152,14 +154,70 @@ class AudioTest(unittest.TestCase):
             all(120 <= part.pause_ms <= 360 for part in all_parts)
         )
 
-    def test_non_preview_segment_keeps_neutral_fallback(self):
-        intro = next(
-            segment for segment in SEGMENTS if segment.id == "intro"
+    def test_unknown_segment_keeps_neutral_fallback(self):
+        unknown = Segment(
+            "unknown",
+            "测试",
+            3.0,
+            1,
+            "default",
+            "still",
+            "未知分镜。",
         )
         self.assertEqual(
-            voice_parts(intro),
-            (VoicePart(intro.narration, RATE, PITCH, 0),),
+            voice_parts(unknown),
+            (VoicePart(unknown.narration, RATE, PITCH, 0),),
         )
+
+    def test_every_segment_has_explicit_dynamic_voice_parts(self):
+        fallback_profiles = []
+        for segment in SEGMENTS:
+            parts = voice_parts(segment)
+            fallback = (VoicePart(segment.narration, RATE, PITCH, 0),)
+            if parts == fallback:
+                fallback_profiles.append(segment.id)
+        self.assertEqual(fallback_profiles, [])
+
+    def test_dynamic_parts_preserve_words_and_stay_restrained(self):
+        def spoken_words(value):
+            return re.sub(r"[^\w]", "", value, flags=re.UNICODE)
+
+        rates = set()
+        pitches = set()
+        pauses = set()
+        for segment in SEGMENTS:
+            parts = voice_parts(segment)
+            self.assertEqual(
+                spoken_words("".join(part.text for part in parts)),
+                spoken_words(segment.narration),
+                segment.id,
+            )
+            rates.update(part.rate for part in parts)
+            pitches.update(part.pitch for part in parts)
+            pauses.update(part.pause_ms for part in parts)
+            self.assertTrue(
+                all(120 <= part.pause_ms <= 360 for part in parts),
+                segment.id,
+            )
+
+        for segment_id in (
+            "hook-soul",
+            "hook-restock",
+            "hook-gamma",
+        ):
+            segment = next(
+                item for item in SEGMENTS if item.id == segment_id
+            )
+            self.assertEqual(voice_parts(segment)[0].rate, "+6%")
+            self.assertEqual(voice_parts(segment)[0].pitch, "+2Hz")
+        self.assertTrue(
+            {"+2%", "+1%", "+0%", "-1%", "-2%"} <= rates
+        )
+        self.assertIn("-4%", rates)
+        self.assertTrue(
+            {"+1Hz", "+0Hz", "-1Hz", "-2Hz"} <= pitches
+        )
+        self.assertGreaterEqual(len(pauses), 6)
 
     def test_part_starts_include_unequal_inserted_pauses(self):
         parts = (
