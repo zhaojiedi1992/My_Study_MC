@@ -11,8 +11,10 @@ from scripts.tweakeroo_video.audio import (
     Cue,
     VoicePart,
     choose_voice,
+    compose_voice_parts,
     format_srt_time,
     merge_cues,
+    part_starts,
     parse_srt,
     split_cue,
     voice_parts,
@@ -158,6 +160,99 @@ class AudioTest(unittest.TestCase):
             voice_parts(intro),
             (VoicePart(intro.narration, RATE, PITCH, 0),),
         )
+
+    def test_part_starts_include_unequal_inserted_pauses(self):
+        parts = (
+            VoicePart("第一句。", "+1%", "+1Hz", 140),
+            VoicePart("第二句。", "-1%", "+0Hz", 280),
+            VoicePart("第三句。", "-3%", "-1Hz", 180),
+        )
+        self.assertEqual(
+            part_starts([1.0, 2.0, 1.5], parts),
+            [0.0, 1.14, 3.42],
+        )
+
+    def test_tts_part_uses_its_own_rate_pitch_and_three_attempt_retry(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            media = root / "part.mp3"
+            srt = root / "part.srt"
+            part = VoicePart("灵魂出窍。", "+6%", "+2Hz", 180)
+            attempts = 0
+
+            def flaky_run(command, **_kwargs):
+                nonlocal attempts
+                attempts += 1
+                if attempts == 1:
+                    raise subprocess.CalledProcessError(1, command)
+                media.write_bytes(b"mp3")
+                srt.write_text(
+                    "1\n00:00:00,100 --> 00:00:01,000\n灵魂出窍。\n",
+                    encoding="utf-8",
+                )
+                return Mock()
+
+            with (
+                patch.object(
+                    audio.subprocess,
+                    "run",
+                    side_effect=flaky_run,
+                ) as run,
+                patch.object(audio.time, "sleep") as sleep,
+            ):
+                audio._generate_tts_part(
+                    Path("edge-tts"),
+                    "zh-CN-YunxiNeural",
+                    part,
+                    media,
+                    srt,
+                )
+
+        command = run.call_args_list[-1].args[0]
+        self.assertEqual(attempts, 2)
+        self.assertIn("--rate=+6%", command)
+        self.assertIn("--pitch=+2Hz", command)
+        sleep.assert_called_once_with(1)
+
+    def test_part_subtitles_are_shifted_after_audio_and_pause(self):
+        groups = [
+            [Cue(0.1, 0.9, "第一句。")],
+            [Cue(0.1, 1.2, "第二句。")],
+        ]
+        parts = (
+            VoicePart("第一句。", "+1%", "+1Hz", 320),
+            VoicePart("第二句。", "-2%", "+0Hz", 220),
+        )
+        merged = merge_cues(
+            groups,
+            part_starts([1.0, 1.3], parts),
+        )
+        self.assertAlmostEqual(merged[1].start, 1.42)
+        self.assertGreaterEqual(merged[1].start, merged[0].end)
+
+    def test_voice_part_composition_inserts_each_requested_pause(self):
+        parts = (
+            VoicePart("第一句。", "+1%", "+1Hz", 140),
+            VoicePart("第二句。", "-1%", "+0Hz", 280),
+        )
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            media = [root / "01.mp3", root / "02.mp3"]
+            output = root / "segment.mp3"
+            with patch.object(audio.subprocess, "run") as run:
+                compose_voice_parts(
+                    media,
+                    [1.0, 2.0],
+                    parts,
+                    output,
+                )
+
+        command = run.call_args.args[0]
+        graph = command[command.index("-filter_complex") + 1]
+        self.assertIn("apad=pad_dur=0.140", graph)
+        self.assertIn("apad=pad_dur=0.280", graph)
+        self.assertIn("concat=n=2:v=0:a=1", graph)
+        self.assertEqual(command[-1], str(output))
 
     def test_voice_selection_prefers_conversational_male_voice(self):
         voices = (

@@ -91,6 +91,22 @@ def voice_parts(segment: Segment) -> tuple[VoicePart, ...]:
     )
 
 
+def part_starts(
+    durations: list[float],
+    parts: tuple[VoicePart, ...],
+) -> list[float]:
+    if len(durations) != len(parts):
+        raise ValueError("Voice-part durations and definitions differ")
+    starts = []
+    cursor = 0.0
+    for duration, part in zip(durations, parts, strict=True):
+        if duration <= 0:
+            raise ValueError("Voice-part duration must be positive")
+        starts.append(round(cursor, 6))
+        cursor += duration + part.pause_ms / 1000
+    return starts
+
+
 def parse_srt_time(value: str) -> float:
     match = _SRT_TIME_PATTERN.fullmatch(value.strip())
     if match is None:
@@ -410,6 +426,82 @@ def choose_voice(edge_tts: Path) -> str:
         if voice in result.stdout:
             return voice
     raise RuntimeError("No approved Chinese male voice is available")
+
+
+def _generate_tts_part(
+    edge_tts: Path,
+    voice: str,
+    part: VoicePart,
+    media: Path,
+    srt: Path,
+) -> None:
+    command = [
+        str(edge_tts),
+        "--voice",
+        voice,
+        f"--rate={part.rate}",
+        f"--pitch={part.pitch}",
+        "--text",
+        part.text,
+        "--write-media",
+        str(media),
+        "--write-subtitles",
+        str(srt),
+    ]
+    for attempt in range(3):
+        try:
+            subprocess.run(command, check=True)
+            return
+        except subprocess.CalledProcessError:
+            if attempt == 2:
+                raise
+            time.sleep(1)
+
+
+def compose_voice_parts(
+    media_paths: list[Path],
+    durations: list[float],
+    parts: tuple[VoicePart, ...],
+    output: Path,
+) -> None:
+    if not (len(media_paths) == len(durations) == len(parts)):
+        raise ValueError(
+            "Voice-part media, durations, and definitions differ"
+        )
+    command = [FFMPEG, "-y"]
+    graph = []
+    labels = []
+    for index, (media, duration, part) in enumerate(
+        zip(media_paths, durations, parts, strict=True)
+    ):
+        command.extend(["-i", str(media)])
+        end = duration + part.pause_ms / 1000
+        label = f"part{index}"
+        graph.append(
+            f"[{index}:a]aresample=24000,"
+            f"aformat=channel_layouts=mono,"
+            f"apad=pad_dur={part.pause_ms / 1000:.3f},"
+            f"atrim=0:{end:.6f}[{label}]"
+        )
+        labels.append(f"[{label}]")
+    graph.append(
+        "".join(labels)
+        + f"concat=n={len(labels)}:v=0:a=1[voice]"
+    )
+    command.extend(
+        [
+            "-filter_complex",
+            ";".join(graph),
+            "-map",
+            "[voice]",
+            "-c:a",
+            "libmp3lame",
+            "-b:a",
+            "192k",
+            str(output),
+        ]
+    )
+    subprocess.run(command, check=True)
 
 
 def _allowed_voice_seconds(segment: Segment) -> float:
