@@ -35,6 +35,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublishingTest(unittest.TestCase):
+    def test_cover_4x3_source_has_approved_copy_and_dimensions(self):
+        source = (ROOT / "scripts/minihud_video/cover-4x3.html").read_text(
+            encoding="utf-8"
+        )
+        for phrase in (
+            "width:1600px",
+            "height:1200px",
+            "MiniHUD",
+            "别再靠目测",
+            "结构 · 范围 · 施工",
+            "收藏这份清单",
+        ):
+            self.assertIn(phrase, source)
+
     def test_cover_source_has_approved_copy_and_dimensions(self):
         source = (ROOT / "scripts/minihud_video/cover.html").read_text(
             encoding="utf-8"
@@ -42,9 +56,10 @@ class PublishingTest(unittest.TestCase):
         for phrase in (
             "width:1600px",
             "height:1000px",
-            "一个 MOD",
-            "看清隐藏规则",
-            "6 个实用场景",
+            "MiniHUD",
+            "别再靠目测",
+            "结构 · 范围 · 施工",
+            "收藏这份清单",
         ):
             self.assertIn(phrase, source)
         self.assertLessEqual(source.count("<img"), 2)
@@ -52,6 +67,7 @@ class PublishingTest(unittest.TestCase):
     def test_publish_copy_is_complete_and_honest(self):
         copy = build_publish_markdown()
         for phrase in (
+            "请把F3扣掉！MiniHUD把结构、范围、刷怪距离直接画出来",
             "MiniHUD",
             "Minecraft Java 版 26.2",
             "Fabric Loader",
@@ -60,6 +76,7 @@ class PublishingTest(unittest.TestCase):
             "不同版本",
             "收藏",
             "置顶评论",
+            "评论区聊聊",
         ):
             self.assertIn(phrase, copy)
         self.assertNotIn("下一期", copy)

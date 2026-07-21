@@ -9,3 +9,4 @@ MOD介绍
 
    itemscroller/itemscroller
    minihud/minihud
+   litematica/litematica
