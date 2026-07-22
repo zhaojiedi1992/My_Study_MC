@@ -7,6 +7,8 @@ MOD介绍
    :maxdepth: 1
    :caption: MOD列表
 
+   000-26.2-Fabric-hsds整合包MOD分类清单
    itemscroller/itemscroller
    minihud/minihud
    litematica/litematica
+   imblocker/imblocker
