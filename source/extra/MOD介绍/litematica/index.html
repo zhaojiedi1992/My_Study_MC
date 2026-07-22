@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Litematica｜从安装到多人共享</title>
+<style>
+:root{--bg:#080611;--panel:#121025e8;--panel-2:#191631;--line:#ffffff1f;--muted:#aaa5c4;--text:#f7f4ff;--accent:#a78bfa;--accent-2:#f5c76b;--good:#8ee2c2}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-height:100vh;background:radial-gradient(circle at 78% 8%,#38276b 0,transparent 32%),radial-gradient(circle at 12% 70%,#193b4b 0,transparent 30%),var(--bg);color:var(--text);font-family:"Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;line-height:1.5}
+button{font:inherit}
+.shell{width:min(1420px,92vw);margin:0 auto;padding:42px 0 74px}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr);gap:28px;align-items:stretch}
+.hero-copy,.hero-card,.chapter-panel,.chapter-nav{border:1px solid var(--line);background:linear-gradient(145deg,#17132de8,#0d0b18e8);box-shadow:0 24px 70px #0008;border-radius:26px}
+.hero-copy{padding:clamp(28px,5vw,72px)}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+h1{max-width:8em;margin-top:18px;font-size:clamp(42px,6vw,88px);line-height:.98;letter-spacing:-.055em}
+.lead{max-width:38em;margin-top:22px;color:#d7d1eb;font-size:clamp(17px,1.7vw,23px);line-height:1.65}
+.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:27px;list-style:none}
+.hero-tags li{padding:8px 12px;border:1px solid #a78bfa58;border-radius:999px;background:#1d173b;color:#dcd3ff;font-size:13px}
+.hero-tags li:nth-child(2n){border-color:#f5c76b70;color:#f9d98d}
+.hero-card{display:flex;flex-direction:column;justify-content:space-between;min-height:340px;padding:28px;background:linear-gradient(155deg,#2a2152,#11101f 65%)}
+.hero-card h2{margin-top:13px;font-size:clamp(25px,3vw,42px);line-height:1.1}
+.hero-card p{margin-top:14px;color:var(--muted)}
+.route{display:grid;gap:12px;margin-top:26px}
+.route-row{display:grid;grid-template-columns:74px 1fr;gap:12px;align-items:center;color:#d9d3eb;font-size:14px}
+.route-row strong{padding:7px 9px;border:1px solid #a78bfa4d;border-radius:10px;color:var(--accent);text-align:center;font-size:12px;letter-spacing:.08em}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:56px 0 17px}
+.section-head h2{font-size:clamp(25px,3vw,39px);letter-spacing:-.035em}
+.section-head p{max-width:40em;color:var(--muted);font-size:14px}
+.workspace{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.55fr);gap:18px;align-items:start}
+.chapter-nav{position:sticky;top:18px;padding:13px}
+.chapter-nav ol{display:grid;gap:5px;list-style:none}
+.chapter-button{display:grid;grid-template-columns:45px 1fr;gap:12px;width:100%;padding:13px 12px;border:1px solid transparent;border-radius:15px;background:transparent;color:#bcb7d0;text-align:left;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.chapter-button:hover{transform:translateX(2px);background:#ffffff08;color:#eee9ff}
+.chapter-button.active{border-color:#a78bfa71;background:#27204a;color:#fff;box-shadow:inset 3px 0 var(--accent)}
+.chapter-number{color:var(--accent);font-weight:850;font-size:12px;letter-spacing:.08em}
+.chapter-time{display:block;margin-top:2px;color:#817b9c;font-size:11px}
+.chapter-name{font-size:14px;line-height:1.35}
+.chapter-panel{min-height:610px;padding:clamp(22px,4vw,46px)}
+.panel-top{display:flex;justify-content:space-between;gap:16px;align-items:start}
+.panel-kicker{color:var(--accent-2);font-size:13px;font-weight:850;letter-spacing:.13em}
+.panel-time{color:#8882a0;font-size:13px}
+.panel-title{margin-top:12px;font-size:clamp(31px,4vw,56px);line-height:1.05;letter-spacing:-.045em}
+.panel-intro{max-width:48em;margin-top:15px;color:#d2cde2;font-size:17px;line-height:1.7}
+.panel-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(250px,.88fr);gap:22px;margin-top:28px}
+.video-box{position:relative;min-height:320px;overflow:hidden;border:1px solid #ffffff22;border-radius:20px;background:#07060d;box-shadow:inset 0 0 0 1px #ffffff0a}
+.video-box::before{content:"LITEMATICA · 01—09";position:absolute;z-index:1;left:16px;top:14px;padding:6px 9px;border:1px solid #a78bfa55;border-radius:999px;background:#0e0b1dd9;color:#cfc1ff;font-size:11px;font-weight:850;letter-spacing:.1em;pointer-events:none}
+video{display:block;width:100%;height:100%;min-height:320px;object-fit:contain;background:#05040a}
+.video-empty{position:absolute;inset:0;display:grid;place-content:center;gap:8px;padding:28px;text-align:center;background:linear-gradient(145deg,#17132d,#080711);color:var(--muted)}
+.video-empty strong{color:#e9e2ff;font-size:17px}.video-empty code{color:var(--accent-2);font-size:12px;overflow-wrap:anywhere}
+.video-empty.hidden{display:none}
+.steps-card{padding:22px;border:1px solid #ffffff17;border-radius:20px;background:#ffffff06}
+.steps-card h3{font-size:17px;color:#f1ebff}.steps{display:grid;gap:13px;margin-top:16px;list-style:none;counter-reset:step}
+.steps li{counter-increment:step;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;color:#c2bdd1;font-size:14px;line-height:1.55}
+.steps li::before{content:counter(step);display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#2a2050;color:var(--accent);font-size:12px;font-weight:850}
+.panel-note{margin-top:18px;padding:13px 15px;border-left:3px solid var(--good);background:#10241f80;color:#bce3d3;font-size:13px;line-height:1.55}
+.progress{height:4px;margin-top:28px;overflow:hidden;border-radius:99px;background:#ffffff14}.progress i{display:block;width:11.11%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .25s ease}
+.help{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.help-card{padding:19px;border:1px solid var(--line);border-radius:18px;background:#ffffff06}.help-card h3{font-size:15px}.help-card p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.6}
+.faq{margin-top:18px;padding:22px 24px;border:1px solid var(--line);border-radius:20px;background:#ffffff06}.faq h2{font-size:20px}.faq details{border-top:1px solid #ffffff14}.faq details:first-of-type{margin-top:10px}.faq summary{position:relative;padding:15px 28px 15px 0;color:#eee9ff;font-size:14px;font-weight:750;cursor:pointer;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";position:absolute;right:3px;color:var(--accent);font-size:20px;font-weight:400;line-height:1}.faq details[open] summary::after{content:"−"}.faq details p{max-width:75em;padding:0 28px 17px 0;color:var(--muted);font-size:13px;line-height:1.65}
+.footer{margin-top:44px;color:#77718c;font-size:12px;text-align:center}.footer code{color:#a59abb}
+@media(max-width:950px){.hero,.workspace,.panel-grid{grid-template-columns:1fr}.chapter-nav{position:static}.chapter-nav ol{grid-template-columns:repeat(2,minmax(0,1fr))}.chapter-button{height:100%}.chapter-panel{min-height:0}.video-box,video{min-height:260px}.help{grid-template-columns:1fr}}
+@media(max-width:560px){.shell{width:min(94vw,1420px);padding-top:23px}.hero-copy{padding:28px 22px}.hero-card{min-height:0}.chapter-nav ol{grid-template-columns:1fr}.chapter-panel{padding:23px 17px}.panel-top{display:block}.panel-time{display:block;margin-top:7px}.video-box,video{min-height:220px}.route-row{grid-template-columns:67px 1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="hero" aria-labelledby="page-title">
+    <article class="hero-copy">
+      <p class="eyebrow">Minecraft Java · Client Mod Guide</p>
+      <h1 id="page-title">从投影到建造，九段学会 Litematica</h1>
+      <p class="lead">按真实建筑工作流整理：安装、创建、加载、分层放置、编辑，再到多人共享和公共目录配置。</p>
+      <ul class="hero-tags" aria-label="教程内容">
+        <li>01—09 全流程</li><li>生存放置</li><li>创造模式</li><li>多人协作</li>
+      </ul>
+    </article>
+    <aside class="hero-card">
+      <div>
+        <p class="eyebrow">Build workflow</p>
+        <h2>先对齐蓝图，再开始施工。</h2>
+        <p>投影不会凭空生成方块；它把复杂建筑变成可检查、可分层、可协作的施工图。</p>
+      </div>
+      <div class="route" aria-label="教程路径">
+        <div class="route-row"><strong>01—03</strong><span>安装 · 创建 · 加载</span></div>
+        <div class="route-row"><strong>04—06</strong><span>放置 · 分层 · 创造模式</span></div>
+        <div class="route-row"><strong>07—09</strong><span>编辑 · 共享 · 公共目录</span></div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="section-head">
+    <div><h2>选择一个章节</h2><p>支持鼠标、触屏和键盘方向键；章节状态会写入地址栏，复制链接即可从当前章节打开。</p></div>
+  </div>
+
+  <section class="workspace" aria-label="投影教程章节播放器">
+    <nav class="chapter-nav" aria-label="视频章节"><ol id="chapter-list"></ol></nav>
+    <article class="chapter-panel" aria-live="polite">
+      <div class="panel-top"><p class="panel-kicker" id="panel-kicker">CHAPTER 01</p><p class="panel-time" id="panel-time">00:00</p></div>
+      <h2 class="panel-title" id="panel-title"></h2>
+      <p class="panel-intro" id="panel-intro"></p>
+      <div class="panel-grid">
+        <div class="video-box">
+          <video id="chapter-video" controls playsinline preload="metadata"></video>
+          <div class="video-empty" id="video-empty">
+            <strong>视频资源尚未部署</strong>
+            <span>把对应文件放入当前页面旁的 <code>videos/</code> 目录，或在脚本中替换为 B 站地址。</span>
+            <code id="video-file"></code>
+          </div>
+        </div>
+        <aside class="steps-card"><h3>本章要点</h3><ol class="steps" id="panel-steps"></ol><p class="panel-note" id="panel-note"></p></aside>
+      </div>
+      <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+    </article>
+  </section>
+
+  <section class="help" aria-label="使用提示">
+    <article class="help-card"><h3>快捷键以当前配置为准</h3><p><code>M</code>、<code>V</code>、<code>Caps Lock</code> 和工具物品都可能被个人设置或其他 MOD 修改。</p></article>
+    <article class="help-card"><h3>自动放置先做安全检查</h3><p>先在单人世界验证间隔、范围和空中建造；多人服务器必须遵守服规和反作弊限制。</p></article>
+    <article class="help-card"><h3>视频资源单独部署</h3><p>页面不捆绑大型视频文件。默认文件名与 01—09 原始视频一致，方便部署或替换外部播放地址。</p></article>
+  </section>
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">常见问题 FAQ</h2>
+    <details open><summary>为什么按 M 没有反应？</summary><p>在按键设置中搜索 Litematica 菜单，确认按键仍然绑定且没有冲突；再确认 MaLiLib 已安装并与 Litematica、Minecraft 版本匹配。</p></details>
+    <details><summary>木棍没有选区反应怎么办？</summary><p>木棍只是当前配置的工具物品。先确认工具物品，再用 Ctrl + 鼠标滚轮切换到选区工具模式。</p></details>
+    <details><summary>投影加载了，但画面里看不见？</summary><p>检查维度、原点、高度、主渲染、透明度、渲染范围以及当前图层/子区域过滤。只显示部分结构时，通常是图层或子区域被隐藏。</p></details>
+    <details><summary>为什么右键放不出投影里的方块？</summary><p>确认手中方块和投影目标一致、背包有材料，并检查 Easy Place 的放置键。服务器权限、交互距离和反作弊也可能阻止放置。</p></details>
+    <details><summary>轻松放置和 Litematica Printer 有什么区别？</summary><p>轻松放置是 Litematica 本体的辅助放置；Printer 是额外 MOD，提供打印模式、空中建造和更连续的自动放置，两者需要分别配置。</p></details>
+    <details><summary>Printer 开启后为什么还是不打印？</summary><p>检查“打印 - 模式”、打印热键和“打印 - 空中建造”开关，再从短距离、低范围、较长间隔开始测试。</p></details>
+    <details><summary>为什么 Syncmatica 看不到共享投影？</summary><p>确认客户端和服务端安装了匹配版本的 Syncmatica，并检查服务器是否允许共享；分享前还要确认维度、原点、朝向和原理图版本。</p></details>
+    <details><summary>为什么公共目录配置后列表是空的？</summary><p>确认路径指向实际存放 .litematic 文件的目录，检查扩展名、权限和当前实例使用的配置文件，修改后完全重启 Minecraft。</p></details>
+    <details><summary>自动放置会不会被服务器封禁？</summary><p>有可能。高频打印、空中建造和快速连续放置可能触发服规或反作弊；请先在单人世界或明确允许的测试服验证。</p></details>
+  </section>
+  <p class="footer">Litematica · MaLiLib · Litematica Printer · Syncmatica　|　返回 <a href="litematica.html" style="color:#a78bfa">文字教程</a></p>
+</main>
+<script>
+const mediaRoot = "videos/";
+const chapters = [
+  {n:"01",time:"00:00",title:"投影模组介绍与安装说明",file:"01投影介绍+mod安装说明.mp4",intro:"先把客户端环境装对：确认 Fabric、Litematica 和 MaLiLib 的版本关系，再认识投影能解决什么问题。",steps:["安装与 Minecraft 版本匹配的 Fabric Loader、Litematica 和 MaLiLib。","启动游戏并打开 Litematica 配置，确认工具物品和按键没有冲突。","记住投影是施工参考层，不会替你生成方块。"],note:"基础投影只需要 Litematica 与 MaLiLib；Printer 和 Syncmatica 按需求额外安装。"},
+  {n:"02",time:"01:20",title:"功能介绍与创建投影",file:"02投影的功能介绍+创建投影.mp4",intro:"用选区工具框出建筑范围，把世界里的结构保存成可以反复加载的 .litematic 原理图。",steps:["手持工具，切换到选区工具模式。","用两次点击或坐标设置两个角点，检查选择框覆盖完整建筑。","保存原理图并使用带建筑名、方向或版本的文件名。"],note:"大型建筑优先使用坐标定位；保存前排除不需要的地面和临时方块。"},
+  {n:"03",time:"07:19",title:"投影加载",file:"03投影加载.mp4",intro:"把原理图加载到当前世界，调整原点、朝向和显示范围，让蓝图准确落在施工位置。",steps:["按 M 打开菜单并加载 .litematic 文件。","检查维度、原点、朝向和高度，必要时旋转或镜像。","对齐固定基准点后锁定投影，再打开材料清单 HUD。"],note:"不要只凭屏幕上的大致位置判断；先找一个能复核的地基角点或世界坐标。"},
+  {n:"04",time:"10:38",title:"投影放置与打印",file:"04投影放置打印.mp4",intro:"从手动轻松放置开始，再了解 Litematica Printer 的打印模式、空中建造、间隔和范围。",steps:["开启 Easy Place Mode，确认放置键和手中方块。","需要自动打印时，再配置 Printer 的打印模式和空中建造。","从单个方块和短直线开始测试，遇到异常先降低速度和范围。"],note:"快速连续放置可能触发服务器 PPS 或反作弊限制，先在允许的测试环境验证。"},
+  {n:"05",time:"16:20",title:"分层放置讲解",file:"05分层放置讲解.mp4",intro:"大型投影一次全开容易遮挡视线；按楼层或子区域施工，可以让材料和边界更容易对应。",steps:["隐藏暂时不施工的图层或子区域。","从地基或最低层开始，完成一层后再显示下一层。","发生错位时回到固定基准点检查原点，不要直接拖动碰运气。"],note:"分层显示同时适合生存建造和视频录制，能显著降低投影线框干扰。"},
+  {n:"06",time:"20:51",title:"创造模式直接放置",file:"06创造模式直接放置.mp4",intro:"创造模式适合快速补齐和检查结构，但它与生存模式的材料、权限和放置限制并不相同。",steps:["先确认投影的位置、朝向和选择范围。","配合分层显示逐层检查，再直接放置结构。","在服务器中仍然遵守权限与服规，不把创造模式经验套作生存规则。"],note:"创造模式不需要准备材料；本章用于理解快速放置流程，不代表生存服允许自动操作。"},
+  {n:"07",time:"23:08",title:"投影编辑",file:"07投影编辑.mp4",intro:"区分“调整投影实例”和“修改原理图内容”：前者影响当前摆放，后者会改变蓝图本身。",steps:["移动、旋转、镜像投影，使实例与地形对齐。","在原理图编辑模式中删除、替换或批量替换方块。","编辑前复制原文件，完成后另存为带版本号的新文件。"],note:"批量替换前确认旧方块和新方块没有选反，并检查预览结果。"},
+  {n:"08",time:"26:28",title:"投影共享",file:"08投影共享.mp4",intro:"通过 Syncmatica 在服务器范围内分享投影；多人协作的关键是统一文件、基准点和版本号。",steps:["确认客户端和服务端安装匹配版本的 Syncmatica。","分享前检查维度、原点、朝向和 Minecraft/MOD 版本。","队友加载新版本前，明确改动区域并避免同时修改同一个旧文件。"],note:"Syncmatica 不是无冲突的多人合并工具；协作前先约定固定基准点。"},
+  {n:"09",time:"27:31",title:"配置投影公共目录",file:"09配置投影公共目录.mp4",intro:"让多个实例指向同一个投影目录，减少文件散落，也方便统一备份和更新。",steps:["创建专门的公共目录并在修改前关闭 Minecraft 实例。","在 Litematica 的目录配置中指向公共路径。","逐个实例加载测试文件，确认路径、权限和扩展名都正确。"],note:"不同系统和启动器的配置入口不同；公共目录仍需定期备份，并用版本号区分协作文件。"}
+];
+const list=document.querySelector("#chapter-list"), video=document.querySelector("#chapter-video"), empty=document.querySelector("#video-empty"), fileLabel=document.querySelector("#video-file");
+const title=document.querySelector("#panel-title"), intro=document.querySelector("#panel-intro"), kicker=document.querySelector("#panel-kicker"), time=document.querySelector("#panel-time"), steps=document.querySelector("#panel-steps"), note=document.querySelector("#panel-note"), progress=document.querySelector("#progress-bar");
+let current=0;
+chapters.forEach((c,i)=>{const li=document.createElement("li"); const b=document.createElement("button"); b.className="chapter-button"; b.type="button"; b.innerHTML=`<span><span class="chapter-number">${c.n}</span><span class="chapter-time">${c.time}</span></span><span class="chapter-name">${c.title}</span>`; b.addEventListener("click",()=>select(i,true)); li.appendChild(b); list.appendChild(li);});
+function select(i,write){current=(i+chapters.length)%chapters.length; const c=chapters[current]; document.querySelectorAll(".chapter-button").forEach((b,n)=>{b.classList.toggle("active",n===current);b.setAttribute("aria-current",n===current?"true":"false")}); kicker.textContent=`CHAPTER ${c.n}`;time.textContent=c.time;title.textContent=c.title;intro.textContent=c.intro;steps.innerHTML=c.steps.map(s=>`<li>${s}</li>`).join("");note.textContent=c.note;progress.style.width=`${((current+1)/chapters.length)*100}%`;fileLabel.textContent=c.file;empty.classList.remove("hidden"); video.pause(); video.removeAttribute("src"); video.load(); video.src=mediaRoot+c.file; video.load(); if(write){history.replaceState(null,"",`?chapter=${current+1}`); document.querySelector(".chapter-panel").scrollIntoView({behavior:"smooth",block:"start"});}}
+video.addEventListener("loadeddata",()=>empty.classList.add("hidden")); video.addEventListener("error",()=>empty.classList.remove("hidden"));
+document.addEventListener("keydown",e=>{if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;if(e.key==="ArrowDown"||e.key==="ArrowRight"){e.preventDefault();select(current+1,true)}if(e.key==="ArrowUp"||e.key==="ArrowLeft"){e.preventDefault();select(current-1,true)}if(e.key==="Home"){e.preventDefault();select(0,true)}if(e.key==="End"){e.preventDefault();select(chapters.length-1,true)}});
+const requested=Number(new URLSearchParams(location.search).get("chapter")); select(Number.isInteger(requested)&&requested>0&&requested<=chapters.length?requested-1:0,false);
+</script>
+</body>
+</html>
