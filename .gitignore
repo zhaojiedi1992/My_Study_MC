@@ -2,4 +2,5 @@ build/
 .venv/
 .DS_Store
 __pycache__/
+*.mp4
 /source/extra/MOD介绍/tweakeroo/config-live/
