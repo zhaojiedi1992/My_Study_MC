@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="No Chat Reports 的核心作用、适用边界与安装要点。">
+<title>No Chat Reports｜核心要点</title>
+<link rel="stylesheet" href="../common.css">
+</head>
+<body style="--accent:#67e8f9;--accent-2:#60a5fa">
+<main id="deck">
+  <section class="slide active">
+    <span class="count">01 / 02</span><span class="brand">CHAT · PRIVACY</span>
+    <div class="hero-icon" role="img" aria-label="聊天签名被移除">✉</div>
+    <p class="eyebrow">NO CHAT REPORTS · 2.20.1</p>
+    <h1><strong>少一份</strong><br>聊天签名</h1>
+    <p class="lead">移除或避免发送玩家聊天消息的加密签名，降低消息被关联到聊天举报系统的可能。</p>
+    <div class="chips"><span class="chip">未签名消息</span><span class="chip">客户端 / 服务端协作</span><span class="chip">Minecraft 26.2 · Fabric</span></div>
+    <div class="links"><a href="../../../MOD介绍/聊天社交与隐私/nochatreports/nochatreports.html">阅读完整介绍</a><a href="https://modrinth.com/mod/no-chat-reports" target="_blank" rel="noopener">Modrinth ↗</a></div>
+  </section>
+
+  <section class="slide">
+    <span class="count">02 / 02</span><span class="brand">CORE · LIMITS</span>
+    <p class="eyebrow">核心、安装与边界</p>
+    <h2>先看服务器<strong>是否允许</strong></h2>
+    <p class="lead">客户端不再主动提供账号公钥，并在服务器允许时发送未签名消息。</p>
+    <div class="install">
+      <div class="install-card"><b>核心作用</b><span>减少可直接关联 Microsoft 账号的消息签名；客户端、服务端同时安装时最完整。</span></div>
+      <div class="install-card"><b>安装</b><span>Fabric API 必需；Cloth Config、Mod Menu 仅用于配置入口。</span></div>
+      <div class="install-card"><b>边界</b><span>不加密聊天、不阻止服务器日志，也不能强行绕过签名策略。</span></div>
+    </div>
+    <p class="note"><strong>记住：</strong>它改变的是“签名”，不是聊天内容、服务器管理规则；Realms 不在保护范围内。</p>
+    <div class="links"><a href="https://modrinth.com/mod/no-chat-reports" target="_blank" rel="noopener">查看版本与加载器</a></div>
+  </section>
+</main>
+<nav id="nav" aria-label="演示页导航"><button class="nav-btn" data-nav="prev" aria-label="上一页">‹</button><div class="dots"><button class="dot active" aria-label="第 1 页"></button><button class="dot" aria-label="第 2 页"></button></div><button class="nav-btn" data-nav="next" aria-label="下一页">›</button></nav>
+<p class="hint"><kbd>←</kbd> <kbd>→</kbd> 或触摸切页</p>
+<script src="../common.js"></script>
+</body>
+</html>

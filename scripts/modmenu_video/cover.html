@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Mod Menu B 站封面</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1000px;overflow:hidden;background:#070b12;color:#fff}
+body{position:relative;font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;border:8px solid #172434}
+body::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 20%,#6cc9ff38,transparent 34%),radial-gradient(circle at 12% 88%,#9ee26b30,transparent 32%),linear-gradient(135deg,#070b12,#0c1623)}
+.grid{position:absolute;inset:0;opacity:.18;background-image:linear-gradient(#ffffff14 1px,transparent 1px),linear-gradient(90deg,#ffffff14 1px,transparent 1px);background-size:42px 42px}
+.copy{position:absolute;left:82px;top:75px;z-index:4;width:790px}
+.brand{display:inline-flex;align-items:center;gap:15px;padding:13px 24px;border:2px solid #9ee26b;border-radius:99px;background:#10231ce8;color:#cfffad;font-size:29px;font-weight:950;letter-spacing:.04em;box-shadow:0 0 30px #54c87544}
+.brand i{width:18px;height:18px;background:#9ee26b;box-shadow:10px 0 #6cc9ff,0 10px #6cc9ff,10px 10px #9ee26b;transform:translateY(-5px)}
+h1{margin-top:43px;font-size:151px;line-height:.88;letter-spacing:-.08em;font-weight:1000;text-shadow:0 12px 40px #000}
+h1 span{display:block}h1 .question{margin-top:20px;color:#ffc85c}
+.answer{display:inline-flex;margin-top:34px;padding:15px 24px;border-left:9px solid #9ee26b;border-radius:0 15px 15px 0;background:#14251dea;color:#fff;font-size:43px;font-weight:1000;letter-spacing:-.025em;box-shadow:0 14px 32px #0007}
+.shot{position:absolute;right:58px;top:95px;z-index:3;width:690px;height:710px;overflow:hidden;border:7px solid #6cc9ff;border-radius:30px;background:#03070c;box-shadow:0 35px 90px #000c,0 0 42px #6cc9ff44;transform:rotate(1.3deg)}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:15% 50%;transform:scale(1.32)}
+.shot::after{content:"模组列表，一眼找到";position:absolute;right:24px;bottom:24px;padding:12px 18px;border-radius:12px;background:#06101be8;color:#dff6ff;font-size:27px;font-weight:900;box-shadow:0 8px 24px #0009}
+.pain{position:absolute;left:84px;bottom:63px;z-index:5;display:flex;gap:14px}
+.pain span{padding:13px 18px;border:1px solid #ffffff55;border-radius:12px;background:#09111ddf;color:#e8eef5;font-size:25px;font-weight:900;box-shadow:0 10px 25px #0007}
+.corner{position:absolute;right:62px;bottom:60px;z-index:5;color:#b9c8d8;font-size:22px;font-weight:900;letter-spacing:.08em}
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <main class="copy">
+    <div class="brand"><i></i> MINECRAFT · 模组管理</div>
+    <h1><span>设置</span><span class="question">藏哪了？</span></h1>
+    <div class="answer">Mod Menu 带你找门</div>
+  </main>
+  <figure class="shot"><img src="../../source/extra/MOD介绍/modmenu/assets/screenshots/mod-menu-list.png" alt="Mod Menu 模组列表"></figure>
+  <div class="pain"><span>不用翻 JAR</span><span>不用退游戏</span></div>
+  <div class="corner">JAVA EDITION · CLIENT MOD</div>
+</body>
+</html>

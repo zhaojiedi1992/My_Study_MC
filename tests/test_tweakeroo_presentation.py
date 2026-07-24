@@ -5,7 +5,7 @@ import struct
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-HTML_PATH = ROOT / "source/MOD介绍/tweakeroo/index.html"
+HTML_PATH = ROOT / "source/extra/MOD介绍/masa/tweakeroo/index.html"
 
 EXPECTED_IMAGES = {
     "灵魂出窍配置.png", "开启灵魂出窍.png", "自动鞘翅配置.png",

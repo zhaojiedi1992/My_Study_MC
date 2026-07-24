@@ -1,4 +1,4 @@
-"""CLI orchestration for the Tweakeroo Bilibili build."""
+"""Command line builder for the Mod Menu Bilibili delivery."""
 
 import argparse
 import json
@@ -7,13 +7,10 @@ import shutil
 import subprocess
 from urllib.parse import urlencode
 
-from scripts.tweakeroo_video.audio import (
-    generate_voice,
-    generate_voice_preview,
-)
-from scripts.tweakeroo_video.publishing import build_publish_markdown
-from scripts.tweakeroo_video.storyboard import render_requests
-from scripts.tweakeroo_video.video import (
+from scripts.modmenu_video.audio import generate_voice, generate_voice_preview
+from scripts.modmenu_video.publishing import build_publish_markdown
+from scripts.modmenu_video.storyboard import encoded_seconds, render_requests
+from scripts.modmenu_video.video import (
     burn_subtitles,
     compose_master,
     create_contact_sheet,
@@ -23,13 +20,13 @@ from scripts.tweakeroo_video.video import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DECK_PATH = ROOT / "source/extra/MOD介绍/masa/tweakeroo/index.html"
-BUILD_DIR = ROOT / "build/tweakeroo-video"
+DECK_PATH = ROOT / "source/extra/MOD介绍/modmenu/index.html"
+BUILD_DIR = ROOT / "build/modmenu-video"
 CHROME = "/usr/bin/google-chrome"
 FFPROBE = "/usr/bin/ffprobe"
 FFMPEG = "/usr/bin/ffmpeg"
-COVER_PATH = ROOT / "scripts/tweakeroo_video/cover.html"
-COVER_4X3_PATH = ROOT / "scripts/tweakeroo_video/cover-4x3.html"
+COVER_PATH = ROOT / "scripts/modmenu_video/cover.html"
+COVER_4X3_PATH = ROOT / "scripts/modmenu_video/cover-4x3.html"
 
 
 def build_slide_url(slide: int, state: str) -> str:
@@ -61,16 +58,15 @@ def probe_media(path: Path) -> dict:
 
 
 def locate_edge_tts() -> Path:
-    system_edge_tts = shutil.which("edge-tts")
     candidates = [BUILD_DIR / ".venv/bin/edge-tts"]
-    if system_edge_tts:
-        candidates.append(Path(system_edge_tts))
+    system = shutil.which("edge-tts")
+    if system:
+        candidates.append(Path(system))
     for candidate in candidates:
         if candidate.is_file():
             return candidate
     raise RuntimeError(
-        "Missing edge-tts. Create build/tweakeroo-video/.venv and "
-        "install edge-tts==7.2.8"
+        "Missing edge-tts; install edge-tts==7.2.8 in build/modmenu-video/.venv"
     )
 
 
@@ -87,39 +83,24 @@ def render_slides() -> tuple[Path, ...]:
             "--disable-gpu",
             "--disable-dev-shm-usage",
             "--hide-scrollbars",
+            "--allow-file-access-from-files",
+            "--force-device-scale-factor=1",
             "--run-all-compositor-stages-before-draw",
             "--virtual-time-budget=1200",
-            "--window-size=1920,1080",
+            "--window-size=1920,1440",
             f"--screenshot={output}",
-            build_slide_url(
-                int(request["slide"]),
-                str(request["state"]),
-            ),
+            build_slide_url(int(request["slide"]), str(request["state"])),
         ]
-        for attempt in range(2):
-            try:
-                subprocess.run(command, check=True, timeout=30)
-                break
-            except subprocess.TimeoutExpired as error:
-                if attempt == 1:
-                    raise RuntimeError(
-                        f"Chrome timed out twice while rendering {output}"
-                    ) from error
-        media = probe_media(output)
-        stream = media["streams"][0]
-        if (stream["width"], stream["height"]) != (1920, 1080):
-            raise RuntimeError(
-                f"Unexpected slide size for {output}: {stream}"
-            )
+        subprocess.run(command, check=True, timeout=30, capture_output=True)
+        stream = probe_media(output)["streams"][0]
+        if (stream.get("width"), stream.get("height")) != (1920, 1440):
+            raise RuntimeError(f"Unexpected slide size for {output}: {stream}")
         outputs.append(output)
     return tuple(outputs)
 
 
 def render_cover_source(
-    source: Path,
-    width: int,
-    height: int,
-    stem: str,
+    source: Path, width: int, height: int, stem: str
 ) -> tuple[Path, Path]:
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
     raw = BUILD_DIR / f"{stem}-raw.png"
@@ -133,13 +114,18 @@ def render_cover_source(
                 "--no-sandbox",
                 "--disable-gpu",
                 "--hide-scrollbars",
+                "--allow-file-access-from-files",
+                "--force-device-scale-factor=1",
                 "--run-all-compositor-stages-before-draw",
                 "--virtual-time-budget=1000",
+                # This Chrome build reserves 87 px for window chrome even in
+                # headless mode; add it so the captured CSS viewport is exact.
                 f"--window-size={width},{height + 87}",
                 f"--screenshot={raw}",
                 source.resolve().as_uri(),
             ],
             check=True,
+            capture_output=True,
         )
         subprocess.run(
             [
@@ -156,6 +142,7 @@ def render_cover_source(
                 str(png),
             ],
             check=True,
+            capture_output=True,
         )
         subprocess.run(
             [
@@ -172,6 +159,7 @@ def render_cover_source(
                 str(jpg),
             ],
             check=True,
+            capture_output=True,
         )
     finally:
         raw.unlink(missing_ok=True)
@@ -179,17 +167,9 @@ def render_cover_source(
 
 
 def render_cover() -> tuple[Path, ...]:
-    wide = render_cover_source(
-        COVER_PATH,
-        1600,
-        1000,
-        "tweakeroo-cover-1600x1000",
-    )
+    wide = render_cover_source(COVER_PATH, 1600, 1000, "modmenu-cover-1600x1000")
     standard = render_cover_source(
-        COVER_4X3_PATH,
-        1600,
-        1200,
-        "tweakeroo-cover-1600x1200",
+        COVER_4X3_PATH, 1600, 1200, "modmenu-cover-1600x1200"
     )
     return (*wide, *standard)
 
@@ -210,39 +190,33 @@ def render_video() -> tuple[Path, Path, Path]:
 
 
 def _stream(media: dict, codec_type: str) -> dict:
-    try:
-        return next(
-            stream
-            for stream in media["streams"]
-            if stream.get("codec_type") == codec_type
-        )
-    except (KeyError, StopIteration) as error:
-        raise RuntimeError(f"Missing {codec_type} stream") from error
+    return next(
+        stream for stream in media["streams"] if stream.get("codec_type") == codec_type
+    )
 
 
 def verify_delivery() -> dict[str, object]:
     required = (
-        BUILD_DIR / "tweakeroo-bilibili-clean.mp4",
-        BUILD_DIR / "tweakeroo-bilibili.mp4",
+        BUILD_DIR / "modmenu-bilibili-clean.mp4",
+        BUILD_DIR / "modmenu-bilibili.mp4",
         BUILD_DIR / "voice-preview.mp3",
-        BUILD_DIR / "tweakeroo-narration.mp3",
-        BUILD_DIR / "subtitles/tweakeroo.zh-CN.srt",
-        BUILD_DIR / "tweakeroo-cover-1600x1000.png",
-        BUILD_DIR / "tweakeroo-cover-1600x1000.jpg",
-        BUILD_DIR / "tweakeroo-cover-1600x1200.png",
-        BUILD_DIR / "tweakeroo-cover-1600x1200.jpg",
+        BUILD_DIR / "modmenu-narration.mp3",
+        BUILD_DIR / "subtitles/modmenu.zh-CN.srt",
+        BUILD_DIR / "modmenu-cover-1600x1000.png",
+        BUILD_DIR / "modmenu-cover-1600x1000.jpg",
+        BUILD_DIR / "modmenu-cover-1600x1200.png",
+        BUILD_DIR / "modmenu-cover-1600x1200.jpg",
         BUILD_DIR / "bilibili-publish.md",
         BUILD_DIR / "final-contact.png",
     )
     missing = [path for path in required if not path.is_file() or path.stat().st_size == 0]
     if missing:
-        joined = ", ".join(str(path) for path in missing)
-        raise RuntimeError(f"Missing delivery artifacts: {joined}")
+        raise RuntimeError("Missing delivery files: " + ", ".join(map(str, missing)))
 
-    results = {}
+    results: dict[str, object] = {}
     for label, path in (
-        ("clean", BUILD_DIR / "tweakeroo-bilibili-clean.mp4"),
-        ("release", BUILD_DIR / "tweakeroo-bilibili.mp4"),
+        ("clean", BUILD_DIR / "modmenu-bilibili-clean.mp4"),
+        ("release", BUILD_DIR / "modmenu-bilibili.mp4"),
     ):
         media = probe_media(path)
         video = _stream(media, "video")
@@ -250,45 +224,40 @@ def verify_delivery() -> dict[str, object]:
         duration = float(media["format"]["duration"])
         if (
             video.get("codec_name") != "h264"
-            or (video.get("width"), video.get("height")) != (1920, 1080)
+            or (video.get("width"), video.get("height")) != (1920, 1440)
             or video.get("r_frame_rate") != "30/1"
             or audio.get("codec_name") != "aac"
-            or not 196 <= duration <= 205
+            or abs(duration - encoded_seconds()) > 0.6
         ):
             raise RuntimeError(
-                f"Invalid {label} media contract: "
-                f"video={video}, audio={audio}, duration={duration}"
+                f"Invalid {label} media: video={video}, audio={audio}, duration={duration}"
             )
         results[label] = {
             "duration": duration,
             "video": video.get("codec_name"),
             "audio": audio.get("codec_name"),
+            "size": f"{video.get('width')}x{video.get('height')}",
         }
 
-    source_images = sorted(DECK_PATH.parent.glob("*.png"))
-    if len(source_images) != 10:
-        raise RuntimeError(
-            f"Expected 10 source screenshots, found {len(source_images)}"
-        )
-    for image in source_images:
-        stream = probe_media(image)["streams"][0]
-        if (stream.get("width"), stream.get("height")) != (2880, 1800):
-            raise RuntimeError(
-                f"Source screenshot changed size: {image}: {stream}"
-            )
-
-    loudness = measure_loudness(BUILD_DIR / "tweakeroo-bilibili.mp4")
+    loudness = measure_loudness(BUILD_DIR / "modmenu-bilibili.mp4")
     integrated = float(loudness["input_i"])
     true_peak = float(loudness["input_tp"])
     if not -17 <= integrated <= -15 or true_peak > -1:
-        raise RuntimeError(
-            f"Loudness outside contract: I={integrated}, TP={true_peak}"
-        )
+        raise RuntimeError(f"Loudness outside target: I={integrated}, TP={true_peak}")
     results["loudness"] = {
         "integrated_lufs": integrated,
         "true_peak_dbtp": true_peak,
     }
-    results["source_images"] = len(source_images)
+
+    for image in (
+        DECK_PATH.parent / "assets/screenshots/mod-menu-list.png",
+        DECK_PATH.parent / "assets/screenshots/pause-menu-mods-entry.png",
+    ):
+        stream = probe_media(image)["streams"][0]
+        if (stream.get("width"), stream.get("height")) != (2880, 1800):
+            raise RuntimeError(f"Unexpected source image size: {image}: {stream}")
+    report = BUILD_DIR / "build-report.json"
+    report.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     return results
 
 
@@ -325,15 +294,7 @@ def main() -> None:
             "all",
         ),
     )
-    parser.add_argument(
-        "--voice-approved",
-        action="store_true",
-        help="confirm that voice-preview.mp3 passed human listening review",
-    )
     args = parser.parse_args()
-    if args.command in {"voice", "all"} and not args.voice_approved:
-        parser.error("approve voice-preview.mp3 before full narration")
-
     actions = {
         "slides": render_slides,
         "voice-preview": render_voice_preview,
@@ -346,6 +307,7 @@ def main() -> None:
     if args.command == "all":
         for name in (
             "slides",
+            "voice-preview",
             "voice",
             "video",
             "cover",

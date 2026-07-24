@@ -16,7 +16,7 @@ from scripts.minihud_video.video import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DECK_PATH = ROOT / "source/extra/MOD介绍/minihud/index.html"
+DECK_PATH = ROOT / "source/extra/MOD介绍/masa/minihud/index.html"
 COVER_PATH = ROOT / "scripts/minihud_video/cover.html"
 BUILD_DIR = ROOT / "build/minihud-video"
 CHROME = "/usr/bin/google-chrome"

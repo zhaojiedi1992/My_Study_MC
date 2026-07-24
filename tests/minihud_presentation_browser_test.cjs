@@ -86,7 +86,7 @@ async function evaluate(sessionId, expression) {
   }, sessionId);
 
   const url = pathToFileURL(
-    path.resolve("source/extra/MOD介绍/minihud/index.html"),
+    path.resolve("source/extra/MOD介绍/masa/minihud/index.html"),
   ).href;
   await send("Page.navigate", { url }, sessionId);
   await sleep(700);

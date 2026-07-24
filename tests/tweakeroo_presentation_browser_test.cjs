@@ -157,7 +157,7 @@ async function capture(sessionId, outputPath) {
   await send("Runtime.enable", {}, sessionId);
 
   const url = pathToFileURL(
-    path.resolve("source/MOD介绍/tweakeroo/index.html"),
+    path.resolve("source/extra/MOD介绍/masa/tweakeroo/index.html"),
   ).href;
   await navigate(sessionId, url);
 

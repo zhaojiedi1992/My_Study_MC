@@ -5,8 +5,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-HTML_PATH = ROOT / "source/extra/MOD介绍/minihud/index.html"
-RST_PATH = ROOT / "source/MOD介绍/minihud/minihud.rst"
+HTML_PATH = ROOT / "source/extra/MOD介绍/masa/minihud/index.html"
+RST_PATH = ROOT / "source/MOD介绍/masa/minihud/minihud.rst"
 
 
 class DeckParser(HTMLParser):

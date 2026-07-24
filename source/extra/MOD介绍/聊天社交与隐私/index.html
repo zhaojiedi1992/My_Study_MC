@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Chat Heads、More Chat History、No Chat Reports 与 Emotecraft 一屏一组件的 PPT 风格介绍。">
+<title>聊天、社交与隐私｜核心组件</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.slide{padding:7vh 5vw 12vh}.slide-heads{--accent:#f9a8d4;--accent-2:#c084fc}.slide-history{--accent:#86efac;--accent-2:#22d3ee}.slide-reports{--accent:#67e8f9;--accent-2:#60a5fa}.slide-emote{--accent:#d8b4fe;--accent-2:#f0abfc}.deck-layout{display:grid;grid-template-columns:minmax(310px,.72fr) minmax(0,1.28fr);align-items:center;gap:clamp(24px,4.5vw,70px);width:min(1320px,100%);min-height:0}.deck-copy{min-width:0}.deck-copy .eyebrow{margin-bottom:1.1rem}.deck-copy h1{max-width:10ch;margin:0;text-align:left;font-size:clamp(2.8rem,5.4vw,6rem)}.deck-copy h1.long{font-size:clamp(2.4rem,4.4vw,5rem)}.deck-copy .lead{max-width:39ch;margin-top:1.15rem;text-align:left}.points{display:grid;gap:8px;margin:1.2rem 0 0;padding:0;list-style:none}.points li{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;padding:.72rem .8rem;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.72);font-size:clamp(.72rem,.9vw,.84rem);line-height:1.45}.points li::before{content:"✓";color:var(--accent);font-weight:1000}.deck-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:1.2rem}.next-page,.detail-link{padding:.72em .92em;border:1px solid color-mix(in srgb,var(--accent) 55%,transparent);border-radius:9px;background:color-mix(in srgb,var(--accent) 12%,#0b1422);color:color-mix(in srgb,var(--accent) 75%,white);text-decoration:none;font-size:.76rem;font-weight:950;cursor:pointer}.next-page:hover,.detail-link:hover{border-color:var(--accent);transform:translateY(-2px)}.detail-link{border-color:rgba(255,255,255,.17);background:rgba(255,255,255,.055);color:rgba(255,255,255,.72)}.media-panel{min-width:0;overflow:hidden;border:1px solid rgba(255,255,255,.17);border-radius:21px;background:rgba(5,11,21,.84);box-shadow:0 25px 70px rgba(0,0,0,.34)}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}.comparison figure{position:relative;min-width:0;margin:0;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:#02050a}.comparison img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:center}.comparison figcaption{position:absolute;left:9px;bottom:9px;padding:.48em .65em;border:1px solid rgba(255,255,255,.2);border-radius:7px;background:rgba(2,6,16,.84);color:#fff;font-size:clamp(.59rem,.72vw,.7rem);font-weight:900;backdrop-filter:blur(8px)}.media-note{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:0 15px 14px;color:rgba(255,255,255,.52);font-size:.68rem;line-height:1.45}.media-note strong{color:var(--accent)}.history-stage{display:grid;place-items:center;min-height:min(58vh,560px);padding:clamp(22px,4vw,50px);background:radial-gradient(circle at 50% 44%,#16362b,#07121d 66%)}.history-card{width:min(650px,100%);padding:clamp(22px,4vw,45px);border:1px solid #86efac55;border-radius:20px;background:#07140fd9;box-shadow:0 24px 70px #0008}.history-count{display:flex;justify-content:space-between;align-items:end;gap:14px}.history-count span{color:#ffffff67;font:900 clamp(1rem,1.7vw,1.35rem)/1 ui-monospace,monospace}.history-count strong{color:var(--accent);font:1000 clamp(2.7rem,6vw,6rem)/.9 ui-monospace,monospace;letter-spacing:-.09em}.history-arrow{color:var(--accent);font-size:2rem}.chat-lines{display:grid;gap:9px;margin-top:28px}.chat-line{display:grid;grid-template-columns:32px 1fr;gap:9px;align-items:center}.chat-line i{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#86efac22;color:var(--accent);font-style:normal;font-weight:950}.chat-line span{height:13px;border-radius:99px;background:linear-gradient(90deg,#86efac99,#22d3ee22)}.chat-line:nth-child(2) span{width:72%;opacity:.68}.chat-line:nth-child(3) span{width:88%;opacity:.48}.chat-line:nth-child(4) span{width:58%;opacity:.32}.history-label{margin-top:21px;padding:.7rem .8rem;border-left:3px solid var(--accent);background:#86efac10;color:#b8d9ca;font-size:.76rem;line-height:1.5}.video-panel{padding:12px}.video-panel video{display:block;width:100%;max-height:min(58vh,570px);border-radius:13px;background:#02050a;object-fit:contain}.video-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 4px 2px;color:rgba(255,255,255,.55);font-size:.69rem}.video-caption strong{color:var(--accent)}.screen-hint{position:absolute;right:4vw;bottom:3.2vh;color:rgba(255,255,255,.34);font-size:.66rem;font-weight:850}.screen-hint b{color:var(--accent)}@media(max-width:850px){.slide{position:relative;min-height:100svh;padding:8vh 5vw 16vh}.deck-layout{grid-template-columns:1fr}.deck-copy h1,.deck-copy .lead{text-align:center;margin-right:auto;margin-left:auto}.deck-copy .eyebrow{display:flex;width:max-content;margin-right:auto;margin-left:auto}.points{width:min(620px,100%);margin-right:auto;margin-left:auto}.deck-actions{justify-content:center}.comparison{grid-template-columns:1fr 1fr}.history-stage{min-height:360px}.screen-hint{display:none}}@media(max-width:560px){.comparison{grid-template-columns:1fr}.comparison img{aspect-ratio:16/9}.media-note,.video-caption{display:block}.media-note span,.video-caption span{display:block;margin-top:5px}.deck-copy h1.long{font-size:clamp(2.1rem,11vw,3.4rem)}}
+</style>
+<style>
+.effect-stack{display:grid;gap:11px;padding:13px}.effect-row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;align-items:center;min-width:0;margin:0;padding:10px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:#02050a}.effect-label{min-width:0}.effect-label b{display:block;color:var(--accent);font-size:.8rem}.effect-label span{display:block;margin-top:5px;color:rgba(255,255,255,.52);font-size:.65rem;line-height:1.45}.effect-row img{display:block;width:100%;max-height:190px;border-radius:8px;background:#07101d;object-fit:contain;object-position:left center}.effect-stack.chat-effect .effect-row img{max-height:118px}.effect-stack.report-effect .effect-row img{max-height:190px}@media(max-width:560px){.effect-row{grid-template-columns:1fr}.effect-label{display:flex;justify-content:space-between;gap:10px;align-items:center}.effect-label span{margin-top:0}.effect-row img{max-height:none!important}}
+.video-maximize{display:inline-flex;align-items:center;gap:.45em;margin-top:9px;padding:.55em .78em;border:1px solid color-mix(in srgb,var(--accent) 58%,transparent);border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,#07101d);color:color-mix(in srgb,var(--accent) 80%,white);font:900 .7rem/1 inherit;cursor:pointer}.video-maximize:hover{border-color:var(--accent);transform:translateY(-2px)}
+</style>
+<style>
+.slide-overview{--accent:#67e8f9;--accent-2:#a78bfa}.overview-wrap{width:min(1240px,100%);text-align:center}.overview-wrap h1{max-width:14ch;margin:1rem auto 0;font-size:clamp(2.8rem,5.8vw,6rem)}.overview-wrap .lead{margin:1rem auto 0}.overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:1.7rem;text-align:left}.overview-card{min-width:0;padding:16px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.055)}.overview-card:nth-child(1){--card:#f9a8d4}.overview-card:nth-child(2){--card:#86efac}.overview-card:nth-child(3){--card:#67e8f9}.overview-card:nth-child(4){--card:#d8b4fe}.overview-card em{color:var(--card);font-size:.62rem;font-style:normal;font-weight:950;letter-spacing:.1em}.overview-card h2{margin:.6rem 0 .5rem;text-align:left;font-size:clamp(1rem,1.5vw,1.3rem);letter-spacing:-.025em}.overview-card p{min-height:3.2em;color:rgba(255,255,255,.63);font-size:.72rem;line-height:1.5}.overview-meta{display:grid;gap:5px;margin-top:12px}.overview-meta span{padding:.42rem .5rem;border-radius:7px;background:color-mix(in srgb,var(--card) 9%,transparent);color:rgba(255,255,255,.72);font-size:.65rem;line-height:1.35}.overview-next{margin-top:1.35rem}@media(max-width:900px){.overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-card p{min-height:0}}@media(max-width:520px){.overview-grid{grid-template-columns:1fr}.overview-card{padding:13px}}
+</style>
+</head>
+<body>
+<main id="deck">
+  <section class="slide slide-overview active">
+    <span class="count">01 / 05</span><span class="brand">CHAT · SOCIAL · PRIVACY</span>
+    <div class="overview-wrap">
+      <p class="eyebrow">本分类 MOD 总览</p>
+      <h1>聊天、社交与<strong>隐私</strong></h1>
+      <p class="lead">四个组件分别解决发言辨认、历史回看、聊天签名和玩家动作表达。</p>
+      <div class="overview-grid">
+        <article class="overview-card"><em>CHAT IDENTITY</em><h2>Chat Heads</h2><p>在聊天消息旁显示发言玩家的皮肤头像。</p><div class="overview-meta"><span>版本：1.2.4</span><span>安装：Fabric 纯客户端</span></div></article>
+        <article class="overview-card"><em>CHAT HISTORY</em><h2>More Chat History</h2><p>把聊天历史容量从 100 条提高到 16,384 条。</p><div class="overview-meta"><span>版本：2.0.0</span><span>安装：Fabric 纯客户端</span></div></article>
+        <article class="overview-card"><em>CHAT PRIVACY</em><h2>No Chat Reports</h2><p>减少聊天消息携带的账号签名和举报关联。</p><div class="overview-meta"><span>版本：2.20.1</span><span>安装：客户端 / 服务端协作</span></div></article>
+        <article class="overview-card"><em>SOCIAL EMOTES</em><h2>Emotecraft</h2><p>用轮盘播放挥手、舞蹈和自定义玩家动作。</p><div class="overview-meta"><span>版本：3.4.0-b.build.161 · Beta</span><span>安装：完整同步需服务端支持</span></div></article>
+      </div>
+      <button class="next-page overview-next" data-go="1">开始介绍：Chat Heads →</button>
+    </div>
+    <p class="screen-hint">点击 <b>开始介绍</b> 进入下一页</p>
+  </section>
+
+  <section class="slide slide-heads">
+    <span class="count">02 / 05</span><span class="brand">CHAT · IDENTITY</span>
+    <div class="deck-layout">
+      <article class="deck-copy">
+        <p class="eyebrow">CHAT HEADS · 1.2.4</p>
+        <h1>一眼认出<br><strong>谁在说话</strong></h1>
+        <p class="lead">在聊天消息旁显示玩家皮肤头像，让多人聊天不再只靠昵称辨认。</p>
+        <ul class="points"><li>头像可放在整条聊天行前，或紧贴玩家名。</li><li>支持 UUID、启发式检测和昵称别名纠正。</li><li>纯客户端效果，服务器和其他玩家无需安装。</li></ul>
+        <div class="deck-actions"><button class="next-page" data-go="2">下一页：More Chat History →</button><a class="detail-link" href="chatheads/index.html">单独介绍</a></div>
+      </article>
+      <div class="media-panel">
+        <div class="effect-stack chat-effect">
+          <figure class="effect-row"><figcaption class="effect-label"><b>未安装</b><span>只有昵称和文字</span></figcaption><img src="assets/effects/chatheads-no-mod.png" alt="未安装 Chat Heads 时的聊天消息局部"></figure>
+          <figure class="effect-row"><figcaption class="effect-label"><b>安装后</b><span>昵称前增加头像</span></figcaption><img src="assets/effects/chatheads-with-mod.png" alt="安装 Chat Heads 后出现玩家头像的聊天消息局部"></figure>
+        </div>
+        <div class="media-note"><strong>核心变化：聊天内容不变，只增加头像。</strong><span>Minecraft 26.1–26.2 · Fabric</span></div>
+      </div>
+    </div>
+    <p class="screen-hint">点击 <b>下一页</b> 继续</p>
+  </section>
+
+  <section class="slide slide-history">
+    <span class="count">03 / 05</span><span class="brand">CHAT · HISTORY</span>
+    <div class="deck-layout">
+      <article class="deck-copy">
+        <p class="eyebrow">MORE CHAT HISTORY · 2.0.0</p>
+        <h1 class="long">把聊天栏<br><strong>往上翻得更远</strong></h1>
+        <p class="lead">聊天或命令输出刷屏后，仍能回看更早的消息。</p>
+        <ul class="points"><li>聊天历史上限从原版 100 条提高到 16,384 条。</li><li>安装后自动生效，不增加新按钮和复杂配置。</li><li>纯客户端 MOD，服务器不需要安装。</li></ul>
+        <div class="deck-actions"><button class="next-page" data-go="3">下一页：No Chat Reports →</button><a class="detail-link" href="morechathistory/index.html">单独介绍</a></div>
+      </article>
+      <div class="media-panel history-stage">
+        <div class="history-card">
+          <div class="history-count"><span>原版 100</span><b class="history-arrow">→</b><strong>16,384</strong></div>
+          <div class="chat-lines" aria-hidden="true"><div class="chat-line"><i>A</i><span></span></div><div class="chat-line"><i>B</i><span></span></div><div class="chat-line"><i>C</i><span></span></div><div class="chat-line"><i>D</i><span></span></div></div>
+          <p class="history-label">这是当前客户端的回看队列，不是永久日志，也不提供搜索和导出。</p>
+        </div>
+      </div>
+    </div>
+    <p class="screen-hint">点击 <b>下一页</b> 继续</p>
+  </section>
+
+  <section class="slide slide-reports">
+    <span class="count">04 / 05</span><span class="brand">CHAT · PRIVACY</span>
+    <div class="deck-layout">
+      <article class="deck-copy">
+        <p class="eyebrow">NO CHAT REPORTS · 2.20.1</p>
+        <h1>减少消息的<br><strong>账号签名</strong></h1>
+        <p class="lead">在服务器允许时发送未签名消息，降低聊天内容与账号举报证据直接关联的可能。</p>
+        <ul class="points"><li>客户端和服务端同时安装时，处理链路最完整。</li><li>不会隐藏聊天，也不会阻止服务器保存日志。</li><li>不能强行绕过服务器签名策略；Realms 不受保护。</li></ul>
+        <div class="deck-actions"><button class="next-page" data-go="4">下一页：Emotecraft →</button><a class="detail-link" href="nochatreports/index.html">单独介绍</a></div>
+      </article>
+      <div class="media-panel">
+        <div class="effect-stack report-effect">
+          <figure class="effect-row"><figcaption class="effect-label"><b>未安装</b><span>出现“无法验证”警告</span></figcaption><img src="assets/effects/nochatreports-no-mod.png" alt="未安装 No Chat Reports 时出现无法验证聊天消息警告" loading="lazy"></figure>
+          <figure class="effect-row"><figcaption class="effect-label"><b>安装后</b><span>不再显示该警告</span></figcaption><img src="assets/effects/nochatreports-with-mod.png" alt="安装 No Chat Reports 后不再显示无法验证警告的界面局部" loading="lazy"></figure>
+        </div>
+        <div class="media-note"><strong>核心变化：处理签名，不是加密聊天内容。</strong><span>Minecraft 26.2 · Fabric API</span></div>
+      </div>
+    </div>
+    <p class="screen-hint">点击 <b>下一页</b> 继续</p>
+  </section>
+
+  <section class="slide slide-emote">
+    <span class="count">05 / 05</span><span class="brand">SOCIAL · EMOTES</span>
+    <div class="deck-layout">
+      <article class="deck-copy">
+        <p class="eyebrow">EMOTECRAFT · 3.4.0-B.BUILD.161</p>
+        <h1>让角色用<br><strong>动作表达</strong></h1>
+        <p class="lead">挥手、舞蹈或播放自定义动画，用玩家动作补充文字和语音交流。</p>
+        <ul class="points"><li>“打开表情轮盘”默认绑定 B，与路径点冲突时可在按键设置中修改。</li><li>在轮盘中左键选择动作；自定义动作放入 .minecraft/emotes。</li><li>完整多人同步需要服务端和其他玩家客户端支持。</li></ul>
+        <div class="deck-actions"><button class="next-page" data-go="0">回到第一页 ↺</button><a class="detail-link" href="emotecraft/index.html">单独介绍</a><a class="detail-link" href="category.html">RST 分类页</a></div>
+      </article>
+      <div class="media-panel video-panel">
+        <video controls preload="metadata"><source src="assets/emotecraft展示视频.mp4" type="video/mp4">你的浏览器不支持播放 MP4 视频。</video>
+        <div class="video-caption"><strong>实机素材：Emotecraft 动作展示</strong><span>播放视频不会自动切页</span><button class="video-maximize" type="button" data-video-maximize>⛶ 最大化播放</button></div>
+      </div>
+    </div>
+    <p class="screen-hint">最后一页 · 可点击 <b>回到第一页</b></p>
+  </section>
+</main>
+
+<nav id="nav" aria-label="演示页导航"><button class="nav-btn" data-nav="prev" aria-label="上一页">‹</button><div class="dots"><button class="dot active" aria-label="MOD 总览"></button><button class="dot" aria-label="Chat Heads"></button><button class="dot" aria-label="More Chat History"></button><button class="dot" aria-label="No Chat Reports"></button><button class="dot" aria-label="Emotecraft"></button></div><button class="nav-btn" data-nav="next" aria-label="下一页">›</button></nav>
+<p class="hint"><kbd>←</kbd> <kbd>→</kbd> 方向键也可切页</p>
+<script src="common.js"></script>
+<script>
+document.addEventListener('click',event=>{if(event.target.closest('[data-go],[data-nav],.dot'))setTimeout(()=>document.querySelectorAll('.slide:not(.active) video').forEach(video=>video.pause()),0)});
+document.addEventListener('keydown',()=>setTimeout(()=>document.querySelectorAll('.slide:not(.active) video').forEach(video=>video.pause()),0));
+document.querySelector('[data-video-maximize]')?.addEventListener('click',async()=>{const video=document.querySelector('.slide-emote video');video.controls=true;try{await video.requestFullscreen?.()}catch(error){console.warn('Fullscreen request was denied',error)}try{await video.play()}catch(error){console.warn('Video play was denied',error)}});
+</script>
+</body>
+</html>

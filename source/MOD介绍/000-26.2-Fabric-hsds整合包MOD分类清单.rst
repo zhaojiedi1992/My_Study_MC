@@ -1,7 +1,7 @@
 26.2 Fabric HSDS 基础整合包 MOD 分类清单
 ============================================
 
-本文根据下面目录中 26 个顶层 JAR 的 ``fabric.mod.json`` 元数据筛选出 23 个功能 MOD，用于确认整合包已有功能，并辅助决定后续需要补充哪些详细 RST 文档。纯依赖库不作为独立条目收录。
+本文根据下面目录中 26 个顶层 JAR 的 ``fabric.mod.json`` 元数据筛选出 23 个功能 MOD，用于确认整合包已有功能。此外，清单还记录了已选定、但尚未在上述目录中重新核对 JAR 的补充 MOD。纯依赖库不作为独立功能条目收录。
 
 ``C:\Users\zhaojd5\Downloads\26.2基础整合包-Fabric-hsds\26.2整合包\.minecraft\versions\26.2-Fabric\mods``
 
@@ -11,16 +11,23 @@
 * 清单以实际 JAR 元数据中的模组名称和版本为准，不只根据文件名判断。
 * ``gugle-carpet-addition`` 的顶层文件是多版本 Wrapper，本清单采用其中实际适配 Minecraft 26.2 的 GCA 2.12.6 信息。
 * 文档状态只检查当前仓库的 ``source/MOD介绍`` 和 ``source/extra/MOD介绍``；“暂无单独 RST”不代表该 MOD 不重要。
-* 当前已有 3 个“RST + 演示页”、1 个“只有演示 HTML”、19 个“暂无单独 RST”的功能 MOD。
+* 当前已有 3 个“RST + 演示页”、4 个“只有 RST”、1 个“只有演示 HTML”、15 个“暂无单独 RST”的功能 MOD。
+* 另有 Simple Voice Chat 和 Emotecraft 2 个已选定的补充 MOD，均已建立 RST；在实际 JAR 放入整合包并重新读取元数据前，它们不计入上述 23 个已安装功能 MOD 的统计。
 * 仓库另有 Impact 命令文档，但这个整合包的 ``mods`` 目录中没有 Impact，因此不计入下面的功能 MOD。
 
 现有文档对照
 ------------
 
-* **Item Scroller** — 已有 :doc:`RST 图文介绍 <itemscroller/itemscroller>` 和独立演示页。
-* **MiniHUD** — 已有 :doc:`RST 图文介绍 <minihud/minihud>` 和独立演示页。
-* **Litematica** — 已有 :doc:`RST 完整教程 <litematica/litematica>` 和 01—09 独立演示页；整合包实际版本为 0.28.4，文档中的录制环境仍记录为 0.28.3。
-* **Tweakeroo** — 已有演示 HTML，但尚无 RST，且演示页还没有纳入当前 MOD 目录的 Sphinx 发布结构。
+* **Item Scroller** — 已有 :doc:`RST 图文介绍 <masa/itemscroller/itemscroller>` 和独立演示页。
+* **MiniHUD** — 已有 :doc:`RST 图文介绍 <masa/minihud/minihud>` 和独立演示页。
+* **Litematica** — 已有 :doc:`RST 完整教程 <masa/litematica/litematica>` 和 01—09 独立演示页；整合包实际版本为 0.28.4，文档中的录制环境仍记录为 0.28.3。
+* **Tweakeroo** — 已有演示 HTML，但尚无 RST；演示页现已归入 ``source/extra/MOD介绍/masa/tweakeroo``。
+* **IMBlocker** — 已有 :doc:`RST 详细介绍 <imblocker/imblocker>`。
+* **No Chat Reports** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/nochatreports/nochatreports>`。
+* **Chat Heads** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/chatheads/chatheads>`。
+* **More Chat History** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/morechathistory/morechathistory>`。
+* **Simple Voice Chat** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/simplevoicechat/simplevoicechat>`。
+* **Emotecraft** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/emotecraft/emotecraft>`。
 
 MASA 全家桶
 -----------
@@ -70,9 +77,11 @@ Carpet 与技术生存工具
 聊天、社交与隐私
 ~~~~~~~~~~~~~~~~
 
-* **No Chat Reports 2.20.1** — 移除玩家聊天消息的加密签名，降低消息被关联到聊天举报系统的可能。〔暂无单独 RST〕
-* **Chat Heads 1.2.4** — 在聊天消息旁显示发言玩家的头像，让多人聊天更容易辨认。〔暂无单独 RST〕
-* **More Chat History 2.0.0** — 增加客户端可保留的聊天记录数量，方便向上翻看更早的消息。〔暂无单独 RST〕
+* **No Chat Reports 2.20.1** — 移除玩家聊天消息的加密签名，降低消息被关联到聊天举报系统的可能。〔已有 :doc:`单独 RST <聊天社交与隐私/nochatreports/nochatreports>`〕
+* **Chat Heads 1.2.4** — 在聊天消息旁显示发言玩家的头像，让多人聊天更容易辨认。〔已有 :doc:`单独 RST <聊天社交与隐私/chatheads/chatheads>`〕
+* **More Chat History 2.0.0** — 增加客户端可保留的聊天记录数量，方便向上翻看更早的消息。〔已有 :doc:`单独 RST <聊天社交与隐私/morechathistory/morechathistory>`〕
+* **Simple Voice Chat 2.6.21+26.2** — 提供距离语音、群组通话、悄悄话和单独玩家音量调整。〔已选定补充，已有 :doc:`单独 RST <聊天社交与隐私/simplevoicechat/simplevoicechat>`〕
+* **Emotecraft 3.4.0-b.build.161** — 通过表情轮盘播放预设或自定义玩家动作。〔已选定补充，Beta，已有 :doc:`单独 RST <聊天社交与隐私/emotecraft/emotecraft>`〕
 
 录像与内容创作
 ~~~~~~~~~~~~~~

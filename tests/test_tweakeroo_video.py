@@ -612,7 +612,7 @@ class PipelineTest(unittest.TestCase):
     def test_deck_and_build_paths_are_isolated(self):
         self.assertEqual(
             DECK_PATH,
-            ROOT / "source/MOD介绍/tweakeroo/index.html",
+            ROOT / "source/extra/MOD介绍/masa/tweakeroo/index.html",
         )
         self.assertEqual(BUILD_DIR, ROOT / "build/tweakeroo-video")
         self.assertNotIn("minihud", str(BUILD_DIR).lower())
