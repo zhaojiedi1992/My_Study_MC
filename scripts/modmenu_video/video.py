@@ -1,4 +1,10 @@
-"""FFmpeg composition for the 1920x1440 Mod Menu Bilibili video."""
+"""FFmpeg composition for the 1920x1080 Mod Menu Bilibili video.
+
+The source deck is intentionally designed at 4:3 (1920x1440).  The final
+delivery is 16:9, so every slide is fitted into a 1920x1080 canvas with
+side mattes.  This keeps the complete slide visible instead of cropping the
+top or bottom of the presentation.
+"""
 
 import json
 from pathlib import Path
@@ -19,22 +25,26 @@ _LOUDNESS_FIELDS = (
 
 
 def motion_filter(motion: str) -> str:
+    # Keep the 4:3 slide intact inside the 16:9 delivery frame.  The pad is
+    # applied before zoompan so push/pull motion also operates on the same
+    # canvas and never changes the output dimensions between segments.
+    fit = (
+        "scale=1440:1080:force_original_aspect_ratio=decrease,"
+        "pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0x070b12"
+    )
     filters = {
-        "still": (
-            "scale=1920:1440:force_original_aspect_ratio=increase,"
-            "crop=1920:1440,fps=30"
-        ),
+        "still": f"{fit},fps=30",
         "push": (
-            "scale=2200:1650:force_original_aspect_ratio=increase,"
+            f"{fit},"
             "zoompan=z='min(zoom+0.00016,1.042)':"
             "x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-            "d=1:s=1920x1440:fps=30"
+            "d=1:s=1920x1080:fps=30"
         ),
         "pull": (
-            "scale=2200:1650:force_original_aspect_ratio=increase,"
+            f"{fit},"
             "zoompan=z='if(eq(on,0),1.042,max(1.0,zoom-0.00016))':"
             "x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-            "d=1:s=1920x1440:fps=30"
+            "d=1:s=1920x1080:fps=30"
         ),
     }
     try:
@@ -182,7 +192,9 @@ def compose_master(build_dir: Path) -> Path:
     graph, video_label, audio_label = build_transition_filter(
         [segment.seconds for segment in SEGMENTS], TRANSITION_SECONDS
     )
-    master = build_dir / "modmenu-bilibili-master.mp4"
+    # Keep the concatenation master with other intermediates; only the clean
+    # and subtitle-burned files belong at the delivery root.
+    master = build_dir / "segments" / "modmenu-bilibili-master.mp4"
     command = [FFMPEG, "-y"]
     for path in paths:
         command.extend(["-i", str(path)])
@@ -294,7 +306,7 @@ def create_contact_sheet(build_dir: Path) -> Path:
             "-i",
             str(build_dir / "modmenu-bilibili.mp4"),
             "-vf",
-            "fps=1/12,scale=480:360,tile=3x3",
+            "fps=1/12,scale=480:270,tile=3x3",
             "-frames:v",
             "1",
             "-update",

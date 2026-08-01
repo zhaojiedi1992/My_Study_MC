@@ -8,8 +8,9 @@ const ffmpegPath = "/usr/bin/ffmpeg";
 const url = process.argv[2];
 const output = process.argv[3];
 const seconds = Number(process.argv[4] || 21);
-if (!url || !output || !Number.isFinite(seconds)) {
-  throw new Error("usage: capture_fullscreen.cjs URL OUTPUT SECONDS");
+const clickDelaySeconds = Number(process.argv[5] || 1.2);
+if (!url || !output || !Number.isFinite(seconds) || !Number.isFinite(clickDelaySeconds)) {
+  throw new Error("usage: capture_fullscreen.cjs URL OUTPUT SECONDS CLICK_DELAY_SECONDS");
 }
 
 let nextId = 0;
@@ -129,7 +130,7 @@ async function main() {
       "-pix_fmt", "yuv420p", "-r", "30", "-movflags", "+faststart", output,
     ], { stdio: ["ignore", "ignore", "pipe"] });
 
-    await sleep(1800);
+    await sleep(clickDelaySeconds * 1000);
     const rect = await evaluate(chrome, sessionId, `(() => {
       const button = document.querySelector('[data-video-maximize]');
       if (!button) throw new Error('maximize button not found');

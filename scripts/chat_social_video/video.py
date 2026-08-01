@@ -10,7 +10,7 @@ from scripts.chat_social_video.storyboard import SEGMENTS, TRANSITION_SECONDS
 FFMPEG = "/usr/bin/ffmpeg"
 ROOT = Path(__file__).resolve().parents[2]
 EMOTE_SOURCE = ROOT / "source/extra/MOD介绍/聊天社交与隐私/assets/emotecraft展示视频.mp4"
-EMOTE_CLICK_DELAY = 4.7
+EMOTE_CLICK_DELAY = 1.2
 LOUDNESS_ANALYSIS_FILTER = "loudnorm=I=-16:TP=-2:LRA=11:print_format=json"
 _LOUDNESS_FIELDS = (
     ("input_i", "measured_I"),
@@ -189,19 +189,27 @@ def render_emote_segment(build_dir: Path, output: Path, duration: float) -> None
 
     screen = build_dir / "emote-fullscreen.mp4"
     narration = build_dir / "narration/emote.mp3"
-    if not screen.is_file() or not narration.is_file() or not EMOTE_SOURCE.is_file():
+    recovered_audio = build_dir / "narration/emote-native-recovered.wav"
+    native_audio = EMOTE_SOURCE if EMOTE_SOURCE.is_file() else recovered_audio
+    if not screen.is_file() or not narration.is_file() or not native_audio.is_file():
         raise RuntimeError("Emotecraft capture, source video, or narration is missing")
     delay_ms = round(EMOTE_CLICK_DELAY * 1000)
+    native_volume = 0.9 if native_audio == EMOTE_SOURCE else 2.0
     graph = (
         f"[1:a]atrim=0:{max(0.1, duration - EMOTE_CLICK_DELAY):.3f},"
-        f"asetpts=PTS-STARTPTS,volume=0.45,adelay={delay_ms}|{delay_ms}[game];"
+        # Yunxi now ends before this delay.  The source narration can therefore
+        # play at a normal level instead of being ducked underneath a second
+        # voice.  The recovered fallback was extracted from the former 0.45x
+        # mix, so it needs a 2x gain to return to roughly the same native level.
+        f"asetpts=PTS-STARTPTS,volume={native_volume:g},"
+        f"adelay={delay_ms}|{delay_ms}[game];"
         f"[2:a]aresample=48000,apad=pad_dur={duration:.3f},"
         f"atrim=0:{duration:.3f}[voice];"
         "[game][voice]amix=inputs=2:duration=longest:normalize=0[a]"
     )
     subprocess.run(
         [
-            FFMPEG, "-y", "-i", str(screen), "-i", str(EMOTE_SOURCE),
+            FFMPEG, "-y", "-i", str(screen), "-i", str(native_audio),
             "-i", str(narration), "-filter_complex", graph,
             "-map", "0:v", "-map", "[a]", "-t", str(duration),
             "-c:v", "libx264", "-preset", "medium", "-crf", "17",
@@ -324,6 +332,9 @@ def burn_subtitles(build_dir: Path, clean: Path) -> Path:
 
 def create_contact_sheet(build_dir: Path) -> Path:
     output = build_dir / "final-contact.png"
+    total_seconds = sum(segment.seconds for segment in SEGMENTS) - (
+        len(SEGMENTS) - 1
+    ) * TRANSITION_SECONDS
     subprocess.run(
         [
             FFMPEG,
@@ -331,7 +342,7 @@ def create_contact_sheet(build_dir: Path) -> Path:
             "-i",
             str(build_dir / "chat-social-bilibili.mp4"),
             "-vf",
-            "fps=1/12,scale=480:360,tile=3x3",
+            f"fps=9/{total_seconds:g},scale=480:270,tile=3x3",
             "-frames:v",
             "1",
             "-update",

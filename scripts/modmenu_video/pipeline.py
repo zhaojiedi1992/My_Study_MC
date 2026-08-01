@@ -8,7 +8,13 @@ import subprocess
 from urllib.parse import urlencode
 
 from scripts.modmenu_video.audio import generate_voice, generate_voice_preview
-from scripts.modmenu_video.publishing import build_publish_markdown
+from scripts.modmenu_video.publishing import (
+    TAGS,
+    TITLE,
+    build_publish_markdown,
+    chapter_lines,
+    description_text,
+)
 from scripts.modmenu_video.storyboard import encoded_seconds, render_requests
 from scripts.modmenu_video.video import (
     burn_subtitles,
@@ -27,6 +33,9 @@ FFPROBE = "/usr/bin/ffprobe"
 FFMPEG = "/usr/bin/ffmpeg"
 COVER_PATH = ROOT / "scripts/modmenu_video/cover.html"
 COVER_4X3_PATH = ROOT / "scripts/modmenu_video/cover-4x3.html"
+SKILL_VERIFY = Path(
+    "/home/zhaojd5/.codex/skills/make-bilibili-video/scripts/verify_delivery.py"
+)
 
 
 def build_slide_url(slide: int, state: str) -> str:
@@ -167,17 +176,26 @@ def render_cover_source(
 
 
 def render_cover() -> tuple[Path, ...]:
-    wide = render_cover_source(COVER_PATH, 1600, 1000, "modmenu-cover-1600x1000")
     standard = render_cover_source(
         COVER_4X3_PATH, 1600, 1200, "modmenu-cover-1600x1200"
     )
-    return (*wide, *standard)
+    return standard
 
 
 def write_publish_guide() -> Path:
     output = BUILD_DIR / "bilibili-publish.md"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(build_publish_markdown(), encoding="utf-8")
+    (BUILD_DIR / "chapters.txt").write_text(
+        "\n".join(chapter_lines()) + "\n", encoding="utf-8"
+    )
+    (BUILD_DIR / "bilibili-title.txt").write_text(TITLE + "\n", encoding="utf-8")
+    (BUILD_DIR / "bilibili-description.txt").write_text(
+        description_text() + "\n", encoding="utf-8"
+    )
+    (BUILD_DIR / "bilibili-tags.txt").write_text(
+        "、".join(TAGS) + "\n", encoding="utf-8"
+    )
     return output
 
 
@@ -202,10 +220,12 @@ def verify_delivery() -> dict[str, object]:
         BUILD_DIR / "voice-preview.mp3",
         BUILD_DIR / "modmenu-narration.mp3",
         BUILD_DIR / "subtitles/modmenu.zh-CN.srt",
-        BUILD_DIR / "modmenu-cover-1600x1000.png",
-        BUILD_DIR / "modmenu-cover-1600x1000.jpg",
         BUILD_DIR / "modmenu-cover-1600x1200.png",
         BUILD_DIR / "modmenu-cover-1600x1200.jpg",
+        BUILD_DIR / "chapters.txt",
+        BUILD_DIR / "bilibili-title.txt",
+        BUILD_DIR / "bilibili-description.txt",
+        BUILD_DIR / "bilibili-tags.txt",
         BUILD_DIR / "bilibili-publish.md",
         BUILD_DIR / "final-contact.png",
     )
@@ -224,7 +244,7 @@ def verify_delivery() -> dict[str, object]:
         duration = float(media["format"]["duration"])
         if (
             video.get("codec_name") != "h264"
-            or (video.get("width"), video.get("height")) != (1920, 1440)
+            or (video.get("width"), video.get("height")) != (1920, 1080)
             or video.get("r_frame_rate") != "30/1"
             or audio.get("codec_name") != "aac"
             or abs(duration - encoded_seconds()) > 0.6
@@ -257,6 +277,26 @@ def verify_delivery() -> dict[str, object]:
         if (stream.get("width"), stream.get("height")) != (2880, 1800):
             raise RuntimeError(f"Unexpected source image size: {image}: {stream}")
     report = BUILD_DIR / "build-report.json"
+    skill_result = subprocess.run(
+        [
+            "python3",
+            str(SKILL_VERIFY),
+            "--video",
+            str(BUILD_DIR / "modmenu-bilibili.mp4"),
+            "--subtitle",
+            str(BUILD_DIR / "subtitles/modmenu.zh-CN.srt"),
+            "--cover",
+            str(BUILD_DIR / "modmenu-cover-1600x1200.png"),
+            "--chapters",
+            str(BUILD_DIR / "chapters.txt"),
+            "--publish",
+            str(BUILD_DIR / "bilibili-publish.md"),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    results["skill_validation"] = json.loads(skill_result.stdout)
     report.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     return results
 

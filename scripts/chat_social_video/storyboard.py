@@ -65,11 +65,13 @@ SEGMENTS = (
     Segment(
         "emote",
         "Emotecraft：用动作表达",
-        25.0,
+        # 1.2 seconds on the PPT, followed by the complete
+        # 87.52-second source video.
+        89.0,
         5,
         "default",
         "still",
-        "最后是 Emotecraft。表情轮盘默认绑定 B，和路径点冲突时可以在按键设置里改成空闲按键。点击轮盘里的动作，就能播放挥手、舞蹈或自定义动画。现在点击屏幕上的最大化播放，让动作视频进入内置全屏；完整多人同步仍需要服务端和其他玩家客户端支持。",
+        "",
     ),
 )
 

@@ -12,6 +12,8 @@ from scripts.chat_social_video.publishing import build_publish_markdown
 from scripts.chat_social_video.storyboard import encoded_seconds, render_requests
 from scripts.chat_social_video.storyboard import SEGMENTS
 from scripts.chat_social_video.video import (
+    EMOTE_CLICK_DELAY,
+    EMOTE_SOURCE,
     burn_subtitles,
     compose_master,
     create_contact_sheet,
@@ -197,12 +199,16 @@ def render_video() -> tuple[Path, Path, Path]:
 
 def capture_emote_fullscreen() -> Path:
     output = BUILD_DIR / "emote-fullscreen.mp4"
+    # The original source asset may have been archived after the first build.
+    # Reuse the already-verified browser capture when rebuilding only the mix.
+    if not EMOTE_SOURCE.is_file() and output.is_file() and output.stat().st_size > 0:
+        return output
     emote = next(segment for segment in SEGMENTS if segment.id == "emote")
     subprocess.run(
         [
             "xvfb-run", "-a", "--server-args=-screen 0 1920x1080x24",
             "node", str(CAPTURE_SCRIPT), build_slide_url(5, "default"),
-            str(output), str(emote.seconds),
+            str(output), str(emote.seconds), str(EMOTE_CLICK_DELAY),
         ],
         check=True,
         timeout=emote.seconds + 45,
@@ -279,11 +285,14 @@ def verify_delivery() -> dict[str, object]:
         stream = probe_media(image)["streams"][0]
         if stream.get("width", 0) <= 0 or stream.get("height", 0) <= 0:
             raise RuntimeError(f"Unexpected source image size: {image}: {stream}")
-    source_stream = _stream(probe_media(
-        ROOT / "source/extra/MOD介绍/聊天社交与隐私/assets/emotecraft展示视频.mp4"
-    ), "video")
-    if (source_stream.get("width"), source_stream.get("height")) != (2880, 1800):
-        raise RuntimeError(f"Unexpected Emotecraft source video size: {source_stream}")
+    if EMOTE_SOURCE.is_file():
+        source_stream = _stream(probe_media(EMOTE_SOURCE), "video")
+        if (source_stream.get("width"), source_stream.get("height")) != (2880, 1800):
+            raise RuntimeError(f"Unexpected Emotecraft source video size: {source_stream}")
+    else:
+        recovered = BUILD_DIR / "narration/emote-native-recovered.wav"
+        if not recovered.is_file() or probe_media(recovered)["format"].get("duration") is None:
+            raise RuntimeError("Emotecraft source video and recovered native audio are missing")
     report = BUILD_DIR / "build-report.json"
     report.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     return results

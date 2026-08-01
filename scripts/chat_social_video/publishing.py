@@ -36,7 +36,14 @@ def build_publish_markdown() -> str:
 
 这期把聊天、社交与隐私相关的 4 个 Minecraft 客户端 MOD 放在一起：Chat Heads 让你一眼认出发言者，More Chat History 让聊天栏可以翻得更远，No Chat Reports 解释消息签名和服务器边界，Emotecraft 则用动作补充文字与语音。
 
-最后一屏会在 PPT 内点击“最大化播放”，进入 Emotecraft 的内置视频演示。视频内容以 Minecraft Java 版 26.2 / Fabric 整合包为基线；不同版本和服务器配置可能有差异。
+最后一屏会在 PPT 内点击“最大化播放”，完整播放 Emotecraft 的内置视频演示。视频内容以 Minecraft Java 版 26.2 / Fabric 整合包为基线；不同版本和服务器配置可能有差异。
+
+## MOD 下载地址（Modrinth）
+
+- Chat Heads：https://modrinth.com/mod/chat-heads
+- More Chat History：https://modrinth.com/mod/morechathistory
+- No Chat Reports：https://modrinth.com/mod/no-chat-reports
+- Emotecraft：https://modrinth.com/plugin/emotecraft
 
 ## 视频章节
 

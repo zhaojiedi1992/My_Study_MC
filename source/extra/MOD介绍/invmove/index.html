@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="InvMove 0.9.5 的核心能力、实机效果和安装要求。">
+<title>InvMove｜打开背包，脚步不停</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{color-scheme:dark;--ink:#050912;--panel:#0c1624;--panel2:#111f31;--line:rgba(255,255,255,.14);--text:#f7fbff;--muted:#9eacbd;--lime:#a3e635;--green:#4ade80;--cyan:#67e8f9;--amber:#fbbf24;--rose:#fb7185;--ease:cubic-bezier(.22,1,.36,1);font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);color:var(--text)}
+body{background:radial-gradient(circle at 82% 15%,rgba(74,222,128,.13),transparent 34%),radial-gradient(circle at 10% 88%,rgba(103,232,249,.09),transparent 30%),var(--ink)}
+body::after{content:"";position:fixed;inset:0;z-index:-2;opacity:.26;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 96%)}
+button,a{font:inherit}button{color:inherit}a{color:var(--cyan)}button:focus-visible,a:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+#progress{position:fixed;left:0;top:0;z-index:100;height:4px;width:20%;background:linear-gradient(90deg,var(--lime),var(--cyan));box-shadow:0 0 20px #a3e63577;transition:width .35s var(--ease)}
+.brand{position:fixed;left:3.5vw;top:2.8vh;z-index:60;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.62);font-size:clamp(10px,.84vw,13px);font-weight:950;letter-spacing:.14em;text-transform:uppercase}.brand i{display:grid;grid-template-columns:repeat(2,7px);gap:2px}.brand i::before,.brand i::after{content:"";width:7px;height:16px;background:var(--lime);box-shadow:9px 0 0 var(--green)}
+.page-count{position:fixed;right:3.5vw;top:2.8vh;z-index:60;color:rgba(255,255,255,.52);font:900 clamp(11px,.88vw,14px)/1 ui-monospace,Consolas,monospace;letter-spacing:.12em}
+#deck{position:fixed;inset:0;isolation:isolate}.slide{--accent:var(--lime);position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6.5vh 4.5vw 10vh;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(38px) scale(.986);transition:opacity .45s var(--ease),transform .55s var(--ease)}.slide::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 72% 32%,color-mix(in srgb,var(--accent) 11%,transparent),transparent 38%)}.slide.active{opacity:1;pointer-events:auto;transform:none}.slide>*{position:relative;z-index:1}
+.s2{--accent:var(--cyan)}.s3{--accent:var(--rose)}.s4{--accent:var(--green)}.s5{--accent:var(--lime)}
+.eyebrow{display:inline-flex;align-items:center;gap:.55em;margin-bottom:1.35vh;padding:.48em .92em;border:1px solid color-mix(in srgb,var(--accent) 52%,transparent);border-radius:99px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:color-mix(in srgb,var(--accent) 76%,white);font-size:clamp(10px,.84vw,13px);font-weight:950;letter-spacing:.09em}.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.hero-title,.section-title{font-weight:1000;line-height:1;letter-spacing:-.055em;text-wrap:balance}.hero-title{font-size:clamp(4.2rem,8vw,8.6rem)}.section-title{max-width:18ch;font-size:clamp(2.8rem,5vw,5.5rem);text-align:center}.mark{color:var(--accent)}.lead{max-width:59ch;margin-top:1.4vh;color:rgba(255,255,255,.72);font-size:clamp(.92rem,1.28vw,1.18rem);font-weight:650;line-height:1.6;text-wrap:balance}.section-lead{max-width:68ch;margin:1vh auto 1.8vh;color:rgba(255,255,255,.68);font-size:clamp(.84rem,1.08vw,1rem);line-height:1.55;text-align:center}
+.next{display:inline-flex;align-items:center;gap:.6em;margin-top:2vh;padding:.78em 1.05em;border:1px solid color-mix(in srgb,var(--accent) 53%,transparent);border-radius:10px;background:color-mix(in srgb,var(--accent) 11%,#0c1624);font-size:clamp(.74rem,.94vw,.88rem);font-weight:950;cursor:pointer;transition:.22s}.next:hover{transform:translateY(-3px);border-color:var(--accent)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(440px,1.1fr);align-items:center;gap:clamp(30px,5vw,88px);width:min(1500px,100%)}.hero-copy .hero-title,.hero-copy .lead{text-align:left}.hero-copy .hero-title{max-width:8ch}.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:2vh}.badge{padding:.5em .75em;border:1px solid rgba(255,255,255,.15);border-radius:99px;background:rgba(255,255,255,.055);color:#d7e2ec;font-size:.74rem;font-weight:900}
+.game-stage{position:relative;height:min(62vh,610px);min-height:470px;overflow:hidden;border:1px solid rgba(255,255,255,.18);border-radius:23px;background:linear-gradient(#8fd3ff 0 47%,#59a847 47% 73%,#386b31 73%);box-shadow:0 30px 85px #0008}.game-stage::before{content:"";position:absolute;left:8%;right:8%;bottom:0;height:53%;background-image:linear-gradient(90deg,#4a853d 1px,transparent 1px),linear-gradient(#4a853d 1px,transparent 1px);background-size:54px 54px;transform:perspective(430px) rotateX(58deg);transform-origin:bottom}.inventory{position:absolute;left:50%;top:47%;width:min(68%,520px);padding:17px;border:6px solid #c6c6c6;border-radius:5px;background:#8b8b8b;box-shadow:0 24px 55px #0008;transform:translate(-50%,-50%)}.inventory::before{content:"物品栏";display:block;margin-bottom:12px;color:#303030;font-size:.72rem;font-weight:950}.slots{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}.slot{aspect-ratio:1;border:3px solid;border-color:#373737 #fff #fff #373737;background:#777}.slot:nth-child(2){background:linear-gradient(135deg,#6da53e 0 50%,#795136 50%)}.slot:nth-child(5){background:#60a5fa}.slot:nth-child(8){background:#fbbf24}.move-arrow{position:absolute;left:8%;top:44%;color:#fff;font-size:2.6rem;font-weight:1000;text-shadow:0 4px 18px #000;animation:walking 1.6s ease-in-out infinite}.move-arrow::after{content:"界面打开，仍在移动";display:block;margin-top:7px;color:#eaffd0;font-size:.72rem;letter-spacing:.05em}.keys{position:absolute;right:6%;bottom:7%;display:grid;grid-template-columns:repeat(3,38px);gap:4px}.key{display:grid;place-items:center;height:38px;border:1px solid #ffffff44;border-bottom-width:4px;border-radius:7px;background:#07111dd9;color:#d6dee8;font:900 .76rem ui-monospace,monospace}.key.w{grid-column:2}.key.on{border-color:var(--lime);background:#294215;color:#eaffcc;box-shadow:0 0 16px #a3e63566}@keyframes walking{50%{translate:46px 0}}
+.feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;width:min(1450px,100%);margin-top:2.4vh}.feature{min-height:215px;padding:22px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.035));box-shadow:0 20px 52px #0004}.feature em{display:grid;place-items:center;width:45px;height:45px;margin-bottom:25px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);font-style:normal;font-size:1.25rem;font-weight:1000}.feature h3{margin-bottom:.6em;font-size:1.06rem}.feature p{color:var(--muted);font-size:.78rem;line-height:1.58}.boundary-note{width:min(1040px,100%);margin-top:18px;padding:.8em 1em;border-left:4px solid var(--amber);background:#fbbf240d;color:#d5dce5;font-size:.8rem;line-height:1.5}.boundary-note strong{color:#ffe59b}
+.demo-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);align-items:stretch;gap:17px;width:min(1500px,100%);margin-top:1.6vh}.video-slot{position:relative;min-height:min(55vh,560px);overflow:hidden;border:1px solid rgba(255,255,255,.19);border-radius:20px;background:#02060c;box-shadow:0 26px 70px #0007}.video-slot video{display:none;width:100%;height:100%;min-height:min(55vh,560px);object-fit:contain;background:#000}.video-slot.ready video{display:block}.video-slot.ready .video-empty{display:none}.video-empty{position:absolute;inset:0;display:grid;place-items:center;padding:30px;text-align:center;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 42%),repeating-linear-gradient(135deg,#0a1420 0 12px,#0d1927 12px 24px)}.video-empty-inner{max-width:610px}.record-dot{display:inline-flex;align-items:center;gap:8px;color:#ffd1d9;font-size:.72rem;font-weight:950;letter-spacing:.1em}.record-dot::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--rose);box-shadow:0 0 16px #fb7185}.video-empty h3{margin:.65em 0 .35em;font-size:clamp(1.55rem,3vw,3.2rem)}.video-empty p{color:#9eacbd;font-size:.82rem;line-height:1.55}.file-name{display:block;margin:18px auto 0;padding:.65em .85em;border:1px dashed color-mix(in srgb,var(--accent) 54%,transparent);border-radius:9px;background:#02060cb8;color:color-mix(in srgb,var(--accent) 75%,white);font:850 clamp(.68rem,.88vw,.82rem)/1.4 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}.video-toolbar{position:absolute;left:12px;right:12px;bottom:12px;z-index:4;display:none;justify-content:space-between;align-items:center;gap:12px;padding:9px 11px;border:1px solid #ffffff25;border-radius:10px;background:#030712d9;backdrop-filter:blur(10px)}.video-slot.ready .video-toolbar{display:flex}.video-toolbar span{color:#b4c0cd;font-size:.7rem;font-weight:850}.play-full{padding:.55em .72em;border:1px solid color-mix(in srgb,var(--accent) 48%,transparent);border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,#07111d);color:#fff;font-size:.7rem;font-weight:950;cursor:pointer}
+.shot-card{display:flex;flex-direction:column;padding:21px;border:1px solid var(--line);border-radius:18px;background:rgba(12,22,36,.9)}.shot-card h3{color:color-mix(in srgb,var(--accent) 75%,white);font-size:1.05rem}.shot-card ol{display:grid;gap:11px;margin:18px 0 0;padding:0;list-style:none;counter-reset:shot}.shot-card li{display:grid;grid-template-columns:31px 1fr;gap:10px;align-items:start;color:#acb8c6;font-size:.78rem;line-height:1.5}.shot-card li::before{counter-increment:shot;content:counter(shot);display:grid;place-items:center;width:31px;height:31px;border-radius:9px;background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent);font-weight:1000}.shot-tip{margin-top:auto;padding-top:16px;border-top:1px solid #ffffff18;color:#7f8ea0;font-size:.7rem;line-height:1.5}.shot-tip strong{color:#fff}
+.result-card{justify-content:center}.result-card .result-icon{display:grid;place-items:center;width:54px;height:54px;margin-bottom:22px;border-radius:50%;background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent);font-size:1.5rem;font-weight:1000}.result-card h3{font-size:1.35rem}.result-card p{margin-top:12px;color:#aeb9c6;font-size:.86rem;line-height:1.65}.result-card strong{color:#fff}.key-result{margin-top:22px;padding:12px 14px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:12px;background:color-mix(in srgb,var(--accent) 8%,transparent);color:color-mix(in srgb,var(--accent) 72%,white);font-size:.8rem;font-weight:950}
+.dual-demo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;width:min(1450px,100%);margin-top:1.8vh}.demo-card{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:rgba(12,22,36,.92);box-shadow:0 24px 60px #0005}.demo-card .video-slot{min-height:min(42vh,430px);border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none}.demo-card .video-slot video{min-height:min(42vh,430px)}.demo-caption{padding:16px 19px 18px}.demo-caption h3{font-size:1.05rem}.demo-caption p{margin-top:6px;color:#96a5b6;font-size:.75rem;line-height:1.5}
+.install-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;width:min(1350px,100%);margin-top:2.3vh}.install-card{padding:21px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.05)}.install-card em{display:block;margin-bottom:12px;color:var(--accent);font-style:normal;font:950 .66rem ui-monospace,monospace;letter-spacing:.1em}.install-card h3{font-size:1rem}.install-card p{margin-top:8px;color:#98a7b8;font-size:.76rem;line-height:1.55}.install-card strong{color:#fff}.final-note{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:min(1350px,100%);margin-top:13px}.note-card{padding:14px 16px;border:1px solid #ffffff18;border-radius:13px;background:#ffffff0a;color:#aab6c4;font-size:.75rem;line-height:1.5}.note-card b{display:block;margin-bottom:4px;color:#fff}.note-card.caution{border-color:#fb718544;background:#fb71850a}.links{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:15px}.links a{padding:.62em .85em;border:1px solid color-mix(in srgb,var(--accent) 48%,transparent);border-radius:9px;background:color-mix(in srgb,var(--accent) 9%,#07111d);color:color-mix(in srgb,var(--accent) 75%,white);font-size:.72rem;font-weight:950;text-decoration:none}
+#nav{position:fixed;left:50%;bottom:18px;z-index:80;display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.14);border-radius:99px;background:#050912d9;box-shadow:0 12px 38px #0008;transform:translateX(-50%);backdrop-filter:blur(12px)}.nav-arrow{display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffff20;border-radius:50%;background:#ffffff0b;cursor:pointer}.nav-arrow:disabled{opacity:.28;cursor:not-allowed}.dots{display:flex;gap:6px}.dot{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#475466;cursor:pointer;transition:.22s}.dot.on{width:25px;border-radius:99px;background:linear-gradient(90deg,var(--lime),var(--cyan))}.hint{position:fixed;right:3vw;bottom:28px;color:#ffffff4f;font-size:.62rem;font-weight:850}.hint kbd{padding:.2em .42em;border:1px solid #ffffff26;border-bottom-width:2px;border-radius:4px;background:#ffffff0b}
+body.export #nav,body.export .hint{display:none}body.export .slide{transition:none}
+@media(max-width:980px){.slide{align-items:stretch;justify-content:flex-start;padding:8vh 5vw 14vh;overflow-y:auto}.hero-grid,.demo-layout,.dual-demo{grid-template-columns:1fr}.hero-copy .hero-title,.hero-copy .lead{text-align:center;margin-left:auto;margin-right:auto}.hero-copy .hero-title{max-width:12ch}.badge-row{justify-content:center}.game-stage{min-height:420px}.feature-grid{grid-template-columns:1fr 1fr}.video-slot,.video-slot video{min-height:420px}.install-grid{grid-template-columns:1fr}.final-note{grid-template-columns:1fr}.hint{display:none}}
+@media(max-width:580px){.slide{padding:8vh 4.5vw 15vh}.hero-title{font-size:clamp(3rem,17vw,5.5rem)}.section-title{font-size:clamp(2.2rem,11vw,3.8rem)}.feature-grid{grid-template-columns:1fr}.feature{min-height:0}.game-stage{min-height:350px}.inventory{width:78%}.keys{display:none}.demo-layout,.dual-demo{display:flex;flex-direction:column}.video-slot,.video-slot video,.demo-card .video-slot,.demo-card .video-slot video{min-height:310px}.slots{gap:2px}.slot{border-width:2px}.brand span{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<div class="brand"><i aria-hidden="true"></i><span>InvMove · Bilibili Intro Deck</span></div>
+<div class="page-count"><span id="current">01</span> / 05</div>
+
+<main id="deck">
+  <section class="slide s1 active" aria-labelledby="title-1">
+    <div class="hero-grid">
+      <article class="hero-copy">
+        <span class="eyebrow">INVMOVE · 0.9.5 · FABRIC 26.2</span>
+        <h1 class="hero-title" id="title-1">打开背包，<br><span class="mark">脚步不停</span></h1>
+        <p class="lead">背包、箱子和其他 GUI 打开时，继续移动、跳跃和疾跑，不必停在原地处理物品。</p>
+        <div class="badge-row"><span class="badge">纯客户端</span><span class="badge">界面内移动</span><span class="badge">逐界面配置</span><span class="badge">支持 Fabric</span></div>
+        <button class="next" type="button" data-next>先看它改变了什么 <span>→</span></button>
+      </article>
+      <div class="game-stage" aria-label="打开物品栏时仍在向前移动的示意画面">
+        <div class="move-arrow">➜</div>
+        <div class="inventory"><div class="slots"><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i></div></div>
+        <div class="keys"><span class="key w on">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s2" aria-labelledby="title-2">
+    <span class="eyebrow">核心能力 · 不只是按住 W</span>
+    <h2 class="section-title" id="title-2">把移动控制带进<span class="mark">游戏界面</span></h2>
+    <p class="section-lead">InvMove 会在界面打开期间继续更新允许的移动按键，同时保留对输入框和特殊界面的保护。</p>
+    <div class="feature-grid">
+      <article class="feature"><em>W</em><h3>边整理，边移动</h3><p>打开背包、箱子等界面时继续前进、后退和转向，减少频繁关界面的操作。</p></article>
+      <article class="feature"><em>↥</em><h3>跳跃与疾跑</h3><p>可以单独允许跳跃、疾跑、潜行和下坐骑；不是所有动作都必须一起开启。</p></article>
+      <article class="feature"><em>◐</em><h3>隐藏背景遮罩</h3><p>对不会暂停游戏的界面隐藏暗色背景，更容易观察移动方向和周围环境。</p></article>
+      <article class="feature"><em>⚙</em><h3>逐界面控制</h3><p>原版与模组界面可以分别设置；陌生界面也有默认处理策略。</p></article>
+    </div>
+    <p class="boundary-note"><strong>重要保护：</strong>搜索框、铁砧命名等文字输入获得焦点时，可以自动暂停移动，避免输入 WASD 时角色乱跑。</p>
+    <button class="next" type="button" data-next>先看未安装时的表现 <span>→</span></button>
+  </section>
+
+  <section class="slide s3" aria-labelledby="title-3">
+    <span class="eyebrow">实机对比 · 未安装 InvMove</span>
+    <h2 class="section-title" id="title-3">界面打开后，<span class="mark">移动会停下</span></h2>
+    <div class="demo-layout">
+      <div class="video-slot" data-video-slot="videos/打开合成器后，无法移动.mp4">
+        <video controls preload="metadata" playsinline poster="videos/posters/blocked.jpg" aria-label="未安装 InvMove 时打开背包合成界面后无法移动"></video>
+        <div class="video-empty"><div class="video-empty-inner"><span class="record-dot">VIDEO · 无法载入</span><h3>未安装时的效果</h3><code class="file-name">videos/打开合成器后，无法移动.mp4</code></div></div>
+        <div class="video-toolbar"><span>未安装 · 界面打开后无法移动</span><button class="play-full" type="button">⛶ 最大化播放</button></div>
+      </div>
+      <aside class="shot-card result-card"><span class="result-icon">■</span><h3>核心现象</h3><p>打开背包合成界面后，即使继续按住移动键，角色也会停在原地。</p><div class="key-result">界面打开 → WASD 不再控制角色</div></aside>
+    </div>
+  </section>
+
+  <section class="slide s4" aria-labelledby="title-4">
+    <span class="eyebrow">安装 InvMove · 两个核心效果</span>
+    <h2 class="section-title" id="title-4">界面打开，<span class="mark">脚步继续</span></h2>
+    <div class="dual-demo">
+      <article class="demo-card">
+        <div class="video-slot" data-video-slot="videos/移动中可以打开背包合成器.mp4">
+          <video controls preload="metadata" playsinline poster="videos/posters/move.jpg" aria-label="安装 InvMove 后移动中打开背包合成界面"></video>
+          <div class="video-empty"><div class="video-empty-inner"><span class="record-dot">VIDEO · 无法载入</span><code class="file-name">videos/移动中可以打开背包合成器.mp4</code></div></div>
+          <div class="video-toolbar"><span>效果 01 · 移动中打开背包</span><button class="play-full" type="button">⛶ 最大化播放</button></div>
+        </div>
+        <div class="demo-caption"><h3>移动中打开背包</h3><p>前进过程无需停下，背包与随身合成栏照常打开。</p></div>
+      </article>
+      <article class="demo-card">
+        <div class="video-slot" data-video-slot="videos/工作台打开后，可以继续移动.mp4">
+          <video controls preload="metadata" playsinline poster="videos/posters/workbench.jpg" aria-label="安装 InvMove 后工作台打开时继续移动"></video>
+          <div class="video-empty"><div class="video-empty-inner"><span class="record-dot">VIDEO · 无法载入</span><code class="file-name">videos/工作台打开后，可以继续移动.mp4</code></div></div>
+          <div class="video-toolbar"><span>效果 02 · 工作台界面内移动</span><button class="play-full" type="button">⛶ 最大化播放</button></div>
+        </div>
+        <div class="demo-caption"><h3>工作台打开后继续移动</h3><p>工作台界面保持开启，WASD 仍然可以控制角色。</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="slide s5" aria-labelledby="title-5">
+    <span class="eyebrow">安装前确认 · Fabric 26.2</span>
+    <h2 class="section-title" id="title-5">三个文件关系，<span class="mark">一次说清</span></h2>
+    <p class="section-lead">本页以 InvMove 0.9.5+26.2-fabric Beta 为基线；其他 Minecraft 版本请选择对应构建。</p>
+    <div class="install-grid">
+      <article class="install-card"><em>REQUIRED</em><h3>InvMove + Cloth Config</h3><p><strong>Cloth Config API 是必需依赖。</strong>缺少时无法正常加载配置支持。</p></article>
+      <article class="install-card"><em>OPTIONAL · FABRIC 26.2</em><h3>Fabric API</h3><p>当前 0.9.5 构建将相关按键 API 设为可选；未安装时不会添加“Toggle UI Movement”快捷键。</p></article>
+      <article class="install-card"><em>OPTIONAL · CONFIG ENTRY</em><h3>Mod Menu</h3><p>InvMove 本体可以运行；要在 Fabric 游戏内方便打开图形配置页，建议同时安装 Mod Menu。</p></article>
+    </div>
+    <div class="final-note"><div class="note-card"><b>兼容扩展</b>REI、JEI、EMI 等额外兼容已移到 InvMoveCompats，需要时再安装。</div><div class="note-card caution"><b>部署边界</b>纯客户端、服务器端不支持；公共服可能因反作弊策略产生风险。</div></div>
+    <div class="links"><a href="https://modrinth.com/mod/invmove" target="_blank" rel="noopener">InvMove · Modrinth ↗</a><a href="https://modrinth.com/mod/cloth-config" target="_blank" rel="noopener">Cloth Config ↗</a><a href="https://modrinth.com/mod/invmovecompats" target="_blank" rel="noopener">InvMoveCompats ↗</a></div>
+  </section>
+</main>
+
+<nav id="nav" aria-label="幻灯片导航"><button class="nav-arrow" id="prev" type="button" aria-label="上一页">‹</button><div class="dots" id="dots"></div><button class="nav-arrow" id="next" type="button" aria-label="下一页">›</button></nav>
+<p class="hint"><kbd>←</kbd> <kbd>→</kbd> 或点击空白处翻页</p>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')],dotsRoot=document.getElementById('dots'),progress=document.getElementById('progress'),currentLabel=document.getElementById('current'),prev=document.getElementById('prev'),next=document.getElementById('next');
+let current=0,wheelAt=0,touchX=0,touchY=0;
+slides.forEach((slide,index)=>{const dot=document.createElement('button');dot.className='dot'+(index===0?' on':'');dot.type='button';dot.setAttribute('aria-label',`转到第 ${index+1} 页`);dot.addEventListener('click',event=>{event.stopPropagation();go(index)});dotsRoot.appendChild(dot)});const dots=[...dotsRoot.children];
+function sync(){slides.forEach((slide,index)=>{const active=index===current;slide.classList.toggle('active',active);slide.inert=!active;slide.setAttribute('aria-hidden',String(!active))});dots.forEach((dot,index)=>dot.classList.toggle('on',index===current));currentLabel.textContent=String(current+1).padStart(2,'0');progress.style.width=`${(current+1)/slides.length*100}%`;prev.disabled=current===0;next.disabled=current===slides.length-1}
+function go(index){current=Math.max(0,Math.min(slides.length-1,index));sync();const params=new URLSearchParams(location.search);params.set('slide',String(current+1));history.replaceState(null,'',`${location.pathname}?${params}`)}
+document.querySelectorAll('[data-next]').forEach(button=>button.addEventListener('click',()=>go(current+1)));prev.addEventListener('click',()=>go(current-1));next.addEventListener('click',()=>go(current+1));
+document.addEventListener('keydown',event=>{if(event.target.matches?.('input,textarea,[contenteditable="true"]'))return;if(event.key==='ArrowRight'||event.key==='PageDown'||event.key===' '){event.preventDefault();go(current+1)}else if(event.key==='ArrowLeft'||event.key==='PageUp'){event.preventDefault();go(current-1)}else if(event.key==='Home')go(0);else if(event.key==='End')go(slides.length-1)});
+document.getElementById('deck').addEventListener('click',event=>{if(!event.target.closest('button,a,video'))go(current+1)});document.addEventListener('wheel',event=>{const now=Date.now();if(now-wheelAt<550)return;wheelAt=now;go(current+(event.deltaY>0?1:-1))},{passive:true});document.addEventListener('touchstart',event=>{touchX=event.touches[0].clientX;touchY=event.touches[0].clientY},{passive:true});document.addEventListener('touchend',event=>{const dx=event.changedTouches[0].clientX-touchX,dy=event.changedTouches[0].clientY-touchY;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))go(current+(dx<0?1:-1))},{passive:true});
+document.querySelectorAll('[data-video-slot]').forEach(slot=>{const video=slot.querySelector('video'),button=slot.querySelector('.play-full'),source=slot.dataset.videoSlot;video.src=source;video.addEventListener('loadedmetadata',()=>slot.classList.add('ready'),{once:true});video.addEventListener('error',()=>slot.classList.remove('ready'));button.addEventListener('click',async event=>{event.stopPropagation();try{await video.requestFullscreen?.()}catch(error){console.warn('Fullscreen request denied',error)}try{await video.play()}catch(error){console.warn('Playback failed',error)}})});
+const params=new URLSearchParams(location.search);if(params.get('export')==='1')document.body.classList.add('export');const requested=Number(params.get('slide'));if(Number.isInteger(requested)&&requested>=1&&requested<=slides.length)current=requested-1;sync();
+</script>
+</body>
+</html>

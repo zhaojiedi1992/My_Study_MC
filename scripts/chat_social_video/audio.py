@@ -65,13 +65,9 @@ _VOICE_PARTS = {
         VoicePart("客户端和服务端一起部署效果最好。", "-1%", "+0Hz", 190),
         VoicePart("不会隐藏聊天，也不能绕过服务器策略。", "-4%", "-2Hz", 180),
     ),
-    "emote": (
-        VoicePart("最后是 Emotecraft。", "+3%", "+2Hz", 220),
-        VoicePart("表情轮盘默认绑定 B，和路径点冲突时，可以在按键设置里改成空闲按键。", "-1%", "+0Hz", 180),
-        VoicePart("点击轮盘里的动作，就能播放挥手、舞蹈或自定义动画。", "+1%", "+1Hz", 220),
-        VoicePart("现在点击屏幕上的最大化播放，让动作视频进入内置全屏。", "+2%", "+1Hz", 220),
-        VoicePart("完整多人同步，仍需要服务端和其他玩家客户端支持。", "-4%", "-2Hz", 180),
-    ),
+    # The embedded Emotecraft recording already has narration.  Keep this
+    # segment silent so the hand-off contains no spoken or written prompt.
+    "emote": (),
 }
 
 
@@ -335,6 +331,31 @@ def generate_segment_voice(
     outputs = []
     for segment in segments:
         parts = voice_parts(segment)
+        if not parts:
+            output_media = narration_dir / f"{segment.id}.mp3"
+            output_srt = narration_dir / f"{segment.id}.srt"
+            subprocess.run(
+                [
+                    FFMPEG,
+                    "-y",
+                    "-f",
+                    "lavfi",
+                    "-i",
+                    "anullsrc=r=24000:cl=mono",
+                    "-t",
+                    "0.12",
+                    "-c:a",
+                    "libmp3lame",
+                    "-b:a",
+                    "192k",
+                    str(output_media),
+                ],
+                check=True,
+                capture_output=True,
+            )
+            output_srt.write_text("", encoding="utf-8")
+            outputs.append(output_media)
+            continue
         media_paths = []
         duration_list = []
         cue_groups = []
@@ -372,7 +393,9 @@ def generate_segment_voice(
             raise RuntimeError(
                 f"Narration {segment.id} is {duration:.2f}s; maximum is {allowed:.2f}s"
             )
-        if allowed - duration > MAX_TAIL_SILENCE_SECONDS:
+        # The Emotecraft screen deliberately hands over to the source video's
+        # own narration after a short Yunxi introduction.
+        if segment.id != "emote" and allowed - duration > MAX_TAIL_SILENCE_SECONDS:
             raise RuntimeError(
                 f"Narration {segment.id} leaves {allowed - duration:.2f}s of silence"
             )
@@ -419,6 +442,8 @@ def generate_voice(build_dir: Path, edge_tts: Path) -> tuple[Path, ...]:
     merged = []
     for item in timeline():
         source = build_dir / "narration" / f"{item.segment.id}.srt"
+        if not source.read_text(encoding="utf-8").strip():
+            continue
         for cue in parse_srt(source.read_text(encoding="utf-8"), item.segment.id):
             for caption in split_cue(cue):
                 merged.append(

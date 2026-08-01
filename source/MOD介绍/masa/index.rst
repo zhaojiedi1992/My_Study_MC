@@ -10,9 +10,9 @@ MASA 系列 MOD 主要面向建筑、技术生存和高频操作。本分类收�
    itemscroller/itemscroller
    minihud/minihud
    litematica/litematica
+   tweakeroo/tweakeroo
 
 演示页
 --------
 
-* `Tweakeroo PPT 风格演示 <tweakeroo/index.html>`_
-
+* `Tweakeroo 配套 PPT 风格演示 <tweakeroo/index.html>`_

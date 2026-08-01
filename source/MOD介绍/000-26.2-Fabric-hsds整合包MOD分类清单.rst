@@ -11,8 +11,8 @@
 * 清单以实际 JAR 元数据中的模组名称和版本为准，不只根据文件名判断。
 * ``gugle-carpet-addition`` 的顶层文件是多版本 Wrapper，本清单采用其中实际适配 Minecraft 26.2 的 GCA 2.12.6 信息。
 * 文档状态只检查当前仓库的 ``source/MOD介绍`` 和 ``source/extra/MOD介绍``；“暂无单独 RST”不代表该 MOD 不重要。
-* 当前已有 3 个“RST + 演示页”、4 个“只有 RST”、1 个“只有演示 HTML”、15 个“暂无单独 RST”的功能 MOD。
-* 另有 Simple Voice Chat 和 Emotecraft 2 个已选定的补充 MOD，均已建立 RST；在实际 JAR 放入整合包并重新读取元数据前，它们不计入上述 23 个已安装功能 MOD 的统计。
+* 以 23 个已安装功能 MOD 计，当前已有 6 个“RST + 演示页”、8 个“只有 RST”、0 个“只有演示 HTML”、9 个“暂无单独 RST”。其中 Xaero 的两个 MOD 共用一份 RST，AppleSkin 与 Jade 共用一份 RST。
+* 另有 Simple Voice Chat、Emotecraft 和 Flashback 3 个已选定的补充 MOD，均已建立 RST；在实际 JAR 放入整合包并重新读取元数据前，它们不计入上述 23 个已安装功能 MOD 的统计。
 * 仓库另有 Impact 命令文档，但这个整合包的 ``mods`` 目录中没有 Impact，因此不计入下面的功能 MOD。
 
 现有文档对照
@@ -21,7 +21,9 @@
 * **Item Scroller** — 已有 :doc:`RST 图文介绍 <masa/itemscroller/itemscroller>` 和独立演示页。
 * **MiniHUD** — 已有 :doc:`RST 图文介绍 <masa/minihud/minihud>` 和独立演示页。
 * **Litematica** — 已有 :doc:`RST 完整教程 <masa/litematica/litematica>` 和 01—09 独立演示页；整合包实际版本为 0.28.4，文档中的录制环境仍记录为 0.28.3。
-* **Tweakeroo** — 已有演示 HTML，但尚无 RST；演示页现已归入 ``source/extra/MOD介绍/masa/tweakeroo``。
+* **Tweakeroo** — 已有 :doc:`源码口径说明 <masa/tweakeroo/tweakeroo>` 和配套演示页。
+* **Xaero's Minimap 与 Xaero's World Map** — 已有 :doc:`基础 RST 介绍 <xaero/xaero>`，暂无独立演示页。
+* **AppleSkin 与 Jade** — 已有 :doc:`源码核对后的联合 RST <信息HUD与生存辅助>`；Show Durability 与 Neat 也在该页作为待安装的补充 MOD 说明。
 * **IMBlocker** — 已有 :doc:`RST 详细介绍 <imblocker/imblocker>`。
 * **No Chat Reports** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/nochatreports/nochatreports>`。
 * **Chat Heads** — 已有 :doc:`RST 功能介绍 <聊天社交与隐私/chatheads/chatheads>`。
@@ -32,10 +34,10 @@
 MASA 全家桶
 -----------
 
-* **Litematica 0.28.4** — 原理图与投影工具，可创建、加载、定位、分层和编辑 ``.litematic`` 建筑蓝图。〔已有 RST + 演示页〕
-* **MiniHUD 0.40.4** — 提供可配置的信息 HUD、结构边界、生成范围、形状和多种辅助渲染。〔已有 RST + 演示页〕
-* **Tweakeroo 0.29.2** — 汇集灵魂出窍、自动补货、快速点击、Gamma 等大量可配置的客户端微调功能。〔只有演示 HTML，待补 RST〕
-* **Item Scroller 0.32.1** — 通过滚轮、拖动和组合键快速移动、丢弃及批量合成物品。〔已有 RST + 演示页〕
+* **Litematica 0.28.4** — 原理图与投影工具，可创建、加载、定位、分层和编辑 ``.litematic`` 建筑蓝图。〔已有 :doc:`RST <masa/litematica/litematica>` + 演示页〕
+* **MiniHUD 0.40.4** — 提供可配置的信息 HUD、结构边界、生成范围、形状和多种辅助渲染。〔已有 :doc:`RST <masa/minihud/minihud>` + 演示页〕
+* **Tweakeroo 0.29.2** — 汇集灵魂出窍、自动补货、快速点击、Gamma 等大量可配置的客户端微调功能。〔已有 :doc:`RST <masa/tweakeroo/tweakeroo>` + 演示页〕
+* **Item Scroller 0.32.1** — 通过滚轮、拖动和组合键快速移动、丢弃及批量合成物品。〔已有 :doc:`RST <masa/itemscroller/itemscroller>` + 演示页〕
 
 其他 MOD
 --------
@@ -50,15 +52,15 @@ MASA 全家桶
 信息显示、物品与配方查询
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-* **Jade 26.2.9** — 在准星指向方块或实体时显示名称、状态和可用信息，便于快速识别目标。〔暂无单独 RST〕
+* **Jade 26.2.9** — 在准星指向方块或实体时显示名称、状态和可用信息，便于快速识别目标。〔已有 :doc:`源码核对后的联合 RST <信息HUD与生存辅助>`〕
 * **Just Enough Items 30.11.0.67（JEI）** — 在物品界面中查询物品用途、合成配方和相关生产方式。〔暂无单独 RST〕
-* **AppleSkin 3.0.10** — 在饥饿值界面补充食物恢复量、饱和度和进食效果预览。〔暂无单独 RST〕
+* **AppleSkin 3.0.10** — 在饥饿值界面补充食物恢复量、饱和度和进食效果预览。〔已有 :doc:`源码核对后的联合 RST <信息HUD与生存辅助>`〕
 
-地图与导航
+地图与导航【done】
 ~~~~~~~~~~
 
-* **Xaero's Minimap 26.4.0** — 提供接近原版风格的小地图、方向显示、路径点和周边地形导航。〔暂无单独 RST〕
-* **Xaero's World Map 1.44.0** — 自动记录探索过的地形并提供全屏世界地图，可与 Xaero 小地图联动。〔暂无单独 RST〕
+* **Xaero's Minimap 26.4.0** — 提供接近原版风格的小地图、方向显示、路径点和周边地形导航。〔已有 :doc:`基础 RST 介绍 <xaero/xaero>`〕
+* **Xaero's World Map 1.44.0** — 自动记录探索过的地形并提供全屏世界地图，可与 Xaero 小地图联动。〔已有 :doc:`基础 RST 介绍 <xaero/xaero>`〕
 
 Carpet 与技术生存工具
 ~~~~~~~~~~~~~~~~~~~~~
@@ -70,8 +72,8 @@ Carpet 与技术生存工具
 界面与操作体验
 ~~~~~~~~~~~~~~
 
-* **Mod Menu 20.0.1** — 在游戏中集中展示已安装 MOD，并提供进入各 MOD 配置页面的入口。〔暂无单独 RST〕
-* **InvMove 0.9.5** — 允许玩家在背包、箱子和其他 GUI 打开时继续移动。〔暂无单独 RST〕
+* **Mod Menu 20.0.1** — 在游戏中集中展示已安装 MOD，并提供进入各 MOD 配置页面的入口。〔已有 :doc:`RST <modmenu/modmenu>` + 演示页〕
+* **InvMove 0.9.5** — 允许玩家在背包、箱子和其他 GUI 打开时继续移动。〔已有 :doc:`RST <invmove/invmove>` + 演示页〕
 * **IMBlocker 7.1.7** — 在不输入文字时自动控制输入法状态，减少中文输入法导致的快捷键误触。〔已有独立 :doc:`RST（基于官方 master） <imblocker/imblocker>`〕
 
 聊天、社交与隐私
@@ -99,6 +101,7 @@ Carpet 与技术生存工具
 * **Litematica Printer** — Litematica 文档中用于自动打印和空中建造的可选扩展，本整合包当前没有对应 JAR。
 * **Syncmatica** — Litematica 文档中用于多人共享投影的客户端/服务端扩展，本整合包当前没有对应 JAR。
 * **Servux** — MiniHUD 在多人服务器上获取结构等服务端数据时常用的配套 MOD，本整合包当前没有对应 JAR。
+* **Flashback** — 客户端回放与镜头制作 MOD，已有 :doc:`RST <flashback/flashback>`；是否加入整合包仍以实际 JAR 元数据为准。
 
 后续整理记录
 ------------

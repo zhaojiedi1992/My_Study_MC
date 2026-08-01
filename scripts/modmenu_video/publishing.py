@@ -3,10 +3,21 @@
 from scripts.modmenu_video.storyboard import timeline
 
 
-TITLE = "装了几十个模组，设置到底藏哪？Mod Menu 一次讲明白"
+TITLE = "模组装了却没反应？Mod Menu 帮你确认生效、找到设置"
 ALTERNATE_TITLES = (
-    "别再退出游戏翻 JAR 了！Mod Menu 到底有什么用？",
-    "模组装好了却找不到设置？你可能只差一个 Mod Menu",
+    "不知道模组有没有生效？打开 Mod Menu 看一眼",
+    "设置入口藏在哪？Mod Menu 带你从列表找到配置",
+)
+MODRINTH_URL = "https://modrinth.com/mod/modmenu"
+TAGS = (
+    "Minecraft",
+    "我的世界",
+    "Mod Menu",
+    "Fabric",
+    "模组推荐",
+    "客户端模组",
+    "整合包",
+    "MC教程",
 )
 
 
@@ -26,9 +37,20 @@ def chapter_lines() -> list[str]:
     return lines
 
 
+def description_text() -> str:
+    return f"""模组装进去了，可它到底有没有生效？设置页面又藏在哪里？这两个问题，装模组时几乎人人都遇到过。
+
+这期用一个很实际的路线带你看：先在 Mod Menu 列表里找到目标模组，确认客户端已经认到它；再去找“配置”入口。按钮可用，就直接进入设置；按钮是灰的，也不代表模组没生效，可能它把设置放在按键、命令或 config 文件里。
+
+画面基于 Minecraft Java 版 26.2。不同游戏与模组版本的界面可能略有变化；安装时请让启动器匹配版本并解析依赖。
+
+Modrinth 下载地址：{MODRINTH_URL}"""
+
+
 def build_publish_markdown() -> str:
     alternatives = "\n".join(f"- {title}" for title in ALTERNATE_TITLES)
     chapters = "\n".join(chapter_lines())
+    tags = "、".join(TAGS)
     return f"""# B 站发布信息
 
 ## 推荐标题
@@ -41,11 +63,7 @@ def build_publish_markdown() -> str:
 
 ## 简介
 
-想改一个模组选项，却先在暂停菜单里迷路；退出游戏翻开 mods 文件夹，又被一排 JAR 文件劝退——Mod Menu 就是为这种时刻准备的“模组前台”。
-
-这期只讲最有用的三件事：找到已安装的模组、确认信息、打开它真正提供的配置入口。也会说清楚为什么有些“配置”按钮不能点，以及安装时为什么更推荐启动器，而不是手动拖 JAR。
-
-画面基于 Minecraft Java 版 26.2。不同游戏与模组版本的界面可能略有变化；安装时请让启动器匹配版本并解析依赖。
+{description_text()}
 
 ## 视频章节
 
@@ -53,11 +71,11 @@ def build_publish_markdown() -> str:
 
 ## 推荐标签
 
-Minecraft、我的世界、Mod Menu、Fabric、模组推荐、客户端模组、整合包、MC教程
+{tags}
 
 ## 置顶评论建议
 
-一句话记住 Mod Menu：它负责帮你找到门，不负责装修别人家。
+一句话记住 Mod Menu：先看它有没有报到，再找它自己的设置门。
 
 配置按钮不可用，不一定是坏了；对应模组可能使用按键、命令或配置文件。安装则优先交给启动器，省掉依赖和版本对不上的麻烦。
 
